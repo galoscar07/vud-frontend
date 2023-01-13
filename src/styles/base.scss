@@ -1,0 +1,95 @@
+// COLORS ---------------------------------------------
+
+$color-primary: #17616C;
+$color-secondary: #f34455;
+
+$color-disabled: #ccc;
+
+$color-black: #010101;
+$color-white: #ffffff;
+
+// FONT FAMILY --------------------------------------------
+
+$font-ubuntu: "Ubuntu", sans-serif;
+
+// FONT SIZES ---------------------------------------------
+
+$font-size-xxsmall: 0.769rem; // 10px
+$font-size-xsmall: 0.846rem; // 11px
+$font-size-small: 0.923rem; // 12px
+$font-size-normal: 13px; // 13px
+$font-size-big: 1.153rem; // 15px
+$font-size-xbig: 1.538rem; // 20px
+$font-size-xxbig: 1.923rem; // 25px
+$font-size-xxxbig: 2.307rem; // 30px
+
+$font-size-14: 14px;
+$font-size-16: 16px;
+$font-size-17: 17px;
+$font-size-18: 18px;
+$font-size-35: 35px;
+$font-size-40: 40px;
+$font-size-115: 115px;
+
+// FONT WEIGHTS ---------------------------------------------
+
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+// MARGINS ---------------------------------------------
+
+$spacing-xsmall: 10px;
+$spacing-small: 15px;
+$spacing-default: 20px;
+$spacing-medium: 25px;
+$spacing-big: 30px;
+$spacing-huge: 40px;
+$spacing-xbig: 50px;
+
+
+// RADIUSES ---------------------------------------------
+
+$radius-xsmall: 3px;
+$radius-small: 5px;
+$radius-normal: 10px;
+$radius-medium: 13px;
+$radius-big: 20px;
+
+// ANIMATION FUNCTIONS ---------------------------------------------
+
+$ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+$ease-out: cubic-bezier(0, 0, 0.2, 1);
+$ease-in: cubic-bezier(0.4, 0, 1, 1);
+$ease-middle: cubic-bezier(0.24, 0.68, 0.29, 0.04);
+
+$big-ease-in-out: cubic-bezier(0.87, 0.02, 0.47, 0.91);
+$big-ease-out: cubic-bezier(0, 0.9, 0.48, 0.98);
+
+$xsmall-bouncy-out: cubic-bezier(0.4, 1.4, 0.69, 0.98);
+$small-bouncy-out: cubic-bezier(0.47, 1.62, 0.55, 1.08);
+$bouncy-out: cubic-bezier(0.48, 2, 0.53, 0.99);
+$big-bouncy-out: cubic-bezier(0.42, 2.94, 0.83, 0.67);
+
+$small-bouncy-in: cubic-bezier(0.57, -0.25, 0.58, 1);
+$bouncy-in: cubic-bezier(0.36, 0.06, 0.42, -0.78);
+$big-bouncy-in: cubic-bezier(0.36, 0.06, 0.42, -1.7);
+
+$bouncy-in-out: cubic-bezier(0.36, -1.54, 0.73, 2.51);
+
+// SCREEN WIDTHS ---------------------------------------------
+
+$desktop: 1920px;
+$big-laptop: 1440px;
+$small-laptop: 1280px;
+$tablet-landscape-width: 1024px; /* From generic tablet downwards */
+$tablet-portrait-width: 768px;
+$mobile-big-width: 500px; /* For phones and below */
+
+@mixin flex-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

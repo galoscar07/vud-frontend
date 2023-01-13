@@ -1,0 +1,107 @@
+@import "../base";
+
+.button {
+  @include flex-centered;
+  background-color: $color-primary;
+  border-radius: $radius-small;
+  color: $color-white;
+  height: 30px;
+  font-size: $font-size-normal;
+  font-weight: $font-weight-medium;
+  padding-left: $spacing-small;
+  padding-right: $spacing-small;
+  text-align: center;
+  box-shadow: 0 3px 6px 0 rgba(black, 0.2);
+  transition: box-shadow 0.1s $ease-in-out, background-color 0.1s $ease-in-out, transform 0.1s $ease-in-out;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    box-shadow: 0 3px 8px 0 rgba(black, 0.2);
+    background-color: lighten($color-primary, 2%);
+  }
+
+  &:focus {
+    background-color: darken($color-primary, 5%);
+    box-shadow: 0 3px 4px 0 rgba(black, 0.25);
+  }
+
+  &:active {
+    box-shadow: 0 1px 2px 0 rgba(black, 0.3);
+    transform: scale(0.99);
+    transition: box-shadow 0.15s $bouncy-out, background-color 0.15s $bouncy-out, transform 0.2s $big-bouncy-out;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    background-color: $color-disabled;
+    box-shadow: none;
+
+    &:hover, &:focus, &:active {
+      background-color: $color-disabled;
+      box-shadow: none;
+      transform: none;
+    }
+
+    &:focus {
+      background-color: darken($color-disabled, 10%);
+    }
+  }
+
+  &.border-button {
+    background-color: $color-disabled;
+    color: $color-primary;
+    border: 1px solid $color-primary;
+    line-height: 27px;
+    box-shadow: none;
+
+    &.big {
+      line-height: 37px;
+    }
+
+    &:focus {
+      background-color: darken($color-disabled, 4%);
+    }
+
+    &:active {
+      background-color: darken($color-disabled, 4%);
+    }
+  }
+
+  &.gray-button {
+    background-color: $color-disabled;
+    color: $color-black;
+    border: none;
+    line-height: 27px;
+    box-shadow: none;
+
+    &.big {
+      line-height: 37px;
+    }
+
+    &:focus {
+      background-color: darken($color-disabled, 4%);
+    }
+
+    &:active {
+      background-color: darken($color-disabled, 4%);
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      background-color: $color-disabled;
+      box-shadow: none;
+
+      &:hover, &:focus, &:active {
+        background-color: $color-disabled;
+        box-shadow: none;
+        transform: none;
+      }
+
+      &:focus {
+        background-color: darken($color-disabled, 10%);
+      }
+    }
+  }
+}
+

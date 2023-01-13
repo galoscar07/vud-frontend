@@ -1,0 +1,77 @@
+//@import "../base.scss";
+//
+//.expand-button::before {
+//  background-color: transparent;
+//}
+//
+//.expand-button {
+//  font-weight: $font-weight-medium;
+//  color: $color-text-dark;
+//
+//  &:after {
+//    color: transparent;
+//    background-color:transparent;
+//    content: "A";
+//    display: inline-block;
+//    margin-left: $spacing7;
+//    width: 10px;
+//    background-repeat: no-repeat;
+//    background-position: center;
+//    background-size: contain;
+//    opacity: 1;
+//    background-image: url("/assets/img/chevron-down-gray.svg");
+//    transition: transform 0.2s $ease-in-out;
+//  }
+//
+//  &.teal:after,
+//  &.teal-chevron:after {
+//    background-image: url("/assets/img/chevron-down-teal.svg");
+//  }
+//
+//  &.green:after,
+//  &.green-chevron:after {
+//    background-image: url("/assets/img/chevron-down-green.svg");
+//  }
+//
+//  &:hover {
+//    color: #474747;
+//  }
+//  &:hover::after {
+//    opacity: 0.7;
+//    background-image: url("/assets/img/chevron-down-black.svg");
+//  }
+//
+//  &.disabled {
+//    cursor: not-allowed;
+//    color: $color-disabled;
+//    background-repeat: no-repeat;
+//    background-image: url("/assets/img/chevron-down-gray.svg");
+//  }
+//
+//  &.disabled::after{
+//    background-image: url("/assets/img/chevron-down-gray.svg");
+//  }
+//
+//  &.expanded {
+//    color: $color-text-dark;
+//    background-color: transparent;
+//  }
+//
+//
+//  &.expanded:after {
+//    background-color: transparent;
+//    opacity: 1;
+//    background-image: url("/assets/img/chevron-down-gray.svg");
+//    transform: rotateZ(-180deg);
+//  }
+//
+//  &.border-bottom {
+//    border-bottom: 1px solid $color-disabled;
+//    padding-bottom: $spacing7;
+//
+//    &:hover {
+//      border-color: $color-teal;
+//      background-color: transparent;
+//    }
+//  }
+//}

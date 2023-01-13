@@ -1,0 +1,271 @@
+//@import "../base.scss";
+//
+//.checkbox, .radio {
+//  height: 14px;
+//  width: 14px;
+//  border-radius: $radius-small;
+//  background-color: $color-background;
+//  box-shadow: inset 0 0 0 1px $color-disabled;
+//  transition: box-shadow 0.15s $ease-in-out, border-radius 0.15s, background-color 0.15s, background-size 0.15s;
+//  background-position: center;
+//  background-repeat: no-repeat;
+//  background-size: 1px 1px;
+//  cursor: pointer;
+//
+//
+//  &:hover {
+//    box-shadow: inset 0 0 0 1px $color-separator, 0 1px 3px rgba(black, 0.15);
+//    filter: none;
+//  }
+//}
+//
+//.checkbox {
+//
+//  &:active {
+//    border-radius: $radius-normal;
+//    box-shadow: inset 0 0 0 5px $color-teal, 0 2px 3px rgba(black, 0.1);
+//    filter: none;
+//  }
+//
+//  &.checked {
+//    background-color: $color-teal;
+//    box-shadow: inset 0 0 0 0 $color-teal;
+//    background-image: url("/assets/img/check-white.svg");
+//    background-size: 8px 8px;
+//    opacity: 1;
+//
+//    &:hover {
+//      box-shadow: inset 0 0 0 0 $color-teal, 0 2px 3px rgba(black, 0.1);
+//    }
+//
+//    &:active {
+//      box-shadow: inset 0 0 0 5px $color-teal;
+//      background-color: $color-white;
+//    }
+//  }
+//
+//
+//  &.dark {
+//    &:active {
+//      border-radius: $radius-normal;
+//      box-shadow: inset 0 0 0 5px #E6E6E6, 0 2px 3px rgba(black, 0.1);
+//      filter: none;
+//    }
+//
+//    &.checked {
+//      background-color: $color-white;
+//      box-shadow: inset 0 0 0 0 #E6E6E6;
+//      background-image: url("/assets/img/check-black.svg");
+//      background-size: 8px 8px;
+//      opacity: 1;
+//
+//      &:active {
+//        box-shadow: inset 0 0 0 5px #E6E6E6;
+//        background-color: $color-white;
+//      }
+//    }
+//  }
+//
+//
+//  &.green {
+//    &:active {
+//      box-shadow: inset 0 0 0 5px $color-green, 0 2px 3px rgba(black, 0.1);
+//    }
+//
+//    &.checked {
+//      background-color: $color-green;
+//      box-shadow: inset 0 0 0 0 $color-green;
+//
+//      &:hover {
+//        box-shadow: inset 0 0 0 0 $color-green, 0 2px 3px rgba(black, 0.1);
+//      }
+//
+//      &:active {
+//        box-shadow: inset 0 0 0 5px $color-green;
+//        background-color: $color-white;
+//      }
+//    }
+//  }
+//
+//  &.orange {
+//    &:active {
+//      box-shadow: inset 0 0 0 5px $color-orange, 0 2px 3px rgba(black, 0.1);
+//    }
+//
+//    &.checked {
+//      background-color: $color-orange;
+//      box-shadow: inset 0 0 0 0 $color-orange;
+//
+//      &:hover {
+//        box-shadow: inset 0 0 0 0 $color-orange, 0 2px 3px rgba(black, 0.1);
+//      }
+//
+//      &:active {
+//        box-shadow: inset 0 0 0 5px $color-orange;
+//        background-color: $color-white;
+//      }
+//    }
+//  }
+//
+//  &.red {
+//    &:active {
+//      box-shadow: inset 0 0 0 5px $color-red, 0 2px 3px rgba(black, 0.1);
+//    }
+//
+//    &.checked {
+//      background-color: $color-red;
+//      box-shadow: inset 0 0 0 0 $color-red;
+//
+//      &:hover {
+//        box-shadow: inset 0 0 0 0 $color-red, 0 2px 3px rgba(black, 0.1);
+//      }
+//
+//      &:active {
+//        box-shadow: inset 0 0 0 5px $color-red;
+//        background-color: $color-white;
+//      }
+//    }
+//  }
+//
+//  &.white {
+//    background-color: transparent;
+//    box-shadow: inset 0 0 0 1px $color-background;
+//
+//    &:active {
+//      box-shadow: inset 0 0 0 5px $color-background, 0 2px 3px rgba(black, 0.1);
+//    }
+//
+//    &.checked {
+//      background-image: url("/assets/img/check-black.svg");
+//      background-color: $color-background;
+//      box-shadow: inset 0 0 0 0 $color-background;
+//
+//      &:hover {
+//        box-shadow: inset 0 0 0 0 $color-background, 0 2px 3px rgba(black, 0.1);
+//      }
+//
+//      &:active {
+//        box-shadow: inset 0 0 0 5px $color-background;
+//        background-color: black;
+//      }
+//    }
+//  }
+//  &.disabled {
+//    cursor:not-allowed;
+//    &.checked{
+//      &:hover {
+//        box-shadow: none;
+//        filter: none;
+//      }
+//    }
+//    &:hover {
+//      box-shadow: inset 0 0 0 1px $color-disabled;
+//    }
+//  }
+//}
+//
+//.radio {
+//
+//  &:active {
+//    border-radius: 14px;
+//    box-shadow: inset 0 0 0 5px $color-teal;
+//  }
+//
+//  &.checked {
+//    background-color: $color-teal;
+//    box-shadow: inset 0 0 0 1px $color-teal, inset 0 0 0 3px white;
+//    transition: box-shadow 0.15s $ease-in-out, border-radius 0.15s, background-color 0.15s, background-size 0.15s;
+//
+//    &:active {
+//      box-shadow: inset 0 0 0 5px $color-teal;
+//      background-color: white;
+//    }
+//  }
+//
+//  &.green {
+//
+//    &:active {
+//      box-shadow: inset 0 0 0 5px $color-green;
+//    }
+//
+//    &.checked {
+//      background-color: $color-green;
+//      box-shadow: inset 0 0 0 1px $color-green, inset 0 0 0 3px white;
+//
+//      &:active {
+//        box-shadow: inset 0 0 0 5px $color-green;
+//        background-color: white;
+//      }
+//    }
+//  }
+//
+//  &.orange {
+//
+//    &:active {
+//      box-shadow: inset 0 0 0 5px $color-orange;
+//    }
+//
+//    &.checked {
+//      background-color: $color-orange;
+//      box-shadow: inset 0 0 0 1px $color-orange, inset 0 0 0 3px white;
+//
+//      &:active {
+//        box-shadow: inset 0 0 0 5px $color-orange;
+//        background-color: white;
+//      }
+//    }
+//  }
+//
+//  &.red {
+//
+//    &:active {
+//      box-shadow: inset 0 0 0 5px $color-red;
+//    }
+//
+//    &.checked {
+//      background-color: $color-red;
+//      box-shadow: inset 0 0 0 1px $color-red, inset 0 0 0 3px white;
+//
+//      &:active {
+//        box-shadow: inset 0 0 0 5px $color-red;
+//        background-color: white;
+//      }
+//    }
+//  }
+//
+//}
+//
+//
+//.checkbox-button, .radio-button {
+//  cursor: pointer;
+//  display: flex;
+//  align-items: center;
+//
+//
+//  &:after {
+//    margin-left: 8px;
+//    display: inline-block;
+//    content: " ";
+//    position: relative;
+//  }
+//
+//  &.left {
+//    flex-direction: row-reverse;
+//    justify-content: flex-end;
+//
+//    &:after {
+//      margin-left: 0;
+//      margin-right: $spacing-xsmall;
+//    }
+//  }
+//
+//}
+//
+//.checkbox-button:after {
+//  @extend .checkbox;
+//}
+//
+//.radio-button:after {
+//  @extend .radio;
+//}
+//

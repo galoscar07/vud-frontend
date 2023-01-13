@@ -1,0 +1,135 @@
+//@import "../base.scss";
+//
+//.text-button:visited {
+//  background-color: transparent;
+//}
+//
+//.text-button {
+//  position: relative;
+//  background-color: transparent;
+//  font-weight: $font-weight-medium;
+//  font-size:$font-size-big;
+//  cursor: pointer;
+//  user-select: none;
+//  transition: border 0.1s, padding 0.1s;
+//
+//  // Invisible clicking area. For our elderly folk.
+//  &:before {
+//    display: block;
+//    content: " ";
+//    position: absolute;
+//    width: calc(100% + 10px);
+//    height: calc(100% + 10px);
+//    left: -5px;
+//    top: -5px;
+//    background-color: transparent;
+//    border-radius: $radius-small;
+//    opacity: 0;
+//    transition: opacity 0.1s, transform 0.05s $ease-in;
+//    transform: scale(0.95);
+//  }
+//
+//  &.text-dark {
+//    color: $color-text-dark!important;
+//
+//    &:hover {
+//      color: #474747 !important;
+//    }
+//  }
+//
+//  &.green {
+//    color: $color-green;
+//
+//    &:hover {
+//      color: $color-green-highlight;
+//    }
+//
+//    &:before {
+//      background-color: transparent;
+//      color: $color-button-green;
+//    }
+//  }
+//
+//  &.teal {
+//    color: $color-teal;
+//
+//    &:before {
+//      background-color: rgba($color-teal, 0.2);
+//    }
+//  }
+//
+//  &.orange {
+//    color: $color-orange;
+//
+//    &:before {
+//      background-color: rgba($color-orange, 0.2);
+//    }
+//  }
+//
+//  &.red {
+//    color: $color-red;
+//
+//    &:before {
+//      background-color: rgba($color-red, 0.2);
+//    }
+//  }
+//
+//  &.gray {
+//    color: $color-text-dark;
+//
+//    &:before {
+//      background-color: transparet;
+//    }
+//  }
+//
+//  &:hover {
+//    transition: opacity 0.05s, transform 0.1s $ease-out;
+//  }
+//
+//  &:visited {
+//    background-color: none !important;
+//  }
+//
+//  &:hover:after {
+//    background-color: transparent;
+//  }
+//
+//  &:focus:before {
+//    transform: none;
+//    opacity: 0.5;
+//  }
+//
+//  &:focus:after {
+//    transform: none;
+//    opacity: 0.5;
+//    background-color: none;
+//  }
+//
+//  &:active:before {
+//    transform: none;
+//    opacity: 1;
+//    background-color: transparent;
+//  }
+//
+//  &.disabled{
+//    cursor: not-allowed;
+//    background-color: transparent;
+//    color: $color-disabled;
+//
+//    &:hover {
+//      background-color: transparent;
+//      color: $color-disabled;
+//    }
+//  }
+//
+//
+//  &.border-bottom {
+//    border-bottom: 1px solid $color-disabled;
+//    padding-bottom: $spacing7;
+//
+//    &:hover {
+//      border-color: transparent;
+//      padding-bottom: 0;
+//    }
+//  }
+//}

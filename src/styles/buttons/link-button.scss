@@ -1,0 +1,106 @@
+//@import "../base.scss";
+//
+//.link-button {
+//  font-weight: $font-weight-medium;
+//  text-decoration: none;
+//  color: $color-green;
+//
+//  &:after, &:before {
+//    color: transparent;
+//    content: "A";
+//    display: inline-block;
+//    margin-left: $spacing-xsmall;
+//    width: 12px;
+//  }
+//
+//  &.teal::before {
+//    background-repeat: no-repeat;
+//    background-position: center;
+//    background-size: contain;
+//    background-image: url("/assets/img/chevron-down-teal.svg");
+//  }
+//
+//  &.green:after {
+//    background-repeat: no-repeat;
+//    background-position: center;
+//    background-size: contain;
+//    background-image: url("/assets/img/chevron-down-green.svg");
+//  }
+//
+//
+//  &.disabled {
+//    cursor: not-allowed;
+//    opacity: 0.7;
+//    filter: grayscale(100%);
+//    background-color: transparent;
+//    color: $color-disabled;
+//  }
+//
+//
+//  &.disabled {
+//    &.left {
+//      &::after{
+//        opacity: 0.4;
+//      }
+//      &:hover {
+//        &:after{
+//        filter: none;
+//      }
+//    }
+//  }}
+//
+//  &.left {
+//    font-size: $font-size-16;
+//    padding-left: 17px;
+//
+//    &:after {
+//      transform: rotateZ(90deg);
+//      position: absolute;
+//      left: 0;
+//      margin-left: unset;
+//    }
+//
+//    &:hover {
+//      &:after{
+//        filter: brightness(85%);
+//      }
+//      &::before {
+//        color: $color-green-highlight;
+//      }
+//    }
+//  }
+//
+//  &.right {
+//    font-size: $font-size-14;
+//    padding-right: 17px;
+//
+//    &:after {
+//      transform: rotateZ(270deg);
+//      position: absolute;
+//      right: 0;
+//      margin-right: unset;
+//    }
+//
+//    &:hover {
+//      &:after{
+//        filter: brightness(85%);
+//      }
+//      &::before {
+//        color: $color-green-highlight;
+//      }
+//    }
+//  }
+//
+//
+//  &.back-arrow {
+//    &:after {
+//      display: none;
+//    }
+//
+//    &:before {
+//      transform: rotateZ(90deg);
+//      background-image: url("/assets/img/chevron-down-green.svg");
+//      margin-right: $spacing-xxsmall;
+//    }
+//  }
+//}
