@@ -1,6 +1,10 @@
 // COLORS ---------------------------------------------
 
 $color-primary: #17616C;
+$color-green: #1F734E;
+$color-blue: #33435B;
+$color-dark-blue: #09272B;
+
 $color-secondary: #f34455;
 $color-font: #09272B;
 
@@ -12,9 +16,13 @@ $color-white: #ffffff;
 
 // FONT FAMILY --------------------------------------------
 
-$font-ubuntu: "Ubuntu", sans-serif;
+$font-family: 'Lato', sans-serif;
 
 // FONT SIZES ---------------------------------------------
+$font-small: 0.87rem; //14px;
+$font-normal: 1rem; //16px
+$font-title: 3.7rem; //48px
+
 
 $font-size-xxsmall: 0.769rem; // 10px
 $font-size-xsmall: 0.846rem; // 11px
@@ -41,12 +49,15 @@ $font-weight-medium: 500;
 $font-weight-bold: 700;
 
 // MARGINS ---------------------------------------------
+$spacing-section: 10rem; //160px
+$spacing-big: 6.25rem; //100px
+$spacing-medium: 2.5rem; //40px
+$spacing-xsmall: 0.62rem; //10px;
 
-$spacing-xsmall: 10px;
+
 $spacing-small: 15px;
 $spacing-default: 20px;
 $spacing-medium: 25px;
-$spacing-big: 30px;
 $spacing-huge: 40px;
 $spacing-xbig: 50px;
 
