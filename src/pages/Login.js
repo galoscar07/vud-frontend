@@ -27,7 +27,7 @@ const Login = () => {
 
 
     return (
-        <div className="login-section">
+        <div className="login-page">
             <img src="/images/login.svg"/>
             <div className="auth-container">
                 <h1>Autentificare</h1>
@@ -36,16 +36,15 @@ const Login = () => {
                     <input className="full-width" type="text" value={email}
                            onChange={handleEmail}/>
                     <div className="checkbox-container">
-                        <input type="checkbox" value={code} onChange={handleTermsChecked}/>
+                        <input className="checkbox" type="checkbox" value={code} onChange={handleTermsChecked}/>
                         <label>Sunt de acord cu <span>termenii si conditiile</span></label>
                     </div>
                     <span className="code-label"> Ti-am trimis un cod de verificare pe email, te rugam sa introduci codul mai jos pentru validarea contului</span>
                     <div className="input-validate-container">
                         <input type="text" value={code}
                                onChange={handleCode}/>
-                        <input className="submit-btn" type="submit" value="Valideaza"/>
+                        <input className="button" type="submit" value="Valideaza"/>
                     </div>
-                    <div className="grey-text">Nu ai primit codul?</div>
                 </form>
             </div>
         </div>
