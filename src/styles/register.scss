@@ -44,23 +44,6 @@
         }
       }
 
-      input {
-        border: 1px solid $color-primary;
-        border-radius: 2px;
-        padding: 12px;
-        box-shadow: 0 3px 6px 0 rgba(black, 0.2);
-
-        &.full-width {
-          width: 100%;
-        }
-      }
-
-      label {
-        font-size: $font-normal;
-        color: $color-dark-blue;
-        margin: $spacing-xsmall 0;
-      }
-
       //.code-label {
       //  color: $color-green;
       //  font-size: $font-small;

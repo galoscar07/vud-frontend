@@ -1,0 +1,37 @@
+@import 'base';
+
+.admin-data-page {
+
+  .contact-data, .company-data {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    padding: $spacing-small;
+    text-align: left;
+    margin: $spacing-medium 0;
+
+    .container-title {
+      font-size: $font-subtitle;
+      margin-bottom:$spacing-small;
+    }
+  }
+
+  .fields-wrapper {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    background: #F5F9F9;
+    padding: $spacing-small;
+    gap: $spacing-small;
+
+  }
+
+  .input-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .button {
+    width: 30%;
+    margin: auto;
+  }
+}
