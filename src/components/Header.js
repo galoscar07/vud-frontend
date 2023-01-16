@@ -1,9 +1,16 @@
 import React from 'react'
+import './Header.scss'
+import {Link} from "react-router-dom";
 
 function Header() {
   return (
-    <div>
-      <h1>This is the Header</h1>
+    <div className={'header'}>
+      <img src={'/logo.svg'}/>
+      <div className={'menu_items'}>
+        <Link to={'/'}>Acasă</Link>
+        <Link to={'/medical-info'}>Informații medicale</Link>
+        <Link to={'/charity'}>Caritate</Link>
+      </div>
     </div>
   );
 }
