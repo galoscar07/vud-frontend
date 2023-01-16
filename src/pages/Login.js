@@ -3,26 +3,24 @@ import "../styles/login.scss"
 
 const Login = () => {
     const [email, setEmail] = React.useState('');
-    const [code, setCode] = React.useState('');
+    const [password, setPassword] = React.useState('');
     const [areTermsChecked, setTermsChecked] = React.useState(false);
 
     const handleEmail = (event) => {
         setEmail(event.target.value);
     };
 
-    const handleCode = (event) => {
-        setCode(event.target.value);
+    const handlePassword = (event) => {
+        setPassword(event.target.value);
     };
 
     const handleTermsChecked = (event) => {
-        console.log(areTermsChecked)
         setTermsChecked(!areTermsChecked);
     };
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(email, code, areTermsChecked)
     };
 
 
@@ -30,21 +28,24 @@ const Login = () => {
         <div className="login-page">
             <img src="/images/login.svg"/>
             <div className="auth-container">
-                <h1>Autentificare</h1>
+                <h1>Login</h1>
                 <form onSubmit={handleSubmit}>
-                    <label>Email:</label>
+                    <label>Email</label>
                     <input className="full-width" type="text" value={email}
                            onChange={handleEmail}/>
+                    <label>Password</label>
+                    <input className="full-width" type="password" value={password}
+                           onChange={handlePassword}/>
                     <div className="checkbox-container">
-                        <input className="checkbox" type="checkbox" value={code} onChange={handleTermsChecked}/>
+                        <div>
+                        <input className="checkbox" type="checkbox" value={areTermsChecked} onChange={handleTermsChecked}/>
                         <label>Sunt de acord cu <span>termenii si conditiile</span></label>
+                        </div>
+                        <div className="forgot-password">ai uitat parola?</div>
                     </div>
-                    <span className="code-label"> Ti-am trimis un cod de verificare pe email, te rugam sa introduci codul mai jos pentru validarea contului</span>
-                    <div className="input-validate-container">
-                        <input type="text" value={code}
-                               onChange={handleCode}/>
-                        <input className="button" type="submit" value="Valideaza"/>
-                    </div>
+                    {/*<span className="code-label"> Ti-am trimis un cod de verificare pe email, te rugam sa introduci codul mai jos pentru validarea contului</span>*/}
+                    <input className="button" type="submit" value="Login"/>
+
                 </form>
             </div>
         </div>

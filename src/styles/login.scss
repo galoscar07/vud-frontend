@@ -3,13 +3,15 @@
 .login-page {
   display: flex;
   flex-direction: row;
-  margin: $spacing-big $spacing-section;
+  margin: auto;
+  width: 75%;
   align-items: center;
   column-gap: $spacing-big;
 
   .auth-container {
     display: flex;
     flex-direction: column;
+    width: 100%;
 
     form {
       display: flex;
@@ -17,8 +19,16 @@
       align-items: flex-start;
 
       .checkbox-container {
+        margin: $spacing-xsmall 0 $spacing-medium 0;
+        width: 100%;
         display: flex;
-        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+
+        div {
+          display: flex;
+          align-items: center;
+        }
 
         .checkbox {
           height: 1.25rem;
@@ -29,6 +39,11 @@
         span {
           color: $color-blue;
           text-decoration: underline;
+          cursor: pointer;
+        }
+
+        .forgot-password {
+          color: $color-grey-disabled;
           cursor: pointer;
         }
       }
@@ -56,13 +71,6 @@
         font-size: $font-small;
         text-align: center;
         margin: $spacing-medium 0 $spacing-xsmall 0;
-      }
-
-      .input-validate-container {
-        display: grid;
-        grid-template-columns: 3fr 1fr;
-        column-gap: $spacing-xsmall;
-        width: 100%;
       }
 
     }
