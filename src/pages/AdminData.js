@@ -24,29 +24,29 @@ const AdminData = () => {
                         <div className="container-title">Date de contact</div>
                         <div className="fields-wrapper">
                             <div className="input-wrapper">
-                                <label>Nume</label>
-                                <input type="text" value={values.lastName}
+                                <label>*Nume</label>
+                                <input type="text" required value={values.lastName}
                                        onChange={(e) => {
                                            handleFieldChange(e.target.value, 'lastName');
                                        }}/>
                             </div>
                             <div className="input-wrapper">
-                                <label>Prenume</label>
-                                <input type="text" vvalue={values.firstName}
+                                <label>*Prenume</label>
+                                <input type="text" required value={values.firstName}
                                        onChange={(e) => {
                                            handleFieldChange(e.target.value, 'firstName');
                                        }}/>
                             </div>
                             <div className="input-wrapper">
                                 <label>Telefon</label>
-                                <input type="text" vvalue={values.phoneNo}
+                                <input type="text" value={values.phoneNo}
                                        onChange={(e) => {
                                            handleFieldChange(e.target.value, 'phoneNo');
                                        }}/>
                             </div>
                             <div className="input-wrapper">
                                 <label>Email de contact</label>
-                                <input type="text" vvalue={values.email}
+                                <input type="text" value={values.email}
                                        onChange={(e) => {
                                            handleFieldChange(e.target.value, 'email');
                                        }}/>
@@ -58,28 +58,28 @@ const AdminData = () => {
                         <div className="fields-wrapper">
                             <div className="input-wrapper">
                                 <label>Functia</label>
-                                <input type="text" vvalue={values.position}
+                                <input type="text" value={values.position}
                                        onChange={(e) => {
                                            handleFieldChange(e.target.value, 'position');
                                        }}/>
                             </div>
                             <div className="input-wrapper">
                                 <label>Compania</label>
-                                <input type="text" vvalue={values.company}
+                                <input type="text" value={values.company}
                                        onChange={(e) => {
                                            handleFieldChange(e.target.value, 'company');
                                        }}/>
                             </div>
                             <div className="input-wrapper">
-                                <label>Strada</label>
-                                <input type="text" vvalue={values.street}
+                                <label>*Strada</label>
+                                <input type="text" required value={values.street}
                                        onChange={(e) => {
                                            handleFieldChange(e.target.value, 'street');
                                        }}/>
                             </div>
                             <div className="input-wrapper">
                                 <label>Numarul</label>
-                                <input type="text" vvalue={values.streetNo}
+                                <input type="text" value={values.streetNo}
                                        onChange={(e) => {
                                            handleFieldChange(e.target.value, 'streetNo');
                                        }}/>
