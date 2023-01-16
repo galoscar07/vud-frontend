@@ -7,8 +7,43 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   a {
     text-decoration: none;
+    font-size: $font-normal;
     color: $color-font;
+    margin-right: $spacing-medium;
+    transition: color 0.1s $ease-in, text-shadow 0.1s $ease-in-out;
+
+    &:hover {
+      color: $color-primary;
+      text-shadow: 0 3px 8px 0 rgba(black, 0.2);
+    }
+
+    &:last-of-type {
+      margin-right: 0;
+    }
   }
+
+  .active {
+    color: $color-primary;
+    text-shadow: 0 1px 2px 0 rgba(black, 0.3);
+    text-decoration: underline;
+  }
+
+  .user_profile_container_user {
+    @include flex-centered;
+
+    .profile-text {
+      margin-right: $spacing-xsmall;
+    }
+
+    .profile_pic {
+      width: 65px;
+      height:65px;
+      border-radius: $radius-round;
+    }
+  }
+
+  .user_profile_container_no_user {}
 }
