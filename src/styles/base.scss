@@ -6,8 +6,10 @@ $color-blue: #33435B;
 $color-dark-blue: #09272B;
 $color-grey-disabled: #99A1AD;
 $color-secondary: #f34455;
+$color-font: #09272B;
 
 $color-disabled: #ccc;
+$color-background: #E2E3E7;
 
 $color-black: #010101;
 $color-white: #ffffff;
@@ -49,15 +51,14 @@ $font-weight-bold: 700;
 // MARGINS ---------------------------------------------
 $spacing-section: 10rem; //160px
 $spacing-big: 6.25rem; //100px
-$spacing-medium: 2.5rem; //40px
-$spacing-xsmall: 0.62rem; //10px;
 
-
+$spacing-xsmall: 5px;
 $spacing-small: 15px;
 $spacing-default: 20px;
 $spacing-medium: 25px;
 $spacing-huge: 40px;
 $spacing-xbig: 50px;
+$spacing-big: 100px;
 
 
 // RADIUSES ---------------------------------------------
@@ -67,6 +68,7 @@ $radius-small: 5px;
 $radius-normal: 10px;
 $radius-medium: 13px;
 $radius-big: 20px;
+$radius-round: 50%;
 
 // ANIMATION FUNCTIONS ---------------------------------------------
 
