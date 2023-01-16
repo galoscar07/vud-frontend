@@ -36,13 +36,9 @@ const Login = () => {
                     <label>Password</label>
                     <input className="full-width" type="password" value={password}
                            onChange={handlePassword}/>
-                    <div className="checkbox-container">
-                        <div>
-                        <input className="checkbox" type="checkbox" value={areTermsChecked} onChange={handleTermsChecked}/>
-                        <label>Sunt de acord cu <span>termenii si conditiile</span></label>
-                        </div>
+
                         <div className="forgot-password">ai uitat parola?</div>
-                    </div>
+
                     {/*<span className="code-label"> Ti-am trimis un cod de verificare pe email, te rugam sa introduci codul mai jos pentru validarea contului</span>*/}
                     <input className="button" type="submit" value="Login"/>
 

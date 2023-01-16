@@ -1,6 +1,6 @@
 @import 'base';
 
-.login-page {
+.register-page {
   display: flex;
   flex-direction: row;
   margin: auto;
@@ -18,10 +18,30 @@
       flex-direction: column;
       align-items: flex-start;
 
-      .forgot-password {
-        color: $color-grey-disabled;
-        cursor: pointer;
-        margin: $spacing-small 0 $spacing-medium auto;
+      .checkbox-container {
+        margin: $spacing-xsmall 0 $spacing-medium 0;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        div {
+          display: flex;
+          align-items: center;
+        }
+
+        .checkbox {
+          height: 1.25rem;
+          width: 1.25rem;
+          background: $color-grey-disabled;
+          accent-color: $color-primary;
+        }
+
+        span {
+          color: $color-blue;
+          text-decoration: underline;
+          cursor: pointer;
+        }
       }
 
       input {
@@ -40,7 +60,7 @@
         color: $color-dark-blue;
         margin: $spacing-xsmall 0;
       }
-      //
+
       //.code-label {
       //  color: $color-green;
       //  font-size: $font-small;
