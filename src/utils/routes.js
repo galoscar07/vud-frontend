@@ -1,6 +1,10 @@
 export const routes = {
   HOMEPAGE: '/',
-  LOGIN: '/login',
   MEDICAL_INFO: '/medical-information',
   CHARITY: '/charity',
+
+  // AUTH
+  LOGIN: '/login',
+  FORGET_PASSWORD: '/forget-password',
+  REGISTER: '/register',
 }

@@ -106,3 +106,21 @@ $mobile-big-width: 500px; /* For phones and below */
   justify-content: center;
 }
 
+
+// Default style for links
+a {
+  text-decoration: none;
+  font-size: $font-normal;
+  color: $color-font;
+  margin-right: $spacing-medium;
+  transition: color 0.1s $ease-in, text-shadow 0.1s $ease-in-out;
+
+  &:hover {
+    color: $color-primary;
+    text-shadow: 0 3px 8px 0 rgba(black, 0.2);
+  }
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}
