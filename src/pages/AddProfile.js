@@ -10,10 +10,6 @@ const AddProfile = () => {
         {
             icon: 'images/unit.svg',
             title: 'Unitate medicală'
-        },
-        {
-            icon: 'images/user.svg',
-            title: 'Utilizator'
         }
     ]
     return (
