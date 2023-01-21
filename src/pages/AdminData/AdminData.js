@@ -13,10 +13,11 @@ const AdminData = () => {
         event.preventDefault();
     };
     const deleteFile = () => {
-        console.log('ola')
     }
 
-    const updateList = () => {
+    //TODO figure out delete file & how to send file to BE;
+
+    const updateList = (name, value) => {
         let input = document.getElementById('file');
         let output = document.getElementById('file-list');
         let children = "";
@@ -24,6 +25,7 @@ const AdminData = () => {
             children += '<div class="selected-file">' + input.files.item(i).name + '<span onclick=console.log("delete")>' + ' <img src="/images/delete.svg"/>' + ' </span>' + '</div>';
         }
         output.innerHTML = '<div class="selected-file-wrapper">' + children + '</div>';
+        handleFieldChange(name, value)
     }
 
     return (
@@ -37,30 +39,30 @@ const AdminData = () => {
                         <div className="fields-wrapper">
                             <div className="input-wrapper">
                                 <label>*Nume</label>
-                                <input type="text" required value={values.lastName}
+                                <input name="lastName" type="text" required value={values.lastName}
                                        onChange={(e) => {
-                                           handleFieldChange(e.target.value, 'lastName');
+                                           handleFieldChange(e.target.value, e.target.name);
                                        }}/>
                             </div>
                             <div className="input-wrapper">
                                 <label>*Prenume</label>
-                                <input type="text" required value={values.firstName}
+                                <input name="firstName" type="text" required value={values.firstName}
                                        onChange={(e) => {
-                                           handleFieldChange(e.target.value, 'firstName');
+                                           handleFieldChange(e.target.value, e.target.name);
                                        }}/>
                             </div>
                             <div className="input-wrapper">
                                 <label>Telefon</label>
-                                <input type="text" value={values.phoneNo}
+                                <input name="phoneNo" type="text" value={values.phoneNo}
                                        onChange={(e) => {
-                                           handleFieldChange(e.target.value, 'phoneNo');
+                                           handleFieldChange(e.target.value, e.target.name);
                                        }}/>
                             </div>
                             <div className="input-wrapper">
                                 <label>Email de contact</label>
-                                <input type="text" value={values.email}
+                                <input name="email" type="text" value={values.email}
                                        onChange={(e) => {
-                                           handleFieldChange(e.target.value, 'email');
+                                           handleFieldChange(e.target.value, e.target.name);
                                        }}/>
                             </div>
                         </div>
@@ -70,30 +72,30 @@ const AdminData = () => {
                         <div className="fields-wrapper">
                             <div className="input-wrapper">
                                 <label>Functia</label>
-                                <input type="text" value={values.position}
+                                <input name="position" type="text" value={values.position}
                                        onChange={(e) => {
-                                           handleFieldChange(e.target.value, 'position');
+                                           handleFieldChange(e.target.value, e.target.name);
                                        }}/>
                             </div>
                             <div className="input-wrapper">
                                 <label>Compania</label>
-                                <input type="text" value={values.company}
+                                <input name="company" type="text" value={values.company}
                                        onChange={(e) => {
-                                           handleFieldChange(e.target.value, 'company');
+                                           handleFieldChange(e.target.value, e.target.name);
                                        }}/>
                             </div>
                             <div className="input-wrapper">
                                 <label>*Strada</label>
-                                <input type="text" required value={values.street}
+                                <input name="street" type="text" required value={values.street}
                                        onChange={(e) => {
-                                           handleFieldChange(e.target.value, 'street');
+                                           handleFieldChange(e.target.value, e.target.name);
                                        }}/>
                             </div>
                             <div className="input-wrapper">
                                 <label>Numarul</label>
                                 <input name='streetNo' type="text" value={values.streetNo}
                                        onChange={(e) => {
-                                           handleFieldChange(e.target.value, 'streetNo');
+                                           handleFieldChange(e.target.value, e.target.name);
                                        }}/>
                             </div>
                         </div>
@@ -109,8 +111,8 @@ const AdminData = () => {
                             <img
                                 src="images/upload.svg"/>
                         </label>
-                        <input style={{display: "none"}} id="file" type="file" multiple onChange=
-                            {updateList}/>
+                        <input style={{display: "none"}} name="files" id="file" type="file" multiple
+                               onChange={(e) => updateList(e.target.value, e.target.name)}/>
                         <div id="file-list"></div>
                     </div>
                     <input className="button" type="submit" value="Mergi mai departe"/>
