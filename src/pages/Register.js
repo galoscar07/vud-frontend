@@ -35,7 +35,7 @@ const Register = () => {
                 <h1>Register</h1>
                 <form onSubmit={handleSubmit}>
                     <label>Email</label>
-                    <input className="full-width" type="text" value={email}
+                    <input className="full-width" type="text" name={'email'} value={email}
                            onChange={handleEmail}/>
                     <label>Password</label>
                     <input className="full-width" type="password" value={password}
