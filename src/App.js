@@ -2,14 +2,14 @@ import './App.scss';
 import {Route, Routes} from "react-router-dom";
 
 // Pages
-import Homepage from "./pages/Homepage";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Homepage from "./pages/Homepage/Homepage";
+import Login from "./pages/Auth/Login/Login";
+import Register from "./pages/Auth/Register/Register";
 
 // Footer
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import AdminData from "./pages/AdminData";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import AdminData from "./pages/AdminData/AdminData";
 
 function App() {
   return (

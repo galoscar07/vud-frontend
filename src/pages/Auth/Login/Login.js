@@ -1,5 +1,5 @@
 import React from 'react'
-import "../styles/login.scss"
+import "./login.scss"
 
 const Login = () => {
     const [email, setEmail] = React.useState('');
