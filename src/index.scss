@@ -14,7 +14,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-textarea:focus, input:focus {
+textarea:focus, input:focus, select:focus {
   outline: none;
 }
 
@@ -22,7 +22,7 @@ h1 {
   font-size: $font-title;
 }
 
-input {
+input, select, option {
   border: 1px solid $color-primary;
   border-radius: 2px;
   padding: 12px;
@@ -31,6 +31,14 @@ input {
   &.full-width {
     width: 100%;
   }
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: white url("images/dropdown.svg") no-repeat;
+  background-position-x: 97%;
+  background-position-y: 13px;
 }
 
 label {

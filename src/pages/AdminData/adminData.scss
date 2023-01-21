@@ -25,7 +25,7 @@
 
   .fields-wrapper {
     display: grid;
-    grid-template-columns: 50% 50%;
+    //grid-template-columns: 50% 50%;
     background: #F5F9F9;
     padding: $spacing-small;
     gap: $spacing-small;
@@ -80,5 +80,18 @@
         cursor: pointer;
       }
     }
+  }
+
+  .col-2 {
+    display: grid;
+    grid-template-columns: 49% 49%;
+    gap: $spacing-small;
+  }
+
+  .col-3 {
+    display: grid;
+    grid-template-columns: 74% 24%;
+    gap: $spacing-small;
+
   }
 }
