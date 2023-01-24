@@ -21,3 +21,12 @@ textarea:focus, input:focus {
 h1 {
   font-size: $font-title;
 }
+
+.checkbox {
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 0.25rem;
+  background: $color-grey-disabled;
+  accent-color: $color-primary;
+  margin-right: 0.5rem;
+}
