@@ -7,7 +7,7 @@ const AddUnit = () => {
         <div className="add-unit-page">
             <img src="/public/images/unit.svg"/>
             <h1>Adaugă Unitate medicală</h1>
-           <Dropdown>
+           {/*<Dropdown>*/}
         </div>
     );
 }
