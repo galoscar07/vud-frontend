@@ -9,6 +9,8 @@ import Register from "./pages/Register";
 // Footer
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import AddProfile from "./pages/AddProfile";
+import ForgetPassword from "./pages/ForgetPassword";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/" element={ <Homepage /> } />
         <Route path="login" element={ <Login /> } />
         <Route path="register" element={ <Register /> } />
+        <Route path="forget-password" element={ <ForgetPassword /> } />
+        <Route path="add-profile" element={ <AddProfile /> } />
         <Route path="admin-data" element={ <AdminData /> } />
       </Routes>
       <Footer />

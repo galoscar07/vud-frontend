@@ -49,11 +49,13 @@
   }
 
   &.border-button {
-    background-color: $color-disabled;
     color: $color-primary;
-    border: 1px solid $color-primary;
+    border: 2px solid $color-primary;
+    padding: $spacing-small $spacing-medium;
     line-height: 27px;
     box-shadow: none;
+    background: white;
+    border-radius: 0;
 
     &.big {
       line-height: 37px;

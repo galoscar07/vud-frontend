@@ -22,6 +22,15 @@ h1 {
   font-size: $font-title;
 }
 
+.checkbox {
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 0.25rem;
+  background: $color-grey-disabled;
+  accent-color: $color-primary;
+  margin-right: 0.5rem;
+}
+
 input, select, option {
   border: 1px solid $color-primary;
   border-radius: 2px;

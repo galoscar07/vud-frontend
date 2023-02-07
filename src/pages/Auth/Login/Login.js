@@ -1,4 +1,7 @@
 import React from 'react'
+import "../styles/login.scss"
+import {Link} from "react-router-dom";
+import {routes} from "../utils/routes";
 import "./login.scss"
 
 const Login = () => {
@@ -36,8 +39,10 @@ const Login = () => {
                     <label>Password</label>
                     <input className="full-width" type="password" value={password}
                            onChange={handlePassword}/>
-
-                        <div className="forgot-password">ai uitat parola?</div>
+                    <div className={'links'}>
+                        <Link to={routes.REGISTER} className="forgot-password">nu ai cont?</Link>
+                        <Link to={routes.FORGET_PASSWORD} className="forgot-password">ai uitat parola?</Link>
+                    </div>
 
                     {/*<span className="code-label"> Ti-am trimis un cod de verificare pe email, te rugam sa introduci codul mai jos pentru validarea contului</span>*/}
                     <input className="button" type="submit" value="Login"/>

@@ -18,6 +18,16 @@
       flex-direction: column;
       align-items: flex-start;
 
+      .links {
+        display: flex;
+        width: 100%;
+
+        a {
+          margin-left: 0;
+          margin-right: $spacing-default;
+        }
+      }
+
       .forgot-password {
         color: $color-grey-disabled;
         cursor: pointer;
@@ -40,13 +50,20 @@
         color: $color-dark-blue;
         margin: $spacing-xsmall 0;
       }
-      //
-      //.code-label {
-      //  color: $color-green;
-      //  font-size: $font-small;
-      //  text-align: center;
-      //  margin: $spacing-medium 0 $spacing-xsmall 0;
-      //}
+
+      .code-label {
+        color: $color-green;
+        font-size: $font-small;
+        text-align: center;
+        margin: $spacing-medium 0 $spacing-xsmall 0;
+        &.bigger-text {
+          font-size: $font-normal;
+        }
+      }
+
+      .margin-top {
+        margin-top: $spacing-default;
+      }
 
     }
   }
