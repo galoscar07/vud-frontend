@@ -1,7 +1,7 @@
 import React from 'react'
-import "../styles/login.scss"
+import "./Login/Login"
 import {Link} from "react-router-dom";
-import {routes} from "../utils/routes";
+import {routes} from "../../utils/routes";
 
 const ForgetPassword = (props) => {
     const [email, setEmail] = React.useState('');

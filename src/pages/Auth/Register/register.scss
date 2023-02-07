@@ -1,4 +1,4 @@
-@import 'src/styles/base';
+@import '/src/styles/base';
 
 .register-page {
   display: flex;
@@ -28,6 +28,13 @@
         div {
           display: flex;
           align-items: center;
+        }
+
+        .checkbox {
+          height: 1.25rem;
+          width: 1.25rem;
+          background: $color-grey-disabled;
+          accent-color: $color-primary;
         }
 
         span {
