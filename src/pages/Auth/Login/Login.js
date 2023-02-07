@@ -1,7 +1,6 @@
 import React from 'react'
-import "../styles/login.scss"
 import {Link} from "react-router-dom";
-import {routes} from "../utils/routes";
+import {routes} from "../../../utils/routes";
 import "./login.scss"
 
 const Login = () => {
