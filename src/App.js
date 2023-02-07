@@ -12,8 +12,6 @@ import Footer from "./components/Footer/Footer";
 import AddProfile from "./pages/AddProfile";
 import ForgetPassword from "./pages/ForgetPassword";import AdminData from "./pages/AdminData/AdminData";
 import AdminData from "./pages/AdminData/AdminData";
-import ForgetPassword from "./pages/ForgetPassword";
-import AdminData from "./pages/AdminData";
 
 function App() {
   return (
