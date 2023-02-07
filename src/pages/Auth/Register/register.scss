@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: row;
   margin: auto;
-  width: 65%;
+  width: 75%;
   align-items: center;
   column-gap: $spacing-big;
 
@@ -61,12 +61,12 @@
         margin: $spacing-xsmall 0;
       }
 
-      .code-label {
-        color: $color-green;
-        font-size: $font-normal;
-        text-align: center;
-        margin: $spacing-medium 0 $spacing-xsmall 0;
-      }
+      //.code-label {
+      //  color: $color-green;
+      //  font-size: $font-small;
+      //  text-align: center;
+      //  margin: $spacing-medium 0 $spacing-xsmall 0;
+      //}
 
     }
   }

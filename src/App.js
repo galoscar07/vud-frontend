@@ -20,8 +20,12 @@ function App() {
         <Route path="/" element={ <Homepage /> } />
         <Route path="login" element={ <Login /> } />
         <Route path="register" element={ <Register /> } />
+<<<<<<< HEAD
         <Route path="forget-password" element={ <ForgetPassword /> } />
         <Route path="add-profile" element={ <AddProfile /> } />
+=======
+        <Route path="admin-data" element={ <AdminData /> } />
+>>>>>>> temp
       </Routes>
       <Footer />
     </div>
