@@ -31,7 +31,7 @@ const AdminData = () => {
     return (
         <div className="admin-data-page">
             <div className="data-container">
-                <img src="images/User.svg"/>
+            <img src="/images/user.svg"/>
                 <h1>Date administrator</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="contact-data">
