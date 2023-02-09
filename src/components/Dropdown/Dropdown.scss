@@ -22,3 +22,48 @@
     }
   }
 }
+.filter {
+  &__menu {
+    margin: 0!important;
+    background-color: #F5F9F9!important;
+    position:relative!important;
+  }
+  &__control{
+    border-color:transparent!important;
+    box-shadow:none!important;
+    &:hover{
+      box-shadow:none!important;
+      border-color:transparent!important;
+    }
+    &:focused{
+      box-shadow:none!important;
+      border-color: transparent!important;
+    }
+  }
+  &__option {
+    background-color: #F5F9F0!important;
+    padding: .5rem 3rem .5rem .5rem;
+    cursor: pointer;
+    text-align: start;
+    display: flex;
+    align-items: center;
+
+   &:hover{
+    background-color: white!important;
+   }
+   &:focus-visible{
+    outline: none;
+   }
+   &:active{
+    background-color: white!important;
+   }
+  }
+
+  &__menu-list {
+   margin:0;
+   border: 1px solid #17616C;
+  }
+}
+.filter__input{
+  box-shadow:none!important;
+}

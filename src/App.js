@@ -12,6 +12,7 @@ import Footer from "./components/Footer/Footer";
 import AddProfile from "./pages/AddProfile";
 import ForgetPassword from "./pages/Auth/ForgetPassword";
 import AdminData from "./pages/AdminData/AdminData";
+import AddUnit from "./pages/AddUnit/AddUnit";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="forget-password" element={ <ForgetPassword /> } />
         <Route path="add-profile" element={ <AddProfile /> } />
         <Route path="admin-data" element={ <AdminData /> } />
+        <Route path="medical-unit" element={<AddUnit/>}/>
       </Routes>
       <Footer />
     </div>

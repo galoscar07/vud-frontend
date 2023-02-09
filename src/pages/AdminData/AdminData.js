@@ -40,14 +40,14 @@ const AdminData = () => {
                             <div className="col-2">
                                 <div className="input-wrapper">
                                     <label>*Nume</label>
-                                    <input name="lastName" type="text" required value={values.lastName}
+                                    <input name="lastName" type="text"  value={values.lastName}
                                            onChange={(e) => {
                                                handleFieldChange(e.target.value, e.target.name);
                                            }}/>
                                 </div>
                                 <div className="input-wrapper">
                                     <label>*Prenume</label>
-                                    <input name="firstName" type="text" required value={values.firstName}
+                                    <input name="firstName" type="text"  value={values.firstName}
                                            onChange={(e) => {
                                                handleFieldChange(e.target.value, e.target.name);
                                            }}/>
@@ -93,7 +93,7 @@ const AdminData = () => {
                             <div className="col-3">
                             <div className="input-wrapper">
                                 <label>*Oras</label>
-                                <select required id="city" name="city">
+                                <select  id="city" name="city">
                                     <option value="Alba-Iulia">Alba-Iulia</option>
                                     <option value="Cluj-Napoca">Cluj-Napoca</option>
                                     <option value="Bucuresti">Bucuresti</option>
@@ -113,7 +113,7 @@ const AdminData = () => {
                         <div className="col-2">
                             <div className="input-wrapper">
                                 <label>*Strada</label>
-                                <input name="street" type="text" required value={values.street}
+                                <input name="street" type="text"  value={values.street}
                                        onChange={(e) => {
                                            handleFieldChange(e.target.value, e.target.name);
                                        }}/>

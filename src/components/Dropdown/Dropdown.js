@@ -8,24 +8,7 @@ const options = [
     {value: 'vanilla', label: 'Vanilla'}
 ]
 
-const customStyles = {
-    option: ({
-        color: "#09272B",
-        backgroundColor: "#F5F9F9",
-        padding: ".5rem 3rem .5rem .5rem",
-        cursor: "pointer",
-        textAlign: "start",
-        display: "flex",
-        alignItems: "center"
-    }),
-    menu: ({
-        margin: '0',
-        backgroundColor: "#F5F9F9",
-    }),
-    menuList: ({
-        margin: '0',
-        border: "1px solid #17616C",
-    }),
+const styles = {
 
     multiValue: ({
         background: "#17616C",
@@ -82,7 +65,7 @@ const OptionsOutsideSelect = (props) => {
 
     return (
         <div>
-            <Select {...props} controlShouldRenderValue={!isMulti}/>
+            <Select {...props} controlShouldRenderValue={!isMulti} styles={styles}   classNamePrefix='filter'/>
             <div className="selected-container">
                 {isMulti ? value.map((val) =>
                         <div className="selected-option" key={val.value}><span>{val.label}</span>
@@ -109,8 +92,7 @@ function Dropdown() {
             value={selected}
             isMulti
             onChange={handleSelectChange}
-            styles={customStyles}
-            menuIsOpen={true}
+            // menuIsOpen={true}
             components={{Option}}
             allowSelectAll={true}
             hideSelectedOptions={false}
