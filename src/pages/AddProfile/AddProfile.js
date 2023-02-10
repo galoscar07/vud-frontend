@@ -6,10 +6,12 @@ const AddProfile = () => {
         {
             icon: 'images/doctor.svg',
             title: 'Medic',
+            alt: 'imagine medic'
         },
         {
             icon: 'images/unit.svg',
-            title: 'Unitate medicală'
+            title: 'Unitate medicală',
+            alt: 'imagine unitate medicala'
         }
     ]
     return (
@@ -18,7 +20,7 @@ const AddProfile = () => {
             <div className="profiles-container">
                 {cards.map((card, i) =>
                     <div className="profile-card" key={i}>
-                        <img src={card.icon}/>
+                        <img alt={card.alt} src={card.icon}/>
                         <span>{card.title}</span>
                         <div className="button border-button">Adaugă</div>
                     </div>)}

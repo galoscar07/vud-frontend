@@ -1,17 +1,18 @@
 import React from 'react'
 import './Header.scss'
-import {Link, NavLink} from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import {NavLink} from "react-router-dom";
+// import { useLocation } from "react-router-dom";
+import {routes} from "../../utils/routes";
 
 
 function Header() {
   // get location
-  //assigning location variable
-  const location = useLocation();
-  //destructuring pathname from location
-  const { pathname } = location;
-  //Javascript split method to get the name of the path in array
-  const splitLocation = pathname.split("/");
+  // assigning location variable
+  // const location = useLocation();
+  // destructuring pathname from location
+  // const { pathname } = location;
+  // Javascript split method to get the name of the path in array
+  // const splitLocation = pathname.split("/");
 
   const isUserLoggedIn = false
 
@@ -21,16 +22,16 @@ function Header() {
         <div className={'user_profile_container_user'}>
           <NavLink
             className={'profile-text'}
-            to={'/login'}
+            to={routes.LOGIN}
           >Cont</NavLink>
-          <img className={'profile_pic'} src={'favicon.ico'} />
+          <img alt={'imagine profile user'} className={'profile_pic'} src={'favicon.ico'} />
         </div>
       )
     } else {
       return (
         <div className={'user_profile_container_no_user'}>
           <NavLink
-            to={'/login'}
+            to={routes.LOGIN}
           >Conectează-te/Inregistrează-te</NavLink>
         </div>
       )
@@ -39,16 +40,16 @@ function Header() {
 
   return (
     <div className={'header'}>
-      <img src={'/logo.svg'}/>
+      <img alt={'imagine logo vreau un doctor'} src={'/logo.svg'}/>
       <div className={'menu_items'}>
         <NavLink
-          to={'/'}
+          to={routes.HOMEPAGE}
         >Acasă</NavLink>
         <NavLink
-          to={'/medical-info'}
+          to={routes.MEDICAL_INFO}
         >Informații medicale</NavLink>
         <NavLink
-          to={'/charity'}
+          to={routes.CHARITY}
         >Caritate</NavLink>
       </div>
       {
