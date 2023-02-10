@@ -15,6 +15,7 @@ import ForgetPassword from "./pages/Auth/ForgetPassword/ForgetPassword";
 import AdminData from "./pages/AdminData/AdminData";
 import AddUnit from "./pages/AddUnit/AddUnit";
 import ThankYou from "./pages/ThankYou/ThankYou";
+import DeleteAccount from "./pages/Auth/DeleteAccount/DeleteAccount";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path={routes.ADMIN_DATA} element={ <AdminData /> } />
         <Route path={routes.ADD_UNIT} element={<AddUnit/>}/>
         <Route path={routes.THANK_YOU} element={<ThankYou/>}/>
+        <Route path={routes.DELETE_PROFILE} element={<DeleteAccount/>}/>
       </Routes>
       <Footer />
     </div>

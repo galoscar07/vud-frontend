@@ -12,8 +12,9 @@ const AdminData = () => {
         console.log(values);
         event.preventDefault();
     };
-    const deleteFile = () => {
-    }
+
+    // const deleteFile = () => {
+    // }
 
     //TODO figure out delete file & how to send file to BE;
 
@@ -22,7 +23,13 @@ const AdminData = () => {
         let output = document.getElementById('file-list');
         let children = "";
         for (let i = 0; i < input.files.length; ++i) {
-            children += '<div class="selected-file">' + input.files.item(i).name + '<span onclick=console.log("delete")>' + ' <img src="/images/delete.svg"/>' + ' </span>' + '</div>';
+            children +=`
+                <div class="selected-file">
+                    ${input.files.item(i).name}
+                    <span onclick=console.log("delete")>
+                        <img alt='imagine stergere fisier' src="/images/delete.svg"/>
+                    </span>
+                </div>`
         }
         output.innerHTML = '<div class="selected-file-wrapper">' + children + '</div>';
         handleFieldChange(name, value)
@@ -31,7 +38,7 @@ const AdminData = () => {
     return (
         <div className="admin-data-page">
             <div className="data-container">
-            <img src="/images/user.svg"/>
+            <img alt={'imagine user'} src="/images/user.svg"/>
                 <h1>Date administrator</h1>
                 <form onSubmit={handleSubmit}>
                     <div className="contact-data">
@@ -136,8 +143,8 @@ const AdminData = () => {
                 their infancy. </p>
             <div className="image-upload">
                 <label htmlFor="file">
-                    <img
-                        src="images/upload.svg"/>
+                    <img alt={'imagine upload de fisiere'}
+                        src="/images/upload.svg"/>
                 </label>
                 <input style={{display: "none"}} name="files" id="file" type="file" multiple
                        onChange={(e) => updateList(e.target.value, e.target.name)}/>
