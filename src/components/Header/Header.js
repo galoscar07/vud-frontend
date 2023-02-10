@@ -1,18 +1,18 @@
 import React from 'react'
 import './Header.scss'
 import {NavLink} from "react-router-dom";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import {routes} from "../../utils/routes";
 
 
 function Header() {
   // get location
-  //assigning location variable
-  const location = useLocation();
-  //destructuring pathname from location
-  const { pathname } = location;
-  //Javascript split method to get the name of the path in array
-  const splitLocation = pathname.split("/");
+  // assigning location variable
+  // const location = useLocation();
+  // destructuring pathname from location
+  // const { pathname } = location;
+  // Javascript split method to get the name of the path in array
+  // const splitLocation = pathname.split("/");
 
   const isUserLoggedIn = false
 
@@ -24,7 +24,7 @@ function Header() {
             className={'profile-text'}
             to={routes.LOGIN}
           >Cont</NavLink>
-          <img className={'profile_pic'} src={'favicon.ico'} />
+          <img alt={'imagine profile user'} className={'profile_pic'} src={'favicon.ico'} />
         </div>
       )
     } else {
@@ -40,7 +40,7 @@ function Header() {
 
   return (
     <div className={'header'}>
-      <img src={'/logo.svg'}/>
+      <img alt={'imagine logo vreau un doctor'} src={'/logo.svg'}/>
       <div className={'menu_items'}>
         <NavLink
           to={routes.HOMEPAGE}

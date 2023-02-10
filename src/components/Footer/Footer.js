@@ -231,7 +231,7 @@ function Footer() {
           {
             socials.map((socialItem) => {
               return (
-                <a href={socialItem.href} target={"_blank"}>
+                <a rel="noreferrer" href={socialItem.href} target={"_blank"}>
                   <img alt={socialItem.imageAlt} src={socialItem.iconPath} />
                 </a>
               )

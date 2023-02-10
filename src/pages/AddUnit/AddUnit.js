@@ -6,7 +6,7 @@ const AddUnit = () => {
 
     return (
         <div className="add-unit-page">
-            <img src="/images/unit.svg"/>
+            <img alt={'imagine unitate medicala'} src="/images/unit.svg"/>
             <h1>Adaugă Unitate medicală</h1>
            <Dropdown></Dropdown>
            <input className="button" type="submit" value="Mergi mai depart"/>
