@@ -9,10 +9,11 @@ import Register from "./pages/Auth/Register/Register";
 // Footer
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import AddProfile from "./pages/AddProfile";
+import AddProfile from "./pages/AddProfile/AddProfile";
 import ForgetPassword from "./pages/Auth/ForgetPassword";
 import AdminData from "./pages/AdminData/AdminData";
 import AddUnit from "./pages/AddUnit/AddUnit";
+import ClinicProfile from "./pages/ClinicProfile/ClinicProfile";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="add-profile" element={ <AddProfile /> } />
         <Route path="admin-data" element={ <AdminData /> } />
         <Route path="medical-unit" element={<AddUnit/>}/>
+        <Route path="clinic-profile" element={<ClinicProfile/>}/>
       </Routes>
       <Footer />
     </div>

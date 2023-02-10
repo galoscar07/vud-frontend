@@ -1,0 +1,113 @@
+@import 'src/styles/base';
+
+form {
+    p {
+        margin: $spacing-xbig 0;
+        text-align: initial;
+        line-height: 1.5rem;
+    }
+
+    .fields-wrapper {
+        display: grid;
+        background: #F5F9F9;
+        padding: $spacing-small;
+        gap: $spacing-small;
+        margin-top: $spacing-small;
+
+        &.flex {
+            display: flex;
+        }
+
+        .field-container {
+            padding: $spacing-small $spacing-xbig;
+            width: 100%;
+            border: 1px solid #E5E7EA;
+            display: flex;
+            flex-direction: column;
+
+            input {
+                max-width: 17rem;
+            }
+
+            .add-another {
+                display: flex;
+                justify-content: center;
+                margin: $spacing-medium auto;
+
+                span {
+                    color: $color-primary;
+                    text-decoration: underline;
+                    margin-left: $spacing-small;
+                }
+            }
+        }
+    }
+
+    .input-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .button {
+        width: 30%;
+        margin: auto;
+    }
+
+    .image-upload {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: $spacing-big;
+
+        img {
+            cursor: pointer;
+        }
+    }
+
+    #file-list {
+        width: 100%;
+        margin-left: $spacing-medium;
+        max-height: 15rem;
+        overflow: scroll;
+
+        .selected-file-wrapper {
+            display: flex;
+            flex-direction: column;
+            row-gap: $spacing-medium;
+        }
+
+        .selected-file {
+            background: $color-grey-light;
+            border-radius: 1.5rem;
+            padding: $spacing-small;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+
+            img {
+                margin-left: $spacing-medium;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .col-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $spacing-small;
+    }
+
+    .col-3 {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: $spacing-small;
+    }
+
+    .col-4 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: $spacing-small;
+    }
+}

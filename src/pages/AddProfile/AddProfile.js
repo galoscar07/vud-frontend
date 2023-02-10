@@ -1,5 +1,5 @@
 import React from 'react'
-import "../styles/addProfile.scss"
+import "./AddProfile.scss"
 
 const AddProfile = () => {
     const cards = [

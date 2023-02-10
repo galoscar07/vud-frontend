@@ -1,5 +1,5 @@
 import React from 'react'
-import "./adminData.scss"
+import "./AdminData.scss"
 
 const AdminData = () => {
 
