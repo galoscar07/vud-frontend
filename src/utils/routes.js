@@ -2,7 +2,6 @@ export const routes = {
   HOMEPAGE: '/',
   MEDICAL_INFO: '/medical-information',
   CHARITY: '/charity',
-  PROFILE: '/profile',
   CONTACT: '/contact',
 
   // AUTH
