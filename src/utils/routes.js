@@ -12,5 +12,6 @@ export const routes = {
   ADD_PROFILE: '/add-profile',
   ADD_UNIT: '/add-medical-unit',
   THANK_YOU: '/thank-you',
-  DELETE_PROFILE: '/delete-profile'
+  DELETE_PROFILE: '/delete-profile',
+  PROFILE:'/clinic-profile'
 }

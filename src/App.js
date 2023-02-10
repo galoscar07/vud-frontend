@@ -14,6 +14,7 @@ import AddProfile from "./pages/AddProfile/AddProfile";
 import ForgetPassword from "./pages/Auth/ForgetPassword/ForgetPassword";
 import AdminData from "./pages/AdminData/AdminData";
 import AddUnit from "./pages/AddUnit/AddUnit";
+import ClinicProfile from "./pages/ClinicProfile/ClinicProfile";
 import ThankYou from "./pages/ThankYou/ThankYou";
 import DeleteAccount from "./pages/Auth/DeleteAccount/DeleteAccount";
 
@@ -31,6 +32,7 @@ function App() {
         <Route path={routes.ADD_UNIT} element={<AddUnit/>}/>
         <Route path={routes.THANK_YOU} element={<ThankYou/>}/>
         <Route path={routes.DELETE_PROFILE} element={<DeleteAccount/>}/>
+        <Route path={routes.PROFILE} element={<ClinicProfile/>}/>
       </Routes>
       <Footer />
     </div>

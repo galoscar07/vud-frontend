@@ -1,11 +1,11 @@
-import Select, {components} from "react-select";
-import {useState} from "react";
+import Select, { components } from "react-select";
+import { useState } from "react";
 import "./Dropdown.scss";
 
 const options = [
-    {value: 'chocolate', label: 'Chocolate'},
-    {value: 'strawberry', label: 'Strawberry'},
-    {value: 'vanilla', label: 'Vanilla'}
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
 ]
 
 const styles = {
@@ -49,32 +49,34 @@ const Option = (props) => {
 
 
 const OptionsOutsideSelect = (props) => {
-    const {onChange} = props;
-
+    const { onChange } = props;
     const handleRemoveValue = (e) => {
         if (!onChange) return;
-        const {name: buttonName} = e.currentTarget;
+        const { name: buttonName } = e.currentTarget;
         const removedValue = value.find((val) => val.value === buttonName);
         if (!removedValue) return;
         onChange(
             value.filter((val) => val.value !== buttonName),
-            {buttonName, action: "remove-value", removedValue}
+            { buttonName, action: "remove-value", removedValue }
         );
     };
-    const {isMulti, value} = props;
+
+    const { isMulti, value } = props;
 
     return (
         <div>
-            <Select {...props} controlShouldRenderValue={!isMulti} styles={styles}   classNamePrefix='filter'/>
+            <Select {...props} controlShouldRenderValue={!isMulti} styles={styles} classNamePrefix='filter' />
             <div className="selected-container">
-                {isMulti ? value.map((val) =>
+                <div className="selected-wrapper">
+                    {isMulti ? value.map((val) =>
                         <div className="selected-option" key={val.value}><span>{val.label}</span>
                             <button name={val.value} onClick={handleRemoveValue}>
                                 X
                             </button>
-
                         </div>)
-                    : null}
+                        : null}
+                </div>
+                {value.length > 0 && <div className="counter">+{value.length}</div>}
             </div>
         </div>
     );
@@ -86,14 +88,14 @@ function Dropdown() {
     const handleSelectChange = (values) => {
         setSelected(values);
     };
+
     return (
         <OptionsOutsideSelect
             options={options}
             value={selected}
             isMulti
             onChange={handleSelectChange}
-            // menuIsOpen={true}
-            components={{Option}}
+            components={{ Option }}
             allowSelectAll={true}
             hideSelectedOptions={false}
         ></OptionsOutsideSelect>

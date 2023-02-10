@@ -1,0 +1,69 @@
+@import 'src/styles/form';
+
+.clinic-profile-page {
+
+    .weekdays-container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+
+    .time-wrapper {
+        border: 1px solid #E5E7EA;
+
+        .time-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: $spacing-medium;
+            column-gap: $spacing-medium;
+
+            .start-time,
+            .end-time {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                input[type="time"]::-webkit-calendar-picker-indicator {
+                    background: none;
+                    display: none;
+                }
+
+                input {
+                    padding: $spacing-small $spacing-medium;
+                }
+
+                span {
+                    margin-bottom: $spacing-small;
+                }
+            }
+        }
+    }
+
+    .button {
+        width: 30%;
+
+        &.border-button {
+            width: 12%!important;
+            margin: $spacing-default auto;
+        }
+    }
+
+
+    .day {
+        background-color: rgba($color-primary, 0.25);
+        padding: $spacing-small;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: inherit;
+        cursor: pointer;
+
+        &.active {
+            background-color: $color-primary;
+        }
+    }
+}
