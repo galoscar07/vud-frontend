@@ -1,7 +1,8 @@
 import React from 'react'
 import './Header.scss'
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import {routes} from "../../utils/routes";
 
 
 function Header() {
@@ -21,7 +22,7 @@ function Header() {
         <div className={'user_profile_container_user'}>
           <NavLink
             className={'profile-text'}
-            to={'/login'}
+            to={routes.LOGIN}
           >Cont</NavLink>
           <img className={'profile_pic'} src={'favicon.ico'} />
         </div>
@@ -30,7 +31,7 @@ function Header() {
       return (
         <div className={'user_profile_container_no_user'}>
           <NavLink
-            to={'/login'}
+            to={routes.LOGIN}
           >Conectează-te/Inregistrează-te</NavLink>
         </div>
       )
@@ -42,13 +43,13 @@ function Header() {
       <img src={'/logo.svg'}/>
       <div className={'menu_items'}>
         <NavLink
-          to={'/'}
+          to={routes.HOMEPAGE}
         >Acasă</NavLink>
         <NavLink
-          to={'/medical-info'}
+          to={routes.MEDICAL_INFO}
         >Informații medicale</NavLink>
         <NavLink
-          to={'/charity'}
+          to={routes.CHARITY}
         >Caritate</NavLink>
       </div>
       {
