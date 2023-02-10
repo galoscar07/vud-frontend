@@ -4,6 +4,7 @@ export const routes = {
   ADD_PROFILE: '/add-profile',
   MEDICAL_INFO: '/medical-information',
   CHARITY: '/charity',
+  PROFILE: '/profile',
 
   // AUTH
   LOGIN: '/login',
