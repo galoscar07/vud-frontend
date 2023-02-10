@@ -10,4 +10,6 @@ export const routes = {
   REGISTER: '/register',
   ADMIN_DATA: '/admin-data',
   ADD_PROFILE: '/add-profile',
+  ADD_UNIT: '/add-medical-unit',
+  THANK_YOU: '/thank-you'
 }
