@@ -175,7 +175,7 @@ const ClinicProfile = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="fields-wrapper">
+                        {/* <div className="fields-wrapper">
                             <div className="col">
                                 <div className="input-wrapper">
                                     <label>Adresa website</label>
@@ -215,7 +215,7 @@ const ClinicProfile = () => {
                                         }} />
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="specialities-container">
                         <div className="container-title">Specialitati</div>
