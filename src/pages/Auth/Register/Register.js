@@ -32,7 +32,7 @@ const Register = () => {
 
     return (
         <div className="register-page">
-            <img src="/images/login.svg"/>
+            <img src="/images/login.svg" />
             <div className="auth-container">
                 <h1>Register</h1>
                 <form onSubmit={handleSubmit}>
@@ -40,24 +40,24 @@ const Register = () => {
                         <React.Fragment>
                             <label>Email</label>
                             <input className="full-width" type="text" value={email}
-                                   onChange={handleEmail}/>
+                                onChange={handleEmail} />
                             <label>Password</label>
                             <input className="full-width" type="password" value={password}
-                                   onChange={handlePassword}/>
+                                onChange={handlePassword} />
                             <label>Confirm password</label>
                             <input className="full-width" type="password" value={confirmPassword}
-                                   onChange={handleConfirmPassword}/>
+                                onChange={handleConfirmPassword} />
                             <div className="checkbox-container">
                                 <div>
                                     <input className="checkbox" type="checkbox" value={areTermsChecked}
-                                           onChange={handleTermsChecked}/>
+                                        onChange={handleTermsChecked} />
                                     <label>Sunt de acord cu <span>termenii si conditiile</span></label>
                                 </div>
                             </div>
-                            <input className="button" type="submit" value="Register"/>
+                            <input className="button" type="submit" value="Register" />
                         </React.Fragment>
                     }
-                    { step === 1 &&
+                    {step === 1 &&
                         <span className="code-label"> Ti-am trimis un link in vederea conectarii pe email, te rugam sa accesezi link-ul pentru a termina procesul de autentificare</span>
                     }
                 </form>

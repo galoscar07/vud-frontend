@@ -1,8 +1,10 @@
 @import 'src/styles/base';
-.add-unit-page{
+
+.add-unit-page {
     margin: $spacing-page;
-.button{
-    width: 25%;
-    margin: $spacing-big auto auto auto;
-}
+
+    .button {
+        width: 25%;
+        margin: $spacing-big auto auto auto;
+    }
 }

@@ -28,18 +28,19 @@ form {
             input {
                 max-width: 17rem;
             }
+        }
+    }
 
-            .add-another {
-                display: flex;
-                justify-content: center;
-                margin: $spacing-medium auto;
+    .add-another {
+        display: flex;
+        justify-content: center;
+        margin: $spacing-medium auto;
+        cursor: pointer;
 
-                span {
-                    color: $color-primary;
-                    text-decoration: underline;
-                    margin-left: $spacing-small;
-                }
-            }
+        span {
+            color: $color-primary;
+            text-decoration: underline;
+            margin-left: $spacing-small;
         }
     }
 

@@ -43,6 +43,12 @@ const ClinicProfile = () => {
     const [values, setValues] = React.useState({});
     const [schedule, setSchedule] = React.useState(days);
     const [activeDay, setActiveDay] = React.useState({ weekday: "Luni", startTime: "00:00", endTime: "00:00" });
+    const [counterHQ, setCounterHQ] = React.useState(1);
+
+    const handleHQInputs = () => {
+        setCounterHQ(counterHQ + 1);
+        console.log(counterHQ);
+    };
 
     const handleActiveDay = (event) => {
         if (event.target.name === 'weekday') setActiveDay((prevState) => ({ ...prevState, weekday: event.target.value }));
@@ -218,6 +224,41 @@ const ClinicProfile = () => {
                     <div className="facilities-container">
                         <div className="container-title">Facilitati unitate</div>
                         <Dropdown />
+                    </div>
+
+                    <div className="hq-container">
+                        <div className="fields-wrapper">
+                            <div className="add-another" onClick={(e) => handleHQInputs()}>
+                                <img src="/images/add.svg" />
+                                <span>Adauga inca un sediu</span>
+                            </div>
+                            {Array.from(Array(counterHQ)).map((el, i) => {
+                                return (
+                                    <>
+                                        <div className="col">
+                                            <div className="input-wrapper">
+                                                <label>*Denumirea unitatii medicale </label>
+                                                <input name={"name" + i} type="text" value={values.website}
+                                                    onChange={(e) => {
+                                                        handleFieldChange(e);
+                                                    }} />
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <div className="input-wrapper">
+                                                <label>Link pagina </label>
+                                                <input name={"link" + i} type="text" value={values.website}
+                                                    onChange={(e) => {
+                                                        handleFieldChange(e);
+                                                    }} />
+                                            </div>
+                                        </div>
+                                        {/* Incarca poza profil??? */}
+                                    </>
+                                )
+                            })}
+                            <input className="button border-button" type="submit" value="Salveaza" />
+                        </div>
                     </div>
 
                     <div className="schedule-container">
