@@ -37,6 +37,11 @@ input, select, option {
   padding: 12px;
   box-shadow: 0 3px 6px 0 rgba(black, 0.2);
 
+  &.error {
+    border: 1px solid $color-secondary !important;
+    color: $color-secondary;
+  }
+
   &.full-width {
     width: 100%;
   }
@@ -53,5 +58,10 @@ select {
 label {
   font-size: $font-normal;
   color: $color-dark-blue;
+  margin: $spacing-xsmall 0;
+}
+
+.error {
+  color: $color-secondary;
   margin: $spacing-xsmall 0;
 }

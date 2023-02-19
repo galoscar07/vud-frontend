@@ -207,19 +207,21 @@ function Footer() {
         <div className={'nav-links'}>
           <img alt={'Vreau un doctor logo'} src={'/logo.svg'}/>
           <div className={'nav-links-container'}>
-            {navLinks.map((speciality) => {
+            {navLinks.map((speciality, index) => {
               return (
                 <NavLink
                   to={speciality.link}
+                  key={index}
                 >{speciality.label}</NavLink>
               )
             })}
           </div>
         </div>
         <div className={'specialities'}>
-          {specialitiesLinks.map((speciality) => {
+          {specialitiesLinks.map((speciality, index) => {
             return (
               <NavLink
+                key={index}
                 to={speciality.link}
               >{speciality.label}</NavLink>
             )
@@ -229,9 +231,9 @@ function Footer() {
       <div className={'footer-copy-rights'}>
         <div className={'icons'}>
           {
-            socials.map((socialItem) => {
+            socials.map((socialItem, index) => {
               return (
-                <a rel="noreferrer" href={socialItem.href} target={"_blank"}>
+                <a rel="noreferrer" key={index} href={socialItem.href} target={"_blank"}>
                   <img alt={socialItem.imageAlt} src={socialItem.iconPath} />
                 </a>
               )

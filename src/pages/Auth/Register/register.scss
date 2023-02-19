@@ -66,6 +66,9 @@
         font-size: $font-normal;
         text-align: center;
         margin: $spacing-medium 0 $spacing-xsmall 0;
+        &.click {
+          cursor: pointer;
+        }
       }
 
     }
