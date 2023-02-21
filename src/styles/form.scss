@@ -114,9 +114,7 @@ form {
 }
 
 @media screen and (max-width: $mobile-big-width) {
-    form {
-        .button {
-            width: 50%;
-        }
+    .button {
+        width: 50%!important;
     }
 }
