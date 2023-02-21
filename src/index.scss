@@ -14,7 +14,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-textarea:focus, input:focus, select:focus {
+textarea:focus,
+input:focus,
+select:focus {
   outline: none;
 }
 
@@ -31,7 +33,9 @@ h1 {
   margin-right: 0.5rem;
 }
 
-input, select, option {
+input,
+select,
+option {
   border: 1px solid $color-primary;
   border-radius: 2px;
   padding: 12px;
@@ -64,4 +68,14 @@ label {
 .error {
   color: $color-secondary;
   margin: $spacing-xsmall 0;
+}
+
+@media screen and (max-width: $mobile-big-width) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .container-title {
+    font-size: 1.25rem!important;
+  }
 }

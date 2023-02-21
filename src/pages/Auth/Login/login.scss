@@ -69,3 +69,15 @@
     }
   }
 }
+
+@media screen and (max-width: $mobile-big-width) {
+    .login-page{
+      flex-direction: column;
+      width:90%;
+      img{
+        max-height: 5.5rem;
+        width: inherit;
+        margin-top:$spacing-medium;
+      }
+    }
+}

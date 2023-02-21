@@ -16,7 +16,8 @@ const AddProfile = () => {
     ]
     return (
         <div className="add-profile-page">
-            <h1>Adaugă pagină de profil pentru:</h1>
+            <img src="/images/unit.svg" />
+            <h1>Adaugă pagină de profil</h1>
             <div className="profiles-container">
                 {cards.map((card, i) =>
                     <div className="profile-card" key={i}>

@@ -112,3 +112,9 @@ form {
         gap: $spacing-small;
     }
 }
+
+@media screen and (max-width: $mobile-big-width) {
+    .button {
+        width: 50%!important;
+    }
+}

@@ -5,7 +5,9 @@ import "./Dropdown.scss";
 const options = [
     { value: 'chocolate', label: 'Chocolate' },
     { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
+    { value: 'vanilla', label: 'Vanilla' },
+    { value: 'blueberry', label: 'Blueberry' },
+    { value: 'bannana', label: 'Bannana' },
 ]
 
 const styles = {

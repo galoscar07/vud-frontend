@@ -8,3 +8,10 @@
         margin: $spacing-big auto auto auto;
     }
 }
+
+@media screen and (max-width: $mobile-big-width) {
+    .add-unit-page {
+        margin: $spacing-small $spacing-small $spacing-medium $spacing-small;
+
+    }
+}
