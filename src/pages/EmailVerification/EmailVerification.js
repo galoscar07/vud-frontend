@@ -42,7 +42,7 @@ const EmailVerification = () => {
       .catch((err) => {
         setState({...state, loading: false, error: true})
       })
-  })
+  },[])
 
   const renderThankYouPage = () => {
     return (
