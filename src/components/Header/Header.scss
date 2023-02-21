@@ -2,11 +2,23 @@
 
 .header {
   height: 80px;
-  width: 90%;
+  width: 100%;
   margin: auto;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
   align-items: center;
+  grid-template-columns: 1fr 2fr;
+  padding: 0 3.125rem;
+
+  .hamburger_menu {
+    display: flex;
+    align-items: center;
+    width: inherit;
+    justify-content: space-between;
+
+    .menu_items {
+      padding-left: 3.125rem;
+    }
+  }
 
   a {
     text-decoration: none;
@@ -40,10 +52,65 @@
 
     .profile_pic {
       width: 65px;
-      height:65px;
+      height: 65px;
       border-radius: $radius-round;
     }
   }
 
+  .hamburger_icon , .close_btn{
+    display: none;
+  }
+
   .user_profile_container_no_user {}
+}
+
+@media screen and (max-width: $mobile-big-width) {
+  .header {
+    height: 2.5rem;
+    padding: 0 1.25rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    a {
+      margin: 0!important;
+    }
+
+    .logo {
+      width: 7rem;
+    }
+
+    .hamburger_icon , .close_btn{
+      display: block !important;
+    }
+
+    .hamburger_menu {
+      background: #EDEDED;
+      width: 100vw;
+      position: absolute;
+      left: 0;
+      height: 95.5vh;
+      top: 2.5rem;
+      flex-direction: column;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+
+      &.closed {
+        display: none !important;
+      }
+
+      .menu_items {
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+        row-gap: 2rem;
+
+        a {
+          font-size: 1.25rem;
+        }
+      }
+    }
+  }
 }
