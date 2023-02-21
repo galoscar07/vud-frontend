@@ -73,9 +73,15 @@ label {
 @media screen and (max-width: $mobile-big-width) {
   h1 {
     font-size: 1.5rem;
+    margin: 1.25rem 0;
   }
 
   .container-title {
-    font-size: 1.25rem!important;
+    font-size: 1.25rem !important;
+  }
+
+  p {
+    font-size: 1.06rem !important;
+    text-align: justify;
   }
 }
