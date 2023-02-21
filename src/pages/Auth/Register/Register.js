@@ -66,11 +66,7 @@ const Register = () => {
     }
 
     if (JSON.stringify(stateCopy) !== JSON.stringify(state)) {
-  
-      console.log('BEFORE', stateCopy, state)
-      setState(stateCopy)
-      const ret = Object.keys(stateCopy).every((x) => !stateCopy[x].error);
-      console.log(ret, 'AFTER', stateCopy, state);
+        setState(stateCopy)
       return false
     }
     return true
