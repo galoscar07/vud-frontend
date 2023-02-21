@@ -1,7 +1,7 @@
 import React from 'react'
 import "./register.scss"
 import _ from 'lodash';
-import {API_MAP, getAPILink} from "../../../utils/routes";
+import { API_MAP, getAPILink } from "../../../utils/routes";
 
 const Register = () => {
   const [state, setState] = React.useState({
@@ -21,7 +21,7 @@ const Register = () => {
       error: null,
     }
   })
-
+  const [link, setLink] = React.useState("");
   const [areTermsChecked, setTermsChecked] = React.useState(false);
   const [formValid, setFormValid] = React.useState(false)
 
@@ -64,16 +64,15 @@ const Register = () => {
       stateCopy.confirmPassword.error = 'Parola trebuie sa coincida'
       stateCopy.password.error = 'Parola trebuie sa coincida'
     }
-console.log(JSON.stringify(state),JSON.stringify(stateCopy), 'SA VEDEDEDMMM' , JSON.stringify(stateCopy) !== JSON.stringify(state))
     if (JSON.stringify(stateCopy) !== JSON.stringify(state)) {
-        setState(stateCopy)
+      setState(stateCopy)
       return false
     }
     return true
   }
 
   const handleChange = (event) => {
-    setState({...state, [event.target.name]: {...state[event.target.name], value: event.target.value}})
+    setState({ ...state, [event.target.name]: { ...state[event.target.name], value: event.target.value } })
     isFormEmpty()
   }
 
@@ -89,14 +88,14 @@ console.log(JSON.stringify(state),JSON.stringify(stateCopy), 'SA VEDEDEDMMM' , J
     }
     fetch(
       getAPILink(API_MAP.REGISTER), {
-        method: 'POST',
-        body: JSON.stringify({
-          email: state.email.value,
-          password: state.password.value
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        }
+      method: 'POST',
+      body: JSON.stringify({
+        email: state.email.value,
+        password: state.password.value
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
     })
       .then((response) => {
         if (response.status !== 201) {
@@ -105,24 +104,24 @@ console.log(JSON.stringify(state),JSON.stringify(stateCopy), 'SA VEDEDEDMMM' , J
         return response.json()
       })
       .then((data) => {
+        setLink(data.link);
         setStep(1)
       })
       .catch((err) => {
-        setState({...state, server: {error: "Ceva a mers prost. Va rugam incercati mai tarziu"}})
+        setState({ ...state, server: { error: "Ceva a mers prost. Va rugam incercati mai tarziu" } })
       })
   };
-
   const handleSubmitResendEmail = () => {
     fetch(
       getAPILink(API_MAP.RESEND_REGISTER), {
-        method: 'POST',
-        body: JSON.stringify({
-          email: state.email.value,
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        }
-      })
+      method: 'POST',
+      body: JSON.stringify({
+        email: state.email.value,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
       .then((response) => {
         if (response.status !== 201) {
           throw Error
@@ -147,37 +146,37 @@ console.log(JSON.stringify(state),JSON.stringify(stateCopy), 'SA VEDEDEDMMM' , J
             <React.Fragment>
               <label>Email</label>
               <input className={`full-width ${state.email.error && 'error'}`} type="email"
-                     name="email" value={state.email.value} onChange={handleChange}
-                     onBlur={isFormEmpty} />
-              { state.email.error &&
+                name="email" value={state.email.value} onChange={handleChange}
+                onBlur={isFormEmpty} />
+              {state.email.error &&
                 <div className={'error'}>{state.email.error}</div>
               }
               <label>Password</label>
               <input className={`full-width ${state.password.error && 'error'}`} type="password"
-                     name="password" value={state.password.value} onChange={handleChange}
-                     onBlur={isFormEmpty} />
-              { state.password.error &&
+                name="password" value={state.password.value} onChange={handleChange}
+                onBlur={isFormEmpty} />
+              {state.password.error &&
                 <div className={'error'}>{state.password.error}</div>
               }
               <label>Confirm password</label>
               <input className={`full-width ${state.confirmPassword.error && 'error'}`} type="password"
-                     name="confirmPassword" value={state.confirmPassword.value} onChange={handleChange}
-                     onBlur={isFormEmpty} />
-              { state.confirmPassword.error &&
+                name="confirmPassword" value={state.confirmPassword.value} onChange={handleChange}
+                onBlur={isFormEmpty} />
+              {state.confirmPassword.error &&
                 <div className={'error'}>{state.confirmPassword.error}</div>
               }
               <div className="checkbox-container">
                 <div>
                   <input className="checkbox" type="checkbox" value={areTermsChecked}
-                         onChange={handleTermsChecked} />
+                    onChange={handleTermsChecked} />
                   <label>Sunt de acord cu <span>termenii si conditiile</span></label>
                 </div>
               </div>
-              { state.server.error &&
+              {state.server.error &&
                 <div className={'error'}>{state.server.error}</div>
               }
               <input className={`button ${!areTermsChecked || !formValid ? 'disabled' : ''}`}
-                     type="submit" value="Register" />
+                type="submit" value="Register" />
             </React.Fragment>
           }
           {step === 1 &&
@@ -187,6 +186,8 @@ console.log(JSON.stringify(state),JSON.stringify(stateCopy), 'SA VEDEDEDMMM' , J
                 In cazul in care nu ai primit email-ul da click
                 <span onClick={handleSubmitResendEmail} className="code-label click"> aici </span>
               </span>
+              {/* TEST CODE */}
+              <span className="code-label click"> <a href={link} >Click to validate email </a></span>
             </React.Fragment>
           }
         </form>
