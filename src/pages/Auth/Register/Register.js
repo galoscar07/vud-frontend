@@ -84,9 +84,9 @@ const Register = () => {
   const handleSubmit = (event) => {
     // TODO Problem when submitted once and then submit again you have to click the button twice
     event.preventDefault();
-    if (!isFormValid() || !formValid) {
-      return
-    }
+    // if (!isFormValid() || !formValid) {
+    //   return
+    // }
     fetch(
       getAPILink(API_MAP.REGISTER), {
         method: 'POST',
