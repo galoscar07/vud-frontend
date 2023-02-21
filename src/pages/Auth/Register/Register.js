@@ -64,8 +64,13 @@ const Register = () => {
       stateCopy.confirmPassword.error = 'Parola trebuie sa coincida'
       stateCopy.password.error = 'Parola trebuie sa coincida'
     }
+
     if (JSON.stringify(stateCopy) !== JSON.stringify(state)) {
+  
+      console.log('BEFORE', stateCopy, state)
       setState(stateCopy)
+      const ret = Object.keys(stateCopy).every((x) => !stateCopy[x].error);
+      console.log(ret, 'AFTER', stateCopy, state);
       return false
     }
     return true

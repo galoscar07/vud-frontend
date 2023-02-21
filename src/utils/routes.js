@@ -1,5 +1,5 @@
 // const API_URL = 'http://'
-const API_URL_LOCAL = 'http://localhost:8000/'
+const API_URL_LOCAL = 'https://vud-be.herokuapp.com/'
 
 export const API_MAP = {
   // Creates new account and send link to verify email
