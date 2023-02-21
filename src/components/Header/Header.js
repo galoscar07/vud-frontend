@@ -1,8 +1,8 @@
 import React from 'react'
 import './Header.scss'
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 // import { useLocation } from "react-router-dom";
-import {routes} from "../../utils/routes";
+import { routes } from "../../utils/routes";
 
 
 function Header() {
@@ -15,6 +15,11 @@ function Header() {
   // const splitLocation = pathname.split("/");
 
   const isUserLoggedIn = false
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  const toggleMenu = (toggleState) => {
+    setIsMenuOpen(toggleState);
+  }
 
   const renderUserProfile = () => {
     if (isUserLoggedIn) {
@@ -40,21 +45,26 @@ function Header() {
 
   return (
     <div className={'header'}>
-      <img alt={'imagine logo vreau un doctor'} src={'/logo.svg'}/>
-      <div className={'menu_items'}>
-        <NavLink
-          to={routes.HOMEPAGE}
-        >Acasă</NavLink>
-        <NavLink
-          to={routes.MEDICAL_INFO}
-        >Informații medicale</NavLink>
-        <NavLink
-          to={routes.CHARITY}
-        >Caritate</NavLink>
+      <img className={'logo'} alt={'imagine logo vreau un doctor'} src={'/logo.svg'} />
+      <div onClick={() => toggleMenu(!isMenuOpen)} className={'hamburger_icon'}><img src={isMenuOpen ? '/images/menu_open.svg' : '/images/menu_closed.svg'}></img></div>
+      <div className={`hamburger_menu ${isMenuOpen ? 'open' : 'closed'}`}>
+        <div className={'menu_items'}>
+          <NavLink
+            to={routes.HOMEPAGE}
+            onClick={() => toggleMenu(false)}
+          >Acasă</NavLink>
+          <NavLink
+            to={routes.MEDICAL_INFO}
+            onClick={() => toggleMenu(false)}
+          >Informații medicale</NavLink>
+          <NavLink
+            to={routes.CHARITY}
+            onClick={() => toggleMenu(false)}
+          >Caritate</NavLink>
+        </div>
+        {renderUserProfile()}
+        <span className={'close_btn'} onClick={() => toggleMenu(false)}><img src={'/images/close_btn.svg'} /></span>
       </div>
-      {
-        renderUserProfile()
-      }
     </div>
   );
 }
