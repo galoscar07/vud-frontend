@@ -1,0 +1,16 @@
+@import 'src/styles/base';
+
+.thank-you-page{
+    margin: $spacing-page;
+    .button{
+        width:25%;
+        height: 50px;
+        margin: $spacing-big auto auto auto;
+        a {
+            color: $color-white
+        }
+    }
+    .text-container{
+        row-gap:$spacing-xsmall;
+    }
+}
