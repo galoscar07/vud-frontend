@@ -45,7 +45,7 @@
         width: 30%;
 
         &.border-button {
-            width: 12%!important;
+            width: 12% !important;
             margin: $spacing-default auto;
         }
     }
@@ -64,6 +64,33 @@
 
         &.active {
             background-color: $color-primary;
+        }
+    }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+    .clinic-profile-page {
+        .button {
+            &.border-button {
+                width: 50% !important;
+            }
+        }
+
+        .schedule-container {
+            .fields-wrapper {
+                display: flex;
+                flex-direction: row;
+                gap: 0;
+            }
+
+            .weekdays-container {
+                display: flex;
+                flex-direction: column;
+                width: 90%;
+            }
+            .time-wrapper{
+                padding: 0 $spacing-xsmall;
+            }
         }
     }
 }

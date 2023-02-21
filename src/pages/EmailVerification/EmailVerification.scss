@@ -1,16 +1,34 @@
 @import 'src/styles/base';
 
-.thank-you-page{
+.thank-you-page {
     margin: $spacing-page;
-    .button{
-        width:25%;
+
+    .button {
+        width: 25%;
         height: 50px;
         margin: $spacing-big auto auto auto;
+
         a {
             color: $color-white
         }
     }
-    .text-container{
-        row-gap:$spacing-xsmall;
+
+    .text-container {
+        row-gap: $spacing-xsmall;
+    }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+    .thank-you-page {
+        margin: $spacing-small $spacing-small $spacing-medium $spacing-small;
+
+        img {
+            max-height: 9rem;
+            width: inherit;
+            margin-top: $spacing-medium;
+        }
+        .text-container{
+            padding: $spacing-xsmall $spacing-medium;
+        }
     }
 }
