@@ -1,4 +1,5 @@
 import React from 'react'
+import Dropdown from '../../components/Dropdown/Dropdown';
 import "./ClinicPage.scss";
 
 const initClinic = {
@@ -59,7 +60,7 @@ function ClinicPage() {
                                     )}
                                 </div>
                                 <div className="favorite-button" onClick={() => toggleFavoriteClinic(!isFavoriteClinic)}>
-                                    <img src={clinic.isFavorite? "/images/icons/favorite.svg": "/images/icons/favorite_checked.svg"} />
+                                    <img src={clinic.isFavorite ? "/images/icons/favorite.svg" : "/images/icons/favorite_checked.svg"} />
                                     {clinic.isFavorite ? "Salveaza la favorite" : "Clinica favorita"}
                                 </div>
                             </div>
@@ -98,6 +99,15 @@ function ClinicPage() {
                             </div>
 
                         </div>)}
+                </div>
+            </div>
+            <div className="info-right-container">
+                <div className="col">
+                    <Dropdown />
+                </div>
+                <div className="col-2">
+                    <Dropdown/>
+                    <Dropdown/>
                 </div>
             </div>
         </div>
