@@ -1,5 +1,6 @@
 import React from 'react'
 import Dropdown from '../../components/Dropdown/Dropdown';
+import Review from '../../components/Review/Review';
 import "./ClinicPage.scss";
 
 const initClinic = {
@@ -27,6 +28,23 @@ const initClinic = {
     ],
     isFavorite: false,
 }
+const reviews = [{
+    name: "Dorina Margarit",
+    noOfReviews: 22,
+    rating: 5,
+    text: "Demonstreaza ca inca mai exista doctori care stiu aceasta meserie la perfectie! M-a ajutat foarte mult!",
+    thumbsUp: 4,
+    thumbsDown: 2
+},
+{
+    name: "Charles Leclerc",
+    noOfReviews: 22,
+    rating: 5,
+    text: "Demonstreaza ca inca mai exista doctori care stiu aceasta meserie la perfectie! M-a ajutat foarte mult!",
+    thumbsUp: 4,
+    thumbsDown: 2
+},
+]
 
 function ClinicPage() {
     const [clinic, setClinic] = React.useState(initClinic);
@@ -106,9 +124,13 @@ function ClinicPage() {
                     <Dropdown />
                 </div>
                 <div className="col-2">
-                    <Dropdown/>
-                    <Dropdown/>
+                    <Dropdown />
+                    <Dropdown />
                 </div>
+            </div>
+            <div>
+                {reviews.map((review, i) =>
+                    <Review review={review} />)}
             </div>
         </div>
     );

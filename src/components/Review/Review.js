@@ -8,23 +8,23 @@ const review = {
     thumbsUp: 4,
     thumbsDown: 2
 }
-const Review = () => {
+const Review = (props) => {
 
     return (
         <div className="review-component">
-            <span className="name"> {review.name}</span>
-            <span className="no-of-reviews">{reviews.noOfReviews} de recenzii</span>
-            <p>{review.text}</p>
+            <span className="name"> {props.review.name}</span>
+            <span className="no-of-reviews">{props.review.noOfReviews} de recenzii</span>
+            <p>{props.review.text}</p>
             <div className="horizontal-divider"/>
             <div className="evaluate-review">
                 <span>Evaleaza recenzia</span>
                 <div className="thumbs-container">
                 <img src="/images/icons/Thumbs_up.svg"/>
-                    {review.thumbsUp}
+                    {props.review.thumbsUp}
                 </div>
                 <div className="thumbs-container">
                     <img src="/images/icons/Thumbs_down.svg"/>
-                    {review.thumbsDown}
+                    {props.review.thumbsDown}
                 </div>
             </div>
         </div>
