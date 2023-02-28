@@ -89,6 +89,7 @@ function Dropdown() {
     const [selected, setSelected] = useState([]);
     const handleSelectChange = (values) => {
         setSelected(values);
+        console.log(selected, 'selected')
     };
 
     return (

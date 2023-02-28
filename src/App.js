@@ -19,6 +19,7 @@ import DeleteAccount from "./pages/Auth/DeleteAccount/DeleteAccount";
 import EmailVerification from "./pages/EmailVerification/EmailVerification";
 import { MainLayout } from './components/Layouts/MainLayout';
 import { AuthLayout } from './components/Layouts/AuthLayout';
+import ClinicPage from './pages/ClinicPage/ClinicPage';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           </Route>
           <Route element={<MainLayout/>}>
             <Route path={routes.HOMEPAGE} element={ <Homepage /> } />
+            <Route path={routes.CLINIC_PAGE} element={ <ClinicPage /> } />
           </Route>
        </Routes>
     </div>
