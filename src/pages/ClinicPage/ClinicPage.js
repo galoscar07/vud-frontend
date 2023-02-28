@@ -128,7 +128,14 @@ function ClinicPage() {
                     <Dropdown />
                 </div>
             </div>
-            <div>
+
+            <div className="info-left-container">
+
+
+            </div>
+            
+            <div className="reviews-container">
+                <h2>Ce spun pacientii</h2>
                 {reviews.map((review, i) =>
                     <Review review={review} />)}
             </div>
