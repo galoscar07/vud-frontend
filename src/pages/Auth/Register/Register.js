@@ -1,5 +1,5 @@
 import React from 'react'
-import "./register.scss"
+import "./Register.scss"
 import _ from 'lodash';
 import { API_MAP, getAPILink } from "../../../utils/routes";
 

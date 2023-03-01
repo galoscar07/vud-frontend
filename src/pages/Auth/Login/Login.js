@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import {API_MAP, getAPILink, routes} from "../../../utils/routes";
-import "./login.scss"
+import "./Login.scss"
 import _ from "lodash";
 
 const Login = () => {
