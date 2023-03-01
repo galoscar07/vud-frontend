@@ -19,6 +19,7 @@ import DeleteAccount from "./pages/Auth/DeleteAccount/DeleteAccount";
 import EmailVerification from "./pages/EmailVerification/EmailVerification";
 import { MainLayout } from './components/Layouts/MainLayout';
 import { AuthLayout } from './components/Layouts/AuthLayout';
+import ResetPassword from './pages/Auth/ResetPassword/ResetPassword';
 import ClinicPage from './pages/ClinicPage/ClinicPage';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             <Route path={routes.LOGIN} element={ <Login /> } />
             <Route path={routes.REGISTER} element={ <Register /> } />
             <Route path={routes.FORGET_PASSWORD} element={ <ForgetPassword /> } />
+            <Route path={routes.RESET_PASSWORD} element={ <ResetPassword /> } />
             <Route path={routes.ADD_PROFILE} element={ <AddProfile /> } />
             <Route path={routes.ADMIN_DATA} element={ <AdminData /> } />
             <Route path={routes.ADD_UNIT} element={<AddUnit/>}/>

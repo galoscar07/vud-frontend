@@ -11,6 +11,7 @@ export const API_MAP = {
   VERIFY_EMAIL: 'auth/email-verify/',
   // Refresh token
   REFRESH_TOKEN: 'auth/refresh-token/',
+  FORGET_PASSWORD:'auth/password-reset-request',
 }
 
 export const getAPILink = (url) => {
@@ -29,6 +30,7 @@ export const routes = {
   // AUTH
   LOGIN: '/login',
   FORGET_PASSWORD: '/forget-password',
+  RESET_PASSWORD: '/reset-password',
   REGISTER: '/register',
   ADMIN_DATA: '/admin-data',
   ADD_PROFILE: '/add-profile',
