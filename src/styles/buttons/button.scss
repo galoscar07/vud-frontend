@@ -38,6 +38,21 @@
     box-shadow: none;
     color: rgba($color-black, 0.3);
 
+    &:hover {
+      box-shadow: none;
+      background-color: unset;
+    }
+
+    &:focus {
+      box-shadow: none;
+      background-color: unset;
+    }
+
+    &:active {
+      box-shadow: none;
+      background-color: unset;
+    }
+
     //&:hover, &:focus, &:active {
     //  background-color: $color-disabled;
     //  box-shadow: none;
@@ -68,6 +83,29 @@
 
     &:active {
       background-color: darken($color-disabled, 4%);
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      pointer-events: none;
+      background-color: $color-disabled;
+      box-shadow: none;
+      color: rgba($color-black, 0.3);
+
+      &:hover {
+        box-shadow: none;
+        background-color: unset;
+      }
+
+      &:focus {
+        box-shadow: none;
+        background-color: unset;
+      }
+
+      &:active {
+        box-shadow: none;
+        background-color: unset;
+      }
     }
   }
 

@@ -11,6 +11,11 @@ export const API_MAP = {
   VERIFY_EMAIL: 'auth/email-verify/',
   // Refresh token
   REFRESH_TOKEN: 'auth/refresh-token/',
+  // CRUD User Profile
+  // GET User Profile
+  USER_PROFILE: 'auth/get-user-profile/',
+  // POST Updated field is clinic / is doctor
+  UPDATE_USER_PROFILE: '/auth/update-user-profile-type/'
   FORGET_PASSWORD:'auth/password-reset-request',
 }
 
@@ -39,4 +44,24 @@ export const routes = {
   EMAIL_VERIFICATION: '/email-verification',
   DELETE_PROFILE: '/delete-profile',
   PROFILE:'/clinic-profile'
+}
+
+export const makeRequestLogged = (url, method, body, authToken) => {
+  if (!body) {
+    return fetch(url, {
+      method: method,
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        'Authorization': `Bearer ${authToken}`
+      }
+    })
+  }
+  return fetch(url, {
+    method: method,
+    body: body,
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+      'Authorization': `Bearer ${authToken}`
+    }
+  })
 }
