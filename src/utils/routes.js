@@ -15,7 +15,7 @@ export const API_MAP = {
   // GET User Profile
   USER_PROFILE: 'auth/get-user-profile/',
   // POST Updated field is clinic / is doctor
-  UPDATE_USER_PROFILE: '/auth/update-user-profile-type/'
+  UPDATE_USER_PROFILE: '/auth/update-user-profile-type/',
   FORGET_PASSWORD:'auth/password-reset-request',
 }
 
