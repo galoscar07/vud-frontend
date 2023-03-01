@@ -1,5 +1,5 @@
 import React from 'react'
-import "./register.scss"
+import "./Register.scss"
 import _ from 'lodash';
 import { API_MAP, getAPILink } from "../../../utils/routes";
 
@@ -111,6 +111,7 @@ const Register = () => {
         setState({ ...state, server: { error: "Ceva a mers prost. Va rugam incercati mai tarziu" } })
       })
   };
+  
   const handleSubmitResendEmail = () => {
     fetch(
       getAPILink(API_MAP.RESEND_REGISTER), {

@@ -1,7 +1,7 @@
 import React from 'react'
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../../utils/routes";
-import "./login.scss"
+import "./Login.scss"
 import _ from "lodash";
 import {setAuthParamsToLocal} from "../../../utils/localStorage";
 

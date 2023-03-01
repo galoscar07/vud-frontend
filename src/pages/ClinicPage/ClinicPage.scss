@@ -1,0 +1,167 @@
+@import 'src/styles/base';
+
+.clinic-page {
+    padding: $spacing-big;
+
+    .clinic-container {
+        display: flex;
+        margin-bottom: $spacing-small;
+
+        .image-container {
+            padding: $spacing-small $spacing-small 0 $spacing-small;
+            background-color: white;
+            border-radius: 10% 10% 0 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+
+            img {
+                height:12rem;
+            }
+
+            .rating {
+                color: white;
+                background: $color-primary;
+                font-size: $font-size-xbig;
+                padding: 0.5rem 0;
+                margin-top: -0.25rem;
+            }
+        }
+
+        .info-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+
+            .flex-wrapper {
+                display: flex;
+                justify-content: space-between;
+                margin-left: $spacing-small;
+                align-items: center;
+
+            }
+
+            .rating-container {
+                display: flex;
+                background-color: white;
+                justify-content: space-between;
+                align-items: center;
+
+                .upper-flex {
+                    display: flex;
+                    column-gap: $spacing-small;
+                    align-items: center;
+                    padding: 1rem 0.62rem;
+
+                    .see-reviews {
+                        cursor: pointer;
+                        color: $color-primary;
+                        text-decoration: underline;
+                    }
+                }
+
+                .stars-container {
+                    margin-top: $spacing-xsmall;
+                }
+
+                .facilities {
+                    display: flex;
+                    flex-direction: column;
+                    background-color: #F5F9F9;
+                    padding: 0.75rem 2rem;
+                    row-gap: $spacing-small;
+                }
+
+            }
+
+            .title-wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+
+                .type {
+                    color: #09272B;
+                    font-size: $font-subtitle;
+                }
+
+                .name {
+                    color: $color-dark-blue;
+                    font-size: $font-title;
+                }
+
+                .address {
+                    color: $color-primary;
+                }
+            }
+
+            .links-wrapper {
+                display: flex;
+                flex-direction: row;
+                column-gap: $spacing-small;
+                margin-bottom: $spacing-medium;
+            }
+
+            .favorite-button {
+                border: 2px solid $color-primary;
+                padding: $spacing-small;
+                margin-bottom: $spacing-medium;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $color-primary;
+                cursor: pointer;
+                user-select: none;
+
+                img {
+                    margin-right: $spacing-small;
+                }
+            }
+        }
+    }
+
+    .contact-container {
+        column-gap: $spacing-small;
+        row-gap: $spacing-small;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .contact-card {
+            display: flex;
+            flex-direction: row;
+            background-color: white;
+            padding: 0.75rem;
+
+            img {
+                margin-right: 0.75rem;
+            }
+
+            &.emergency {
+                background-color: #FCEAE8;
+                border: 1px solid #EB8676;
+
+                div {
+                    .type {
+                        color: black;
+                    }
+                }
+            }
+
+            div {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                color: black;
+                margin-right: $spacing-small;
+                white-space: nowrap;
+
+                .type {
+                    color: $color-primary;
+                    font-size: $font-small;
+                }
+            }
+        }
+    }
+}

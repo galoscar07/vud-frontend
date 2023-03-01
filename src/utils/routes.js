@@ -11,12 +11,12 @@ export const API_MAP = {
   VERIFY_EMAIL: 'auth/email-verify/',
   // Refresh token
   REFRESH_TOKEN: 'auth/refresh-token/',
-
   // CRUD User Profile
   // GET User Profile
   USER_PROFILE: 'auth/get-user-profile/',
   // POST Updated field is clinic / is doctor
   UPDATE_USER_PROFILE: '/auth/update-user-profile-type/'
+  FORGET_PASSWORD:'auth/password-reset-request',
 }
 
 export const getAPILink = (url) => {
@@ -30,10 +30,12 @@ export const routes = {
   MEDICAL_INFO: '/medical-information',
   CHARITY: '/charity',
   CONTACT: '/contact',
+  CLINIC_PAGE: '/clinic-page',
 
   // AUTH
   LOGIN: '/login',
   FORGET_PASSWORD: '/forget-password',
+  RESET_PASSWORD: '/reset-password',
   REGISTER: '/register',
   ADMIN_DATA: '/admin-data',
   ADD_PROFILE: '/add-profile',
