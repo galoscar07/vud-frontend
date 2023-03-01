@@ -1,8 +1,9 @@
 import React from 'react'
-import { Link } from "react-router-dom";
-import {API_MAP, getAPILink, routes} from "../../../utils/routes";
+import {Link, useNavigate} from "react-router-dom";
+import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../../utils/routes";
 import "./login.scss"
 import _ from "lodash";
+import {setAuthParamsToLocal} from "../../../utils/localStorage";
 
 const Login = () => {
 
@@ -19,6 +20,9 @@ const Login = () => {
       error: null
     }
   })
+
+  const navigate = useNavigate();
+
 
   const [formValid, setFormValid] = React.useState(false)
   const isFormEmpty = () => {
@@ -84,11 +88,24 @@ const Login = () => {
         return response.json()
       })
       .then((data) => {
-        // TODO Call to get the userProfile
-        // TODO save the auth params
-        console.log(data.access_token)
-        console.log(data.email)
-        console.log(data.refresh_token)
+        setAuthParamsToLocal(data?.access_token, data.refresh_token)
+        makeRequestLogged(getAPILink(API_MAP.USER_PROFILE), 'GET', null, data?.access_token)
+          .then((response) => {
+            return response.json()
+          })
+          .then((resp) => {
+            if (resp.error === 'No profile') {
+              debugger
+              navigate(routes.ADD_PROFILE)
+            }
+          })
+          .catch((err) => {
+            debugger
+          })
+        // fetch(getAPILink(API_MAP.USER_PROFILE), )
+        // console.log(data.access_token)
+        // console.log(data.email)
+        // console.log(data.refresh_token)
 
       })
       .catch((err) => {
