@@ -95,12 +95,10 @@ const Login = () => {
           })
           .then((resp) => {
             if (resp.error === 'No profile') {
-              debugger
               navigate(routes.ADD_PROFILE)
             }
           })
           .catch((err) => {
-            debugger
           })
         // fetch(getAPILink(API_MAP.USER_PROFILE), )
         // console.log(data.access_token)

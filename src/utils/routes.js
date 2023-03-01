@@ -11,12 +11,15 @@ export const API_MAP = {
   VERIFY_EMAIL: 'auth/email-verify/',
   // Refresh token
   REFRESH_TOKEN: 'auth/refresh-token/',
+  // Forget Password
+  FORGET_PASSWORD:'auth/password-reset-request',
   // CRUD User Profile
   // GET User Profile
   USER_PROFILE: 'auth/get-user-profile/',
   // POST Updated field is clinic / is doctor
-  UPDATE_USER_PROFILE: '/auth/update-user-profile-type/',
-  FORGET_PASSWORD:'auth/password-reset-request',
+  UPDATE_USER_PROFILE: 'auth/update-user-profile-type/',
+  // PUT Update admin data
+  UPDATE_ADMIN_DATA: 'auth/update-admin-data/'
 }
 
 export const getAPILink = (url) => {

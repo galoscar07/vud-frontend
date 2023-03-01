@@ -1,9 +1,26 @@
 import React from 'react'
 import "./AdminData.scss"
+import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
+import {getAuthTokenFromLocal} from "../../utils/localStorage";
+import {useNavigate} from "react-router-dom";
 
 const AdminData = () => {
+    const navigate = useNavigate();
 
-    const [values, setValues] = React.useState({});
+    const [values, setValues] = React.useState({
+        firstName: '',
+        lastName: '',
+        phoneNo: '',
+        email: '',
+        phoneNoOpt: '',
+        emailOpt: '',
+        company: '',
+        position: '',
+        streetNo: '',
+        // TODO Handle this
+        county: 'Bucuresti',
+        town: 'Bucuresti',
+    });
     const handleFieldChange = (value, title) => {
         setValues((prevState) => ({ ...prevState, [title]: value }));
     };
@@ -11,11 +28,40 @@ const AdminData = () => {
     const handleSubmit = (event) => {
         console.log(values);
         event.preventDefault();
-    };
-    const deleteFile = () => {
-    }
+        // TODO Validate data
+        makeRequestLogged(
+          getAPILink(API_MAP.UPDATE_ADMIN_DATA),
+          'PUT',
+          JSON.stringify({
+              first_name: values.firstName,
+              last_name: values.lastName,
+              phone_number:	values.phoneNo,
+              contact_email:	values.email,
+              phone_number_optional: values.phoneNoOpt,
+              contact_email_optional: values.emailOpt,
+              company: values.company,
+              company_role: values.position,
+              // TODO Handle change on value
+              county: 'Bucuresti',
+              town: 'Bucuresti',
+              street: values.street,
+              number: values.streetNo,
+          }),
+          getAuthTokenFromLocal()
+        ).then((response) => response.json())
+          .then((resp)=> {
+              if (resp.success === 'Saved') {
+                  navigate(routes.ADD_UNIT)
+              }
+          })
+          .catch((err) => {
 
-    //TODO figure out delete file & how to send file to BE;
+          })
+    };
+
+    const deleteFile = () => {
+        // TODO Finish this
+    }
 
     const updateList = (name, value) => {
         let input = document.getElementById('file');
@@ -67,6 +113,22 @@ const AdminData = () => {
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
+                                </div>
+                            </div>
+                            <div className="col-2">
+                                <div className="input-wrapper">
+                                    <label>Telefon (optional)</label>
+                                    <input name="phoneNoOpt" type="text" value={values.phoneNoOpt}
+                                           onChange={(e) => {
+                                               handleFieldChange(e.target.value, e.target.name);
+                                           }} />
+                                </div>
+                                <div className="input-wrapper">
+                                    <label>Email de contact (optional)</label>
+                                    <input name="emailOpt" type="text" value={values.emailOpt}
+                                           onChange={(e) => {
+                                               handleFieldChange(e.target.value, e.target.name);
+                                           }} />
                                 </div>
                             </div>
                         </div>
@@ -128,12 +190,13 @@ const AdminData = () => {
                             </div>
                         </div>
                     </div>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page
-                        when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
-                        distribution of letters, as opposed to using 'Content here, content here', making it look like
-                        readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as
-                        their default model text, and a search for 'lorem ipsum' will uncover many web sites still in
-                        their infancy. </p>
+                    <p>
+                        Pentru a ne asigura ca actionati in numele entitatii a carei pagina o completati/recuperati,
+                        va rugam sa parcurgeti pasii de identificare si confirmare:Incarcati o copie a CUI Incarcati
+                        un document care sa ateste ca actionati in numele societatii al carui CUI l-ati incarcat
+                        (certificat constatator din care sa reiasa ca sunteti administrator sau un document de
+                        imputernicire din partea administratorului societatii – puteti folosi urmatorul model
+                    </p>
                     <div className="image-upload">
                         <label htmlFor="file">
                             <img
