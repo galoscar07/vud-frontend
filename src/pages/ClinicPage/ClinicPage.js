@@ -47,6 +47,7 @@ const reviews = [{
 ]
 
 function ClinicPage() {
+    
     const [clinic, setClinic] = React.useState(initClinic);
     const [isFavoriteClinic, setIsFavoriteClinic] = React.useState(clinic.isFavorite);
 
@@ -133,11 +134,11 @@ function ClinicPage() {
 
 
             </div>
-            
+
             <div className="reviews-container">
                 <h2>Ce spun pacientii</h2>
                 {reviews.map((review, i) =>
-                    <Review review={review} />)}
+                    <Review key={i} review={review} />)}
             </div>
         </div>
     );

@@ -85,7 +85,7 @@ const OptionsOutsideSelect = (props) => {
 };
 
 
-function Dropdown() {
+function Dropdown(props) {
     const [selected, setSelected] = useState([]);
     const handleSelectChange = (values) => {
         setSelected(values);
@@ -94,6 +94,8 @@ function Dropdown() {
 
     return (
         <OptionsOutsideSelect
+        // options={props.options}
+
             options={options}
             value={selected}
             isMulti
