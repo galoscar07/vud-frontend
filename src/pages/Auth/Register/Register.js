@@ -111,6 +111,7 @@ const Register = () => {
         setState({ ...state, server: { error: "Ceva a mers prost. Va rugam incercati mai tarziu" } })
       })
   };
+  
   const handleSubmitResendEmail = () => {
     fetch(
       getAPILink(API_MAP.RESEND_REGISTER), {

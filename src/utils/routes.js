@@ -25,6 +25,7 @@ export const routes = {
   MEDICAL_INFO: '/medical-information',
   CHARITY: '/charity',
   CONTACT: '/contact',
+  CLINIC_PAGE: '/clinic-page',
 
   // AUTH
   LOGIN: '/login',
