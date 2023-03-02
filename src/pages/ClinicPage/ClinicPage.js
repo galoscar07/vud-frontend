@@ -1,7 +1,24 @@
 import React from 'react'
+import Carousel from '../../components/Carousel/Carousel';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import Review from '../../components/Review/Review';
 import "./ClinicPage.scss";
+
+const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+    { value: 'blueberry', label: 'Blueberry' },
+    { value: 'bannana', label: 'Bannana' },
+]
+const testimonials = [
+    {
+        text: "“Demonstreaza ca inca mai exista doctori care stiu aceasta meserie la perfectie! M-a ajutat foarte mult!”"
+    },
+    {
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis nisl diam. Vivamus venenatis ornare risus non ornare. Proin fermentum aliquam felis, placerat fermentum nunc luctus in. Pellentesque et quam lacus."
+    }
+]
 
 const initClinic = {
     name: 'Clinica de pediatrie',
@@ -47,7 +64,7 @@ const reviews = [{
 ]
 
 function ClinicPage() {
-    
+
     const [clinic, setClinic] = React.useState(initClinic);
     const [isFavoriteClinic, setIsFavoriteClinic] = React.useState(clinic.isFavorite);
 
@@ -120,19 +137,37 @@ function ClinicPage() {
                         </div>)}
                 </div>
             </div>
-            <div className="info-right-container">
-                <div className="col">
-                    <Dropdown />
+            <div className="col-2">
+                <div className="info-right-container">
+                    <div className="col">
+                        <Dropdown options={options} title={"Specialitati"} />
+                    </div>
+                    <div className="col-2">
+                        <Dropdown options={options} title={"Oras"} />
+                        <Dropdown options={options} title={"Clinica"} />
+                    </div>
+                    <div className="description-container">
+                        <p>Cabinetul nostru Stomatologic situat pe Şoseaua Mihai Bravu nr. 67-73, bloc C18, oferă servicii de înaltă calitate în domeniul stomatologic, cu accent pe Chirurgie Orală, Estetică și Protetică Dentară, Endodontie și Protetică și Parodontologie. Echipa noastră de medici stomatologi cu experiență își propune să ofere fiecărui pacient tratamente personalizate, adaptate nevoilor și dorințelor acestuia.</p>
+                        <p>Suntem dedicați să oferim un mediu cald și prietenos, cu tehnologie de ultimă generație, pentru a face experiența pacientului cât mai confortabilă și eficientă. În plus, ne străduim să păstrăm un nivel ridicat de igienă și sterilizare, pentru a garanta sănătatea pacienților noștri.</p>
+                        <p>Serviciile noastre includ, dar nu sunt limitate la, tratamente de albire dentală, implante dentare, coroane și punți dentare, obturatii de canal, tratamente parodontale, precum și chirurgie orală și extracții dentare. De asemenea, ne concentrăm pe prevenirea și îngrijirea dentară, oferind consultații și recomandări pacienților noștri pentru a-și păstra sănătatea dentară pe termen lung.</p>
+                        <p>Așteptăm cu interes să ne întâlnim cu dumneavoastră și să vă oferim servicii stomatologice de calitate superioară. Contactați-ne astăzi pentru a programa o consultație și a începe călătoria către o zâmbet sănătos și strălucitor!</p>
+                    </div>
                 </div>
-                <div className="col-2">
-                    <Dropdown />
-                    <Dropdown />
+
+                <div className="info-left-container">
+                    <Carousel content={testimonials} />
+                    <iframe
+                        title={'google maps'}
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
+                        width="100%"
+                        height="210"
+                        frameBorder="0"
+                        style={{ border: 0, marginTop: 15 }}
+                        allowFullScreen=""
+                        aria-hidden="false"
+                        tabIndex="0"
+                    />
                 </div>
-            </div>
-
-            <div className="info-left-container">
-
-
             </div>
 
             <div className="reviews-container">

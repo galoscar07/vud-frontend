@@ -40,10 +40,20 @@ const ClinicProfile = () => {
     },
 
   ]
+
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+    { value: 'blueberry', label: 'Blueberry' },
+    { value: 'bannana', label: 'Bannana' },
+]
+
   const [values, setValues] = React.useState({});
   const [schedule, setSchedule] = React.useState(days);
   const [activeDay, setActiveDay] = React.useState({ weekday: "Luni", startTime: "00:00", endTime: "00:00" });
   const [counterHQ, setCounterHQ] = React.useState(1);
+
 
   const handleHQInputs = () => {
     setCounterHQ(counterHQ + 1);
@@ -219,12 +229,12 @@ const ClinicProfile = () => {
                         </div> */}
           </div>
           <div className="specialities-container">
-            <div className="container-title">Specialitati</div>
-            <Dropdown />
+            {/* <div className="container-title">Specialitati</div> */}
+            <Dropdown options={options} title="Specialitati unitate"/>
           </div>
           <div className="facilities-container">
-            <div className="container-title">Facilitati unitate</div>
-            <Dropdown />
+            {/* <div className="container-title">Facilitati unitate</div> */}
+            <Dropdown options={options} title="Facilitati unitate"/>
           </div>
 
           <div className="hq-container">

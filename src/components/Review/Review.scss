@@ -1,0 +1,51 @@
+@import 'src/styles/base';
+
+.review-component {
+    background: white;
+    padding: $spacing-default;
+    margin-bottom: $spacing-small;
+    color: $color-blue;
+
+    .review-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+
+        .name {
+            font-size: $font-medium;
+            margin-bottom: $spacing-xsmall;
+        }
+
+        p {
+            text-align: justify;
+        }
+    }
+
+    .horizontal-divider {
+        height: 1px;
+        background-color: #E5E7EA;
+        margin-bottom: $spacing-small;
+    }
+
+    .evaluate-review {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        column-gap: $spacing-small;
+
+        .thumbs-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: $color-primary;
+            cursor: pointer;
+        }
+    }
+
+    .col-2 {
+        display: flex;
+        flex-direction: column;
+        column-gap: $spacing-medium;
+    }
+}
