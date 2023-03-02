@@ -42,10 +42,4 @@
             cursor: pointer;
         }
     }
-
-    .col-2 {
-        display: flex;
-        flex-direction: column;
-        column-gap: $spacing-medium;
-    }
 }

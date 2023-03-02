@@ -1,99 +1,77 @@
-
 @import 'src/styles/base';
 
 .carousel-container {
-    margin-bottom: $spacing-big;
-    position: relative;
+
+    background-color: white;
+
+    .slick-slider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
     .slick-list,
-    .slick-track
-     {
-        width: 20vw;
+    .slick-track {
+        width: 40vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         //   height: calc(100vh - #{$header-height});
         // object-fit: cover;
     }
 
-    .slick-dots {
-        position: absolute;
-        bottom: 4.1rem;
-        z-index: 9;
+    span {
+        cursor: pointer;
+        color: $color-primary;
+        text-decoration: underline;
+        line-height: 1.5rem;
     }
 
-    .slick-dots {
-        button {
-            &:before {
-                font-size: 2.91rem;
-                color: white !important;
-            }
-        }
-    }
-}
 
 
-.info-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 4.66rem;
 
-
-    .text-container {
+    .info-container {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+        padding: $spacing-xxbig;
 
-        .carousel-text {
-            //   font-size: $font-size-large;
-            // margin: 0 6.6rem;
-            text-align: center;
-            // width: 50rem;
-        }
+        // margin-top: 4.66rem;
 
-        span {
-            cursor: pointer;
-        }
-    }
-}
 
-.slick-dots {
-    position: absolute;
-    top: 41.5rem;
-    height: 2rem;
-}
+        .text-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
 
-.slick-dots {
-    li {
-        &.slick-active {
-            button {
-                &:before {
-                    opacity: 1;
-                    //   color: $secondary-color !important;
-                }
+            .carousel-text {
+                //   font-size: $font-size-large;
+                // margin: 0 6.6rem;
+                margin: 0 $spacing-small;
+                text-align: center;
+                font-style: italic;
+                // width: 50rem;
             }
-        }
 
-        button {
-            &:before {
-                opacity: 0.5;
-                // color: $grey-color-5 !important;
-                font-size: 2rem;
-            }
+
         }
     }
-}
 
 
 
-#slider-container {
-    &.slider {
-        overflow: initial;
+
+
+    #slider-container {
+        &.slider {
+            overflow: initial;
+        }
     }
-}
 
-* {
-    &:focus {
-        outline: 0;
+    * {
+        &:focus {
+            outline: 0;
+        }
     }
 }

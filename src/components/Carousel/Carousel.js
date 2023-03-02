@@ -8,8 +8,7 @@ const Carousel = (props) => {
         slidesToShow: 1,
         slidesToScroll: 1,
         infinite: true,
-        dots: true,
-        // autoplay: true,
+        autoplay: true,
         autoplaySpeed: 3000,
         pauseOnHover: false,
         draggable: true,
@@ -45,6 +44,7 @@ const Carousel = (props) => {
                                 </span>
                             </div>
                         </div>
+                        <span className="all-reviews">Vezi toate recenziile</span>
 
                     </div>
                 ))}

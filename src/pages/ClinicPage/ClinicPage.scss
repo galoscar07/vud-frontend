@@ -4,6 +4,13 @@
     padding: $spacing-big;
     color: $color-blue;
 
+    .container-title {
+        font-size: $font-subtitle;
+        text-align: start;
+        width: 100%;
+        margin-bottom: $spacing-small;
+    }
+
     .clinic-container {
         display: flex;
         margin-bottom: $spacing-small;
@@ -170,12 +177,16 @@
     .col-2 {
         display: flex;
         flex-direction: row;
+        column-gap: $spacing-default;
+        margin-top: $spacing-default;
     }
 
     .info-right-container,
     .info-left-container {
         width: 100%;
     }
+
+    .info-left-container {}
 
     .info-right-container {
 
