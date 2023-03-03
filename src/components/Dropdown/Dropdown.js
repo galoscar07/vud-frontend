@@ -2,13 +2,13 @@ import Select, { components } from "react-select";
 import { useState } from "react";
 import "./Dropdown.scss";
 
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-    { value: 'blueberry', label: 'Blueberry' },
-    { value: 'bannana', label: 'Bannana' },
-]
+// const options = [
+//     { value: 'chocolate', label: 'Chocolate' },
+//     { value: 'strawberry', label: 'Strawberry' },
+//     { value: 'vanilla', label: 'Vanilla' },
+//     { value: 'blueberry', label: 'Blueberry' },
+//     { value: 'bannana', label: 'Bannana' },
+// ]
 
 const styles = {
 
@@ -93,17 +93,18 @@ function Dropdown(props) {
     };
 
     return (
-        <OptionsOutsideSelect
-        // options={props.options}
-
-            options={options}
-            value={selected}
-            isMulti
-            onChange={handleSelectChange}
-            components={{ Option }}
-            allowSelectAll={true}
-            hideSelectedOptions={false}
-        ></OptionsOutsideSelect>
+        <div className="dropdown">
+            <div className="dropdown-title">{props.title}</div>
+            <OptionsOutsideSelect
+                options={props.options}
+                value={selected}
+                isMulti
+                onChange={handleSelectChange}
+                components={{ Option }}
+                allowSelectAll={true}
+                hideSelectedOptions={false}
+            ></OptionsOutsideSelect>
+        </div>
     )
 }
 

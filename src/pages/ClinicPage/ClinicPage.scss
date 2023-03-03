@@ -2,6 +2,14 @@
 
 .clinic-page {
     padding: $spacing-big;
+    color: $color-blue;
+
+    .container-title {
+        font-size: $font-subtitle;
+        text-align: start;
+        width: 100%;
+        margin-bottom: $spacing-small;
+    }
 
     .clinic-container {
         display: flex;
@@ -16,7 +24,7 @@
             justify-content: end;
 
             img {
-                height:12rem;
+                height: 12rem;
             }
 
             .rating {
@@ -126,6 +134,7 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        padding: 0 $spacing-small;
 
         .contact-card {
             display: flex;
@@ -162,6 +171,47 @@
                     font-size: $font-small;
                 }
             }
+        }
+    }
+
+    .col-2 {
+        display: flex;
+        flex-direction: row;
+        column-gap: $spacing-default;
+        margin-top: $spacing-default;
+    }
+
+    .info-right-container,
+    .info-left-container {
+        width: 100%;
+    }
+
+    .info-left-container {}
+
+    .info-right-container {
+
+
+        .col,
+        .col-2 {
+            .dropdown {
+                background-color: white;
+                padding: $spacing-small;
+                margin: $spacing-small 0;
+
+                &:first-of-type {
+                    margin-right: $spacing-small;
+
+                }
+            }
+        }
+
+        .description-container {
+            background-color: white;
+            padding: $spacing-small;
+            text-align: left;
+            font-size: $font-normal;
+            font-style: italic;
+            line-height: 1.5rem;
         }
     }
 }

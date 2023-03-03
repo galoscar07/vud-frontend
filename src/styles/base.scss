@@ -54,6 +54,7 @@ $spacing-section: 10rem; //160px
 $spacing-big: 6.25rem; //100px
 $spacing-page: 8.5rem 17rem;
 $spacing-xbig: 2.5rem; //40px
+$spacing-xxbig: 3.75rem; //60px
 
 $spacing-xsmall: 5px;
 $spacing-small: 15px;
@@ -98,9 +99,11 @@ $bouncy-in-out: cubic-bezier(0.36, -1.54, 0.73, 2.51);
 $desktop: 1920px;
 $big-laptop: 1440px;
 $small-laptop: 1280px;
-$tablet-landscape-width: 1024px; /* From generic tablet downwards */
+$tablet-landscape-width: 1024px;
+/* From generic tablet downwards */
 $tablet-portrait-width: 768px;
-$mobile-big-width: 500px; /* For phones and below */
+$mobile-big-width: 500px;
+/* For phones and below */
 
 @mixin flex-centered {
   display: flex;
