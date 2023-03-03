@@ -90,6 +90,7 @@ function Dropdown(props) {
     const [selected, setSelected] = useState([]);
     const handleSelectChange = (values) => {
         setSelected(values);
+        props.onSelect(values)
         console.log(selected, 'selected')
     };
 
@@ -99,7 +100,7 @@ function Dropdown(props) {
         <div className="dropdown">
             <div className="dropdown-title">{props.title}</div>
             <OptionsOutsideSelect
-                options={props.options}
+                options={options}
                 value={selected}
                 isMulti
                 onChange={handleSelectChange}

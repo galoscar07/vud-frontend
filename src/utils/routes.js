@@ -19,7 +19,13 @@ export const API_MAP = {
   // POST Updated field is clinic / is doctor
   UPDATE_USER_PROFILE: 'auth/update-user-profile-type/',
   // PUT Update admin data
-  UPDATE_ADMIN_DATA: 'auth/update-admin-data/'
+  UPDATE_ADMIN_DATA: 'auth/update-admin-data/',
+  // PUT Update medical clinic data types
+  PUT_MEDICAL_TYPES: 'auth/update-clinic-type-data/',
+
+  // OPTIONS
+  // GET Medical Unity Type
+  GET_MEDICAL_UNITY_TYPE: 'options/medical-unity-types'
 }
 
 export const getAPILink = (url) => {
