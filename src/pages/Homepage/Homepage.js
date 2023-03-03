@@ -2,6 +2,7 @@ import React from 'react'
 import "./Homepage.scss"
 import Select, { components } from "react-select";
 import ClinicFilterContainer from '../../components/ClinicFilterContainer/ClinicFilterContainer';
+import Newsletter from '../../components/Newsletter/Newsletter';
 
 const tags = [
   {
@@ -116,22 +117,30 @@ function Homepage() {
             </div>
           </div>)}
       </div>
-      <div className="main-content">
-        <div className="container-title">
-          <div className="title">
-          <img src="/images/star_full.svg" />
-          Top unitati medicale
+
+      <div className="content">
+        <div className="main-content">
+          <div className="container-title">
+            <div className="title">
+              <img src="/images/star_full.svg" />
+              Top unitati medicale
+            </div>
+            <div className="subtitle">
+              Toate unitatile
+            </div>
           </div>
-          <div className="subtitle">
-            Toate unitatile
+          <div className="results-container">
+            {clinics.map((clinic, i) =>
+              <ClinicFilterContainer clinic={clinic} />
+            )}
           </div>
         </div>
-        <div className="results-container">
-          {clinics.map((clinic, i) =>
-            <ClinicFilterContainer clinic={clinic} />
-          )}
+
+        <div className="side-content">
+          <Newsletter />
         </div>
       </div>
+
     </div>
   );
 }

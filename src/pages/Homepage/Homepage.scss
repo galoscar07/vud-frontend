@@ -124,4 +124,14 @@
         display: flex;
     }
 
+    .content {
+        display: grid;
+        grid-template-columns: 5fr 1fr;
+        column-gap: $spacing-small;
+    }
+
+    .side-content {
+        margin-top: 4.5rem;
+    }
+
 }
