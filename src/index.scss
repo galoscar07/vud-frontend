@@ -68,6 +68,9 @@ label {
 .error {
   color: $color-secondary;
   margin: $spacing-xsmall 0;
+  &.small-margin-top {
+    margin-top: $spacing-small;
+  }
 }
 
 @media screen and (max-width: $mobile-big-width) {

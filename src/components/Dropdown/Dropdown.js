@@ -87,7 +87,8 @@ const OptionsOutsideSelect = (props) => {
 
 
 function Dropdown(props) {
-    const [selected, setSelected] = useState([]);
+    console.log(props.selected, 'asd')
+    const [selected, setSelected] = useState(props.selected || []);
     const handleSelectChange = (values) => {
         setSelected(values);
         props.onSelect(values)
