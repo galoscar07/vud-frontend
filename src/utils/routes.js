@@ -1,4 +1,4 @@
-// const API_URL = 'http://'
+const API_URL_DEV = 'http://127.0.0.1:8000/'
 const API_URL_LOCAL = 'https://vud-be.herokuapp.com/'
 
 export const API_MAP = {
@@ -24,7 +24,7 @@ export const API_MAP = {
 
 export const getAPILink = (url) => {
   // TODO Comment depending on the env
-  return API_URL_LOCAL + url
+  return API_URL_DEV + url
   // return API_URL + url
 }
 

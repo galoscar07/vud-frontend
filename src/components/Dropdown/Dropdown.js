@@ -2,7 +2,7 @@ import Select, { components } from "react-select";
 import { useState } from "react";
 import "./Dropdown.scss";
 
-const options = [
+const optionsDefault = [
     { value: 'chocolate', label: 'Chocolate' },
     { value: 'strawberry', label: 'Strawberry' },
     { value: 'vanilla', label: 'Vanilla' },
@@ -91,6 +91,8 @@ function Dropdown(props) {
         setSelected(values);
         console.log(selected, 'selected')
     };
+
+    const options = props.options ? props.options : optionsDefault
 
     return (
         <OptionsOutsideSelect
