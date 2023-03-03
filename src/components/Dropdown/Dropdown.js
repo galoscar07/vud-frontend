@@ -10,6 +10,7 @@ const optionsDefault = [
     { value: 'bannana', label: 'Bannana' },
 ]
 
+
 const styles = {
 
     multiValue: ({
@@ -95,17 +96,18 @@ function Dropdown(props) {
     const options = props.options ? props.options : optionsDefault
 
     return (
-        <OptionsOutsideSelect
-        // options={props.options}
-
-            options={options}
-            value={selected}
-            isMulti
-            onChange={handleSelectChange}
-            components={{ Option }}
-            allowSelectAll={true}
-            hideSelectedOptions={false}
-        ></OptionsOutsideSelect>
+        <div className="dropdown">
+            <div className="dropdown-title">{props.title}</div>
+            <OptionsOutsideSelect
+                options={props.options}
+                value={selected}
+                isMulti
+                onChange={handleSelectChange}
+                components={{ Option }}
+                allowSelectAll={true}
+                hideSelectedOptions={false}
+            ></OptionsOutsideSelect>
+        </div>
     )
 }
 

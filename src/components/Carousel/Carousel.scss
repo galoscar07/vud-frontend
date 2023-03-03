@@ -1,0 +1,77 @@
+@import 'src/styles/base';
+
+.carousel-container {
+
+    background-color: white;
+
+    .slick-slider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .slick-list,
+    .slick-track {
+        width: 40vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        //   height: calc(100vh - #{$header-height});
+        // object-fit: cover;
+    }
+
+    span {
+        cursor: pointer;
+        color: $color-primary;
+        text-decoration: underline;
+        line-height: 1.5rem;
+    }
+
+
+
+
+    .info-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: $spacing-xxbig;
+
+        // margin-top: 4.66rem;
+
+
+        .text-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            .carousel-text {
+                //   font-size: $font-size-large;
+                // margin: 0 6.6rem;
+                margin: 0 $spacing-small;
+                text-align: center;
+                font-style: italic;
+                // width: 50rem;
+            }
+
+
+        }
+    }
+
+
+
+
+
+    #slider-container {
+        &.slider {
+            overflow: initial;
+        }
+    }
+
+    * {
+        &:focus {
+            outline: 0;
+        }
+    }
+}
