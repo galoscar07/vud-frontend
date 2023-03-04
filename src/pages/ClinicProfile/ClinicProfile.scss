@@ -129,7 +129,7 @@
 
   .day {
     background-color: rgba($color-primary, 0.25);
-    padding: $spacing-small;
+    padding: $spacing-small 10px;
     color: white;
     display: flex;
     flex-direction: column;
@@ -137,9 +137,33 @@
     align-items: center;
     width: inherit;
     cursor: pointer;
+    user-select: none;
+    &:hover {
+      background-color: #D1DFE2;
+    }
 
     &.active {
       background-color: $color-primary;
+      .interval {
+        img {
+          background-color: white;
+          opacity: 1;
+          pointer-events: unset;
+        }
+      }
+    }
+  }
+  .interval {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      background-color: rgba(white, 0.1);
+      opacity: 0.1;
+      pointer-events: none;
+      border-radius: 50%;
+      height: 17px;
+      margin-left: 5px;
     }
   }
 }

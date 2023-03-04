@@ -12,7 +12,7 @@ export const API_MAP = {
   // Refresh token
   REFRESH_TOKEN: 'auth/refresh-token/',
   // Forget Password
-  FORGET_PASSWORD:'auth/password-reset-request',
+  FORGET_PASSWORD:'auth/password-reset-request/',
   // CRUD User Profile
   // GET User Profile
   USER_PROFILE: 'auth/get-user-profile/',
@@ -25,7 +25,13 @@ export const API_MAP = {
 
   // OPTIONS
   // GET Medical Unity Type
-  GET_MEDICAL_UNITY_TYPE: 'options/medical-unity-types'
+  GET_MEDICAL_UNITY_TYPE: 'options/medical-unity-types/',
+  GET_ACADEMIC_DEGREES: 'options/academic-degrees/',
+  GET_SPECIALITIES: 'options/specialities/',
+  GET_COMPETENCES: 'options/competences/',
+  GET_CLINIC_SPECIALITIES: 'options/clinic-specialities/',
+  GET_MEDICAL_FACILITIES: 'options/medical-facilities/',
+  GET_FOOTER_LABELS: 'options/footer/',
 }
 
 export const getAPILink = (url) => {

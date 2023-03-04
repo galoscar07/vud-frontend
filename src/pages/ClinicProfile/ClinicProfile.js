@@ -3,49 +3,22 @@ import Dropdown from '../../components/Dropdown/Dropdown';
 import "./ClinicProfile.scss";
 import _ from 'lodash';
 import {API_MAP, getAPILink} from "../../utils/routes";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
-const days = [
-  {
-    weekday: 'Luni',
-    startTime: '',
-    endTime: '',
-  },
-  {
-    weekday: 'Marti',
-    startTime: '',
-    endTime: '',
-  },
-  {
-    weekday: 'Miercuri',
-    startTime: '',
-    endTime: '',
-  },
-  {
-    weekday: 'Joi',
-    startTime: '',
-    endTime: '',
-  },
-  {
-    weekday: 'Vineri',
-    startTime: '',
-    endTime: '',
-  },
-  {
-    weekday: 'Sambata',
-    startTime: '',
-    endTime: '',
-  },
-  {
-    weekday: 'Duminica',
-    startTime: '',
-    endTime: '',
-  },
+const days = {
+  'Luni': [],
+  'Marti': [],
+  'Miercuri': [],
+  'Joi': [],
+  'Vineri': [],
+  'Sambata': [],
+  'Duminica': []
+}
 
-]
 
 const ClinicProfile = () => {
   // Loading var
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   // Inputs state
   const [state, setState] = useState({
@@ -63,6 +36,8 @@ const ClinicProfile = () => {
     website_linkedin: '',
     website_youtube: '',
     description: '',
+    clinic_specialities: [],
+    clinic_facilities: [],
   })
   const [errorState, setErrorState] = useState({
     clinic_name: '',
@@ -83,6 +58,16 @@ const ClinicProfile = () => {
     description: '',
   })
 
+  // Handles normal inputs
+  const handleFieldChange = (event) => {
+    setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
+  };
+
+  // Handle dropdown selection
+  const onSelectDropdown = (key, value) => {
+    setState((prevState) => ({ ...prevState, [key]: value }));
+  }
+
   // States and Functions for extra phone number and emails
   const [multiplePhones, setMultiplePhones] = useState([])
   const [multipleEmails, setMultipleEmails] = useState([])
@@ -101,13 +86,11 @@ const ClinicProfile = () => {
       }
     }
   }
-
   const handlePhoneEmailChange = (value, index, list, fct) => {
     const copy =  _.cloneDeep(list)
     copy[index] = value
     fct(copy)
   }
-
   const handleRemoveOtherInput = (index, type) => {
     if (type === 'phone') {
       if (multiplePhones.length === 5) {
@@ -127,11 +110,65 @@ const ClinicProfile = () => {
     }
   }
 
+  // State and Functions for doctor
+  const [doctor, setDoctor] = useState([{
+    name: '',
+    academic_degree: '',
+    speciality: '',
+    competences: '',
+    link: '',
+    profile_photo: '',
+  }])
+  const [docHighlighted, setDocHighlighted] = useState(0)
+  const inputRefDoctor = useRef();
+  const addDoctor = () => {
+    setDoctor([...doctor, { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: ''}])
+  }
+  const handleDoctorPhotoUploadClick = () => {
+    inputRefDoctor.current.click();
+  };
+  const handleFileChangeDoctor = (event) => {
+    const img = event.target.files[0]
+    const reader = new FileReader();
+    // TODO Daca incerci sa pui poza a doua oara ramane tot prima. DE CEEEEEE ?
+    reader.onloadend = () => {
+      const copy =  _.cloneDeep(doctor)
+      copy[docHighlighted].profile_picture = reader.result
+      setDoctor(copy)
+    };
+    reader.readAsDataURL(img);
+  }
+  const deleteHighlightDoctor = (index) => {
+    if (index === 0) {
+      setDoctor([{ name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: ''}])
+    } else {
+      const copy =  _.cloneDeep(doctor)
+      copy.splice(index, 1)
+      setDoctor(copy)
+      setDocHighlighted(docHighlighted - 1)
+    }
+  }
+  const handleChangeInputDoctor = (event, index) => {
+    const copy =  _.cloneDeep(doctor)
+    copy[index][event.target.name] = event.target.value
+    setDoctor(copy)
+  }
+  const handleDropdownDoctor = (event, index, label) => {
+    const copy =  _.cloneDeep(doctor)
+    copy[index][label] = event
+    setDoctor(copy)
+
+  }
+  const saveCurrentDoctor = () => {
+    setDoctor([...doctor,  { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: ''}])
+    setHqHighlighted(hqHighlighted + 1)
+  }
+
   // States for HQs
   const [hq, setHq] = useState([{
-    name: 'Regina Maria',
-    address: 'Buna ziua, 39, Cluj Napoca',
-    link: 'www.reginamaria.ro/asdasd/asdasd',
+    name: '',
+    address: '',
+    link: '',
     profile_picture: null,
     medical_unit_types: []
   }])
@@ -143,6 +180,7 @@ const ClinicProfile = () => {
   const handleFileChangeHQ = (event) => {
     const img = event.target.files[0]
     const reader = new FileReader();
+    // TODO Daca incerci sa pui poza a doua oara ramane tot prima. DE CEEEEEE ?
     reader.onloadend = () => {
       const copy =  _.cloneDeep(hq)
       copy[hqHighlighted].profile_picture = reader.result
@@ -175,65 +213,129 @@ const ClinicProfile = () => {
     setHq([...hq, { name: '', address: '', link: '', profile_picture: null, medical_unit_types: []}])
     setHqHighlighted(hqHighlighted + 1)
   }
+  const addNewHq = () => {
+    setHq([...hq, { name: '', address: '', link: '', profile_picture: null, medical_unit_types: []}])
+  }
 
   // Dropdown States
   const [unitTypeDropdown, setUnitTypeDropdown] = useState ([])
+  const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState ([])
+  const [specialities, setSpecialities] = useState ([])
+  const [competences, setCompetences] = useState ([])
+  const [clinicSpecialities, setClinicSpecialities] = useState ([])
+  const [medicalFacilities, setMedicalFacilities] = useState ([])
 
-  const [values, setValues] = React.useState({});
+  // Schedule
   const [schedule, setSchedule] = React.useState(days);
-  const [activeDay, setActiveDay] = React.useState({ weekday: "Luni", startTime: "00:00", endTime: "00:00" });
-  const [counterHQ, setCounterHQ] = React.useState(1);
+  const [activeDay, setActiveDay] = React.useState("Luni");
+  const [interval, setInterval] = React.useState({
+    startTime: '00:00',
+    endTime: '00:00'
+  })
+  const handleRemoveTime = (index) => {
+    const copy =  _.cloneDeep(schedule[activeDay])
+    copy.splice(index, 1)
+    setSchedule({...schedule, [activeDay]: copy})
+  }
 
-  // Handles normal inputs
-  const handleFieldChange = (event) => {
-    setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
-  };
 
+  const mapStateToObject = () => {
 
-
-
-  const handleHQInputs = () => {
-    setCounterHQ(counterHQ + 1);
-    console.log(counterHQ);
-  };
-
-  const handleActiveDay = (event) => {
-    if (event.target.name === 'weekday') setActiveDay((prevState) => ({ ...prevState, weekday: event.target.value }));
-    if (event.target.name === 'startTime') setActiveDay((prevState) => ({ ...prevState, startTime: event.target.value }));
-    if (event.target.name === 'endTime') setActiveDay((prevState) => ({ ...prevState, endTime: event.target.value }));
-
-    // VALIDATIONS?
-  };
-
-  const handleScheduleChange = () => {
-    const updatedSchedule = schedule.map(el => el.weekday !== activeDay.weekday ? el : activeDay);
-    setSchedule(updatedSchedule);
-  };
-
+  }
 
   const handleSubmit = (event) => {
-    console.log(values);
+    console.log(state);
     event.preventDefault();
   };
 
   // useEffect
   // get all options for dropdowns - kinda componentDidMount
   useEffect(() => {
-    Promise.all(
-      fetch(getAPILink(API_MAP.GET_MEDICAL_UNITY_TYPE), {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        }
-      }).then((resp) => resp.json())
-        .then((response) => {
-          const mapped = response.map((el) => {return {value: el.id, label: el.label}})
-          setUnitTypeDropdown(mapped)
-        })
-        .catch((err) => {
-          console.log(err)
-        }),
-    ).then((resp) => setLoading(false))
+    fetch(getAPILink(API_MAP.GET_MEDICAL_UNITY_TYPE), {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then((resp) => resp.json())
+      .then((response) => {
+        const mapped = response.map((el) => {return {value: el.id, label: el.label}})
+        setUnitTypeDropdown(mapped)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    fetch(getAPILink(API_MAP.GET_ACADEMIC_DEGREES), {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then((resp) => resp.json())
+      .then((response) => {
+        const mapped = response.map((el) => {return {value: el.id, label: el.label}})
+        setAcademicDegreesDropDown(mapped)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then((resp) => resp.json())
+      .then((response) => {
+        const mapped = response.map((el) => {return {value: el.id, label: el.label}})
+        setSpecialities(mapped)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    fetch(getAPILink(API_MAP.GET_COMPETENCES), {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then((resp) => resp.json())
+      .then((response) => {
+        const mapped = response.map((el) => {return {value: el.id, label: el.label}})
+        setCompetences(mapped)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    fetch(getAPILink(API_MAP.GET_CLINIC_SPECIALITIES), {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then((resp) => resp.json())
+      .then((response) => {
+        const mapped = response.map((el) => {return {value: el.id, label: el.label}})
+        setClinicSpecialities(mapped)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    fetch(getAPILink(API_MAP.GET_MEDICAL_FACILITIES), {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then((resp) => resp.json())
+      .then((response) => {
+        const mapped = response.map((el) => {return {value: el.id, label: el.label}})
+        setMedicalFacilities(mapped)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [])
 
   // Renders
@@ -389,7 +491,6 @@ const ClinicProfile = () => {
       </div>
     )
   }
-
   const renderDescription = () => {
     return (
       <div className="contact-data">
@@ -404,10 +505,12 @@ const ClinicProfile = () => {
       </div>
     )
   }
-
   const renderHQ = () => {
     return (
       <div className="hq-container">
+        <div className="container-title">
+          Sedii
+        </div>
         <div className="fields-wrapper">
           <div className="col-4">
             {
@@ -424,12 +527,12 @@ const ClinicProfile = () => {
             }
           </div>
 
-          {/*<div className="add-another" onClick={(e) => handleHQInputs()}>*/}
-          {/*  <img alt="adauga inca un sediu" src="/images/add.svg" />*/}
-          {/*  <span>Adauga inca un sediu</span>*/}
-          {/*</div>*/}
+          <div className="add-another" onClick={addNewHq}>
+            <img alt="adauga inca un sediu" src="/images/add.svg" />
+            <span>Adauga inca un sediu</span>
+          </div>
 
-          <div className="col" onClick={(e) => handleHQInputs()}>
+          <div className="col">
             <span onClick={handleHQPhotoUploadClick} className={'add-photo'}>Incarca poza profil</span>
             <input type="file" accept="image/*" onChange={handleFileChangeHQ} ref={inputRef} style={{ display: 'none' }} />
           </div>
@@ -440,9 +543,9 @@ const ClinicProfile = () => {
                      onChange={(e) => {handleChangeInputHQ(e, hqHighlighted);}} />
             </div>
           </div>
-          {/* TODO Handle giving it selected values */}
           <Dropdown selected={hq[hqHighlighted].medical_unit_types}
-                    onSelect={(values) => {handleDropdownHQ(values, hqHighlighted)}}
+                    onSelect={(values) => {
+                      handleDropdownHQ(values, hqHighlighted)}}
                     options={unitTypeDropdown}
                     title="*Tip unitate"/>
           <div className="col">
@@ -469,6 +572,141 @@ const ClinicProfile = () => {
       </div>
     )
   }
+  const renderDoctors = () => {
+    return (
+      <div className="hq-container">
+        <div className="container-title">
+          Medici colaboratori
+        </div>
+        <div className="fields-wrapper">
+          <div className="col-4">
+            {
+              doctor.map((doc, index) => {
+                return (
+                  <div key={index} onClick={() => setDocHighlighted(index)} className={`card-HQ ${docHighlighted === index && 'highlight'}`}>
+                    <img src={doc.profile_picture ? doc.profile_picture : '/images/user.svg'}/>
+                    <div className={'hq-data'}>
+                      <div>{doc.name}</div>
+                    </div>
+                  </div>
+                )
+              })
+            }
+          </div>
+
+          <div className="add-another" onClick={addDoctor}>
+            <img alt="adauga inca un doctor/medic" src="/images/add.svg" />
+            <span>Adauga medic</span>
+          </div>
+
+          <div className="col">
+            <span onClick={handleDoctorPhotoUploadClick} className={'add-photo'}>Incarca poza profil</span>
+            <input type="file" accept="image/*" onChange={handleFileChangeDoctor} ref={inputRef} style={{ display: 'none' }} />
+          </div>
+          <div className="col">
+            <div className="input-wrapper">
+              <label>Medic</label>
+              <input placeholder="nume" name='name' type="text" value={doctor[docHighlighted].name}
+                     onChange={(e) => {handleChangeInputDoctor(e, docHighlighted);}} />
+            </div>
+          </div>
+          <Dropdown selected={doctor[docHighlighted].academic_degree}
+                    onSelect={(values) => {
+                      handleDropdownDoctor(values, docHighlighted, 'academic_degree')}}
+                    options={academicDegreesDropDown}
+                    title="Grad Academic"/>
+          <Dropdown selected={doctor[docHighlighted].speciality}
+                    onSelect={(values) => {
+                      handleDropdownDoctor(values, docHighlighted, 'speciality')}}
+                    options={specialities}
+                    title="Specializare"/>
+          <Dropdown selected={doctor[docHighlighted].competences}
+                    onSelect={(values) => {
+                      handleDropdownDoctor(values, docHighlighted, 'competences')}}
+                    options={competences}
+                    title="Competente"/>
+
+          <div className="col">
+            <div className="input-wrapper">
+              <label>Link pagina </label>
+              <input name="link" type="text" value={doctor[docHighlighted].link}
+                     onChange={(e) => {handleChangeInputDoctor(e, docHighlighted);}} />
+            </div>
+          </div>
+          <div className="delete-button" onClick={() => deleteHighlightDoctor(docHighlighted)}>
+            <div>
+              sterge unitate
+            </div>
+          </div>
+          <input className="button border-button" onClick={saveCurrentDoctor} value="Salveaza" />
+        </div>
+      </div>
+    )
+  }
+  const renderSpecialities = () => {
+    return (
+      <div className="specialities-container">
+        <Dropdown selected={state.clinic_specialities} options={clinicSpecialities}
+                  title="Specialitati unitate" onSelect={(values) => {onSelectDropdown('clinic_specialities', values)}} />
+      </div>
+    )
+  }
+  const renderFacilities = () => {
+    return (
+      <div className="facilities-container">
+        <Dropdown selected={state.clinic_facilities} options={medicalFacilities}
+                  title="Facilitati unitate" onSelect={(values) => {onSelectDropdown('clinic_facilities', values)}} />
+      </div>
+    )
+  }
+  const renderSchedule = () => {
+    return (
+      <div className="schedule-container">
+        <div className="container-title"> Program </div>
+        <div className="fields-wrapper">
+          <div className="weekdays-container">
+            {Object.entries(schedule).map(([weekday, inter], i) => {
+              return (
+                <div className={"day" + (activeDay === weekday ? " active" : '')}
+                     onClick={() => setActiveDay(weekday)} key={i}
+                >
+                  <span>{weekday}</span>
+                  {inter.map((interval, index) => {
+                    return <span key={index} className={'interval'}>
+                      {interval.startTime} - {interval.endTime}
+                      <img src={'/images/close_btn.svg'} onClick={() => handleRemoveTime(index)} />
+                    </span>
+                  })}
+                </div>
+              )
+            })}
+          </div>
+          <div className="time-wrapper">
+            <div className="time-container">
+              <div className="start-time">
+                <span>De la ora: </span>
+                <input type="time" name="startTime" value={interval.startTime} min="00:00" max="23:59" required
+                       onChange={(e) => {setInterval({...interval, startTime: e.target.value})}}
+                />
+              </div>
+              <div className="end-time">
+                <span>Pana la ora: </span>
+                <input type="time" name="endTime" value={interval.endTime} min="00:00" max="23:59" required
+                       onChange={(e) => {setInterval({...interval, endTime: e.target.value})}}
+                />
+              </div>
+            </div>
+            <input className="button border-button" value="Adauga"
+                   onClick={() => {
+                     setSchedule({...schedule, [activeDay]: [...schedule[activeDay], {startTime: interval.startTime, endTime: interval.endTime}]})
+                     setInterval({startTime: '00:00', endTime: '23:59'})
+                   }}
+            />
+          </div>
+        </div>
+      </div>
+    )
+  }
 
 
   return (
@@ -476,56 +714,22 @@ const ClinicProfile = () => {
       <div className="data-container">
         <img alt={'Unitate medicala'} src="/images/unit.svg" />
         <h1>Profil</h1>
-        <form onSubmit={handleSubmit}>
-          { renderContactData() }
-          { renderDescription() }
-          { renderHQ() }
-          <div className="specialities-container">
-            {/* <div className="container-title">Specialitati</div> */}
-            <Dropdown title="Specialitati unitate"/>
-          </div>
-          <div className="facilities-container">
-            {/* <div className="container-title">Facilitati unitate</div> */}
-            <Dropdown title="Facilitati unitate"/>
-          </div>
-
-          <div className="schedule-container">
-            <div className="container-title"> Program </div>
-            <div className="fields-wrapper">
-              <div className="weekdays-container">
-                {schedule.map((day, i) => {
-                  return (
-                    <div className={"day" + (activeDay.weekday === day.weekday ? " active" : '')} onClick={() => handleActiveDay('weekday', day.weekday)} key={i}>
-                      <span>{day.weekday}</span>
-                      {(day.startTime && day.endTime)
-                        ?
-                        <span>{day.startTime} - {day.endTime}</span>
-                        : <span> - </span>
-                      }
-                    </div>
-                  )
-                })}
-              </div>
-              <div className="time-wrapper">
-                <div className="time-container">
-                  <div className="start-time">
-                    <span>De la ora: </span>
-                    <input type="time" name="startTime" value={activeDay.startTime}
-                           min="00:00" max="23:59" required onChange={(e) => handleActiveDay(e)} />
-                  </div>
-                  <div className="end-time">
-                    <span>Pana la ora: </span>
-                    <input type="time" name="endTime" value={activeDay.endTime}
-                           min="00:00" max="23:59" required onChange={(e) => handleActiveDay(e)} />
-                  </div>
-                </div>
-                <input className="button border-button" type="submit" value="Adauga" onClick={handleScheduleChange} />
-              </div>
-            </div>
-          </div>
-
-          <input className="button" type="submit" value="Salveaza profilul" />
-        </form>
+        {
+          loading
+            ? <LoadingSpinner />
+            : (
+              <form onSubmit={handleSubmit}>
+                { renderContactData() }
+                { renderDescription() }
+                { renderHQ() }
+                { renderDoctors() }
+                { renderSpecialities() }
+                { renderFacilities() }
+                { renderSchedule() }
+                <input className="button" type="submit" value="Salveaza profilul" />
+              </form>
+            )
+        }
       </div>
     </div>
   )
