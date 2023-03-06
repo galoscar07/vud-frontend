@@ -96,12 +96,12 @@ function Homepage() {
         Cauti clinici pentru tine ?
       </h1>
       <div className="dropdown">
-        {/* <Select classNamePrefix='drop' 
-        defaultValue="clinica"
+        <Select classNamePrefix='drop'
+          defaultValue={{ label: "Clinica", value: "clinica" }}
           value={selectedOption}
           onChange={handleChange}
           options={options}
-        /> */}
+        />
       </div>
       <form className="searchbar">
         <input className="search" type="text" placeholder="Cauta" name="search" />
