@@ -22,6 +22,7 @@ export const API_MAP = {
   UPDATE_ADMIN_DATA: 'auth/update-admin-data/',
   // PUT Update medical clinic data types
   PUT_MEDICAL_TYPES: 'auth/update-clinic-type-data/',
+  PUT_UPDATE_CLINIC_PROFILE: 'auth/update-clinic-profile/',
 
   // OPTIONS
   // GET Medical Unity Type
@@ -61,12 +62,22 @@ export const routes = {
   PROFILE:'/clinic-profile'
 }
 
-export const makeRequestLogged = (url, method, body, authToken) => {
+export const makeRequestLogged = (url, method, body, authToken, type=null) => {
   if (!body) {
     return fetch(url, {
       method: method,
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
+        'Authorization': `Bearer ${authToken}`
+      }
+    })
+  }
+  if (type) {
+    debugger
+    return fetch(url, {
+      method: method,
+      body: body,
+      headers: {
         'Authorization': `Bearer ${authToken}`
       }
     })

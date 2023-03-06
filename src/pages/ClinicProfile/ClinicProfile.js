@@ -2,8 +2,10 @@ import React, {useEffect, useRef, useState} from 'react'
 import Dropdown from '../../components/Dropdown/Dropdown';
 import "./ClinicProfile.scss";
 import _ from 'lodash';
-import {API_MAP, getAPILink} from "../../utils/routes";
+import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import {getAuthTokenFromLocal} from "../../utils/localStorage";
+import {useNavigate} from "react-router-dom";
 
 const days = {
   'Luni': [],
@@ -19,6 +21,9 @@ const days = {
 const ClinicProfile = () => {
   // Loading var
   const [loading, setLoading] = useState(true)
+
+  // Navigate
+  const navigate = useNavigate();
 
   // Inputs state
   const [state, setState] = useState({
@@ -113,34 +118,30 @@ const ClinicProfile = () => {
   // State and Functions for doctor
   const [doctor, setDoctor] = useState([{
     name: '',
-    academic_degree: '',
-    speciality: '',
-    competences: '',
+    academic_degree: [],
+    speciality: [],
+    competences: [],
     link: '',
-    profile_photo: '',
+    profile_photo: null,
+    profile_picture_preview: null,
   }])
   const [docHighlighted, setDocHighlighted] = useState(0)
   const inputRefDoctor = useRef();
   const addDoctor = () => {
-    setDoctor([...doctor, { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: ''}])
+    setDoctor([...doctor, { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null}])
   }
-  const handleDoctorPhotoUploadClick = () => {
+  const handleDoctorPhotoUploadClickDoctor = () => {
     inputRefDoctor.current.click();
   };
   const handleFileChangeDoctor = (event) => {
-    const img = event.target.files[0]
-    const reader = new FileReader();
-    // TODO Daca incerci sa pui poza a doua oara ramane tot prima. DE CEEEEEE ?
-    reader.onloadend = () => {
-      const copy =  _.cloneDeep(doctor)
-      copy[docHighlighted].profile_picture = reader.result
-      setDoctor(copy)
-    };
-    reader.readAsDataURL(img);
+    const copy =  _.cloneDeep(doctor)
+    copy[docHighlighted].profile_photo = event.target.files[0]
+    copy[docHighlighted].profile_picture_preview = URL.createObjectURL(event.target.files[0])
+    setDoctor(copy)
   }
   const deleteHighlightDoctor = (index) => {
     if (index === 0) {
-      setDoctor([{ name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: ''}])
+      setDoctor([{ name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null}])
     } else {
       const copy =  _.cloneDeep(doctor)
       copy.splice(index, 1)
@@ -160,8 +161,8 @@ const ClinicProfile = () => {
 
   }
   const saveCurrentDoctor = () => {
-    setDoctor([...doctor,  { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: ''}])
-    setHqHighlighted(hqHighlighted + 1)
+    setDoctor([...doctor, { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null}])
+    setDocHighlighted(docHighlighted + 1)
   }
 
   // States for HQs
@@ -170,6 +171,7 @@ const ClinicProfile = () => {
     address: '',
     link: '',
     profile_picture: null,
+    profile_picture_preview: null,
     medical_unit_types: []
   }])
   const [hqHighlighted, setHqHighlighted] = useState(0)
@@ -178,19 +180,14 @@ const ClinicProfile = () => {
     inputRef.current.click();
   };
   const handleFileChangeHQ = (event) => {
-    const img = event.target.files[0]
-    const reader = new FileReader();
-    // TODO Daca incerci sa pui poza a doua oara ramane tot prima. DE CEEEEEE ?
-    reader.onloadend = () => {
-      const copy =  _.cloneDeep(hq)
-      copy[hqHighlighted].profile_picture = reader.result
-      setHq(copy)
-    };
-    reader.readAsDataURL(img);
+    const copy =  _.cloneDeep(hq)
+    copy[hqHighlighted].profile_picture = event.target.files[0]
+    copy[hqHighlighted].profile_picture_preview = URL.createObjectURL(event.target.files[0])
+    setHq(copy)
   }
   const deleteHighlight = (index) => {
     if (index === 0) {
-      setHq([{ name: '', address: '', link: '', profile_picture: null, medical_unit_types: []}])
+      setHq([{ name: '', address: '', link: '', profile_picture: null, profile_picture_preview:null, medical_unit_types: []}])
     } else {
       const copy =  _.cloneDeep(hq)
       copy.splice(index, 1)
@@ -210,11 +207,11 @@ const ClinicProfile = () => {
 
   }
   const saveCurrentHq = () => {
-    setHq([...hq, { name: '', address: '', link: '', profile_picture: null, medical_unit_types: []}])
+    addNewHq()
     setHqHighlighted(hqHighlighted + 1)
   }
   const addNewHq = () => {
-    setHq([...hq, { name: '', address: '', link: '', profile_picture: null, medical_unit_types: []}])
+    setHq([...hq, { name: '', address: '', link: '', profile_picture: null, profile_picture_preview: null, medical_unit_types: []}])
   }
 
   // Dropdown States
@@ -240,12 +237,112 @@ const ClinicProfile = () => {
 
 
   const mapStateToObject = () => {
+    return {
+      // 1st card
+      clinic_name: state.clinic_name,
+      clinic_street: state.clinic_street,
+      clinic_number: state.clinic_number,
+      clinic_town: state.clinic_town,
+      clinic_county: state.clinic_county,
+      clinic_other_details: state.clinic_other_details,
+      primary_phone: state.primary_phone,
+      secondary_phone: multiplePhones.join("|"),
+      primary_email: state.primary_email,
+      secondary_email: multipleEmails.join("|"),
+      website: state.website,
+      website_facebook: state.website_facebook,
+      website_google: state.website_google,
+      website_linkedin: state.website_linkedin,
+      website_youtube: state.website_youtube,
 
+      // 2nd card
+      description: state.description,
+      // 3rd card
+      hqs: hq.filter((el) => el.name)
+        .map((el) => {
+          return {
+            name: el.name,
+            profile_picture: el.profile_picture,
+            link: el.link,
+            address: el.address,
+            medical_unit_types: el.medical_unit_types.map((md) => {return md.value})
+          }
+        }),
+      // 4th card
+      doctors: doctor.filter((el) => el.name )
+        .map((doc) => {
+          return {
+            name: doc.name,
+            profile_photo: doc.profile_photo,
+            link: doc.link,
+            academic_degree: doc.academic_degree.map((md) => {return md.value}),
+            speciality: doc.speciality.map((md) => {return md.value}),
+            competences: doc.competences.map((md) => {return md.value}),
+          }
+        }),
+      // 5th
+      clinic_specialities: state.clinic_specialities.map(el => {return el.value}),
+      // 6th
+      clinic_facilities: state.clinic_facilities.map(el => {return el.value}),
+      // 7th
+      clinic_schedule: JSON.stringify(schedule),
+    }
   }
 
   const handleSubmit = (event) => {
-    console.log(state);
     event.preventDefault();
+    const mapped = mapStateToObject()
+    const formData = new FormData()
+    formData.append('clinic_name', mapped.clinic_name)
+    formData.append('clinic_street', mapped.clinic_street)
+    formData.append('clinic_number', mapped.clinic_number)
+    formData.append('clinic_town', mapped.clinic_town)
+    formData.append('clinic_county', mapped.clinic_county)
+    formData.append('clinic_other_details', mapped.clinic_other_details)
+    formData.append('primary_phone', mapped.primary_phone)
+    formData.append('secondary_phone', mapped.secondary_phone)
+    formData.append('primary_email', mapped.primary_email)
+    formData.append('secondary_email', mapped.secondary_email)
+    formData.append('website', mapped.website)
+    formData.append('website_facebook', mapped.website_facebook)
+    formData.append('website_google', mapped.website_google)
+    formData.append('website_linkedin', mapped.website_linkedin)
+    formData.append('website_youtube', mapped.website_youtube)
+    formData.append('description', mapped.description)
+    formData.append('clinic_specialities', JSON.stringify(mapped.clinic_specialities))
+    formData.append('clinic_facilities', JSON.stringify(mapped.clinic_facilities))
+    formData.append('clinic_schedule', mapped.clinic_schedule)
+
+    formData.append('hq', JSON.stringify(mapped.hqs))
+    formData.append('doctor', JSON.stringify(mapped.doctors))
+    let index = 1
+    let images_keys = []
+    hq.forEach((el) => {
+      const key = el.name.split(' ').join('|') + '_hq_' + index
+      images_keys.push(key)
+      formData.append(key, el.profile_picture)
+      index +=1
+    })
+    doctor.forEach((el) => {
+      const key = el.name.split(' ').join('|') + '_doc_' + index
+      images_keys.push(key)
+      formData.append(key, el.profile_photo)
+      index +=1
+    })
+    formData.append('photoKeys', JSON.stringify(images_keys))
+
+    makeRequestLogged(
+      getAPILink(API_MAP.PUT_UPDATE_CLINIC_PROFILE),
+      'PUT',
+      formData,
+      getAuthTokenFromLocal(),
+      'multipart/form-data'
+    )
+      .then((response) => response.json())
+      .then((resp)=> {
+        if (resp.success) navigate(routes.THANK_YOU)
+       })
+      .catch((err) => {})
   };
 
   // useEffect
@@ -517,7 +614,7 @@ const ClinicProfile = () => {
               hq.map((hqElem, index) => {
                 return (
                   <div key={index} onClick={() => setHqHighlighted(index)} className={`card-HQ ${hqHighlighted === index && 'highlight'}`}>
-                    <img src={hqElem.profile_picture ? hqElem.profile_picture : '/images/user.svg'}/>
+                    <img src={hqElem.profile_picture_preview ? hqElem.profile_picture_preview : '/images/user.svg'}/>
                     <div className={'hq-data'}>
                       <div>{hqElem.name}</div>
                     </div>
@@ -584,7 +681,7 @@ const ClinicProfile = () => {
               doctor.map((doc, index) => {
                 return (
                   <div key={index} onClick={() => setDocHighlighted(index)} className={`card-HQ ${docHighlighted === index && 'highlight'}`}>
-                    <img src={doc.profile_picture ? doc.profile_picture : '/images/user.svg'}/>
+                    <img src={doc.profile_picture_preview ? doc.profile_picture_preview : '/images/user.svg'}/>
                     <div className={'hq-data'}>
                       <div>{doc.name}</div>
                     </div>
@@ -600,8 +697,8 @@ const ClinicProfile = () => {
           </div>
 
           <div className="col">
-            <span onClick={handleDoctorPhotoUploadClick} className={'add-photo'}>Incarca poza profil</span>
-            <input type="file" accept="image/*" onChange={handleFileChangeDoctor} ref={inputRef} style={{ display: 'none' }} />
+            <span onClick={handleDoctorPhotoUploadClickDoctor} className={'add-photo'}>Incarca poza profil</span>
+            <input type="file" accept="image/*" onChange={handleFileChangeDoctor} ref={inputRefDoctor} style={{ display: 'none' }} />
           </div>
           <div className="col">
             <div className="input-wrapper">
@@ -707,7 +804,6 @@ const ClinicProfile = () => {
       </div>
     )
   }
-
 
   return (
     <div className="clinic-profile-page">
