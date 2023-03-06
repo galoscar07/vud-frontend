@@ -66,6 +66,7 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     // TODO Problem when submitted once and then submit again you have to click the button twice
+    // TODO handle user sign in / sign out in header
     event.preventDefault();
     if (!isFormValid()) {
       return
