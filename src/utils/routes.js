@@ -72,7 +72,6 @@ export const makeRequestLogged = (url, method, body, authToken, type=null) => {
     })
   }
   if (type) {
-    debugger
     return fetch(url, {
       method: method,
       body: body,
