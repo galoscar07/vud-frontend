@@ -1,5 +1,5 @@
 import Select, { components } from "react-select";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import "./Dropdown.scss";
 
 const styles = {
@@ -47,10 +47,10 @@ const OptionsOutsideSelect = (props) => {
     const handleRemoveValue = (e) => {
         if (!onChange) return;
         const { name: buttonName } = e.currentTarget;
-        const removedValue = value.find((val) => val.value === buttonName);
+        const removedValue = value.find((val) => val.value.toString() === buttonName.toString());
         if (!removedValue) return;
         onChange(
-            value.filter((val) => val.value !== buttonName),
+            value.filter((val) => val.value.toString() !== buttonName.toString()),
             { buttonName, action: "remove-value", removedValue }
         );
     };
@@ -78,17 +78,25 @@ const OptionsOutsideSelect = (props) => {
 
 
 function Dropdown(props) {
-    const [selected, setSelected] = useState([]);
+    const [selected, setSelected] = useState(props.selected || []);
+
+    useEffect(() => {
+        setSelected(props.selected || []);
+    }, [props.selected])
+
     const handleSelectChange = (values) => {
         setSelected(values);
+        props.onSelect(values)
         console.log(selected, 'selected')
     };
+
+    const options = props.options ? props.options : optionsDefault
 
     return (
         <div className="dropdown">
             <div className="dropdown-title">{props.title}</div>
             <OptionsOutsideSelect
-                options={props.options}
+                options={options}
                 value={selected}
                 isMulti
                 onChange={handleSelectChange}

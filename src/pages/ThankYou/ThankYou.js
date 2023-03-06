@@ -1,7 +1,10 @@
 import React from 'react';
 import "./ThankYou.scss";
+import {useNavigate} from "react-router-dom";
+import {routes} from "../../utils/routes";
 
 const ThankYou = () => {
+  const navigate = useNavigate();
 
     return (
         <div className="thank-you-page">
@@ -11,7 +14,7 @@ const ThankYou = () => {
                 <p>Contul dvs. a fost creat cu succes! <br/> După ce acesta va fi aprobat vă vom trimite un email cu un link de activare. </p>
                 <p>Vă rugăm să dați click pe acel link pentru a putea intra în contul dumneavoastră</p>
             </div>
-            <input className="button" value="Pagina principală"/>
+            <input onClick={()=> {navigate(routes.HOMEPAGE)}} className="button" value="Pagina principală"/>
         </div>
     );
 }

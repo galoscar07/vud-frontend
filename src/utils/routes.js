@@ -1,5 +1,5 @@
-// const API_URL = 'http://'
-const API_URL_LOCAL = 'https://vud-be.herokuapp.com/'
+const API_URL_DEV = 'http://127.0.0.1:8000/'
+const API_URL = 'https://vud-be.herokuapp.com/'
 
 export const API_MAP = {
   // Creates new account and send link to verify email
@@ -12,20 +12,32 @@ export const API_MAP = {
   // Refresh token
   REFRESH_TOKEN: 'auth/refresh-token/',
   // Forget Password
-  FORGET_PASSWORD:'auth/password-reset-request',
+  FORGET_PASSWORD:'auth/password-reset-request/',
   // CRUD User Profile
   // GET User Profile
   USER_PROFILE: 'auth/get-user-profile/',
   // POST Updated field is clinic / is doctor
   UPDATE_USER_PROFILE: 'auth/update-user-profile-type/',
   // PUT Update admin data
-  UPDATE_ADMIN_DATA: 'auth/update-admin-data/'
+  UPDATE_ADMIN_DATA: 'auth/update-admin-data/',
+  // PUT Update medical clinic data types
+  PUT_MEDICAL_TYPES: 'auth/update-clinic-type-data/',
+  PUT_UPDATE_CLINIC_PROFILE: 'auth/update-clinic-profile/',
+
+  // OPTIONS
+  // GET Medical Unity Type
+  GET_MEDICAL_UNITY_TYPE: 'options/medical-unity-types/',
+  GET_ACADEMIC_DEGREES: 'options/academic-degrees/',
+  GET_SPECIALITIES: 'options/specialities/',
+  GET_COMPETENCES: 'options/competences/',
+  GET_CLINIC_SPECIALITIES: 'options/clinic-specialities/',
+  GET_MEDICAL_FACILITIES: 'options/medical-facilities/',
+  GET_FOOTER_LABELS: 'options/footer/',
 }
 
 export const getAPILink = (url) => {
-  // TODO Comment depending on the env
-  return API_URL_LOCAL + url
-  // return API_URL + url
+  // return API_URL_DEV + url
+  return API_URL + url
 }
 
 export const routes = {
@@ -49,12 +61,21 @@ export const routes = {
   PROFILE:'/clinic-profile'
 }
 
-export const makeRequestLogged = (url, method, body, authToken) => {
+export const makeRequestLogged = (url, method, body, authToken, type=null) => {
   if (!body) {
     return fetch(url, {
       method: method,
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
+        'Authorization': `Bearer ${authToken}`
+      }
+    })
+  }
+  if (type) {
+    return fetch(url, {
+      method: method,
+      body: body,
+      headers: {
         'Authorization': `Bearer ${authToken}`
       }
     })

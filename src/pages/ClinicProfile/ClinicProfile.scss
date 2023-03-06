@@ -1,96 +1,196 @@
 @import 'src/styles/form';
 
 .clinic-profile-page {
+  .extra_data_row {
+    display: flex;
+    align-items: center;
+    margin-top: $spacing-small;
+    input {
+      width: 17rem
+    }
+    img {
+      margin-left: $spacing-medium;
+      height: 25px;
+    }
+  }
 
-    .weekdays-container {
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  .add-photo {
+    color: $color-primary;
+    text-decoration: underline;
+    margin-left: $spacing-small;
+    cursor: pointer;
+  }
+
+  .delete-button {
+    color: $color-secondary;
+    text-decoration: underline;
+    margin-left: $spacing-small;
+    cursor: pointer;
+    text-align: right;
+  }
+
+  .card-HQ {
+    display: grid;
+    grid-template-columns: 32px auto;
+    grid-gap: $spacing-small;
+    padding: $spacing-small;
+    margin-right: $spacing-default;
+    max-width: 170px;
+    border: 1px solid #99A1AD;
+    border-radius: 2px;
+    background-color: #F2F7FF;
+    opacity: 0.4;
+    transition: opacity 0.3s;
+    cursor: pointer;
+    height: 72px;
+
+    &:hover {
+      opacity: 1;
+      background-color: rgba(white, 0.8);
     }
 
-    .time-wrapper {
-        border: 1px solid #E5E7EA;
+    &.highlight {
+      background-color: white;
+      opacity: 1;
+    }
 
-        .time-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: $spacing-medium;
-            column-gap: $spacing-medium;
-
-            .start-time,
-            .end-time {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-
-                input[type="time"]::-webkit-calendar-picker-indicator {
-                    background: none;
-                    display: none;
-                }
-
-                input {
-                    padding: $spacing-small $spacing-medium;
-                }
-
-                span {
-                    margin-bottom: $spacing-small;
-                }
-            }
+    img {
+      height: 32px;
+      width: 32px;
+      border-radius: 50%;
+    }
+    .hq-data {
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: calc(150px - 32px - 20px);
+      div {
+        &:first-of-type {
+          font-weight: bold;
         }
+      }
     }
+  }
 
-    .button {
-        width: 30%;
+  .textarea-description {
+    padding: $spacing-small;
+    height: 257px;
+  }
 
-        &.border-button {
-            width: 12% !important;
-            margin: $spacing-default auto;
-        }
-    }
+  .weekdays-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
 
+  .time-wrapper {
+    border: 1px solid #E5E7EA;
 
-    .day {
-        background-color: rgba($color-primary, 0.25);
-        padding: $spacing-small;
-        color: white;
+    .time-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: $spacing-medium;
+      column-gap: $spacing-medium;
+
+      .start-time,
+      .end-time {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
-        width: inherit;
-        cursor: pointer;
+        justify-content: center;
 
-        &.active {
-            background-color: $color-primary;
+        input[type="time"]::-webkit-calendar-picker-indicator {
+          background: none;
+          display: none;
         }
+
+        input {
+          padding: $spacing-small $spacing-medium;
+        }
+
+        span {
+          margin-bottom: $spacing-small;
+        }
+      }
     }
+  }
+
+  .button {
+    width: 30%;
+
+    &.border-button {
+      width: 12% !important;
+      margin: $spacing-default auto;
+    }
+  }
+
+
+  .day {
+    background-color: rgba($color-primary, 0.25);
+    padding: $spacing-small 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: inherit;
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+      background-color: #D1DFE2;
+    }
+
+    &.active {
+      background-color: $color-primary;
+      .interval {
+        img {
+          background-color: white;
+          opacity: 1;
+          pointer-events: unset;
+        }
+      }
+    }
+  }
+  .interval {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      background-color: rgba(white, 0.1);
+      opacity: 0.1;
+      pointer-events: none;
+      border-radius: 50%;
+      height: 17px;
+      margin-left: 5px;
+    }
+  }
 }
 
 @media screen and (max-width: $mobile-big-width) {
-    .clinic-profile-page {
-        .button {
-            &.border-button {
-                width: 50% !important;
-            }
-        }
-
-        .schedule-container {
-            .fields-wrapper {
-                display: flex;
-                flex-direction: row;
-                gap: 0;
-            }
-
-            .weekdays-container {
-                display: flex;
-                flex-direction: column;
-                width: 90%;
-            }
-            .time-wrapper{
-                padding: 0 $spacing-xsmall;
-            }
-        }
+  .clinic-profile-page {
+    .button {
+      &.border-button {
+        width: 50% !important;
+      }
     }
+
+    .schedule-container {
+      .fields-wrapper {
+        display: flex;
+        flex-direction: row;
+        gap: 0;
+      }
+
+      .weekdays-container {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+      }
+      .time-wrapper{
+        padding: 0 $spacing-xsmall;
+      }
+    }
+  }
 }
