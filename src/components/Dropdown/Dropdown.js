@@ -2,15 +2,6 @@ import Select, { components } from "react-select";
 import {useEffect, useState} from "react";
 import "./Dropdown.scss";
 
-const optionsDefault = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-    { value: 'blueberry', label: 'Blueberry' },
-    { value: 'bannana', label: 'Bannana' },
-]
-
-
 const styles = {
 
     multiValue: ({

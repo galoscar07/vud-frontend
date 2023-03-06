@@ -1,0 +1,66 @@
+@import 'src/styles/base';
+
+.clinic-filter-container {
+    background-color: white;
+    padding: $spacing-xbig $spacing-default;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .info-container {
+        column-gap:$spacing-small;
+        .rating-container {
+            row-gap: $spacing-xsmall;
+
+            .clinic-img {
+                width: 4rem;
+                height: 4rem;
+                border-radius: 100%;
+            }
+
+            .score-wrapper {
+                background-color: $color-primary;
+                color: white;
+                padding: $spacing-xsmall;
+                border-radius: 2px 8px 2px 2px;
+                font-weight: 600;
+
+            }
+        }
+
+        .text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: baseline;
+            justify-content: center;
+            font-weight: 600;
+            margin-left: $spacing-medium;
+
+            .title {
+                font-size: $font-size-xbig;
+                margin-bottom: $spacing-default;
+            }
+
+            .specialties {
+                color: $color-primary;
+            }
+
+            .type {
+                color: $color-blue;
+                font-size: $font-medium;
+            }
+        }
+
+        .contact-wrapper {
+            display: flex;
+            column-gap: $spacing-small;
+            margin-top: $spacing-small;
+            font-weight:300;
+
+            .contact {
+                display: flex;
+                column-gap: $spacing-xsmall;
+            }
+        }
+    }
+}

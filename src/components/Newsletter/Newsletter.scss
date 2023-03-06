@@ -1,0 +1,49 @@
+@import 'src/styles/base';
+
+.newsletter-component {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: $spacing-small;
+
+    .title {
+        color: $color-blue;
+        font-size: $font-size-xbig;
+        font-weight: 500;
+        margin-bottom: $spacing-small;
+    }
+
+    img {
+        width: 11rem;
+
+    }
+
+    .newsletter-form {
+        padding: $spacing-default 0;
+        color: $color-blue;
+
+        label {
+            float: left;
+            margin-bottom: $spacing-xsmall;
+        }
+
+        .button {
+            width: 100%;
+        }
+
+        .checkbox-container {
+            display: flex;
+            flex-direction: column;
+            padding: $spacing-small 0;
+            span{
+                text-decoration: underline;
+            }
+
+            .checkbox-wrapper {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+}
