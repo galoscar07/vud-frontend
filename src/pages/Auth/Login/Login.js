@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link, useNavigate } from "react-router-dom";
-import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../../utils/routes";
+import {API_MAP, AUTH_CLINIC_MAP_STEP, getAPILink, makeRequestLogged, routes} from "../../../utils/routes";
 import "./Login.scss"
 import _ from "lodash";
-import {setAuthParamsToLocal} from "../../../utils/localStorage";
+import {setAuthParamsToLocal, setUserToLocal} from "../../../utils/localStorage";
 
 const Login = () => {
 
@@ -90,14 +90,19 @@ const Login = () => {
       })
       .then((data) => {
         setAuthParamsToLocal(data?.access_token, data.refresh_token)
+        setUserToLocal({first_name: data?.first_name, last_name: data?.last_name, profile_picture: data?.profile_picture})
         makeRequestLogged(getAPILink(API_MAP.USER_PROFILE), 'GET', null, data?.access_token)
           .then((response) => {
             return response.json()
           })
           .then((resp) => {
+            if (resp.step) {
+              navigate(AUTH_CLINIC_MAP_STEP[resp.step])
+            }
             if (resp.error === 'No profile') {
               navigate(routes.ADD_PROFILE)
             }
+            navigate(routes.HOMEPAGE)
           })
           .catch((err) => {
           })

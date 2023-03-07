@@ -17,6 +17,7 @@ const AdminData = () => {
         company: '',
         position: '',
         streetNo: '',
+        street: '',
         // TODO Handle this
         county: 'Bucuresti',
         town: 'Bucuresti',
