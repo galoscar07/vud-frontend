@@ -132,7 +132,7 @@ const Login = () => {
           {state.server.error &&
             <div className={'error'}>{state.server.error}</div>
           }
-          <input className={`button ${!formValid ? 'disabled' : ''}`} type="submit" value="Login" />
+          <button className={`button ${!formValid ? 'disabled' : ''}`} onClick={handleSubmit} >Login</button>
 
         </form>
       </div>

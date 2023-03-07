@@ -90,6 +90,7 @@ function Homepage() {
     setSelected(selectedOption);
     console.log(`Option selected:`, selectedOption);
   }
+  const handleSearch = () => { }
   return (
     <div className="home-page">
       <h1>
@@ -105,7 +106,7 @@ function Homepage() {
       </div>
       <form className="searchbar">
         <input className="search" type="text" placeholder="Cauta" name="search" />
-        <button className=" border-button" type="submit">Cauta</button>
+        <button className=" border-button" onClick={handleSearch}>Cauta</button>
       </form>
       <div className="tags-wrapper">
         {tags.map((tag, i) =>
