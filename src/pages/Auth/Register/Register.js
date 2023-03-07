@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import "./Register.scss"
 import _ from 'lodash';
 import { API_MAP, getAPILink } from "../../../utils/routes";
@@ -80,8 +80,7 @@ const Register = () => {
     setTermsChecked(!areTermsChecked);
   };
 
-  const handleSubmit = (event) => {
-    // TODO Problem when submitted once and then submit again you have to click the button twice
+  const handleSubmit = useCallback(event => {
     event.preventDefault();
     if (!isFormValid() || !formValid) {
       return
@@ -110,8 +109,8 @@ const Register = () => {
       .catch((err) => {
         setState({ ...state, server: { error: "Ceva a mers prost. Va rugam incercati mai tarziu" } })
       })
-  };
-  
+  });
+
   const handleSubmitResendEmail = () => {
     fetch(
       getAPILink(API_MAP.RESEND_REGISTER), {
