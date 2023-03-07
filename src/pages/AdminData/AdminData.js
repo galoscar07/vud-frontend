@@ -18,6 +18,7 @@ const AdminData = () => {
         position: '',
         street: '',
         streetNo: '',
+        street: '',
         county: 'Bucuresti',
         town: 'Bucuresti',
         fileList: [],

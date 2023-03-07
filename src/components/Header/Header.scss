@@ -9,6 +9,10 @@
   grid-template-columns: 1fr 2fr;
   padding: 0 3.125rem;
 
+  .logo {
+    cursor: pointer;
+  }
+
   .hamburger_menu {
     display: flex;
     align-items: center;
@@ -79,6 +83,7 @@
 
     .logo {
       width: 7rem;
+      cursor: pointer;
     }
 
     .hamburger_icon , .close_btn{

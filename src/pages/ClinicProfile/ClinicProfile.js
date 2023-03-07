@@ -43,6 +43,8 @@ const ClinicProfile = () => {
     description: '',
     clinic_specialities: [],
     clinic_facilities: [],
+    profile_picture: null,
+    profile_picture_preview: null,
   })
   const [errorState, setErrorState] = useState({
     clinic_name: '',
@@ -71,6 +73,15 @@ const ClinicProfile = () => {
   // Handle dropdown selection
   const onSelectDropdown = (key, value) => {
     setState((prevState) => ({ ...prevState, [key]: value }));
+  }
+
+  // Profile photo user
+  const profileImgRef = useRef()
+  const handleProfilePictureUser = () => {
+    profileImgRef.current.click();
+  }
+  const handleFileChangeProfilePicUser = (event) => {
+    setState({...state, profile_picture: event.target.files[0], profile_picture_preview: URL.createObjectURL(event.target.files[0])})
   }
 
   // States and Functions for extra phone number and emails
@@ -440,8 +451,13 @@ const ClinicProfile = () => {
   const renderContactData = () => {
     return (
       <div className="contact-data">
-        <div className="container-title">
+        <div className="container-title profile-photo">
           Date de contact profil
+          <div className="col">
+            <span onClick={handleProfilePictureUser} className={'add-photo'}>Adaugă poză de profil</span>
+            <input type="file" accept="image/*" onChange={handleFileChangeProfilePicUser} ref={profileImgRef} style={{ display: 'none' }} />
+            <img alt='profile uploaded user' src={state.profile_picture_preview ? state.profile_picture_preview : '/images/user.svg'}/>
+          </div>
         </div>
         <div className="fields-wrapper">
           <div className="col">
@@ -508,15 +524,15 @@ const ClinicProfile = () => {
         <div className="fields-wrapper flex">
           <div className="field-container">
             <label>*Telefon call center</label>
-            <input className={errorState.clinic_name && 'error'} name="primary_phone" type="text"
-              value={state.primary_phone} onChange={handleFieldChange} placeholder={'Call center'} />
+            <input className={errorState.primary_phone && 'error'} name="primary_phone" type="text"
+                   value={state.primary_phone}  onChange={handleFieldChange} placeholder={'Call center'} />
             {
               multiplePhones.map((el, index) => {
                 return (
                   <div className={'extra_data_row'} key={index}>
-                    <input name={index.toString()} type="text" placeholder={`Al ${index + 2}-lea numar`}
-                      value={el} onChange={(e) => handlePhoneEmailChange(e.target.value, index, multiplePhones, setMultiplePhones)} />
-                    <img src={'/images/close_btn.svg'} onClick={() => handleRemoveOtherInput(index, 'phone')} />
+                    <input name={index.toString()} type="text" placeholder={`Al ${index+2}-lea numar`}
+                           value={el}  onChange={(e) => handlePhoneEmailChange(e.target.value, index, multiplePhones, setMultiplePhones)} />
+                    <img alt="close button" src={'/images/close_btn.svg'} onClick={() => handleRemoveOtherInput(index, 'phone')} />
                   </div>
                 )
               })
@@ -537,9 +553,9 @@ const ClinicProfile = () => {
               multipleEmails.map((el, index) => {
                 return (
                   <div className={'extra_data_row'} key={index}>
-                    <input name={index.toString()} type="text" placeholder={`Al ${index + 2}-lea email`}
-                      value={el} onChange={(e) => handlePhoneEmailChange(e.target.value, index, multipleEmails, setMultipleEmails)} />
-                    <img src={'/images/close_btn.svg'} onClick={() => handleRemoveOtherInput(index, 'email')} />
+                    <input name={index.toString()} type="text" placeholder={`Al ${index+2}-lea email`}
+                           value={el}  onChange={(e) => handlePhoneEmailChange(e.target.value, index, multipleEmails, setMultipleEmails)} />
+                    <img alt="Imagine inchidere" src={'/images/close_btn.svg'} onClick={() => handleRemoveOtherInput(index, 'email')} />
                   </div>
                 )
               })
@@ -613,7 +629,7 @@ const ClinicProfile = () => {
               hq.map((hqElem, index) => {
                 return (
                   <div key={index} onClick={() => setHqHighlighted(index)} className={`card-HQ ${hqHighlighted === index && 'highlight'}`}>
-                    <img src={hqElem.profile_picture_preview ? hqElem.profile_picture_preview : '/images/user.svg'} />
+                    <img alt="Imagine uploaded sediu" src={hqElem.profile_picture_preview ? hqElem.profile_picture_preview : '/images/user.svg'}/>
                     <div className={'hq-data'}>
                       <div>{hqElem.name}</div>
                     </div>
@@ -664,7 +680,9 @@ const ClinicProfile = () => {
               sterge unitate
             </div>
           </div>
-          <input className="button border-button" onClick={saveCurrentHq} value="Salveaza" />
+          <div className="button border-button" onClick={saveCurrentHq} >
+            Salveaza
+          </div>
         </div>
       </div>
     )
@@ -681,7 +699,7 @@ const ClinicProfile = () => {
               doctor.map((doc, index) => {
                 return (
                   <div key={index} onClick={() => setDocHighlighted(index)} className={`card-HQ ${docHighlighted === index && 'highlight'}`}>
-                    <img src={doc.profile_picture_preview ? doc.profile_picture_preview : '/images/user.svg'} />
+                    <img alt="Imagine profile doctor" src={doc.profile_picture_preview ? doc.profile_picture_preview : '/images/user.svg'}/>
                     <div className={'hq-data'}>
                       <div>{doc.name}</div>
                     </div>
@@ -738,7 +756,9 @@ const ClinicProfile = () => {
               sterge unitate
             </div>
           </div>
-          <input className="button border-button" onClick={saveCurrentDoctor} value="Salveaza" />
+          <div className="button border-button" onClick={saveCurrentDoctor}>
+            Salveaza
+          </div>
         </div>
       </div>
     )
@@ -774,7 +794,7 @@ const ClinicProfile = () => {
                   {inter.map((interval, index) => {
                     return <span key={index} className={'interval'}>
                       {interval.startTime} - {interval.endTime}
-                      <img src={'/images/close_btn.svg'} onClick={() => handleRemoveTime(index)} />
+                      <img alt="buton inchis" src={'/images/close_btn.svg'} onClick={() => handleRemoveTime(index)} />
                     </span>
                   })}
                 </div>
@@ -796,12 +816,14 @@ const ClinicProfile = () => {
                 />
               </div>
             </div>
-            <input className="button border-button" value="Adauga"
-              onClick={() => {
-                setSchedule({ ...schedule, [activeDay]: [...schedule[activeDay], { startTime: interval.startTime, endTime: interval.endTime }] })
-                setInterval({ startTime: '00:00', endTime: '23:59' })
-              }}
-            />
+            <div className="button border-button"
+                   onClick={() => {
+                     setSchedule({...schedule, [activeDay]: [...schedule[activeDay], {startTime: interval.startTime, endTime: interval.endTime}]})
+                     setInterval({startTime: '00:00', endTime: '23:59'})
+                   }}
+            >
+              Adauga
+            </div>
           </div>
         </div>
       </div>

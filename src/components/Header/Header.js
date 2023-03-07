@@ -1,25 +1,37 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import './Header.scss'
-import { NavLink } from "react-router-dom";
-// import { useLocation } from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import { routes } from "../../utils/routes";
+import {getUserFromLocal} from "../../utils/localStorage";
 
 
 function Header() {
-  // get location
-  // assigning location variable
-  // const location = useLocation();
-  // destructuring pathname from location
-  // const { pathname } = location;
-  // Javascript split method to get the name of the path in array
-  // const splitLocation = pathname.split("/");
+  // TODO Make all the elements to be centered
+  const navigate = useNavigate();
 
-  const isUserLoggedIn = false
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [user, setUser] = useState({
+    firstName: null,
+    lastName: null,
+    profilePicture: null
+  })
 
   const toggleMenu = (toggleState) => {
     setIsMenuOpen(toggleState);
   }
+
+  useEffect(() => {
+    const user = getUserFromLocal()
+    if (Object.keys(user).length > 0) {
+      setUser({
+        firstName: user.first_name || "",
+        lastName: user.last_name || "",
+        profilePicture: user.profile_picture || null
+      })
+      setIsUserLoggedIn(true)
+    }
+  }, [])
 
   const renderUserProfile = () => {
     if (isUserLoggedIn) {
@@ -27,9 +39,10 @@ function Header() {
         <div className={'user_profile_container_user'}>
           <NavLink
             className={'profile-text'}
-            to={routes.LOGIN}
-          >Cont</NavLink>
-          <img alt={'imagine profile user'} className={'profile_pic'} src={'favicon.ico'} />
+            to={routes.DASHBOARD}
+          >Cont {user.firstName} {user.lastName}</NavLink>
+          <img alt={'imagine profile user'} className={'profile_pic'}
+               src={user.profilePicture ? URL.createObjectURL(user.profilePicture) : '/images/user.svg' } />
         </div>
       )
     } else {
@@ -45,7 +58,7 @@ function Header() {
 
   return (
     <div className={'header'}>
-      <img className={'logo'} alt={'imagine logo vreau un doctor'} src={'/logo.svg'} />
+      <img onClick={() => navigate(routes.HOMEPAGE)} className={'logo'} alt={'imagine logo vreau un doctor'} src={'/logo.svg'} />
       <div onClick={() => toggleMenu(!isMenuOpen)} className={'hamburger_icon'}><img src={isMenuOpen ? '/images/menu_open.svg' : '/images/menu_closed.svg'}></img></div>
       <div className={`hamburger_menu ${isMenuOpen ? 'open' : 'closed'}`}>
         <div className={'menu_items'}>
