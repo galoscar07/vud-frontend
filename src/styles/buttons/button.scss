@@ -2,15 +2,14 @@
 
 .button {
   @include flex-centered;
-  width:100%;
+  width: 100%;
   user-select: none;
   background-color: $color-primary;
   border-radius: $radius-small;
   color: $color-white;
   font-size: $font-size-big;
   font-weight: $font-weight-medium;
-  padding-left: $spacing-small;
-  padding-right: $spacing-small;
+  padding: $spacing-small;
   text-align: center;
   box-shadow: 0 3px 6px 0 rgba(black, 0.2);
   transition: box-shadow 0.1s $ease-in-out, background-color 0.1s $ease-in-out, transform 0.1s $ease-in-out;
@@ -134,7 +133,9 @@
       background-color: $color-disabled;
       box-shadow: none;
 
-      &:hover, &:focus, &:active {
+      &:hover,
+      &:focus,
+      &:active {
         background-color: $color-disabled;
         box-shadow: none;
         transform: none;
@@ -146,4 +147,3 @@
     }
   }
 }
-

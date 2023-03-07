@@ -51,7 +51,6 @@ form {
 
     .button {
         user-select: none;
-        width: 30%;
         margin: auto;
     }
 
@@ -116,9 +115,10 @@ form {
 
 @media screen and (max-width: $mobile-big-width) {
     .button {
-        width: 50%!important;
+        width: 50% !important;
     }
-    .flex{
+
+    .flex {
         flex-direction: column;
     }
 }

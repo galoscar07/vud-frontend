@@ -4,6 +4,29 @@
 .home-page {
     padding: $spacing-big $spacing-xbig;
 
+    .main-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $color-primary;
+        font-size: $font-title ;
+        font-weight: 600;
+        column-gap: $spacing-huge;
+        margin-bottom:$spacing-default;
+    }
+
+    .dropdown {
+        width: auto;
+
+        select {
+            color: white;
+            background-color: $color-primary;
+            background: $color-primary url("/images/drop-white.svg") right 12px center no-repeat;
+            width: 17rem;
+            text-align: center;
+        }
+    }
+
     .searchbar {
         display: flex;
         margin-bottom: $spacing-xbig;
@@ -86,6 +109,7 @@
         .subtitle {
             text-decoration: underline;
             color: $color-primary;
+            cursor: pointer;
             font-size: $font-normal;
         }
     }

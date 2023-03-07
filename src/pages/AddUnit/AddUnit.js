@@ -53,11 +53,11 @@ const AddUnit = () => {
           if (resp.success === 'Success') {
             navigate(routes.PROFILE)
           } else {
-            setState({ ...state, error: "A aparut o eraore. Va rugam incercati din nou" })
+            setState({ ...state, error: "Ceva nu a funcționat. Vă rugăm să încercați în câteva minute" })
           }
         })
         .catch((err) => {
-          setState({ ...state, error: "A aparut o eraore. Va rugam incercati din nou" })
+          setState({ ...state, error: "Ceva nu a funcționat. Vă rugăm să încercați în câteva minute" })
         })
     }
   }
@@ -72,7 +72,7 @@ const AddUnit = () => {
           {
             state.error && <div className={'error'}>{state.error}</div>
           }
-          <input className="button" type="submit" value="Mergi mai depart" />
+                <button className="button " onClick={onSubmit} >Mergi mai departe</button>
         </form>
       </React.Fragment>
     )

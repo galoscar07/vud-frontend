@@ -90,19 +90,18 @@ function Homepage() {
     setSelected(selectedOption);
     console.log(`Option selected:`, selectedOption);
   }
+  const showAll = () => { }
   const handleSearch = () => { }
   return (
     <div className="home-page">
-      <h1>
-        Cauti clinici pentru tine ?
-      </h1>
-      <div className="dropdown">
-
-        <select name="searching" id="searching">
-          <option value="clinica">Clinica</option>
-          <option value="doctor">Doctor</option>
-          <option value="specialitate">Specialitate</option>
-        </select>
+      <div className="main-title">
+        Cauti  <div className="dropdown">
+          <select name="searching" id="searching" onChange={(e) => handleChange(e.target.value)}>
+            <option value="clinica">Clinica</option>
+            <option value="doctor">Doctor</option>
+            <option value="specialitate">Specialitate</option>
+          </select>
+        </div> pentru tine ?
       </div>
       <form className="searchbar">
         <input className="search" type="text" placeholder="Cauta" name="search" />
@@ -110,7 +109,7 @@ function Homepage() {
       </form>
       <div className="tags-wrapper">
         {tags.map((tag, i) =>
-          <div className="tag-container">
+          <div className="tag-container" key={i}>
             <img key={i} alt={tag.icon} src={`/images/icons/${tag.icon}.svg`} />
             <div className="text-wrapper">
               <span className="title">{tag.title}</span>
@@ -126,13 +125,13 @@ function Homepage() {
               <img src="/images/star_full.svg" />
               Top unitati medicale
             </div>
-            <div className="subtitle">
+            <div className="subtitle" onClick={showAll}>
               Toate unitatile
             </div>
           </div>
           <div className="results-container">
             {clinics.map((clinic, i) =>
-              <ClinicFilterContainer clinic={clinic} />
+              <ClinicFilterContainer key={i} clinic={clinic} />
             )}
           </div>
         </div>
