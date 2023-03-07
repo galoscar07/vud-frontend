@@ -1,8 +1,8 @@
 import React from 'react'
 import "./AdminData.scss"
-import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
-import {getAuthTokenFromLocal} from "../../utils/localStorage";
-import {useNavigate} from "react-router-dom";
+import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/routes";
+import { getAuthTokenFromLocal } from "../../utils/localStorage";
+import { useNavigate } from "react-router-dom";
 
 const AdminData = () => {
     const navigate = useNavigate();
@@ -16,62 +16,75 @@ const AdminData = () => {
         emailOpt: '',
         company: '',
         position: '',
+        street: '',
         streetNo: '',
-        // TODO Handle this
         county: 'Bucuresti',
         town: 'Bucuresti',
+        fileList: [],
+        error: ''
     });
+
     const handleFieldChange = (value, title) => {
         setValues((prevState) => ({ ...prevState, [title]: value }));
     };
 
     const handleSubmit = (event) => {
-        console.log(values);
         event.preventDefault();
-        // TODO Validate data
-        makeRequestLogged(
-          getAPILink(API_MAP.UPDATE_ADMIN_DATA),
-          'PUT',
-          JSON.stringify({
-              first_name: values.firstName,
-              last_name: values.lastName,
-              phone_number:	values.phoneNo,
-              contact_email:	values.email,
-              phone_number_optional: values.phoneNoOpt,
-              contact_email_optional: values.emailOpt,
-              company: values.company,
-              company_role: values.position,
-              // TODO Handle change on value
-              county: 'Bucuresti',
-              town: 'Bucuresti',
-              street: values.street,
-              number: values.streetNo,
-          }),
-          getAuthTokenFromLocal()
-        ).then((response) => response.json())
-          .then((resp)=> {
-              if (resp.success === 'Saved') {
-                  navigate(routes.ADD_UNIT)
-              }
-          })
-          .catch((err) => {
-
-          })
+        if (values.firstName.length === 0 || values.lastName.length === 0 || values.street.length === 0) {
+            setValues({ ...values, error: "Va rugam sa completati campurile obligatorii" })
+        } else {
+            // TODO Validate data
+            makeRequestLogged(
+                getAPILink(API_MAP.UPDATE_ADMIN_DATA),
+                'PUT',
+                JSON.stringify({
+                    first_name: values.firstName,
+                    last_name: values.lastName,
+                    phone_number: values.phoneNo,
+                    contact_email: values.email,
+                    phone_number_optional: values.phoneNoOpt,
+                    contact_email_optional: values.emailOpt,
+                    company: values.company,
+                    company_role: values.position,
+                    county: values.county,
+                    town: values.town,
+                    street: values.street,
+                    number: values.streetNo,
+                    // fileList:values.fileList,
+                }),
+                getAuthTokenFromLocal()
+            ).then((response) => response.json())
+                .then((resp) => {
+                    if (resp.success === 'Saved') {
+                        navigate(routes.ADD_UNIT)
+                    } else {
+                        setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+                    }
+                })
+                .catch((err) => {
+                    setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+                })
+        }
     };
 
-    const deleteFile = () => {
-        // TODO Finish this
+    const updateList = (name, value) => {
+        let files;
+        if (values.fileList) {
+            files = values.fileList;
+        } else files = [];
+        let input = document.getElementById('file');
+        for (let i = 0; i < input.files.length; ++i) {
+            files.push(input.files.item(i).name)
+        }
+        setValues({ ...values, fileList: files })
+        handleFieldChange(name, value)
     }
 
-    const updateList = (name, value) => {
-        let input = document.getElementById('file');
-        let output = document.getElementById('file-list');
-        let children = "";
-        for (let i = 0; i < input.files.length; ++i) {
-            children += '<div class="selected-file">' + input.files.item(i).name + '<span onclick=console.log("delete")>' + ' <img src="/images/delete.svg"/>' + ' </span>' + '</div>';
-        }
-        output.innerHTML = '<div class="selected-file-wrapper">' + children + '</div>';
-        handleFieldChange(name, value)
+    const deleteFile = (fileName) => {
+        let updatedList = values.fileList.filter(function(item) {
+            return item !== fileName;
+        })
+        setValues({ ...values, fileList: updatedList })
     }
 
     return (
@@ -119,16 +132,16 @@ const AdminData = () => {
                                 <div className="input-wrapper">
                                     <label>Telefon (optional)</label>
                                     <input name="phoneNoOpt" type="text" value={values.phoneNoOpt}
-                                           onChange={(e) => {
-                                               handleFieldChange(e.target.value, e.target.name);
-                                           }} />
+                                        onChange={(e) => {
+                                            handleFieldChange(e.target.value, e.target.name);
+                                        }} />
                                 </div>
                                 <div className="input-wrapper">
                                     <label>Email de contact (optional)</label>
                                     <input name="emailOpt" type="text" value={values.emailOpt}
-                                           onChange={(e) => {
-                                               handleFieldChange(e.target.value, e.target.name);
-                                           }} />
+                                        onChange={(e) => {
+                                            handleFieldChange(e.target.value, e.target.name);
+                                        }} />
                                 </div>
                             </div>
                         </div>
@@ -155,19 +168,21 @@ const AdminData = () => {
                             <div className="col-3">
                                 <div className="input-wrapper">
                                     <label>*Oras</label>
-                                    <select id="city" name="city">
+                                    <select id="town" name="town"
+                                        onChange={(e) => handleFieldChange(e.target.value, e.target.name)}>
+                                        <option value="Bucuresti">Bucuresti</option>
                                         <option value="Alba-Iulia">Alba-Iulia</option>
                                         <option value="Cluj-Napoca">Cluj-Napoca</option>
-                                        <option value="Bucuresti">Bucuresti</option>
                                         <option value="Sibiu">Sibiu</option>
                                     </select>
                                 </div>
                                 <div className="input-wrapper">
                                     <label>Judet</label>
-                                    <select id="county" name="county">
+                                    <select id="county" name="county"
+                                        onChange={(e) => handleFieldChange(e.target.value, e.target.name)}>
+                                        <option value="Bucuresti">Bucuresti</option>
                                         <option value="Alba">Alba</option>
                                         <option value="Cluj">Cluj</option>
-                                        <option value="Bucuresti">Bucuresti</option>
                                         <option value="Sibiu">Sibiu</option>
                                     </select>
                                 </div>
@@ -204,8 +219,22 @@ const AdminData = () => {
                         </label>
                         <input style={{ display: "none" }} name="files" id="file" type="file" multiple
                             onChange={(e) => updateList(e.target.value, e.target.name)} />
-                        <div id="file-list"></div>
+                        <div id="file-list">
+                            {values.fileList && <div className="selected-file-wrapper">
+                                {values.fileList.map((file, i) =>
+                                    <div className="selected-file" key={i}>
+                                        {file}
+                                        <span onClick={()=>deleteFile(file)}>
+                                            <img src="/images/delete.svg" />
+                                        </span>
+                                    </div>
+                                )}
+                            </div>}
+                        </div>
                     </div>
+                    {
+                        values.error && <div className={'error'}>{values.error}</div>
+                    }
                     <input className="button" type="submit" value="Mergi mai departe" />
                 </form>
             </div>
