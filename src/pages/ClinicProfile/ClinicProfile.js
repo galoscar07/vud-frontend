@@ -1,11 +1,12 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Dropdown from '../../components/Dropdown/Dropdown';
 import "./ClinicProfile.scss";
 import _ from 'lodash';
-import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
+import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import {getAuthTokenFromLocal} from "../../utils/localStorage";
-import {useNavigate} from "react-router-dom";
+import { getAuthTokenFromLocal } from "../../utils/localStorage";
+import { useNavigate } from "react-router-dom";
+import Geocode from "react-geocode";
 
 const days = {
   'Luni': [],
@@ -16,7 +17,6 @@ const days = {
   'Sambata': [],
   'Duminica': []
 }
-
 
 const ClinicProfile = () => {
   // Loading var
@@ -65,6 +65,8 @@ const ClinicProfile = () => {
     description: '',
   })
 
+  const [fullAddress, setFullAddress] = useState('');
+
   // Handles normal inputs
   const handleFieldChange = (event) => {
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
@@ -81,7 +83,7 @@ const ClinicProfile = () => {
     profileImgRef.current.click();
   }
   const handleFileChangeProfilePicUser = (event) => {
-    setState({...state, profile_picture: event.target.files[0], profile_picture_preview: URL.createObjectURL(event.target.files[0])})
+    setState({ ...state, profile_picture: event.target.files[0], profile_picture_preview: URL.createObjectURL(event.target.files[0]) })
   }
 
   // States and Functions for extra phone number and emails
@@ -90,37 +92,37 @@ const ClinicProfile = () => {
   const addAnotherInput = (name) => {
     if (name === 'phone') {
       if (multiplePhones.length === 5) {
-        setErrorState({...errorState, multiple_phones: 'Nu poti adauga mai mult de 6 numere'})
+        setErrorState({ ...errorState, multiple_phones: 'Nu poti adauga mai mult de 6 numere' })
       } else {
         setMultiplePhones([...multiplePhones, ''])
       }
     } else if (name === 'email') {
       if (multipleEmails.length === 5) {
-        setErrorState({...errorState, multiple_emails: 'Nu poti adauga mai mult de 6 numere'})
+        setErrorState({ ...errorState, multiple_emails: 'Nu poti adauga mai mult de 6 numere' })
       } else {
         setMultipleEmails([...multipleEmails, ''])
       }
     }
   }
   const handlePhoneEmailChange = (value, index, list, fct) => {
-    const copy =  _.cloneDeep(list)
+    const copy = _.cloneDeep(list)
     copy[index] = value
     fct(copy)
   }
   const handleRemoveOtherInput = (index, type) => {
     if (type === 'phone') {
       if (multiplePhones.length === 5) {
-        setErrorState({...errorState, multiple_phones: ''})
+        setErrorState({ ...errorState, multiple_phones: '' })
       }
-      const copy =  _.cloneDeep(multiplePhones)
+      const copy = _.cloneDeep(multiplePhones)
       copy.splice(index, 1)
       setMultiplePhones(copy)
     }
     else if (type === 'email') {
       if (multipleEmails.length === 5) {
-        setErrorState({...errorState, multiple_emails: ''})
+        setErrorState({ ...errorState, multiple_emails: '' })
       }
-      const copy =  _.cloneDeep(multipleEmails)
+      const copy = _.cloneDeep(multipleEmails)
       copy.splice(index, 1)
       setMultipleEmails(copy)
     }
@@ -139,40 +141,40 @@ const ClinicProfile = () => {
   const [docHighlighted, setDocHighlighted] = useState(0)
   const inputRefDoctor = useRef();
   const addDoctor = () => {
-    setDoctor([...doctor, { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null}])
+    setDoctor([...doctor, { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null }])
   }
   const handleDoctorPhotoUploadClickDoctor = () => {
     inputRefDoctor.current.click();
   };
   const handleFileChangeDoctor = (event) => {
-    const copy =  _.cloneDeep(doctor)
+    const copy = _.cloneDeep(doctor)
     copy[docHighlighted].profile_photo = event.target.files[0]
     copy[docHighlighted].profile_picture_preview = URL.createObjectURL(event.target.files[0])
     setDoctor(copy)
   }
   const deleteHighlightDoctor = (index) => {
     if (index === 0) {
-      setDoctor([{ name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null}])
+      setDoctor([{ name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null }])
     } else {
-      const copy =  _.cloneDeep(doctor)
+      const copy = _.cloneDeep(doctor)
       copy.splice(index, 1)
       setDoctor(copy)
       setDocHighlighted(docHighlighted - 1)
     }
   }
   const handleChangeInputDoctor = (event, index) => {
-    const copy =  _.cloneDeep(doctor)
+    const copy = _.cloneDeep(doctor)
     copy[index][event.target.name] = event.target.value
     setDoctor(copy)
   }
   const handleDropdownDoctor = (event, index, label) => {
-    const copy =  _.cloneDeep(doctor)
+    const copy = _.cloneDeep(doctor)
     copy[index][label] = event
     setDoctor(copy)
 
   }
   const saveCurrentDoctor = () => {
-    setDoctor([...doctor, { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null}])
+    setDoctor([...doctor, { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null }])
     setDocHighlighted(docHighlighted + 1)
   }
 
@@ -191,28 +193,28 @@ const ClinicProfile = () => {
     inputRef.current.click();
   };
   const handleFileChangeHQ = (event) => {
-    const copy =  _.cloneDeep(hq)
+    const copy = _.cloneDeep(hq)
     copy[hqHighlighted].profile_picture = event.target.files[0]
     copy[hqHighlighted].profile_picture_preview = URL.createObjectURL(event.target.files[0])
     setHq(copy)
   }
   const deleteHighlight = (index) => {
     if (index === 0) {
-      setHq([{ name: '', address: '', link: '', profile_picture: null, profile_picture_preview:null, medical_unit_types: []}])
+      setHq([{ name: '', address: '', link: '', profile_picture: null, profile_picture_preview: null, medical_unit_types: [] }])
     } else {
-      const copy =  _.cloneDeep(hq)
+      const copy = _.cloneDeep(hq)
       copy.splice(index, 1)
       setHq(copy)
       setHqHighlighted(hqHighlighted - 1)
     }
   }
   const handleChangeInputHQ = (event, index) => {
-    const copy =  _.cloneDeep(hq)
+    const copy = _.cloneDeep(hq)
     copy[index][event.target.name] = event.target.value
     setHq(copy)
   }
   const handleDropdownHQ = (event, index) => {
-    const copy =  _.cloneDeep(hq)
+    const copy = _.cloneDeep(hq)
     copy[index].medical_unit_types = event
     setHq(copy)
 
@@ -222,16 +224,16 @@ const ClinicProfile = () => {
     setHqHighlighted(hqHighlighted + 1)
   }
   const addNewHq = () => {
-    setHq([...hq, { name: '', address: '', link: '', profile_picture: null, profile_picture_preview: null, medical_unit_types: []}])
+    setHq([...hq, { name: '', address: '', link: '', profile_picture: null, profile_picture_preview: null, medical_unit_types: [] }])
   }
 
   // Dropdown States
-  const [unitTypeDropdown, setUnitTypeDropdown] = useState ([])
-  const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState ([])
-  const [specialities, setSpecialities] = useState ([])
-  const [competences, setCompetences] = useState ([])
-  const [clinicSpecialities, setClinicSpecialities] = useState ([])
-  const [medicalFacilities, setMedicalFacilities] = useState ([])
+  const [unitTypeDropdown, setUnitTypeDropdown] = useState([])
+  const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState([])
+  const [specialities, setSpecialities] = useState([])
+  const [competences, setCompetences] = useState([])
+  const [clinicSpecialities, setClinicSpecialities] = useState([])
+  const [medicalFacilities, setMedicalFacilities] = useState([])
 
   // Schedule
   const [schedule, setSchedule] = React.useState(days);
@@ -241,9 +243,9 @@ const ClinicProfile = () => {
     endTime: '00:00'
   })
   const handleRemoveTime = (index) => {
-    const copy =  _.cloneDeep(schedule[activeDay])
+    const copy = _.cloneDeep(schedule[activeDay])
     copy.splice(index, 1)
-    setSchedule({...schedule, [activeDay]: copy})
+    setSchedule({ ...schedule, [activeDay]: copy })
   }
 
 
@@ -276,25 +278,25 @@ const ClinicProfile = () => {
             profile_picture: el.profile_picture,
             link: el.link,
             address: el.address,
-            medical_unit_types: el.medical_unit_types.map((md) => {return md.value})
+            medical_unit_types: el.medical_unit_types.map((md) => { return md.value })
           }
         }),
       // 4th card
-      doctors: doctor.filter((el) => el.name )
+      doctors: doctor.filter((el) => el.name)
         .map((doc) => {
           return {
             name: doc.name,
             profile_photo: doc.profile_photo,
             link: doc.link,
-            academic_degree: doc.academic_degree.map((md) => {return md.value}),
-            speciality: doc.speciality.map((md) => {return md.value}),
-            competences: doc.competences.map((md) => {return md.value}),
+            academic_degree: doc.academic_degree.map((md) => { return md.value }),
+            speciality: doc.speciality.map((md) => { return md.value }),
+            competences: doc.competences.map((md) => { return md.value }),
           }
         }),
       // 5th
-      clinic_specialities: state.clinic_specialities.map(el => {return el.value}),
+      clinic_specialities: state.clinic_specialities.map(el => { return el.value }),
       // 6th
-      clinic_facilities: state.clinic_facilities.map(el => {return el.value}),
+      clinic_facilities: state.clinic_facilities.map(el => { return el.value }),
       // 7th
       clinic_schedule: JSON.stringify(schedule),
     }
@@ -332,13 +334,13 @@ const ClinicProfile = () => {
       const key = el.name.split(' ').join('|') + '_hq_' + index
       images_keys.push(key)
       formData.append(key, el.profile_picture)
-      index +=1
+      index += 1
     })
     doctor.forEach((el) => {
       const key = el.name.split(' ').join('|') + '_doc_' + index
       images_keys.push(key)
       formData.append(key, el.profile_photo)
-      index +=1
+      index += 1
     })
     formData.append('photoKeys', JSON.stringify(images_keys))
 
@@ -350,10 +352,10 @@ const ClinicProfile = () => {
       'multipart/form-data'
     )
       .then((response) => response.json())
-      .then((resp)=> {
+      .then((resp) => {
         if (resp.success) navigate(routes.THANK_YOU)
-       })
-      .catch((err) => {})
+      })
+      .catch((err) => { })
   };
 
   // useEffect
@@ -367,7 +369,7 @@ const ClinicProfile = () => {
     })
       .then((resp) => resp.json())
       .then((response) => {
-        const mapped = response.map((el) => {return {value: el.id, label: el.label}})
+        const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setUnitTypeDropdown(mapped)
       })
       .catch((err) => {
@@ -381,7 +383,7 @@ const ClinicProfile = () => {
     })
       .then((resp) => resp.json())
       .then((response) => {
-        const mapped = response.map((el) => {return {value: el.id, label: el.label}})
+        const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setAcademicDegreesDropDown(mapped)
       })
       .catch((err) => {
@@ -395,7 +397,7 @@ const ClinicProfile = () => {
     })
       .then((resp) => resp.json())
       .then((response) => {
-        const mapped = response.map((el) => {return {value: el.id, label: el.label}})
+        const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setSpecialities(mapped)
       })
       .catch((err) => {
@@ -409,7 +411,7 @@ const ClinicProfile = () => {
     })
       .then((resp) => resp.json())
       .then((response) => {
-        const mapped = response.map((el) => {return {value: el.id, label: el.label}})
+        const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setCompetences(mapped)
       })
       .catch((err) => {
@@ -423,7 +425,7 @@ const ClinicProfile = () => {
     })
       .then((resp) => resp.json())
       .then((response) => {
-        const mapped = response.map((el) => {return {value: el.id, label: el.label}})
+        const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setClinicSpecialities(mapped)
       })
       .catch((err) => {
@@ -437,7 +439,7 @@ const ClinicProfile = () => {
     })
       .then((resp) => resp.json())
       .then((response) => {
-        const mapped = response.map((el) => {return {value: el.id, label: el.label}})
+        const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setMedicalFacilities(mapped)
         setLoading(false)
       })
@@ -445,6 +447,29 @@ const ClinicProfile = () => {
         console.log(err)
       })
   }, [])
+
+//TODO Should be tested once the page is up; Once we know it works, we should create .env  file & service;
+
+  Geocode.setApiKey("AIzaSyDB6F9-1tJ-Zfs-G1tEiTwmti7oc0Rj3aU");
+  Geocode.setLanguage("ro");
+  Geocode.setRegion("ro");
+
+  Geocode.fromAddress("Constantin Brancusi 119, Cluj-Napoca ").then(
+    (response) => {
+      const { lat, lng } = response.results[0].geometry.location;
+      console.log(lat, lng, 'COORDINATES');
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
+
+  useEffect = () => {
+    if (state.clinic_street && state.clinic_number && state.clinic_town) {
+      setFullAddress(state.clinic_street + ' ' + state.clinic_number + ', ' + state.clinic_town);
+      console.log(fullAddress, 'address')
+    }
+  }
 
   // Renders
   const renderContactData = () => {
@@ -455,7 +480,7 @@ const ClinicProfile = () => {
           <div className="col">
             <span onClick={handleProfilePictureUser} className={'add-photo'}>Adaugă poză de profil</span>
             <input type="file" accept="image/*" onChange={handleFileChangeProfilePicUser} ref={profileImgRef} style={{ display: 'none' }} />
-            <img alt='profile uploaded user' src={state.profile_picture_preview ? state.profile_picture_preview : '/images/user.svg'}/>
+            <img alt='profile uploaded user' src={state.profile_picture_preview ? state.profile_picture_preview : '/images/user.svg'} />
           </div>
         </div>
         <div className="fields-wrapper">
@@ -463,19 +488,19 @@ const ClinicProfile = () => {
             <div className="input-wrapper">
               <label>*Denumirea unității medicale</label>
               <input className={errorState.clinic_name && 'error'} name="clinic_name" type="text"
-                     value={state.clinic_name} onChange={handleFieldChange} placeholder={'Denumirea'} />
+                value={state.clinic_name} onChange={handleFieldChange} placeholder={'Denumirea'} />
             </div>
           </div>
           <div className="col-3">
             <div className="input-wrapper">
               <label>*Strada</label>
-              <input className={errorState.clinic_street && 'error'}  name="clinic_street" type="text"
-                     value={state.clinic_street}  onChange={handleFieldChange} placeholder={'Numele strazii'} />
+              <input className={errorState.clinic_street && 'error'} name="clinic_street" type="text"
+                value={state.clinic_street} onChange={handleFieldChange} placeholder={'Numele strazii'} />
             </div>
             <div className="input-wrapper">
               <label>Numarul strazii</label>
               <input className={errorState.clinic_number && 'error'} name="clinic_number" type="text"
-                     value={state.clinic_number}  onChange={handleFieldChange} placeholder={'Numarul'}/>
+                value={state.clinic_number} onChange={handleFieldChange} placeholder={'Numarul'} />
             </div>
           </div>
           <div className="col-3">
@@ -504,8 +529,8 @@ const ClinicProfile = () => {
             <div className="input-wrapper">
               <label>Alte detalii</label>
               <input className={errorState.clinic_other_details && 'error'} name="clinic_other_details" type="text"
-                     value={state.clinic_other_details} onChange={handleFieldChange}
-                     placeholder={'Alte detalii utile despre locatie'}
+                value={state.clinic_other_details} onChange={handleFieldChange}
+                placeholder={'Alte detalii utile despre locatie'}
               />
             </div>
           </div>
@@ -526,13 +551,13 @@ const ClinicProfile = () => {
           <div className="field-container">
             <label>*Telefon call center</label>
             <input className={errorState.primary_phone && 'error'} name="primary_phone" type="text"
-                   value={state.primary_phone}  onChange={handleFieldChange} placeholder={'Call center'} />
+              value={state.primary_phone} onChange={handleFieldChange} placeholder={'Call center'} />
             {
               multiplePhones.map((el, index) => {
                 return (
                   <div className={'extra_data_row'} key={index}>
-                    <input name={index.toString()} type="text" placeholder={`Al ${index+2}-lea numar`}
-                           value={el}  onChange={(e) => handlePhoneEmailChange(e.target.value, index, multiplePhones, setMultiplePhones)} />
+                    <input name={index.toString()} type="text" placeholder={`Al ${index + 2}-lea numar`}
+                      value={el} onChange={(e) => handlePhoneEmailChange(e.target.value, index, multiplePhones, setMultiplePhones)} />
                     <img alt="close button" src={'/images/close_btn.svg'} onClick={() => handleRemoveOtherInput(index, 'phone')} />
                   </div>
                 )
@@ -549,13 +574,13 @@ const ClinicProfile = () => {
           <div className="field-container">
             <label>*Email</label>
             <input className={errorState.primary_email && 'error'} name="primary_email" type="text"
-                   value={state.primary_email} onChange={handleFieldChange} placeholder={'Email contact'} />
+              value={state.primary_email} onChange={handleFieldChange} placeholder={'Email contact'} />
             {
               multipleEmails.map((el, index) => {
                 return (
                   <div className={'extra_data_row'} key={index}>
-                    <input name={index.toString()} type="text" placeholder={`Al ${index+2}-lea email`}
-                           value={el}  onChange={(e) => handlePhoneEmailChange(e.target.value, index, multipleEmails, setMultipleEmails)} />
+                    <input name={index.toString()} type="text" placeholder={`Al ${index + 2}-lea email`}
+                      value={el} onChange={(e) => handlePhoneEmailChange(e.target.value, index, multipleEmails, setMultipleEmails)} />
                     <img alt="Imagine inchidere" src={'/images/close_btn.svg'} onClick={() => handleRemoveOtherInput(index, 'email')} />
                   </div>
                 )
@@ -575,29 +600,29 @@ const ClinicProfile = () => {
             <div className="input-wrapper">
               <label>Adresa website</label>
               <input className={errorState.website && 'error'} name="website" type="text" value={state.website}
-                     onChange={handleFieldChange} placeholder={'ex. www.sofarfarm.ro'} />
+                onChange={handleFieldChange} placeholder={'ex. www.sofarfarm.ro'} />
             </div>
           </div>
           <div className="col-4">
             <div className="input-wrapper">
               <label>Profil Facebook</label>
               <input name="website_facebook" type="text" value={state.website_facebook} onChange={handleFieldChange}
-                     placeholder={'Facebook link'} />
+                placeholder={'Facebook link'} />
             </div>
             <div className="input-wrapper">
               <label>Profil Google</label>
               <input name="website_google" type="text" value={state.website_google} onChange={handleFieldChange}
-                     placeholder={'Google link'} />
+                placeholder={'Google link'} />
             </div>
             <div className="input-wrapper">
               <label>Profil Linkedin</label>
               <input name="website_linkedin" type="text" value={state.website_linkedin} onChange={handleFieldChange}
-                     placeholder={'LinkedIn link'} />
+                placeholder={'LinkedIn link'} />
             </div>
             <div className="input-wrapper">
               <label>Youtube</label>
               <input name="website_youtube" type="text" value={state.website_youtube} onChange={handleFieldChange}
-                     placeholder={'LinkedIn link'} />
+                placeholder={'LinkedIn link'} />
             </div>
           </div>
         </div>
@@ -611,9 +636,9 @@ const ClinicProfile = () => {
           Descriere Unitate
         </div>
         <div className="fields-wrapper">
-              <textarea placeholder={'Scrieti o descriere a unitatii dumneavoastra.'} className={'textarea-description'}
-                        value={state.description} name="description" onChange={handleFieldChange}
-              />
+          <textarea placeholder={'Scrieti o descriere a unitatii dumneavoastra.'} className={'textarea-description'}
+            value={state.description} name="description" onChange={handleFieldChange}
+          />
         </div>
       </div>
     )
@@ -630,7 +655,7 @@ const ClinicProfile = () => {
               hq.map((hqElem, index) => {
                 return (
                   <div key={index} onClick={() => setHqHighlighted(index)} className={`card-HQ ${hqHighlighted === index && 'highlight'}`}>
-                    <img alt="Imagine uploaded sediu" src={hqElem.profile_picture_preview ? hqElem.profile_picture_preview : '/images/user.svg'}/>
+                    <img alt="Imagine uploaded sediu" src={hqElem.profile_picture_preview ? hqElem.profile_picture_preview : '/images/user.svg'} />
                     <div className={'hq-data'}>
                       <div>{hqElem.name}</div>
                     </div>
@@ -653,26 +678,27 @@ const ClinicProfile = () => {
             <div className="input-wrapper">
               <label>*Denumirea unitatii medicale </label>
               <input name='name' type="text" value={hq[hqHighlighted].name}
-                     onChange={(e) => {handleChangeInputHQ(e, hqHighlighted);}} />
+                onChange={(e) => { handleChangeInputHQ(e, hqHighlighted); }} />
             </div>
           </div>
           <Dropdown selected={hq[hqHighlighted].medical_unit_types}
-                    onSelect={(values) => {
-                      handleDropdownHQ(values, hqHighlighted)}}
-                    options={unitTypeDropdown}
-                    title="*Tip unitate"/>
+            onSelect={(values) => {
+              handleDropdownHQ(values, hqHighlighted)
+            }}
+            options={unitTypeDropdown}
+            title="*Tip unitate" />
           <div className="col">
             <div className="input-wrapper">
               <label>*Adresa postala</label>
               <input name="address" type="text" value={hq[hqHighlighted].address}
-                     onChange={(e) => {handleChangeInputHQ(e, hqHighlighted);}} />
+                onChange={(e) => { handleChangeInputHQ(e, hqHighlighted); }} />
             </div>
           </div>
           <div className="col">
             <div className="input-wrapper">
               <label>Link pagina </label>
               <input name="link" type="text" value={hq[hqHighlighted].link}
-                     onChange={(e) => {handleChangeInputHQ(e, hqHighlighted);}} />
+                onChange={(e) => { handleChangeInputHQ(e, hqHighlighted); }} />
             </div>
           </div>
           <div className="delete-button" onClick={() => deleteHighlight(hqHighlighted)}>
@@ -699,7 +725,7 @@ const ClinicProfile = () => {
               doctor.map((doc, index) => {
                 return (
                   <div key={index} onClick={() => setDocHighlighted(index)} className={`card-HQ ${docHighlighted === index && 'highlight'}`}>
-                    <img alt="Imagine profile doctor" src={doc.profile_picture_preview ? doc.profile_picture_preview : '/images/user.svg'}/>
+                    <img alt="Imagine profile doctor" src={doc.profile_picture_preview ? doc.profile_picture_preview : '/images/user.svg'} />
                     <div className={'hq-data'}>
                       <div>{doc.name}</div>
                     </div>
@@ -722,30 +748,33 @@ const ClinicProfile = () => {
             <div className="input-wrapper">
               <label>Medic</label>
               <input placeholder="nume" name='name' type="text" value={doctor[docHighlighted].name}
-                     onChange={(e) => {handleChangeInputDoctor(e, docHighlighted);}} />
+                onChange={(e) => { handleChangeInputDoctor(e, docHighlighted); }} />
             </div>
           </div>
           <Dropdown selected={doctor[docHighlighted].academic_degree}
-                    onSelect={(values) => {
-                      handleDropdownDoctor(values, docHighlighted, 'academic_degree')}}
-                    options={academicDegreesDropDown}
-                    title="Grad Academic"/>
+            onSelect={(values) => {
+              handleDropdownDoctor(values, docHighlighted, 'academic_degree')
+            }}
+            options={academicDegreesDropDown}
+            title="Grad Academic" />
           <Dropdown selected={doctor[docHighlighted].speciality}
-                    onSelect={(values) => {
-                      handleDropdownDoctor(values, docHighlighted, 'speciality')}}
-                    options={specialities}
-                    title="Specializare"/>
+            onSelect={(values) => {
+              handleDropdownDoctor(values, docHighlighted, 'speciality')
+            }}
+            options={specialities}
+            title="Specializare" />
           <Dropdown selected={doctor[docHighlighted].competences}
-                    onSelect={(values) => {
-                      handleDropdownDoctor(values, docHighlighted, 'competences')}}
-                    options={competences}
-                    title="Competente"/>
+            onSelect={(values) => {
+              handleDropdownDoctor(values, docHighlighted, 'competences')
+            }}
+            options={competences}
+            title="Competente" />
 
           <div className="col">
             <div className="input-wrapper">
               <label>Link pagina </label>
               <input name="link" type="text" value={doctor[docHighlighted].link}
-                     onChange={(e) => {handleChangeInputDoctor(e, docHighlighted);}} />
+                onChange={(e) => { handleChangeInputDoctor(e, docHighlighted); }} />
             </div>
           </div>
           <div className="delete-button" onClick={() => deleteHighlightDoctor(docHighlighted)}>
@@ -764,7 +793,7 @@ const ClinicProfile = () => {
     return (
       <div className="specialities-container">
         <Dropdown selected={state.clinic_specialities} options={clinicSpecialities}
-                  title="Specialitati unitate" onSelect={(values) => {onSelectDropdown('clinic_specialities', values)}} />
+          title="Specialitati unitate" onSelect={(values) => { onSelectDropdown('clinic_specialities', values) }} />
       </div>
     )
   }
@@ -772,7 +801,7 @@ const ClinicProfile = () => {
     return (
       <div className="facilities-container">
         <Dropdown selected={state.clinic_facilities} options={medicalFacilities}
-                  title="Facilitati unitate" onSelect={(values) => {onSelectDropdown('clinic_facilities', values)}} />
+          title="Facilitati unitate" onSelect={(values) => { onSelectDropdown('clinic_facilities', values) }} />
       </div>
     )
   }
@@ -785,7 +814,7 @@ const ClinicProfile = () => {
             {Object.entries(schedule).map(([weekday, inter], i) => {
               return (
                 <div className={"day" + (activeDay === weekday ? " active" : '')}
-                     onClick={() => setActiveDay(weekday)} key={i}
+                  onClick={() => setActiveDay(weekday)} key={i}
                 >
                   <span>{weekday}</span>
                   {inter.map((interval, index) => {
@@ -803,21 +832,21 @@ const ClinicProfile = () => {
               <div className="start-time">
                 <span>De la ora: </span>
                 <input type="time" name="startTime" value={interval.startTime} min="00:00" max="23:59" required
-                       onChange={(e) => {setInterval({...interval, startTime: e.target.value})}}
+                  onChange={(e) => { setInterval({ ...interval, startTime: e.target.value }) }}
                 />
               </div>
               <div className="end-time">
                 <span>Pana la ora: </span>
                 <input type="time" name="endTime" value={interval.endTime} min="00:00" max="23:59" required
-                       onChange={(e) => {setInterval({...interval, endTime: e.target.value})}}
+                  onChange={(e) => { setInterval({ ...interval, endTime: e.target.value }) }}
                 />
               </div>
             </div>
             <div className="button border-button"
-                   onClick={() => {
-                     setSchedule({...schedule, [activeDay]: [...schedule[activeDay], {startTime: interval.startTime, endTime: interval.endTime}]})
-                     setInterval({startTime: '00:00', endTime: '23:59'})
-                   }}
+              onClick={() => {
+                setSchedule({ ...schedule, [activeDay]: [...schedule[activeDay], { startTime: interval.startTime, endTime: interval.endTime }] })
+                setInterval({ startTime: '00:00', endTime: '23:59' })
+              }}
             >
               Adauga
             </div>
@@ -837,13 +866,13 @@ const ClinicProfile = () => {
             ? <LoadingSpinner />
             : (
               <form onSubmit={handleSubmit}>
-                { renderContactData() }
-                { renderDescription() }
-                { renderHQ() }
-                { renderDoctors() }
-                { renderSpecialities() }
-                { renderFacilities() }
-                { renderSchedule() }
+                {renderContactData()}
+                {renderDescription()}
+                {renderHQ()}
+                {renderDoctors()}
+                {renderSpecialities()}
+                {renderFacilities()}
+                {renderSchedule()}
                 <input className="button" type="submit" value="Salveaza profilul" />
               </form>
             )
