@@ -72,7 +72,7 @@ const AddUnit = () => {
           {
             state.error && <div className={'error'}>{state.error}</div>
           }
-                <button className="button round" onClick={onSubmit} >Mergi mai departe</button>
+                <button className="button round" onClick={onSubmit} >Mai departe</button>
         </form>
       </React.Fragment>
     )

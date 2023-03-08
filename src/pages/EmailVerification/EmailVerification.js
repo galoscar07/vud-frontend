@@ -60,7 +60,7 @@ const EmailVerification = () => {
                 </p>
               </div>
               <NavLink to={routes.LOGIN}>
-                <div onClick={resendOnClick} className="button">
+                <div onClick={resendOnClick} className="button round">
                   Retrimite Email
                 </div>
               </NavLink>
@@ -77,7 +77,7 @@ const EmailVerification = () => {
                 <p>Vă rugăm să dați click pe acel link pentru a putea intra în contul dumneavoastră</p>
               </div>
               <NavLink to={routes.LOGIN}>
-                <div className="button">
+                <div className="button round">
                   Pagina autentificare
                 </div>
               </NavLink>

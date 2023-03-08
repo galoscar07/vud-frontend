@@ -12,7 +12,7 @@ export const API_MAP = {
   // Refresh token
   REFRESH_TOKEN: 'auth/refresh-token/',
   // Forget Password
-  FORGET_PASSWORD:'auth/password-reset-request/',
+  FORGET_PASSWORD: 'auth/password-reset-request/',
   // CRUD User Profile
   // GET User Profile
   USER_PROFILE: 'auth/get-user-profile/',
@@ -59,8 +59,10 @@ export const routes = {
   THANK_YOU: '/thank-you',
   EMAIL_VERIFICATION: '/email-verification',
   DELETE_PROFILE: '/delete-profile',
-  PROFILE:'/clinic-profile',
+  PROFILE: '/clinic-profile',
   DASHBOARD: '/dashboard',
+  //TODO comment later;
+  TEST: '/test'
 }
 
 export const AUTH_CLINIC_MAP_STEP = {
@@ -72,7 +74,7 @@ export const AUTH_CLINIC_MAP_STEP = {
   '5': routes.THANK_YOU
 }
 
-export const makeRequestLogged = (url, method, body, authToken, type=null) => {
+export const makeRequestLogged = (url, method, body, authToken, type = null) => {
   if (!body) {
     return fetch(url, {
       method: method,

@@ -14,7 +14,7 @@ const ThankYou = () => {
                 <p>Contul dvs. a fost creat cu succes! <br/> După ce acesta va fi aprobat vă vom trimite un email cu un link de activare. </p>
                 <p>Vă rugăm să dați click pe acel link pentru a putea intra în contul dumneavoastră</p>
             </div>
-          <div onClick={()=> {navigate(routes.HOMEPAGE)}} className="button" >
+          <div onClick={()=> {navigate(routes.HOMEPAGE)}} className="button round" >
             Pagina principală
           </div>
         </div>

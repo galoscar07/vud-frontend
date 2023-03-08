@@ -847,7 +847,7 @@ const ClinicProfile = () => {
                 {renderSpecialities()}
                 {renderFacilities()}
                 {renderSchedule()}
-                <button className="button " onClick={handleSubmit} >Salveaza profilul</button>
+                <button className="button round " onClick={handleSubmit} >Salveaza</button>
               </form>
             )
         }

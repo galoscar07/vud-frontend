@@ -95,7 +95,7 @@ function ClinicPage() {
                                         </div>
                                     )}
                                 </div>
-                                <div className="favorite-button" onClick={() => toggleFavoriteClinic(!isFavoriteClinic)}>
+                                <div className=" border-button button favorite-button" onClick={() => toggleFavoriteClinic(!isFavoriteClinic)}>
                                     <img src={clinic.isFavorite ? "/images/icons/favorite.svg" : "/images/icons/favorite_checked.svg"} />
                                     {clinic.isFavorite ? "Salveaza la favorite" : "Clinica favorita"}
                                 </div>
