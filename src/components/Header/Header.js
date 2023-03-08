@@ -48,7 +48,7 @@ function Header() {
     } else {
       return (
         <div className={'user_profile_container_no_user'}>
-          <NavLink
+          <NavLink onClick={() => toggleMenu(!isMenuOpen)}
             to={routes.LOGIN}
           >Conectează-te/Inregistrează-te</NavLink>
         </div>

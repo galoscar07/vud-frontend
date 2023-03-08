@@ -94,7 +94,7 @@ const Newsletter = (props) => {
           </div>
 
         </div>
-        <input className={`button ${!formValid ? 'disabled' : ''}`} type="submit" value="Abonare" />
+        <input className={`button round ${!formValid ? 'disabled' : ''}`} type="submit" value="Abonare" />
         {
           state.server.error &&
           <div className={'error'}>Ceva a mers rau! Va rugam incercati mai tarziu.</div>

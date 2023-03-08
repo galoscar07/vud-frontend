@@ -236,7 +236,7 @@ const AdminData = () => {
                     {
                         values.error && <div className={'error'}>{values.error}</div>
                     }
-                    <input className="button" type="submit" value="Mergi mai departe" />
+                    <button className="button round custom-width" onClick={handleSubmit}> Salveaza </button>
                 </form>
             </div>
         </div>

@@ -15,10 +15,11 @@
   }
 
   .add-photo {
-    color: $color-primary;
+    color: #667284;
     text-decoration: underline;
     margin-left: $spacing-small;
     cursor: pointer;
+    font-size: $font-normal;
   }
 
   .delete-button {

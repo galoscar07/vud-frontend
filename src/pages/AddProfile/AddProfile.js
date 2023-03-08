@@ -58,7 +58,7 @@ const AddProfile = () => {
           <div className="profile-card" key={i}>
             <img alt={card.alt} src={card.icon}/>
             <span>{card.title}</span>
-            <div onClick={() => handleClick(card)} className={`button border-button ${card.disabled && 'disabled'}`}>Adaugă</div>
+            <div onClick={() => handleClick(card)} className={`button round border-button ${card.disabled && 'disabled'}`}>Adaugă</div>
           </div>)}
       </div>
     </div>
