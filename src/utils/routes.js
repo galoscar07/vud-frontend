@@ -33,6 +33,7 @@ export const API_MAP = {
   GET_CLINIC_SPECIALITIES: 'options/clinic-specialities/',
   GET_MEDICAL_FACILITIES: 'options/medical-facilities/',
   GET_FOOTER_LABELS: 'options/footer/',
+  POST_NEWSLETTER: 'options/newsletter/'
 }
 
 export const getAPILink = (url) => {
