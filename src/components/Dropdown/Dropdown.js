@@ -96,7 +96,7 @@ function Dropdown(props) {
         console.log(selected, 'selected')
     };
 
-    const options = props.options ? props.options : optionsDefault
+    const options = props?.options 
 
     return (
         <div className="dropdown">
