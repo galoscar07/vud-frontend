@@ -21,7 +21,6 @@ import { MainLayout } from './components/Layouts/MainLayout';
 import { AuthLayout } from './components/Layouts/AuthLayout';
 import ResetPassword from './pages/Auth/ResetPassword/ResetPassword';
 import ClinicPage from './pages/ClinicPage/ClinicPage';
-import Test from './pages/Test/Test';
 
 function App() {
   return (
@@ -45,9 +44,6 @@ function App() {
           <Route element={<MainLayout/>}>
             <Route path={routes.HOMEPAGE} element={ <Homepage /> } />
             <Route path={routes.CLINIC_PAGE} element={ <ClinicPage /> } />
-            {/* TODO remove testing page */}
-            <Route path={routes.TEST} element={ <Test /> } />
-
           </Route>
        </Routes>
     </div>
