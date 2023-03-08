@@ -72,7 +72,7 @@ const AddUnit = () => {
           {
             state.error && <div className={'error'}>Trebuie selectata minim o optiune</div>
           }
-          <input className="button" type="submit" value="Mergi mai depart"/>
+          <input className="button round" type="submit" value="Mergi mai depart"/>
         </form>
       </React.Fragment>
     )

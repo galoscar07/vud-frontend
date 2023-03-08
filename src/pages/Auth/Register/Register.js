@@ -176,7 +176,7 @@ const Register = () => {
               {state.server.error &&
                 <div className={'error'}>{state.server.error}</div>
               }
-              <input className={`button ${!areTermsChecked || !formValid ? 'disabled' : ''}`}
+              <input className={`button round ${!areTermsChecked || !formValid ? 'disabled' : ''}`}
                 type="submit" value="Register" />
             </React.Fragment>
           }

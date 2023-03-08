@@ -137,7 +137,7 @@ const Login = () => {
           { state.server.error &&
             <div className={'error'}>{state.server.error}</div>
           }
-          <input className={`button ${!formValid ? 'disabled' : ''}`} type="submit" value="Login" />
+          <input className={`button round ${!formValid ? 'disabled' : ''}`} type="submit" value="Login" />
 
         </form>
       </div>

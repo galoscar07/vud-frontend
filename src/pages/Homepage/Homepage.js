@@ -105,7 +105,7 @@ function Homepage() {
       </div>
       <form className="searchbar">
         <input className="search" type="text" placeholder="Cauta" name="search" />
-        <button className=" border-button" type="submit">Cauta</button>
+        <button className="button border-button" type="submit">Cauta</button>
       </form>
       <div className="tags-wrapper">
         {tags.map((tag, i) =>
