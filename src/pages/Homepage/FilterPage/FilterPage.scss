@@ -1,11 +1,22 @@
 @import 'src/styles/form';
 
 .filter-page {
+    padding: $spacing-xbig;
+
+    .center-side {
+        margin-top: $spacing-small;
+    }
+
+    .results-container {
+        display: flex;
+        flex-direction: column;
+        row-gap: $spacing-small;
+    }
+
     .filter-main-content {
         display: grid;
-        grid-template-columns: 1fr 2fr 1fr;
-
-        .left-side {}
+        grid-template-columns: 1fr 3fr 1fr;
+        column-gap: $spacing-small;
 
         .dropdown {
             background-color: white;
@@ -15,12 +26,11 @@
 
         .searchbar {
             background-color: white;
-            padding: $spacing-small;
 
             .upper-container {
                 display: flex;
                 flex-direction: row;
-                margin-bottom: $spacing-xsmall;
+                margin-bottom: $spacing-small;
 
                 select {
                     width: 100%;

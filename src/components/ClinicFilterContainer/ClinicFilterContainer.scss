@@ -8,7 +8,9 @@
     justify-content: space-between;
 
     .info-container {
-        column-gap:$spacing-small;
+        column-gap: $spacing-small;
+        display: flex;
+
         .rating-container {
             row-gap: $spacing-xsmall;
 
@@ -55,7 +57,7 @@
             display: flex;
             column-gap: $spacing-small;
             margin-top: $spacing-small;
-            font-weight:300;
+            font-weight: 300;
 
             .contact {
                 display: flex;

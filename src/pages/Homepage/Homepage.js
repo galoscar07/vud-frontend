@@ -131,7 +131,7 @@ function Homepage() {
           </div>
           <div className="results-container">
             {clinics.map((clinic, i) =>
-              <ClinicFilterContainer key={i} clinic={clinic} />
+              <ClinicFilterContainer displayReviews key={i} clinic={clinic} />
             )}
           </div>
         </div>
