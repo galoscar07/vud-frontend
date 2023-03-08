@@ -114,6 +114,9 @@ form {
 }
 
 @media screen and (max-width: $mobile-big-width) {
+    .col-4{
+        grid-template-columns: 1fr!important;
+    }
     .button {
         width: 50% !important;
     }

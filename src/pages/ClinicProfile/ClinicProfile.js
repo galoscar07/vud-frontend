@@ -453,7 +453,7 @@ const ClinicProfile = () => {
       <div className="contact-data">
         <div className="container-title profile-photo">
           Date de contact profil
-          <div className="col">
+          <div className="col desktop">
             <span onClick={handleProfilePictureUser} className={'add-photo'}>Adaugă poză de profil</span>
             <input type="file" accept="image/*" onChange={handleFileChangeProfilePicUser} ref={profileImgRef} style={{ display: 'none' }} />
             <img alt='profile uploaded user' src={state.profile_picture_preview ? state.profile_picture_preview : '/images/user.svg'}/>

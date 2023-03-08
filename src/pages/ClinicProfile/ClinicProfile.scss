@@ -5,9 +5,11 @@
     display: flex;
     align-items: center;
     margin-top: $spacing-small;
+
     input {
       width: 17rem
     }
+
     img {
       margin-left: $spacing-medium;
       height: 25px;
@@ -60,12 +62,14 @@
       width: 32px;
       border-radius: 50%;
     }
+
     .hq-data {
       display: grid;
       grid-template-rows: 1fr 1fr 1fr;
       text-overflow: ellipsis;
       overflow: hidden;
       max-width: calc(150px - 32px - 20px);
+
       div {
         &:first-of-type {
           font-weight: bold;
@@ -139,12 +143,14 @@
     width: inherit;
     cursor: pointer;
     user-select: none;
+
     &:hover {
       background-color: #D1DFE2;
     }
 
     &.active {
       background-color: $color-primary;
+
       .interval {
         img {
           background-color: white;
@@ -154,10 +160,12 @@
       }
     }
   }
+
   .interval {
     display: flex;
     justify-content: center;
     align-items: center;
+
     img {
       background-color: rgba(white, 0.1);
       opacity: 0.1;
@@ -171,6 +179,10 @@
 
 @media screen and (max-width: $mobile-big-width) {
   .clinic-profile-page {
+    .desktop {
+      display: none!important;
+    }
+
     .button {
       &.border-button {
         width: 50% !important;
@@ -189,7 +201,8 @@
         flex-direction: column;
         width: 90%;
       }
-      .time-wrapper{
+
+      .time-wrapper {
         padding: 0 $spacing-xsmall;
       }
     }
