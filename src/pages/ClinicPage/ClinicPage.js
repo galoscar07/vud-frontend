@@ -66,14 +66,16 @@ const reviews = [{
 function ClinicPage() {
 
     const [clinic, setClinic] = React.useState(initClinic);
+    const [displayMoreCards, setDisplayMoreCards] = React.useState(true);
     const [isFavoriteClinic, setIsFavoriteClinic] = React.useState(clinic.isFavorite);
 
     const toggleFavoriteClinic = (toggleState) => {
         setIsFavoriteClinic(toggleState);
         setClinic((prevState) => ({ ...prevState, isFavorite: isFavoriteClinic }))
     }
-    return (
-        <div className="clinic-page">
+
+    const renderClinicHeaderDesktop = () => {
+        return (
             <div className="clinic-header-container">
                 <div className="clinic-container">
                     <div className="image-container">
@@ -125,7 +127,6 @@ function ClinicPage() {
                     </div>
                 </div>
                 <div className="contact-container">
-
                     {clinic.contact.map((el, i) =>
                         <div className={`contact-card ${el.icon === 'emergency' && 'emergency'}`} key={i}>
                             <img alt={"contact-icon"} src={`/images/icons/${el.icon}.svg`} />
@@ -133,13 +134,67 @@ function ClinicPage() {
                                 <span className="type">{el.type}</span>
                                 <span>{el.value}</span>
                             </div>
-
-                        </div>)}
+                        </div>
+                    )}
                 </div>
             </div>
-            <div className="col-2">
+        )
+    }
 
-                <div className="info-left-container">
+    const renderClinicHeaderMobile = () => {
+        return (
+            <div className="clinic-header-mobi">
+                <div className="header-container">
+                    <div className="container">
+                        <div className="image-container">
+                            <img src={clinic.imgUrl} alt="clinic-logo" />
+                        </div>
+                        <div className="text-container">
+                            <span className="type">{clinic.typeOfClinic}</span>
+                            <span className="name">{clinic.name}</span>
+                        </div>
+                    </div>
+
+                    <div className="favorite-button" onClick={() => toggleFavoriteClinic(!isFavoriteClinic)}>
+                        <img src={clinic.isFavorite ? "/images/icons/favorite.svg" : "/images/icons/favorite_checked.svg"} />
+                    </div>
+                </div>
+                <div className="contact-container">
+                    {clinic.contact.map((el, i) =>
+                        <div className={`contact-card ${el.icon === 'emergency' && 'emergency'} ${displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                            <img alt={"contact-icon"} src={`/images/icons/${el.icon}.svg`} />
+                            <div>
+                                <span className="type">{el.type}</span>
+                                <span>{el.value}</span>
+                            </div>
+                        </div>
+                    )}
+                </div>
+                <div className="view-more-btn" onClick={() => setDisplayMoreCards(!displayMoreCards)}>
+                    {displayMoreCards ? 'Vezi toate datele de contatc' : 'Afiseaza mai putin'}
+                </div>
+                <div className="reviews-container">
+                    <div className="stars-wrapper">
+                        <div className="rating">{clinic.score}</div>
+                        <span>{clinic.noOfReviews} recenzii</span>
+                        <div className="stars-container">
+                            {Array(5).fill(1).map((el, i) =>
+                                <img key={i} src={i >= clinic.rating ? "/images/star_empty.svg" : "/images/star_full.svg"} />
+                            )}
+                        </div>
+                    </div>
+                    {/* TODO what happens here? how do we show reviews? separate page? display component? */}
+                    <div className="view-reviews">Vezi toate recenziile</div>
+                </div>
+            </div>
+        )
+    }
+    return (
+        <div className="clinic-page">
+            <div className="desktop">{renderClinicHeaderDesktop()}</div>
+            <div className="mobi">{renderClinicHeaderMobile()}</div>
+            <div className="col-2">
+                <div className="info-left-container desktop">
                     <div className="container-title">Testimoniale</div>
                     <Carousel content={testimonials} />
                     <iframe
@@ -174,8 +229,8 @@ function ClinicPage() {
 
             </div>
 
-            <div className="reviews-container">
-            <div className="container-title">Ce spun pacientii</div>
+            <div className="reviews-container desktop">
+                <div className="container-title">Ce spun pacientii</div>
                 {reviews.map((review, i) =>
                     <Review key={i} review={review} />)}
             </div>

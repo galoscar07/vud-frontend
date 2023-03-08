@@ -61,8 +61,7 @@ export const routes = {
   DELETE_PROFILE: '/delete-profile',
   PROFILE: '/clinic-profile',
   DASHBOARD: '/dashboard',
-  //TODO comment later;
-  TEST: '/test'
+
 }
 
 export const AUTH_CLINIC_MAP_STEP = {
