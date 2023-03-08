@@ -82,7 +82,7 @@ const AdminData = () => {
     }
 
     const deleteFile = (fileName) => {
-        let updatedList = values.fileList.filter(function(item) {
+        let updatedList = values.fileList.filter(function (item) {
             return item !== fileName;
         })
         setValues({ ...values, fileList: updatedList })
@@ -221,16 +221,18 @@ const AdminData = () => {
                         <input style={{ display: "none" }} name="files" id="file" type="file" multiple
                             onChange={(e) => updateList(e.target.value, e.target.name)} />
                         <div id="file-list">
-                            {values.fileList && <div className="selected-file-wrapper">
+                            {values.fileList.length ? (<div className="selected-file-wrapper">
                                 {values.fileList.map((file, i) =>
                                     <div className="selected-file" key={i}>
                                         {file}
-                                        <span onClick={()=>deleteFile(file)}>
+                                        <span onClick={() => deleteFile(file)}>
                                             <img src="/images/delete.svg" />
                                         </span>
                                     </div>
                                 )}
-                            </div>}
+                            </div>) : (<div className="selected-file">
+                                No selected file
+                            </div>)}
                         </div>
                     </div>
                     {
