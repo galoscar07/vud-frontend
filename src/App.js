@@ -21,13 +21,14 @@ import { MainLayout } from './components/Layouts/MainLayout';
 import { AuthLayout } from './components/Layouts/AuthLayout';
 import ResetPassword from './pages/Auth/ResetPassword/ResetPassword';
 import ClinicPage from './pages/ClinicPage/ClinicPage';
+import FilterPage from './pages/Homepage/FilterPage/FilterPage';
 
 function App() {
   return (
     <div className="App">
       <Header />
         <Routes>
-          {/* TODO some of this don't make sense to be in auth layout */}
+          {/* TODO some of this don't make sense to be in auth layout. */}
           <Route element={<AuthLayout/>}>
             <Route path={routes.LOGIN} element={ <Login /> } />
             <Route path={routes.REGISTER} element={ <Register /> } />
@@ -41,8 +42,10 @@ function App() {
             <Route path={routes.PROFILE} element={<ClinicProfile/>}/>
             <Route path={routes.EMAIL_VERIFICATION} element={<EmailVerification />} /> 
           </Route>
+
           <Route element={<MainLayout/>}>
             <Route path={routes.HOMEPAGE} element={ <Homepage /> } />
+            <Route path={routes.FILTER_PAGE} element={ <FilterPage /> } />
             <Route path={routes.CLINIC_PAGE} element={ <ClinicPage /> } />
           </Route>
        </Routes>

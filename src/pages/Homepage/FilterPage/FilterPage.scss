@@ -1,0 +1,31 @@
+@import 'src/styles/form';
+
+.filter-page {
+    .filter-main-content {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+
+        .left-side {}
+
+        .dropdown {
+            background-color: white;
+            padding: $spacing-small;
+            margin-top: $spacing-small;
+        }
+
+        .searchbar {
+            background-color: white;
+            padding: $spacing-small;
+
+            .upper-container {
+                display: flex;
+                flex-direction: row;
+                margin-bottom: $spacing-xsmall;
+
+                select {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
