@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import {API_MAP, AUTH_CLINIC_MAP_STEP, getAPILink, makeRequestLogged, routes} from "../../../utils/routes";
 import "./Login.scss"
@@ -34,7 +34,7 @@ const Login = () => {
   }
 
   const handleChange = (event) => {
-    setState({...state, [event.target.name]: {...state[event.target.name], value: event.target.value}})
+    setState({ ...state, [event.target.name]: { ...state[event.target.name], value: event.target.value } })
     isFormEmpty()
   }
 
@@ -64,24 +64,24 @@ const Login = () => {
   }
 
 
-  const handleSubmit = (event) => {
-    // TODO Problem when submitted once and then submit again you have to click the button twice
+  const handleSubmit = useCallback(event => {
     // TODO handle user sign in / sign out in header
     event.preventDefault();
-    if (!isFormValid()) {
-      return
-    }
+    // if (!isFormValid()) {
+    //   console.log('invalid')
+    //   return
+    // }
     fetch(
       getAPILink(API_MAP.LOGIN), {
-        method: 'POST',
-        body: JSON.stringify({
-          email: state.email.value,
-          password: state.password.value
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        }
-      })
+      method: 'POST',
+      body: JSON.stringify({
+        email: state.email.value,
+        password: state.password.value
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
       .then((response) => {
         if (response.status !== 200) {
           throw Error
@@ -113,9 +113,9 @@ const Login = () => {
 
       })
       .catch((err) => {
-        setState({...state, server: {error: "Credentialele nu sunt corecte. Va rugam sa incercati din nou"}})
+        setState({ ...state, server: { error: "Credentialele nu sunt corecte. Va rugam sa incercati din nou" } })
       })
-  };
+  }, []);
 
 
   return (
@@ -123,21 +123,21 @@ const Login = () => {
       <img alt={'vreau un doctor'} src="/images/login.svg" />
       <div className="auth-container">
         <h1>Login</h1>
-        <form onSubmit={handleSubmit}  autoComplete="off">
+        <form onSubmit={handleSubmit} autoComplete="off">
           <label>Email</label>
           <input className="full-width" type="email" name="email" value={state.email.value}
-                 onChange={handleChange} onBlur={isFormEmpty} />
+            onChange={handleChange} onBlur={isFormEmpty} />
           <label>Password</label>
-          <input className="full-width" type="password" name="password"  value={state.password.value}
-                 onChange={handleChange} onBlur={isFormEmpty} />
+          <input className="full-width" type="password" name="password" value={state.password.value}
+            onChange={handleChange} onBlur={isFormEmpty} />
           <div className={'links'}>
             <Link to={routes.REGISTER} className="forgot-password">nu ai cont?</Link>
             <Link to={routes.FORGET_PASSWORD} className="forgot-password">ai uitat parola?</Link>
           </div>
-          { state.server.error &&
+          {state.server.error &&
             <div className={'error'}>{state.server.error}</div>
           }
-          <input className={`button ${!formValid ? 'disabled' : ''}`} type="submit" value="Login" />
+          <button className={`button ${!formValid ? 'disabled' : ''}`} onClick={handleSubmit} >Login</button>
 
         </form>
       </div>

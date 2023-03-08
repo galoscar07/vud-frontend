@@ -28,7 +28,7 @@ const ClinicFilterContainer = (props) => {
                     <div className="type">{props.clinic.type}</div>
                     {props.clinic.contact && <div className="contact-wrapper">
                         {props.clinic.contact.map((el, i) =>
-                            <div className="contact">
+                            <div className="contact" key={i}>
                                 <img alt={el.type} src={`/images/icons/${el.type}.svg`} />
                                 <span>{el.value}</span>
                             </div>)}

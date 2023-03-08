@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import "./Register.scss"
 import _ from 'lodash';
 import { API_MAP, getAPILink } from "../../../utils/routes";
@@ -80,8 +80,7 @@ const Register = () => {
     setTermsChecked(!areTermsChecked);
   };
 
-  const handleSubmit = (event) => {
-    // TODO Problem when submitted once and then submit again you have to click the button twice
+  const handleSubmit = useCallback(event => {
     event.preventDefault();
     if (!isFormValid() || !formValid) {
       return
@@ -108,10 +107,10 @@ const Register = () => {
         setStep(1)
       })
       .catch((err) => {
-        setState({ ...state, server: { error: "Ceva a mers prost. Va rugam incercati mai tarziu" } })
+        setState({ ...state, server: { error: "Ceva nu a funcționat. Vă rugăm să încercați în câteva minute" } })
       })
-  };
-  
+  });
+
   const handleSubmitResendEmail = () => {
     fetch(
       getAPILink(API_MAP.RESEND_REGISTER), {
@@ -141,7 +140,7 @@ const Register = () => {
     <div className="register-page">
       <img alt={'vreau un doctor'} src="/images/login.svg" />
       <div className="auth-container">
-        <h1>Register</h1>
+        <h1>Înregistrare cont</h1>
         <form onSubmit={handleSubmit} autoComplete="off">
           {step === 0 &&
             <React.Fragment>
@@ -176,8 +175,9 @@ const Register = () => {
               {state.server.error &&
                 <div className={'error'}>{state.server.error}</div>
               }
-              <input className={`button ${!areTermsChecked || !formValid ? 'disabled' : ''}`}
-                type="submit" value="Register" />
+
+              <button className={`button ${!areTermsChecked || !formValid ? 'disabled' : ''}`} onClick={handleSubmitResendEmail} >Inregistrare</button>
+
             </React.Fragment>
           }
           {step === 1 &&
