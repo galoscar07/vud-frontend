@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import AddProfile from '../../AddProfile/AddProfile';
+import React from 'react';
 import ClinicProfile from '../../ClinicProfile/ClinicProfile';
 
 const DashboardProfileData = () => {
 
     const handleSubmit = () => { //TODO
     }
+    //TODO get from API
     const selected = {
         clinic_name: "Spital test",
         clinic_street: "Str. Constantin Brancusi",
@@ -17,7 +17,7 @@ const DashboardProfileData = () => {
     }
     return (
         <div className="dashboard-profile">
-            <ClinicProfile isDashboard values={selected} onSubmit={handleSubmit} />
+            <ClinicProfile selected={selected} onSubmit={handleSubmit} />
         </div>
     )
 }

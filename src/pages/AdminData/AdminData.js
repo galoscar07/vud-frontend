@@ -23,7 +23,6 @@ const AdminData = (props) => {
         fileList: props?.selected?.fileList || [],
         error: ''
     });
-    console.log(props, values, 'LOG')
 
     const handleFieldChange = (value, title) => {
         setValues((prevState) => ({ ...prevState, [title]: value }));

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import AddUnit from '../../AddUnit/AddUnit';
 
 const DashboardUnitData = () => {
@@ -13,7 +13,7 @@ const DashboardUnitData = () => {
 
     return (
         <div className="dashboard-unit">
-            <AddUnit isDashboard values={selected} onSubmit={handleSubmit} />
+            <AddUnit selected={selected} onSubmit={handleSubmit} />
         </div>
     )
 }

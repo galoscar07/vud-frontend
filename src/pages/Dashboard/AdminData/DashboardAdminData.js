@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import AdminData from '../../AdminData/AdminData';
 
 const DashboardAdminData = () => {
 
     const handleSubmit = () => { //TODO
     }
+    //TODO get from API
+
     const selected = {
         firstName: "Oscar",
         lastName: "Gal",
@@ -13,7 +15,8 @@ const DashboardAdminData = () => {
     }
     return (
         <div className="dashboard-admin">
-            <AdminData isDashboard selected={selected} onSubmit={handleSubmit} />        </div>
+            <AdminData selected={selected} onSubmit={handleSubmit} />
+        </div>
     )
 }
 

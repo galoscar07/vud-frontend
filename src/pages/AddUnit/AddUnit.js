@@ -11,14 +11,13 @@ const AddUnit = (props) => {
   const [state, setState] = useState({
     loading: true,
     dropdownValues: [],
-    selected: [],
+    selected: props?.selected || [],
     error: ''
   })
   const navigate = useNavigate();
 
   const onSelect = (elems) => {
     setState({ ...state, selected: elems })
-    console.log(state.selected, 'SEL')
   }
 
   useEffect(() => {
@@ -69,11 +68,11 @@ const AddUnit = (props) => {
         <form onSubmit={onSubmit}>
           <img alt={'imagine unitate medicala'} src="/images/unit.svg" />
           <h1>Adaugă Unitate medicală</h1>
-          <Dropdown onSelect={onSelect} options={state.dropdownValues} title={"Cauta tip unitate"}></Dropdown>
+          <Dropdown selected={props?.selected || []}onSelect={onSelect} options={state.dropdownValues} title={"Cauta tip unitate"}></Dropdown>
           {
             state.error && <div className={'error'}>{state.error}</div>
           }
-                <button className="button round" onClick={onSubmit} >Mai departe</button>
+          <button className="button round" onClick={onSubmit} >Mai departe</button>
         </form>
       </React.Fragment>
     )
