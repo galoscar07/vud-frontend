@@ -11,6 +11,14 @@
         margin-bottom: $spacing-small;
     }
 
+    .rating {
+        color: white;
+        background: $color-primary;
+        font-size: $font-size-xbig;
+        padding: 0.5rem 0;
+        margin-top: -0.25rem;
+    }
+
     .clinic-container {
         display: flex;
         margin-bottom: $spacing-small;
@@ -25,14 +33,6 @@
 
             img {
                 height: 12rem;
-            }
-
-            .rating {
-                color: white;
-                background: $color-primary;
-                font-size: $font-size-xbig;
-                padding: 0.5rem 0;
-                margin-top: -0.25rem;
             }
         }
 
@@ -213,6 +213,109 @@
             font-size: $font-normal;
             font-style: italic;
             line-height: 1.5rem;
+        }
+    }
+
+    .mobi {
+        display: none;
+    }
+
+    .desktop {
+        display: block;
+        ;
+    }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+    .clinic-page {
+        padding: $spacing-small;
+
+        .col-2 {
+            flex-direction: column !important;
+        }
+
+        .mobi {
+            display: block;
+
+            .header-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .type {
+                    font-size: $font-small;
+                }
+
+                .name {
+                    font-size: $font-normal;
+                    font-weight: 600;
+                }
+
+                .container {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    column-gap: $spacing-small;
+                }
+
+                .text-container {
+                    display: flex;
+                    flex-direction: column;
+                    text-align: start;
+                }
+
+                .image-container {
+                    padding: $spacing-small;
+                    background-color: white;
+                    border-radius: 10% 10% 0 0;
+
+                    img {
+                        width: 3.1rem;
+                        height: 3.1rem;
+                    }
+                }
+
+            }
+
+            .reviews-container {
+                display: flex;
+                flex-direction: row;
+                background-color: white;
+                padding: $spacing-small;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: $spacing-small;
+
+                .view-reviews {
+                    color: $color-primary;
+                    cursor: pointer;
+                    text-decoration: underline;
+                }
+            }
+
+            .contact-container {
+                background-color: #F2F3F5;
+                margin-top: $spacing-small;
+                padding: $spacing-small;
+            }
+
+            .rating {
+                padding: 0.2rem 0;
+            }
+
+            .view-more-btn {
+                padding: $spacing-small;
+                background-color: #667284;
+                color: white;
+                cursor: pointer;
+            }
+            .hide{
+                display: none;
+            }
+        }
+
+        .desktop {
+            display: none;
         }
     }
 }

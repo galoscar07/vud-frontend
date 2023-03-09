@@ -1,5 +1,5 @@
 @import 'src/styles/base';
- 
+
 
 .add-profile-page {
   .profiles-container {
@@ -30,12 +30,17 @@
 }
 
 @media screen and (max-width: $mobile-big-width) {
-  .add-profile-page{
-    .profiles-container{
+  .add-profile-page {
+    .profiles-container {
       flex-direction: column;
+
+      .profile-card {
+        width: 15rem;
+      }
     }
-    img{
-      margin-top:$spacing-medium;
+
+    img {
+      margin-top: $spacing-medium;
     }
   }
 }

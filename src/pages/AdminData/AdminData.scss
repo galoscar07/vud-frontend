@@ -21,15 +21,18 @@
     .container-title {
       font-size: $font-subtitle;
       margin-bottom: $spacing-small;
+
       &.profile-photo {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+
         div {
           display: flex;
           justify-content: center;
           align-items: center;
+
           img {
             margin-left: 10px;
             height: 65px;
@@ -48,15 +51,23 @@
   .clinic-profile-page {
     margin: $spacing-small $spacing-small $spacing-medium $spacing-small;
 
-    .col-2, .col-3 {
+    .col-2,
+    .col-3 {
       grid-template-columns: 1fr;
     }
-    .image-upload{
+
+    .image-upload {
       flex-direction: column;
-      #file-list{
-        margin-left:0;
-        margin-top:$spacing-small;
-        .selected-file{
+
+      .upload-photo {
+        width: 100%;
+      }
+
+      #file-list {
+        margin-left: 0;
+        margin-top: $spacing-small;
+
+        .selected-file {
           justify-content: center;
         }
       }
