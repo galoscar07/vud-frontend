@@ -2,9 +2,6 @@ import React from 'react';
 import ClinicProfile from '../../ClinicProfile/ClinicProfile';
 
 const DashboardProfileData = () => {
-
-    const handleSubmit = () => { //TODO
-    }
     //TODO get from API
     const selected = {
         clinic_name: "Spital test",
@@ -15,9 +12,15 @@ const DashboardProfileData = () => {
         primary_phone: "074888392",
         primary_email: "test@test.com",
     }
+    const [values, setValues] = React.useState(selected);
+
+    const handleSubmit = (selected) => {
+        setValues(selected)
+    }
+
     return (
         <div className="dashboard-profile">
-            <ClinicProfile selected={selected} onSubmit={handleSubmit} />
+            <ClinicProfile selected={values} onSubmit={handleSubmit} />
         </div>
     )
 }

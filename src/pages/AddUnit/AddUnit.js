@@ -38,41 +38,46 @@ const AddUnit = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    if (state.selected.length === 0) {
-      setState({ ...state, error: "Trebuie selectata minim o optiune" })
-    } else {
-      const listOfIds = state.selected.map((el) => { return el.value })
-      makeRequestLogged(
-        getAPILink(API_MAP.PUT_MEDICAL_TYPES),
-        'PUT',
-        JSON.stringify({ list_of_clinic_types: listOfIds }),
-        getAuthTokenFromLocal()
-      )
-        .then((response) => response.json())
-        .then((resp) => {
-          if (resp.success === 'Success') {
-            navigate(routes.PROFILE)
-          } else {
+    if (props.onSubmit) {
+      props.onSubmit(state.selected)
+    }
+    else {
+      if (state.selected.length === 0) {
+        setState({ ...state, error: "Trebuie selectata minim o optiune" })
+      } else {
+        const listOfIds = state.selected.map((el) => { return el.value })
+        makeRequestLogged(
+          getAPILink(API_MAP.PUT_MEDICAL_TYPES),
+          'PUT',
+          JSON.stringify({ list_of_clinic_types: listOfIds }),
+          getAuthTokenFromLocal()
+        )
+          .then((response) => response.json())
+          .then((resp) => {
+            if (resp.success === 'Success') {
+              navigate(routes.PROFILE)
+            } else {
+              setState({ ...state, error: "Ceva nu a funcționat. Vă rugăm să încercați în câteva minute" })
+            }
+          })
+          .catch((err) => {
             setState({ ...state, error: "Ceva nu a funcționat. Vă rugăm să încercați în câteva minute" })
-          }
-        })
-        .catch((err) => {
-          setState({ ...state, error: "Ceva nu a funcționat. Vă rugăm să încercați în câteva minute" })
-        })
+          })
+      }
     }
   }
 
   const renderPage = () => {
     return (
       <React.Fragment>
-        <form onSubmit={onSubmit}>
+        <form>
           <img alt={'imagine unitate medicala'} src="/images/unit.svg" />
           <h1>Adaugă Unitate medicală</h1>
-          <Dropdown selected={props?.selected || []}onSelect={onSelect} options={state.dropdownValues} title={"Cauta tip unitate"}></Dropdown>
+          <Dropdown selected={props?.selected || []} onSelect={onSelect} options={state.dropdownValues} title={"Cauta tip unitate"}></Dropdown>
           {
             state.error && <div className={'error'}>{state.error}</div>
           }
-          <button className="button round" onClick={onSubmit} >Mai departe</button>
+          <button className="button round" onClick={onSubmit}> {props.selected ? 'Salveaza' : 'Mergi mai departe'}</button>
         </form>
       </React.Fragment>
     )

@@ -28,23 +28,23 @@ const ClinicProfile = (props) => {
   // Inputs state
   const [state, setState] = useState({
     clinic_name: props?.selected?.clinic_name || '',
-    clinic_street: props?.selected?.clinic_street ||'',
-    clinic_number:props?.selected?.clinic_number ||'',
-    clinic_town: props?.selected?.clinic_town ||'',
-    clinic_county: props?.selected?.clinic_county||'',
-    clinic_other_details: props?.selected?.clinic_other_details ||'',
-    primary_phone: props?.selected?.primary_phone ||'',
+    clinic_street: props?.selected?.clinic_street || '',
+    clinic_number: props?.selected?.clinic_number || '',
+    clinic_town: props?.selected?.clinic_town || '',
+    clinic_county: props?.selected?.clinic_county || '',
+    clinic_other_details: props?.selected?.clinic_other_details || '',
+    primary_phone: props?.selected?.primary_phone || '',
     primary_email: props?.selected?.primary_email || '',
-    website:props?.selected?.website || '',
-    website_facebook:props?.selected?.website_facebook || '',
-    website_google: props?.selected?.website_google ||'',
-    website_linkedin:props?.selected?.website_linkedin ||'',
-    website_youtube: props?.selected?.website_youtube ||'',
-    description: props?.selected?.description ||'',
-    clinic_specialities: props?.selected?.clinic_specialities ||[],
-    clinic_facilities:props?.selected?.clinic_facilities || [],
-    profile_picture: props?.selected?.profile_picture ||null,
-    profile_picture_preview: props?.selected?.profile_picture_preview ||null,
+    website: props?.selected?.website || '',
+    website_facebook: props?.selected?.website_facebook || '',
+    website_google: props?.selected?.website_google || '',
+    website_linkedin: props?.selected?.website_linkedin || '',
+    website_youtube: props?.selected?.website_youtube || '',
+    description: props?.selected?.description || '',
+    clinic_specialities: props?.selected?.clinic_specialities || [],
+    clinic_facilities: props?.selected?.clinic_facilities || [],
+    profile_picture: props?.selected?.profile_picture || null,
+    profile_picture_preview: props?.selected?.profile_picture_preview || null,
   })
   const [errorState, setErrorState] = useState({
     clinic_name: '',
@@ -81,7 +81,7 @@ const ClinicProfile = (props) => {
     profileImgRef.current.click();
   }
   const handleFileChangeProfilePicUser = (event) => {
-    setState({...state, profile_picture: event.target.files[0], profile_picture_preview: URL.createObjectURL(event.target.files[0])})
+    setState({ ...state, profile_picture: event.target.files[0], profile_picture_preview: URL.createObjectURL(event.target.files[0]) })
   }
 
   // States and Functions for extra phone number and emails
@@ -301,60 +301,64 @@ const ClinicProfile = (props) => {
   }
 
   const handleSubmit = (event) => {
-    console.log('hadnle')
     event.preventDefault();
-    const mapped = mapStateToObject()
-    const formData = new FormData()
-    formData.append('clinic_name', mapped.clinic_name)
-    formData.append('clinic_street', mapped.clinic_street)
-    formData.append('clinic_number', mapped.clinic_number)
-    formData.append('clinic_town', mapped.clinic_town)
-    formData.append('clinic_county', mapped.clinic_county)
-    formData.append('clinic_other_details', mapped.clinic_other_details)
-    formData.append('primary_phone', mapped.primary_phone)
-    formData.append('secondary_phone', mapped.secondary_phone)
-    formData.append('primary_email', mapped.primary_email)
-    formData.append('secondary_email', mapped.secondary_email)
-    formData.append('website', mapped.website)
-    formData.append('website_facebook', mapped.website_facebook)
-    formData.append('website_google', mapped.website_google)
-    formData.append('website_linkedin', mapped.website_linkedin)
-    formData.append('website_youtube', mapped.website_youtube)
-    formData.append('description', mapped.description)
-    formData.append('clinic_specialities', JSON.stringify(mapped.clinic_specialities))
-    formData.append('clinic_facilities', JSON.stringify(mapped.clinic_facilities))
-    formData.append('clinic_schedule', mapped.clinic_schedule)
+    if (props.onSubmit) {
+      //TODO PLS CHECK THIS;
+      props.onSubmit(state)
+    } else {
+      const mapped = mapStateToObject()
+      const formData = new FormData()
+      formData.append('clinic_name', mapped.clinic_name)
+      formData.append('clinic_street', mapped.clinic_street)
+      formData.append('clinic_number', mapped.clinic_number)
+      formData.append('clinic_town', mapped.clinic_town)
+      formData.append('clinic_county', mapped.clinic_county)
+      formData.append('clinic_other_details', mapped.clinic_other_details)
+      formData.append('primary_phone', mapped.primary_phone)
+      formData.append('secondary_phone', mapped.secondary_phone)
+      formData.append('primary_email', mapped.primary_email)
+      formData.append('secondary_email', mapped.secondary_email)
+      formData.append('website', mapped.website)
+      formData.append('website_facebook', mapped.website_facebook)
+      formData.append('website_google', mapped.website_google)
+      formData.append('website_linkedin', mapped.website_linkedin)
+      formData.append('website_youtube', mapped.website_youtube)
+      formData.append('description', mapped.description)
+      formData.append('clinic_specialities', JSON.stringify(mapped.clinic_specialities))
+      formData.append('clinic_facilities', JSON.stringify(mapped.clinic_facilities))
+      formData.append('clinic_schedule', mapped.clinic_schedule)
 
-    formData.append('hq', JSON.stringify(mapped.hqs))
-    formData.append('doctor', JSON.stringify(mapped.doctors))
-    let index = 1
-    let images_keys = []
-    hq.forEach((el) => {
-      const key = el.name.split(' ').join('|') + '_hq_' + index
-      images_keys.push(key)
-      formData.append(key, el.profile_picture)
-      index += 1
-    })
-    doctor.forEach((el) => {
-      const key = el.name.split(' ').join('|') + '_doc_' + index
-      images_keys.push(key)
-      formData.append(key, el.profile_photo)
-      index += 1
-    })
-    formData.append('photoKeys', JSON.stringify(images_keys))
-
-    makeRequestLogged(
-      getAPILink(API_MAP.PUT_UPDATE_CLINIC_PROFILE),
-      'PUT',
-      formData,
-      getAuthTokenFromLocal(),
-      'multipart/form-data'
-    )
-      .then((response) => response.json())
-      .then((resp) => {
-        if (resp.success) navigate(routes.THANK_YOU)
+      formData.append('hq', JSON.stringify(mapped.hqs))
+      formData.append('doctor', JSON.stringify(mapped.doctors))
+      let index = 1
+      let images_keys = []
+      hq.forEach((el) => {
+        const key = el.name.split(' ').join('|') + '_hq_' + index
+        images_keys.push(key)
+        formData.append(key, el.profile_picture)
+        index += 1
       })
-      .catch((err) => { })
+      doctor.forEach((el) => {
+        const key = el.name.split(' ').join('|') + '_doc_' + index
+        images_keys.push(key)
+        formData.append(key, el.profile_photo)
+        index += 1
+      })
+      formData.append('photoKeys', JSON.stringify(images_keys))
+
+      makeRequestLogged(
+        getAPILink(API_MAP.PUT_UPDATE_CLINIC_PROFILE),
+        'PUT',
+        formData,
+        getAuthTokenFromLocal(),
+        'multipart/form-data'
+      )
+        .then((response) => response.json())
+        .then((resp) => {
+          if (resp.success) navigate(routes.THANK_YOU)
+        })
+        .catch((err) => { })
+    }
   };
 
   // useEffect
@@ -456,7 +460,7 @@ const ClinicProfile = (props) => {
           <div className="col desktop">
             <span onClick={handleProfilePictureUser} className={'add-photo'}>Adaugă poză de profil</span>
             <input type="file" accept="image/*" onChange={handleFileChangeProfilePicUser} ref={profileImgRef} style={{ display: 'none' }} />
-            <img alt='profile uploaded user' src={state.profile_picture_preview ? state.profile_picture_preview : '/images/user.svg'}/>
+            <img alt='profile uploaded user' src={state.profile_picture_preview ? state.profile_picture_preview : '/images/user.svg'} />
           </div>
         </div>
         <div className="fields-wrapper">
@@ -525,13 +529,13 @@ const ClinicProfile = (props) => {
           <div className="field-container">
             <label>*Telefon call center</label>
             <input className={errorState.primary_phone && 'error'} name="primary_phone" type="text"
-                   value={state.primary_phone}  onChange={handleFieldChange} placeholder={'Call center'} />
+              value={state.primary_phone} onChange={handleFieldChange} placeholder={'Call center'} />
             {
               multiplePhones.map((el, index) => {
                 return (
                   <div className={'extra_data_row'} key={index}>
-                    <input name={index.toString()} type="text" placeholder={`Al ${index+2}-lea numar`}
-                           value={el}  onChange={(e) => handlePhoneEmailChange(e.target.value, index, multiplePhones, setMultiplePhones)} />
+                    <input name={index.toString()} type="text" placeholder={`Al ${index + 2}-lea numar`}
+                      value={el} onChange={(e) => handlePhoneEmailChange(e.target.value, index, multiplePhones, setMultiplePhones)} />
                     <img alt="close button" src={'/images/close_btn.svg'} onClick={() => handleRemoveOtherInput(index, 'phone')} />
                   </div>
                 )
@@ -553,8 +557,8 @@ const ClinicProfile = (props) => {
               multipleEmails.map((el, index) => {
                 return (
                   <div className={'extra_data_row'} key={index}>
-                    <input name={index.toString()} type="text" placeholder={`Al ${index+2}-lea email`}
-                           value={el}  onChange={(e) => handlePhoneEmailChange(e.target.value, index, multipleEmails, setMultipleEmails)} />
+                    <input name={index.toString()} type="text" placeholder={`Al ${index + 2}-lea email`}
+                      value={el} onChange={(e) => handlePhoneEmailChange(e.target.value, index, multipleEmails, setMultipleEmails)} />
                     <img alt="Imagine inchidere" src={'/images/close_btn.svg'} onClick={() => handleRemoveOtherInput(index, 'email')} />
                   </div>
                 )
@@ -629,7 +633,7 @@ const ClinicProfile = (props) => {
               hq.map((hqElem, index) => {
                 return (
                   <div key={index} onClick={() => setHqHighlighted(index)} className={`card-HQ ${hqHighlighted === index && 'highlight'}`}>
-                    <img alt="Imagine uploaded sediu" src={hqElem.profile_picture_preview ? hqElem.profile_picture_preview : '/images/user.svg'}/>
+                    <img alt="Imagine uploaded sediu" src={hqElem.profile_picture_preview ? hqElem.profile_picture_preview : '/images/user.svg'} />
                     <div className={'hq-data'}>
                       <div>{hqElem.name}</div>
                     </div>
@@ -699,7 +703,7 @@ const ClinicProfile = (props) => {
               doctor.map((doc, index) => {
                 return (
                   <div key={index} onClick={() => setDocHighlighted(index)} className={`card-HQ ${docHighlighted === index && 'highlight'}`}>
-                    <img alt="Imagine profile doctor" src={doc.profile_picture_preview ? doc.profile_picture_preview : '/images/user.svg'}/>
+                    <img alt="Imagine profile doctor" src={doc.profile_picture_preview ? doc.profile_picture_preview : '/images/user.svg'} />
                     <div className={'hq-data'}>
                       <div>{doc.name}</div>
                     </div>
@@ -817,10 +821,10 @@ const ClinicProfile = (props) => {
               </div>
             </div>
             <div className="button border-button"
-                   onClick={() => {
-                     setSchedule({...schedule, [activeDay]: [...schedule[activeDay], {startTime: interval.startTime, endTime: interval.endTime}]})
-                     setInterval({startTime: '00:00', endTime: '23:59'})
-                   }}
+              onClick={() => {
+                setSchedule({ ...schedule, [activeDay]: [...schedule[activeDay], { startTime: interval.startTime, endTime: interval.endTime }] })
+                setInterval({ startTime: '00:00', endTime: '23:59' })
+              }}
             >
               Adauga
             </div>

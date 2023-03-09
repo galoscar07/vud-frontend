@@ -3,8 +3,7 @@ import AdminData from '../../AdminData/AdminData';
 
 const DashboardAdminData = () => {
 
-    const handleSubmit = () => { //TODO
-    }
+
     //TODO get from API
 
     const selected = {
@@ -13,9 +12,16 @@ const DashboardAdminData = () => {
         town: "Alba-Iulia",
         street: "Constantin Brancusi"
     }
+
+    const [values, setValues] = React.useState(selected);
+
+    const handleSubmit = (selected) => {
+        setValues(selected)
+    }
+
     return (
         <div className="dashboard-admin">
-            <AdminData selected={selected} onSubmit={handleSubmit} />
+            <AdminData selected={values} onSubmit={handleSubmit} />
         </div>
     )
 }

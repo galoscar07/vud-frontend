@@ -32,7 +32,11 @@ const AdminData = (props) => {
         event.preventDefault();
         if (values.firstName.length === 0 || values.lastName.length === 0 || values.street.length === 0) {
             setValues({ ...values, error: "Va rugam sa completati campurile obligatorii" })
-        } else {
+        }
+        if (props.onSubmit) {
+            props.onSubmit(values)
+        }
+        else {
             // TODO Validate data
             makeRequestLogged(
                 getAPILink(API_MAP.UPDATE_ADMIN_DATA),

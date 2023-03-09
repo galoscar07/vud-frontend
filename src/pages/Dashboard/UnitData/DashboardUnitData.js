@@ -7,13 +7,16 @@ const DashboardUnitData = () => {
         { value: 1, label: "Spital de Urgenta" },
         { value: 2, label: "Spital Privat" }
     ]
+    
+    const [values, setValues] = React.useState(selected);
 
-    const handleSubmit = () => { //TODO
+    const handleSubmit = (selected) => {
+        setValues(selected)
     }
 
     return (
         <div className="dashboard-unit">
-            <AddUnit selected={selected} onSubmit={handleSubmit} />
+            <AddUnit selected={values} onSubmit={handleSubmit} />
         </div>
     )
 }
