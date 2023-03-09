@@ -219,7 +219,7 @@ const AdminData = (props) => {
                     <div className="image-upload">
                         <label htmlFor="file">
                             <img className="upload-photo"
-                                src="images/upload.svg" />
+                                src="/images/upload.svg" />
                         </label>
                         <input style={{ display: "none" }} name="files" id="file" type="file" multiple
                             onChange={(e) => updateList(e.target.value, e.target.name)} />
