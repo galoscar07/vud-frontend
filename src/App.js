@@ -1,5 +1,6 @@
 import './App.scss';
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 import { routes } from "./utils/routes";
 
 // Footer
@@ -46,7 +47,8 @@ function App() {
           <Route path={routes.PROFILE} element={<ClinicProfile />} />
           <Route path={routes.EMAIL_VERIFICATION} element={<EmailVerification />} />
           <Route path={routes.DASHBOARD} element={<Dashboard />} >
-            <Route path={routes.DASHBOARD+'/*'} element={<DashboardUnitData />} />
+            <Route path={routes.DASHBOARD} element={<Navigate to={routes.DASHBOARD_UNIT_DATA} replace />} />
+            <Route path={routes.DASHBOARD_UNIT_DATA} element={<DashboardUnitData />} />
             <Route path={routes.DASHBOARD_PROFILE_DATA} element={<DashboardProfileData />} />
             <Route path={routes.DASHBOARD_ADMIN_DATA} element={<DashboardAdminData />} />
           </Route>
