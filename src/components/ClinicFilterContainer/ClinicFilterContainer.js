@@ -1,12 +1,17 @@
 import React from 'react'
 import "./ClinicFilterContainer.scss"
 import Carousel from '../Carousel/Carousel';
+import {useNavigate} from "react-router-dom";
+import {routes} from "../../utils/routes";
+
 const ClinicFilterContainer = (props) => {
+    const navigate = useNavigate();
 
     return (
-        <div className="clinic-filter-container">
+        <div className="clinic-filter-container" onClick={() => {navigate(routes.CLINIC_PAGE + `/?id=${props.clinic.id}`)}}>
             <div className="info-container">
                 <div className="rating-container">
+                    {/* TODO default image in case is not set */}
                     <img className="clinic-img" src={props.clinic.image} />
                     <div className="score-wrapper">
                         {props.clinic.score}
@@ -27,6 +32,7 @@ const ClinicFilterContainer = (props) => {
                     <div className="specialties">{props.clinic.specialty}</div>
                     <div className="type">{props.clinic.type}</div>
                     {props.clinic.contact && <div className="contact-wrapper">
+                        {/* TODO <a> tag on click, either call either email */}
                         {props.clinic.contact.map((el, i) =>
                             <div className="contact" key={i}>
                                 <img alt={el.type} src={`/images/icons/${el.type}.svg`} />

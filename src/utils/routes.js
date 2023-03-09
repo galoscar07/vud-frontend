@@ -1,5 +1,5 @@
-// const API_URL_DEV = 'http://127.0.0.1:8000/'
-const API_URL = 'https://vud-be.herokuapp.com/'
+const API_URL_DEV = 'http://127.0.0.1:8000/'
+// const API_URL = 'https://vud-be.herokuapp.com/'
 
 export const API_MAP = {
   // Creates new account and send link to verify email
@@ -24,6 +24,10 @@ export const API_MAP = {
   PUT_MEDICAL_TYPES: 'auth/update-clinic-type-data/',
   PUT_UPDATE_CLINIC_PROFILE: 'auth/update-clinic-profile/',
 
+  // GET TOP Clinics
+  GET_TOP_CLINICS: 'auth/get-top-clinics/',
+  GET_CLINICS: 'auth/clinics/',
+
   // OPTIONS
   // GET Medical Unity Type
   GET_MEDICAL_UNITY_TYPE: 'options/medical-unity-types/',
@@ -37,8 +41,8 @@ export const API_MAP = {
 }
 
 export const getAPILink = (url) => {
-  // return API_URL_DEV + url
-  return API_URL + url
+  return API_URL_DEV + url
+  // return API_URL + url
 }
 
 export const routes = {
@@ -47,8 +51,6 @@ export const routes = {
   CHARITY: '/charity',
   CONTACT: '/contact',
   CLINIC_PAGE: '/clinic-page',
-
-  // AUTH
   LOGIN: '/login',
   FORGET_PASSWORD: '/forget-password',
   RESET_PASSWORD: '/reset-password',

@@ -1,9 +1,11 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import "./Homepage.scss"
 import Select, { components } from "react-select";
 import ClinicFilterContainer from '../../components/ClinicFilterContainer/ClinicFilterContainer';
 import Newsletter from '../../components/Newsletter/Newsletter';
 import AdSense from 'react-adsense';
+import {API_MAP, getAPILink} from "../../utils/routes";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const tags = [
   {
@@ -34,59 +36,58 @@ const tags = [
 
 const options = [
   { value: 'clinica', label: 'Clinica' },
-  { value: 'doctor', label: 'Doctor' },
-  { value: 'specializare', label: 'Specializare' }
+  // { value: 'doctor', label: 'Doctor' },
+  // { value: 'specializare', label: 'Specializare' }
 ];
 
-const clinics = [
-  {
-    name: "Ponderas Academic Hospital",
-    image: 'https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg',
-    score: 8.4,
-    noOfReviews: 641,
-    rating: 4,
-    specialty: "Chirurgie medicala si bariatrica",
-    type: "Spital Privat",
-    contact: [{ type: 'phoneNo', value: "004 - 1721 722 763" }, { type: "location", value: "Cluj-Napoca" }],
-    reviews: [
-      {
-        name: "Cristina Moise",
-        rating: 5,
-        text: "Demonstreaza ca inca mai exista doctori care stiu aceasta meserie la perfectie! M-a ajutat foarte mult!"
-      },
-      {
-        name: "Radu G.",
-        rating: 5,
-        text: "Demonstreaza ca inca mai exista doctori care stiu aceasta meserie la perfectie! M-a ajutat foarte mult!"
-      },
-    ]
-  },
-  {
-    name: "Regina Maria",
-    image: "",
-    score: 8.4,
-    noOfReviews: 641,
-    rating: 4,
-    specialty: "Chirurgie medicala si bariatrica",
-    type: "Spital Privat",
-    contact: [{ type: 'phoneNo', value: "004 - 1721 722 763" }, { type: "location", value: "Cluj-Napoca" }],
-    reviews: [
-      {
-        name: "Cristina Moise",
-        rating: 5,
-        text: "Demonstreaza ca inca mai exista doctori care stiu aceasta meserie la perfectie! M-a ajutat foarte mult!"
-      },
-      {
-        name: "Radu G.",
-        rating: 5,
-        text: "Demonstreaza ca inca mai exista doctori care stiu aceasta meserie la perfectie! M-a ajutat foarte mult!"
-      },
-    ]
-  }
-]
 
 function Homepage() {
   const [selectedOption, setSelected] = React.useState([]);
+  const [loading, setLoading] = useState(true)
+  const [topClinics, setTopClinics] = useState([])
+
+  const mapServerRespToFront = (listOfClinics) => {
+    return listOfClinics.map((clinic) => {
+      return {
+        id: clinic.id,
+        name: clinic.clinic_name,
+        image: clinic.profile_picture,
+        score: 8.4, // TODO
+        noOfReviews: 641, // TODO
+        rating: 4, // TODO
+        specialty: clinic.clinic_specialities.map((cs) => {return cs.label}).join(", "),
+        type: clinic.medical_unit_types.map((mut) => {return mut.label}).join(", "),
+        contact: [
+          { type: 'phoneNo', value: clinic.primary_phone },
+          { type: "location", value: clinic.clinic_town },
+          { type: "email", value: clinic.primary_email }
+        ],
+        reviews: clinic.recent_reviews.map((rev) => {
+          return {
+            name: rev.name,
+            rating: rev.rating,
+            text: rev.comment
+          }
+        }),
+      }
+    })
+  }
+
+  useEffect(() => {
+    fetch(
+      getAPILink(API_MAP.GET_TOP_CLINICS), {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        }
+      })
+      .then((res) => res.json())
+      .then((res) => {
+        setLoading(false)
+        setTopClinics(mapServerRespToFront(res))
+      })
+  }, [])
+
   const handleChange = (selectedOption) => {
     setSelected(selectedOption);
     console.log(`Option selected:`, selectedOption);
@@ -109,10 +110,6 @@ function Homepage() {
         client='ca-pub-1837999521110876'
         slot='f08c47fec0942fa0'
       /> */}
-      <AdSense.Google
-  client='ca-pub-7292810486004926'
-  slot='7806394673'
-/>
       <form className="searchbar">
         <input className="search" type="text" placeholder="Cauta" name="search" />
         <button className="button border-button" onClick={handleSearch}>Cauta</button>
@@ -140,9 +137,13 @@ function Homepage() {
             </div>
           </div>
           <div className="results-container">
-            {clinics.map((clinic, i) =>
-              <ClinicFilterContainer displayReviews key={i} clinic={clinic} />
-            )}
+            {
+              loading
+                ? <LoadingSpinner />
+                : topClinics.map((clinic, i) =>
+                    <ClinicFilterContainer displayReviews key={i} clinic={clinic} />
+                  )
+            }
           </div>
         </div>
 
