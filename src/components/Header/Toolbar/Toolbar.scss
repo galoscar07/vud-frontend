@@ -1,0 +1,11 @@
+@import 'src/styles/form';
+
+.toolbar {
+    margin-top:$spacing-xbig;
+    .toolbar-items {
+        a {
+            color: $color-primary;
+            text-decoration: underline;
+        }
+    }
+}

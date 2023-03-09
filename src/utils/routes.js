@@ -61,6 +61,10 @@ export const routes = {
   DELETE_PROFILE: '/delete-profile',
   PROFILE: '/clinic-profile',
   DASHBOARD: '/dashboard',
+  DASHBOARD_ADMIN_DATA:'/dashboard/admin-data',
+  DASHBOARD_PROFILE_DATA:'/dashboard/profile-data',
+  DASHBOARD_UNIT_DATA:'/dashboard/unit-data',
+
   FILTER_PAGE: '/filter'
 }
 
