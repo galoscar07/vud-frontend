@@ -4,8 +4,9 @@ import Select, { components } from "react-select";
 import ClinicFilterContainer from '../../components/ClinicFilterContainer/ClinicFilterContainer';
 import Newsletter from '../../components/Newsletter/Newsletter';
 import AdSense from 'react-adsense';
-import {API_MAP, getAPILink} from "../../utils/routes";
+import {API_MAP, getAPILink, routes} from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import {useNavigate} from "react-router-dom";
 
 const tags = [
   {
@@ -44,7 +45,9 @@ const options = [
 function Homepage() {
   const [selectedOption, setSelected] = React.useState([]);
   const [loading, setLoading] = useState(true)
+  const [state, setState] = useState('')
   const [topClinics, setTopClinics] = useState([])
+  const navigate = useNavigate();
 
   const mapServerRespToFront = (listOfClinics) => {
     return listOfClinics.map((clinic) => {
@@ -62,13 +65,13 @@ function Homepage() {
           { type: "location", value: clinic.clinic_town },
           { type: "email", value: clinic.primary_email }
         ],
-        reviews: clinic.recent_reviews.map((rev) => {
+        reviews: clinic.recent_reviews?.map((rev) => {
           return {
             name: rev.name,
             rating: rev.rating,
             text: rev.comment
           }
-        }),
+        }) || [],
       }
     })
   }
@@ -92,16 +95,20 @@ function Homepage() {
     setSelected(selectedOption);
     console.log(`Option selected:`, selectedOption);
   }
+
   const showAll = () => { }
-  const handleSearch = () => { }
+  const handleSearch = () => {
+    navigate(`${routes.FILTER_PAGE}?searchTerm=${state}`)
+  }
+
   return (
     <div className="home-page">
       <div className="main-title">
         Cauti  <div className="dropdown">
           <select name="searching" id="searching" onChange={(e) => handleChange(e.target.value)}>
             <option value="clinica">Clinica</option>
-            <option value="doctor">Doctor</option>
-            <option value="specialitate">Specialitate</option>
+            {/*<option value="doctor">Doctor</option>*/}
+            {/*<option value="specialitate">Specialitate</option>*/}
           </select>
         </div> pentru tine ?
       </div>
@@ -110,8 +117,8 @@ function Homepage() {
         client='ca-pub-1837999521110876'
         slot='f08c47fec0942fa0'
       /> */}
-      <form className="searchbar">
-        <input className="search" type="text" placeholder="Cauta" name="search" />
+      <form onSubmit={(ev) => {ev.preventDefault()}} className="searchbar">
+        <input value={state} onChange={(ev) => setState(ev.target.value)} className="search" type="text" placeholder="Cauta" name="search" />
         <button className="button border-button" onClick={handleSearch}>Cauta</button>
       </form>
       <div className="tags-wrapper">
