@@ -7,7 +7,7 @@ import { getAuthTokenFromLocal } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
 
 
-const AddUnit = () => {
+const AddUnit = (props) => {
   const [state, setState] = useState({
     loading: true,
     dropdownValues: [],
@@ -18,6 +18,7 @@ const AddUnit = () => {
 
   const onSelect = (elems) => {
     setState({ ...state, selected: elems })
+    console.log(state.selected, 'SEL')
   }
 
   useEffect(() => {

@@ -8,8 +8,8 @@ const Dashboard = () => {
     const renderDashbaord = () => {
         return (
             <React.Fragment>
-                <Outlet/>
-                    <Toolbar />
+                <Toolbar />
+                <Outlet />
             </React.Fragment>
         )
     }

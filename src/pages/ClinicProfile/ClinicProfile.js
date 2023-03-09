@@ -18,7 +18,7 @@ const days = {
 }
 
 
-const ClinicProfile = () => {
+const ClinicProfile = (props) => {
   // Loading var
   const [loading, setLoading] = useState(true)
 
