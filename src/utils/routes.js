@@ -61,7 +61,7 @@ export const routes = {
   DELETE_PROFILE: '/delete-profile',
   PROFILE: '/clinic-profile',
   DASHBOARD: '/dashboard',
-
+  FILTER_PAGE: '/filter'
 }
 
 export const AUTH_CLINIC_MAP_STEP = {

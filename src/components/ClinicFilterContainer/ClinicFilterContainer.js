@@ -35,7 +35,7 @@ const ClinicFilterContainer = (props) => {
                     </div>}
                 </div>
             </div>
-            {props.clinic.reviews && <div className="reviews-container">
+            {props.displayReviews && <div className="reviews-container">
                     <Carousel content={props.clinic.reviews} fullReview />
             </div>}
         </div>
