@@ -1,11 +1,20 @@
 @import 'src/styles/form';
 
 .toolbar {
-    margin-top:$spacing-xbig;
+    margin-top: $spacing-xbig;
+
     .toolbar-items {
         a {
             color: $color-primary;
             text-decoration: underline;
+
+            &.active {
+                background: $color-primary;
+                color: white;
+                padding: $spacing-small;
+                text-decoration: none;
+                border-radius: 0.25rem;
+            }
         }
     }
 }
