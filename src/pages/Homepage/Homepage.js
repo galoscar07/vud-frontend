@@ -104,15 +104,10 @@ function Homepage() {
           </select>
         </div> pentru tine ?
       </div>
-      <h1>GOOGLE DDS</h1>
-      {/* <AdSense.Google
-        client='ca-pub-1837999521110876'
-        slot='f08c47fec0942fa0'
-      /> */}
       <AdSense.Google
-  client='ca-pub-7292810486004926'
-  slot='7806394673'
-/>
+        client='ca-pub-7292810486004926'
+        slot='7806394673'
+      />
       <form className="searchbar">
         <input className="search" type="text" placeholder="Cauta" name="search" />
         <button className="button border-button" onClick={handleSearch}>Cauta</button>
