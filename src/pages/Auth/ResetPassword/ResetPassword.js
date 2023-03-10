@@ -137,7 +137,7 @@ const ResetPassword = (props) => {
               <input className="full-width" type="text" value={email}
                 onChange={handleEmail} />
 
-              <button className={`button margin - top`} onClick={handleSubmit} >Schimbare parola</button>
+              <button className={`button margin-top`} onClick={handleSubmit} >Schimbare parola</button>
 
             </form>
           </React.Fragment>
@@ -169,7 +169,7 @@ const ResetPassword = (props) => {
               <label>Confirmare Parola</label>
               <input className="full-width" type="password" value={confirmNewPass}
                 onChange={handleConfirmNewPass} />
-              <button className={`button margin - top`} onClick={handleSubmitNewPass} >Schimbare parola</button>
+              <button className={`button margin-top`} onClick={handleSubmitNewPass} >Schimbare parola</button>
               {error &&
                 <div className={'error'}>{error}</div>
               }

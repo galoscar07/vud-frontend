@@ -77,7 +77,7 @@ const ForgetPassword = (props) => {
               {state.server.error &&
                 <div className={'error'}>{state.server.error}</div>
               }
-              <button className="button border-button margin-top" >chimbare parola </button>
+              <button className="button border-button margin-top" >Schimbare parola </button>
             </form>
           </React.Fragment>
         )
