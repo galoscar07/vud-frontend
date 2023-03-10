@@ -32,6 +32,7 @@ function ClinicPage({props}) {
 
     const mapServerRespToFront = (serverClinic) => {
         return {
+            id: serverClinic.id,
             name: serverClinic.clinic_name,
             imgUrl: serverClinic.profile_picture,
             score: 8.4, // TODO
@@ -90,6 +91,10 @@ function ClinicPage({props}) {
         }
     }
 
+    const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState([])
+    const [specialities, setSpecialities] = useState([])
+    const [competences, setCompetences] = useState([])
+
     useEffect(() => {
         const query = window.location.search
         const queryParams = new URLSearchParams(query)
@@ -106,11 +111,59 @@ function ClinicPage({props}) {
               setLoading(false)
               setClinic(mapServerRespToFront(res))
           })
-        // TODO Call to get  academic_degree
-        //                     speciality
-        //                     medical_skill
+        fetch(getAPILink(API_MAP.GET_ACADEMIC_DEGREES), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+              setAcademicDegreesDropDown(mapped)
+          })
+          .catch((err) => {
+              console.log(err)
+          })
+        fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+              setSpecialities(mapped)
+          })
+          .catch((err) => {
+              console.log(err)
+          })
+        fetch(getAPILink(API_MAP.GET_COMPETENCES), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+              setCompetences(mapped)
+          })
+          .catch((err) => {
+              console.log(err)
+          })
+
+        // TODO populate the dropdowns and name accordingly
         // TODO filter the list of doctors after these things
+
         // TODO add comment
+        //     POST auth/clinic-review/?clinic_id=
+        //       BODY
+        //       rating = models.PositiveIntegerField()
+        //       comment = models.TextField(blank=True)
+        //       name = models.CharField(max_length=255)
+        //       email = models.EmailField()
     }, [])
 
     const renderClinicHeaderDesktop = () => {
@@ -215,7 +268,8 @@ function ClinicPage({props}) {
                             )}
                         </div>
                     </div>
-                    {/* TODO what happens here? how do we show reviews? separate page? display component? */}
+                    {/* TODO Display doc and hq also on mobile */}
+                    {/* TODO display reviews */}
                     <div onClick={scrollingTop} className="view-reviews">Vezi toate recenziile</div>
                 </div>
             </div>
