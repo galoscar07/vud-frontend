@@ -36,7 +36,7 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       column-gap: 30px;
-      row-gap: 10px;
+      row-gap: $spacing-small;
       grid-template-rows: repeat(9, 30px);
       align-items: start;
 
@@ -77,12 +77,29 @@
     text-shadow: 0 1px 2px 0 rgba(black, 0.3);
     text-decoration: underline;
   }
+
+  .view-more-btn {
+    padding: $spacing-small;
+    background-color: #667284;
+    color: white;
+    cursor: pointer;
+    margin-top:$spacing-default;
+  }
+
+  .hide {
+    display: none!important;
+  }
+
+  .mobile {
+    display: none;
+    ;
+  }
 }
 
 @media screen and (max-width: $mobile-big-width) {
   .footer-wrapper {
     height: auto;
-    padding-bottom:$spacing-big;
+    padding-bottom: $spacing-big;
 
     .footer-menu,
     .specialities {
@@ -90,10 +107,18 @@
       flex-direction: column;
     }
 
+    .specialities {
+      margin-top: $spacing-default;
+    }
+
     .footer-copy-rights {
       flex-direction: column;
       row-gap: $spacing-small;
       margin-top: $spacing-small;
     }
+  }
+
+  .mobile {
+    display: block!important;
   }
 }
