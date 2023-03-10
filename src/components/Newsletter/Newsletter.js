@@ -1,7 +1,7 @@
 import React from 'react'
 import "./Newsletter.scss"
-import {API_MAP, getAPILink} from "../../utils/routes";
-import {value} from "lodash/seq";
+import { API_MAP, getAPILink } from "../../utils/routes";
+import { value } from "lodash/seq";
 
 const Newsletter = (props) => {
   const [state, setState] = React.useState({
@@ -39,15 +39,15 @@ const Newsletter = (props) => {
     event.preventDefault();
     fetch(
       getAPILink(API_MAP.POST_NEWSLETTER), {
-        method: 'POST',
-        body: JSON.stringify({
-          email: state.email.value,
-          name: state.name.value,
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        }
-      })
+      method: 'POST',
+      body: JSON.stringify({
+        email: state.email.value,
+        name: state.name.value,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
@@ -69,7 +69,7 @@ const Newsletter = (props) => {
             }
           })
         } else {
-          setState({...state, server: {error: "Ceva a mers rau! Te rugam incearca mai tarziu"}})
+          setState({ ...state, server: { error: "Ceva a mers rau! Te rugam incearca mai tarziu" } })
         }
       })
   }
@@ -80,21 +80,21 @@ const Newsletter = (props) => {
       <form onSubmit={handleSubmit} autoComplete="off" className="newsletter-form">
         <label>Nume</label>
         <input className="full-width" type="text" name="name" value={state.name.value}
-               onChange={handleChange} onBlur={isFormEmpty} />
+          onChange={handleChange} onBlur={isFormEmpty} />
         <label>Email</label>
         <input className="full-width" type="email" name="email" value={state.email.value}
-               onChange={handleChange} onBlur={isFormEmpty} />
+          onChange={handleChange} onBlur={isFormEmpty} />
         <div className="checkbox-container">
 
           <label><span>Termeni si conditii de abonare</span></label>
           <div className="checkbox-wrapper">
             <input className="checkbox" type="checkbox" value={state.areTermsChecked.value}
-                   onChange={handleChange} />
+              onChange={handleChange} />
             <div>Sunt de acord</div>
           </div>
 
         </div>
-        <input className={`button round ${!formValid ? 'disabled' : ''}`} type="submit" value="Abonare" />
+        <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Abonare</button>
         {
           state.server.error &&
           <div className={'error'}>Ceva a mers rau! Va rugam incercati mai tarziu.</div>
