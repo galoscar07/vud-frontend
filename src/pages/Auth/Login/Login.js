@@ -115,7 +115,7 @@ const Login = () => {
       .catch((err) => {
         setState({ ...state, server: { error: "Credentialele nu sunt corecte. Va rugam sa incercati din nou" } })
       })
-  }, []);
+  });
 
 
   return (
