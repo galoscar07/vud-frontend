@@ -56,7 +56,7 @@ const Carousel = (props) => {
                                 </span>
                             </div>
                         </div>
-                        {!props.fullReview && <span className="all-reviews">Vezi toate recenziile</span>}
+                        {!props.fullReview && <span onClick={props.onScroll} className="all-reviews">Vezi toate recenziile</span>}
 
                     </div>
                 ))}

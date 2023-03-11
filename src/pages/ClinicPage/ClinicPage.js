@@ -1,8 +1,11 @@
-import React from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Carousel from '../../components/Carousel/Carousel';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import Review from '../../components/Review/Review';
 import "./ClinicPage.scss";
+
+import {API_MAP, getAPILink} from "../../utils/routes";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const options = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -11,68 +14,157 @@ const options = [
     { value: 'blueberry', label: 'Blueberry' },
     { value: 'bannana', label: 'Bannana' },
 ]
-const testimonials = [
-    {
-        text: "“Demonstreaza ca inca mai exista doctori care stiu aceasta meserie la perfectie! M-a ajutat foarte mult!”"
-    },
-    {
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis nisl diam. Vivamus venenatis ornare risus non ornare. Proin fermentum aliquam felis, placerat fermentum nunc luctus in. Pellentesque et quam lacus."
-    }
-]
 
-const initClinic = {
-    name: 'Clinica de pediatrie',
-    imgUrl: 'https://www.shutterstock.com/shutterstock/photos/212251981/display_1500/stock-photo-modern-hospital-style-building-212251981.jpg',
-    score: 8.4,
-    rating: 4,
-    noOfReviews: 641,
-    address: "Str. Zagazului nr. 7, Bucuresti",
-    typeOfClinic: "Clinica privata",
-    facilities: ["Store", "Bank", "Bus", "Cafeteria"],
-    links: [
-        { type: "Facebook", value: 'https://www.facebook.com' },
-        { type: "Linkedin", value: 'https://www.facebook.com' },
-        { type: "Youtube", value: 'https://www.facebook.com' },
-        { type: "Whatsapp", value: 'https://www.facebook.com' },
-    ],
-    contact: [
-        { type: "urgente", value: "0219646", icon: "emergency" },
-        { type: "call center", value: "0218383", icon: "phone" },
-        { type: "receptie", value: "0721345987", icon: "phone" },
-        { type: "email", value: "spitalulmedlifepediatrie@medlife.ro", icon: "email" },
-        { type: "email", value: "spitalulmedlifepediatrie@medlife.ro", icon: "email" },
-        { type: "website", value: "www.medlife.ro", icon: "website" }
-    ],
-    isFavorite: false,
-}
-const reviews = [{
-    name: "Dorina Margarit",
-    noOfReviews: 22,
-    rating: 5,
-    text: "Demonstreaza ca inca mai exista doctori care stiu aceasta meserie la perfectie! M-a ajutat foarte mult!",
-    thumbsUp: 4,
-    thumbsDown: 2
-},
-{
-    name: "Charles Leclerc",
-    noOfReviews: 22,
-    rating: 5,
-    text: "Demonstreaza ca inca mai exista doctori care stiu aceasta meserie la perfectie! M-a ajutat foarte mult!",
-    thumbsUp: 4,
-    thumbsDown: 2
-},
-]
+function ClinicPage({props}) {
 
-function ClinicPage() {
-
-    const [clinic, setClinic] = React.useState(initClinic);
+    const [clinic, setClinic] = React.useState({});
+    const [loading, setLoading] = useState(true)
     const [displayMoreCards, setDisplayMoreCards] = React.useState(true);
-    const [isFavoriteClinic, setIsFavoriteClinic] = React.useState(clinic.isFavorite);
+    const targetElement = useRef();
+    const scrollingTop = (event) => {
+        const elmnt = targetElement;
+        elmnt.current.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "start"
+        });
+    };
 
-    const toggleFavoriteClinic = (toggleState) => {
-        setIsFavoriteClinic(toggleState);
-        setClinic((prevState) => ({ ...prevState, isFavorite: isFavoriteClinic }))
+    const mapServerRespToFront = (serverClinic) => {
+        return {
+            id: serverClinic.id,
+            name: serverClinic.clinic_name,
+            imgUrl: serverClinic.profile_picture,
+            score: 8.4, // TODO
+            rating: 4, // TODO
+            noOfReviews: 641, // TODO
+            address: `Str. ${serverClinic.clinic_street} nr. ${serverClinic.clinic_number}, ${serverClinic.clinic_town}`,
+            typeOfClinic: serverClinic.medical_unit_types.map((mut) => {return mut.label}).join(", "),
+            facilities: serverClinic.unity_facilities.map((mut) => {return mut.label}),
+            links: [
+                { type: "Facebook", value: serverClinic.website_facebook },
+                { type: "Linkedin", value: serverClinic.website_linkedin },
+                { type: "Youtube", value: serverClinic.website_youtube },
+                { type: "Whatsapp", value: serverClinic.website_google },
+            ],
+            contact: [
+                ...serverClinic.secondary_email.split('|').map((sc) => {return { type: "email", value: sc, icon: "email" }}),
+                { type: "email", value: serverClinic.primary_email, icon: "email" },
+                { type: "website", value: serverClinic.website, icon: "website" },
+                { type: "call center", value: serverClinic.primary_phone, icon: "phone" },
+                ...serverClinic.secondary_phone.split('|').map((sc, index) => {return { type: `tel. ${index+1}`, value: sc, icon: "phone" }}),
+            ],
+            testimonials: serverClinic.reviews.map((re) => {
+                return {
+                   text: re.comment,
+                }
+            }).slice(0, 4),
+            reviews: serverClinic.reviews.map((re) => {
+                return {
+                    name: re.name,
+                    noOfReviews: 0, // TODO remove also from html
+                    rating: re.rating,
+                    text: re.comment,
+                    thumbsUp: 0, // TODO remove also from html
+                    thumbsDown: 0 // TODO remove also from html
+                }
+            }),
+            description: serverClinic.description,
+            hqs: serverClinic.clinic_offices.map((doc) => {
+                return {
+                    photo: null,
+                    name: "",
+                    unit_types: [],
+                    address: "",
+                }
+            }),
+            doctors: serverClinic.collaborator_doctor.map((doc) => {
+                return {
+                    photo: null,
+                    name: "",
+                    academic_degree: [],
+                    speciality: [],
+                    medical_skill: [],
+                    address: "",
+                }
+            })
+        }
     }
+
+    const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState([])
+    const [specialities, setSpecialities] = useState([])
+    const [competences, setCompetences] = useState([])
+
+    useEffect(() => {
+        const query = window.location.search
+        const queryParams = new URLSearchParams(query)
+        const id = queryParams.get('id')
+        fetch(
+          getAPILink(API_MAP.GET_CLINICS + id + '/'), {
+              method: 'GET',
+              headers: {
+                  'Content-type': 'application/json; charset=UTF-8',
+              }
+          })
+          .then((res) => res.json())
+          .then((res) => {
+              setLoading(false)
+              setClinic(mapServerRespToFront(res))
+          })
+        fetch(getAPILink(API_MAP.GET_ACADEMIC_DEGREES), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+              setAcademicDegreesDropDown(mapped)
+          })
+          .catch((err) => {
+              console.log(err)
+          })
+        fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+              setSpecialities(mapped)
+          })
+          .catch((err) => {
+              console.log(err)
+          })
+        fetch(getAPILink(API_MAP.GET_COMPETENCES), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+              setCompetences(mapped)
+          })
+          .catch((err) => {
+              console.log(err)
+          })
+
+        // TODO populate the dropdowns and name accordingly
+        // TODO filter the list of doctors after these things
+
+        // TODO add comment
+        //     POST auth/clinic-review/?clinic_id=
+        //       BODY
+        //       rating = models.PositiveIntegerField()
+        //       comment = models.TextField(blank=True)
+        //       name = models.CharField(max_length=255)
+        //       email = models.EmailField()
+    }, [])
 
     const renderClinicHeaderDesktop = () => {
         return (
@@ -97,10 +189,6 @@ function ClinicPage() {
                                         </div>
                                     )}
                                 </div>
-                                <div className=" border-button button favorite-button" onClick={() => toggleFavoriteClinic(!isFavoriteClinic)}>
-                                    <img src={clinic.isFavorite ? "/images/icons/favorite.svg" : "/images/icons/favorite_checked.svg"} />
-                                    {clinic.isFavorite ? "Salveaza la favorite" : "Clinica favorita"}
-                                </div>
                             </div>
                         </div>
                         <div className="rating-container">
@@ -113,7 +201,7 @@ function ClinicPage() {
                                         )}
                                     </div>
                                 </div>
-                                <div className="see-reviews">Vezi toate recenziile</div>
+                                <div onClick={scrollingTop} className="see-reviews">Vezi toate recenziile</div>
                             </div>
                             <div className="facilities">
                                 <span>Facilitati clinica</span>
@@ -155,9 +243,6 @@ function ClinicPage() {
                         </div>
                     </div>
 
-                    <div className="favorite-button" onClick={() => toggleFavoriteClinic(!isFavoriteClinic)}>
-                        <img src={clinic.isFavorite ? "/images/icons/favorite.svg" : "/images/icons/favorite_checked.svg"} />
-                    </div>
                 </div>
                 <div className="contact-container">
                     {clinic.contact.map((el, i) =>
@@ -183,57 +268,64 @@ function ClinicPage() {
                             )}
                         </div>
                     </div>
-                    {/* TODO what happens here? how do we show reviews? separate page? display component? */}
-                    <div className="view-reviews">Vezi toate recenziile</div>
+                    {/* TODO Display doc and hq also on mobile */}
+                    {/* TODO display reviews */}
+                    <div onClick={scrollingTop} className="view-reviews">Vezi toate recenziile</div>
                 </div>
             </div>
         )
     }
+
     return (
         <div className="clinic-page">
-            <div className="desktop">{renderClinicHeaderDesktop()}</div>
-            <div className="mobi">{renderClinicHeaderMobile()}</div>
-            <div className="col-2">
-                <div className="info-left-container desktop">
-                    <div className="container-title">Testimoniale</div>
-                    <Carousel content={testimonials} />
-                    <iframe
-                        title={'google maps'}
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
-                        width="100%"
-                        height="210"
-                        frameBorder="0"
-                        style={{ border: 0, marginTop: 5 }}
-                        allowFullScreen=""
-                        aria-hidden="false"
-                        tabIndex="0"
-                    />
-                </div>
+            {
+                loading
+                    ? <LoadingSpinner />
+                    : <React.Fragment>
+                      <div className="desktop">{renderClinicHeaderDesktop()}</div>
+                      <div className="mobi">{renderClinicHeaderMobile()}</div>
+                      <div className="col-2">
+                          <div className="info-left-container desktop">
+                              <div className="container-title">Testimoniale</div>
+                              <Carousel onScroll={scrollingTop} content={clinic.testimonials} />
+                              <iframe
+                                title={'google maps'}
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
+                                width="100%"
+                                height="210"
+                                frameBorder="0"
+                                style={{ border: 0, marginTop: 5 }}
+                                allowFullScreen=""
+                                aria-hidden="false"
+                                tabIndex="0"
+                              />
+                          </div>
 
-                <div className="info-right-container">
-                    <div className="container-title">Cautare</div>
-                    <div className="col">
-                        <Dropdown options={options} title={"Specialitati"} />
-                    </div>
-                    <div className="col-2">
-                        <Dropdown options={options} title={"Oras"} />
-                        <Dropdown options={options} title={"Clinica"} />
-                    </div>
-                    <div className="description-container">
-                        <p>Cabinetul nostru Stomatologic situat pe Şoseaua Mihai Bravu nr. 67-73, bloc C18, oferă servicii de înaltă calitate în domeniul stomatologic, cu accent pe Chirurgie Orală, Estetică și Protetică Dentară, Endodontie și Protetică și Parodontologie. Echipa noastră de medici stomatologi cu experiență își propune să ofere fiecărui pacient tratamente personalizate, adaptate nevoilor și dorințelor acestuia.</p>
-                        <p>Suntem dedicați să oferim un mediu cald și prietenos, cu tehnologie de ultimă generație, pentru a face experiența pacientului cât mai confortabilă și eficientă. În plus, ne străduim să păstrăm un nivel ridicat de igienă și sterilizare, pentru a garanta sănătatea pacienților noștri.</p>
-                        <p>Serviciile noastre includ, dar nu sunt limitate la, tratamente de albire dentală, implante dentare, coroane și punți dentare, obturatii de canal, tratamente parodontale, precum și chirurgie orală și extracții dentare. De asemenea, ne concentrăm pe prevenirea și îngrijirea dentară, oferind consultații și recomandări pacienților noștri pentru a-și păstra sănătatea dentară pe termen lung.</p>
-                        <p>Așteptăm cu interes să ne întâlnim cu dumneavoastră și să vă oferim servicii stomatologice de calitate superioară. Contactați-ne astăzi pentru a programa o consultație și a începe călătoria către o zâmbet sănătos și strălucitor!</p>
-                    </div>
-                </div>
+                          <div className="info-right-container">
+                              <div className="container-title">Cautare</div>
+                              <div className="col">
+                                  <Dropdown options={options} title={"Specialitati"} />
+                              </div>
+                              <div className="col-2">
+                                  <Dropdown options={options} title={"Oras"} />
+                                  <Dropdown options={options} title={"Clinica"} />
+                              </div>
+                              <div className="description-container">
+                                  <p>
+                                      {clinic.description}
+                                  </p>
+                              </div>
+                          </div>
 
-            </div>
+                      </div>
 
-            <div className="reviews-container desktop">
-                <div className="container-title">Ce spun pacientii</div>
-                {reviews.map((review, i) =>
-                    <Review key={i} review={review} />)}
-            </div>
+                      <div className="reviews-container desktop" ref={targetElement}>
+                          <div className="container-title">Ce spun pacientii</div>
+                          {clinic.reviews.map((review, i) =>
+                            <Review key={i} review={review} />)}
+                      </div>
+                    </React.Fragment>
+            }
         </div>
     );
 }

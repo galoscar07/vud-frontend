@@ -27,6 +27,11 @@ export const API_MAP = {
   PUT_MEDICAL_TYPES: 'auth/update-clinic-type-data/',
   PUT_UPDATE_CLINIC_PROFILE: 'auth/update-clinic-profile/',
 
+  // GET TOP Clinics
+  GET_TOP_CLINICS: 'auth/get-top-clinics/',
+  GET_CLINICS: 'auth/clinics/',
+  GET_CLINICS_FILTER: 'auth/get-clinics/',
+
   // OPTIONS
   // GET Medical Unity Type
   GET_MEDICAL_UNITY_TYPE: 'options/medical-unity-types/',
@@ -50,8 +55,6 @@ export const routes = {
   CHARITY: '/charity',
   CONTACT: '/contact',
   CLINIC_PAGE: '/clinic-page',
-
-  // AUTH
   LOGIN: '/login',
   FORGET_PASSWORD: '/forget-password',
   RESET_PASSWORD: '/reset-password',
