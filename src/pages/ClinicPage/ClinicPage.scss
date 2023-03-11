@@ -129,6 +129,26 @@
         }
     }
 
+    .add-review-form {
+        row-gap: $spacing-xsmall;
+        display: flex;
+        flex-direction: column;
+
+        label {
+            text-align: left;
+        }
+
+        img {
+            cursor: pointer;
+            height: 1.5rem;
+            width: 1.5rem;
+        }
+
+        .stars-container {
+            margin-bottom: $spacing-small;
+        }
+    }
+
     .contact-container {
         column-gap: $spacing-small;
         row-gap: $spacing-small;
@@ -229,6 +249,10 @@
 @media screen and (max-width: $mobile-big-width) {
     .clinic-page {
         padding: $spacing-small;
+
+        .reviews-container {
+            margin-top: $spacing-small;
+        }
 
         .col-2 {
             flex-direction: column !important;

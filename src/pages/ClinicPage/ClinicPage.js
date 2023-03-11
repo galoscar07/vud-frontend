@@ -1,10 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Carousel from '../../components/Carousel/Carousel';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import Review from '../../components/Review/Review';
 import "./ClinicPage.scss";
 
-import {API_MAP, getAPILink} from "../../utils/routes";
+import { API_MAP, getAPILink } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const options = [
@@ -15,11 +15,80 @@ const options = [
     { value: 'bannana', label: 'Bannana' },
 ]
 
-function ClinicPage({props}) {
+function ClinicPage({ props }) {
 
     const [clinic, setClinic] = React.useState({});
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = React.useState(true)
+    const [id, setId] = React.useState(null)
+    const [error, setError] = React.useState('');
     const [displayMoreCards, setDisplayMoreCards] = React.useState(true);
+    const [formValid, setFormValid] = React.useState(false)
+    const [review, setReview] = React.useState({
+        email: {
+            value: '',
+            error: null
+        },
+        name: {
+            value: '',
+            error: null
+        },
+        rating: {
+            value: 0,
+            error: null,
+        },
+        comment: {
+            value: '',
+            error: null
+        }, server: {
+            error: null
+        }
+    })
+
+    const isFormEmpty = () => {
+        if (review.email.value && review.name.value && review.comment.value && review.rating.value) {
+            setFormValid(true)
+        } else {
+            setFormValid(false)
+        }
+    }
+    const handleChange = (event) => {
+        setReview({ ...review, [event.target.name]: { ...review[event.target.name], value: event.target.value } })
+        isFormEmpty()
+    }
+
+    const handleAddReview = (event) => {
+        console.log(id, 'ID')
+        event.preventDefault();
+                //     POST auth/clinic-review/?clinic_id=
+
+        fetch(
+            getAPILink(API_MAP.ADD_REVIEW + id), {
+            method: 'POST',
+            body: JSON.stringify({
+                rating: review.rating.value,
+                comment: review.comment.value,
+                name: review.name.value,
+                email: review.email.value
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+            .then((response) => {
+                if (response.status !== 200) {
+                    throw Error
+                }
+                return response.json()
+            })
+            .then((data) => {
+                setLoading(false)
+            })
+            .catch((err) => {
+                setLoading(false)
+                setError("Ceva nu a funcționat. Vă rugăm să încercați în câteva minute")
+            })
+    }
+
     const targetElement = useRef();
     const scrollingTop = (event) => {
         const elmnt = targetElement;
@@ -39,8 +108,8 @@ function ClinicPage({props}) {
             rating: 4, // TODO
             noOfReviews: 641, // TODO
             address: `Str. ${serverClinic.clinic_street} nr. ${serverClinic.clinic_number}, ${serverClinic.clinic_town}`,
-            typeOfClinic: serverClinic.medical_unit_types.map((mut) => {return mut.label}).join(", "),
-            facilities: serverClinic.unity_facilities.map((mut) => {return mut.label}),
+            typeOfClinic: serverClinic.medical_unit_types.map((mut) => { return mut.label }).join(", "),
+            facilities: serverClinic.unity_facilities.map((mut) => { return mut.label }),
             links: [
                 { type: "Facebook", value: serverClinic.website_facebook },
                 { type: "Linkedin", value: serverClinic.website_linkedin },
@@ -48,25 +117,22 @@ function ClinicPage({props}) {
                 { type: "Whatsapp", value: serverClinic.website_google },
             ],
             contact: [
-                ...serverClinic.secondary_email.split('|').map((sc) => {return { type: "email", value: sc, icon: "email" }}),
+                ...serverClinic.secondary_email.split('|').map((sc) => { return { type: "email", value: sc, icon: "email" } }),
                 { type: "email", value: serverClinic.primary_email, icon: "email" },
                 { type: "website", value: serverClinic.website, icon: "website" },
                 { type: "call center", value: serverClinic.primary_phone, icon: "phone" },
-                ...serverClinic.secondary_phone.split('|').map((sc, index) => {return { type: `tel. ${index+1}`, value: sc, icon: "phone" }}),
+                ...serverClinic.secondary_phone.split('|').map((sc, index) => { return { type: `tel. ${index + 1}`, value: sc, icon: "phone" } }),
             ],
             testimonials: serverClinic.reviews.map((re) => {
                 return {
-                   text: re.comment,
+                    text: re.comment,
                 }
             }).slice(0, 4),
             reviews: serverClinic.reviews.map((re) => {
                 return {
                     name: re.name,
-                    noOfReviews: 0, // TODO remove also from html
                     rating: re.rating,
                     text: re.comment,
-                    thumbsUp: 0, // TODO remove also from html
-                    thumbsDown: 0 // TODO remove also from html
                 }
             }),
             description: serverClinic.description,
@@ -99,71 +165,66 @@ function ClinicPage({props}) {
         const query = window.location.search
         const queryParams = new URLSearchParams(query)
         const id = queryParams.get('id')
+        setId(id);
         fetch(
-          getAPILink(API_MAP.GET_CLINICS + id + '/'), {
-              method: 'GET',
-              headers: {
-                  'Content-type': 'application/json; charset=UTF-8',
-              }
-          })
-          .then((res) => res.json())
-          .then((res) => {
-              setLoading(false)
-              setClinic(mapServerRespToFront(res))
-          })
+            getAPILink(API_MAP.GET_CLINICS + id + '/'), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                setLoading(false)
+                setClinic(mapServerRespToFront(res))
+            })
         fetch(getAPILink(API_MAP.GET_ACADEMIC_DEGREES), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-              setAcademicDegreesDropDown(mapped)
-          })
-          .catch((err) => {
-              console.log(err)
-          })
+            .then((resp) => resp.json())
+            .then((response) => {
+                const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                setAcademicDegreesDropDown(mapped)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-              setSpecialities(mapped)
-          })
-          .catch((err) => {
-              console.log(err)
-          })
+            .then((resp) => resp.json())
+            .then((response) => {
+                const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                setSpecialities(mapped)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         fetch(getAPILink(API_MAP.GET_COMPETENCES), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-              setCompetences(mapped)
-          })
-          .catch((err) => {
-              console.log(err)
-          })
+            .then((resp) => resp.json())
+            .then((response) => {
+                const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                setCompetences(mapped)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
 
         // TODO populate the dropdowns and name accordingly
         // TODO filter the list of doctors after these things
 
-        // TODO add comment
-        //     POST auth/clinic-review/?clinic_id=
-        //       BODY
-        //       rating = models.PositiveIntegerField()
-        //       comment = models.TextField(blank=True)
-        //       name = models.CharField(max_length=255)
-        //       email = models.EmailField()
+
     }, [])
 
     const renderClinicHeaderDesktop = () => {
@@ -282,48 +343,79 @@ function ClinicPage({props}) {
                 loading
                     ? <LoadingSpinner />
                     : <React.Fragment>
-                      <div className="desktop">{renderClinicHeaderDesktop()}</div>
-                      <div className="mobi">{renderClinicHeaderMobile()}</div>
-                      <div className="col-2">
-                          <div className="info-left-container desktop">
-                              <div className="container-title">Testimoniale</div>
-                              <Carousel onScroll={scrollingTop} content={clinic.testimonials} />
-                              <iframe
-                                title={'google maps'}
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
-                                width="100%"
-                                height="210"
-                                frameBorder="0"
-                                style={{ border: 0, marginTop: 5 }}
-                                allowFullScreen=""
-                                aria-hidden="false"
-                                tabIndex="0"
-                              />
-                          </div>
+                        <div className="desktop">{renderClinicHeaderDesktop()}</div>
+                        <div className="mobi">{renderClinicHeaderMobile()}</div>
+                        <div className="col-2">
+                            <div className="info-left-container ">
+                                <div className="container-title">Testimoniale</div>
+                                <Carousel onScroll={scrollingTop} content={clinic.testimonials} />
+                                <iframe
+                                    title={'google maps'}
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
+                                    width="100%"
+                                    height="210"
+                                    frameBorder="0"
+                                    style={{ border: 0, marginTop: 5 }}
+                                    allowFullScreen=""
+                                    aria-hidden="false"
+                                    tabIndex="0"
+                                />
+                            </div>
 
-                          <div className="info-right-container">
-                              <div className="container-title">Cautare</div>
-                              <div className="col">
-                                  <Dropdown options={options} title={"Specialitati"} />
-                              </div>
-                              <div className="col-2">
-                                  <Dropdown options={options} title={"Oras"} />
-                                  <Dropdown options={options} title={"Clinica"} />
-                              </div>
-                              <div className="description-container">
-                                  <p>
-                                      {clinic.description}
-                                  </p>
-                              </div>
-                          </div>
+                            <div className="info-right-container">
+                                <div className="container-title">Cautare</div>
+                                <div className="col">
+                                    <Dropdown options={options} title={"Specialitati"} />
+                                </div>
+                                <div className="col-2">
+                                    <Dropdown options={options} title={"Oras"} />
+                                    <Dropdown options={options} title={"Clinica"} />
+                                </div>
+                                <div className="description-container">
+                                    <p>
+                                        {clinic.description}
+                                    </p>
+                                </div>
+                            </div>
 
-                      </div>
+                        </div>
 
-                      <div className="reviews-container desktop" ref={targetElement}>
-                          <div className="container-title">Ce spun pacientii</div>
-                          {clinic.reviews.map((review, i) =>
-                            <Review key={i} review={review} />)}
-                      </div>
+                        <div className="reviews-container " ref={targetElement}>
+                            <div className="container-title">Ce spun pacientii</div>
+                            {clinic.reviews.map((review, i) =>
+                                <Review key={i} review={review} />)}
+                        </div>
+
+
+                        <div className="add-review-wrapper">
+                            <div className="container-title">Adauga o recenzie</div>
+                            <form onSubmit={handleAddReview} autoComplete="off" className="add-review-form">
+                                <label>Nume</label>
+                                <input className="full-width" type="text" name="name" value={review.name.value}
+                                    onChange={handleChange} onBlur={isFormEmpty} />
+                                <label>Email</label>
+                                <input className="full-width" type="email" name="email" value={review.email.value}
+                                    onChange={handleChange} onBlur={isFormEmpty} />
+                                <label>Recenzie</label>
+                                <textarea rows="6" className="full-width" type="comment" name="comment" value={review.comment.value}
+                                    onChange={handleChange} onBlur={isFormEmpty} />
+                                <label>Rating</label>
+                                <div className="stars-wrapper">
+                                    <div className="stars-container">
+                                        {Array(5).fill(1).map((el, i) =>
+                                            <span onClick={() => setReview({ ...review, rating: { value: i + 1 } })}  >
+                                                <img key={i} src={i >= review.rating.value ? "/images/star_empty.svg" : "/images/star_full.svg"} />
+                                            </span>)}
+                                    </div>
+                                </div>
+
+                                <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Adauga recenzie</button>
+                                {
+                                    review.server.error &&
+                                    <div className={'error'}>Ceva a mers rau! Va rugam incercati mai tarziu.</div>
+                                }
+                            </form>
+                        </div>
                     </React.Fragment>
             }
         </div>
