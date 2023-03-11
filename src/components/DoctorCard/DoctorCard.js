@@ -8,12 +8,12 @@ const DoctorCard = (props) => {
             <div className="text-container">
                 <div className="title">{props.doctor.name}</div>
                 <div className="academic-wrapper">
-                    {props.doctor.academic_degree.map((deg) =>
-                        <div className="degree">{deg}</div>)}
-                </div> 
+                    {props.doctor.academic_degree.map((deg, i) =>
+                        <div key={i} className="degree">{deg}</div>)}
+                </div>
                 <div className="specialties-wrapper">
-                    {props.doctor.speciality.map((spec) =>
-                        <div className="spec">{spec}</div>)}
+                    {props.doctor.speciality.map((spec, i) =>
+                        <div key={i} className="spec">{spec}</div>)}
                 </div>
                 <div className="location-wrapper">
                     <img src={"/images/icons/location.svg"} />

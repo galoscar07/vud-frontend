@@ -7,6 +7,7 @@ import "./ClinicPage.scss";
 import { API_MAP, getAPILink } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import HQCard from '../../components/HQCard/HQCard';
+import DoctorCard from '../../components/DoctorCard/DoctorCard';
 
 const options = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -134,21 +135,23 @@ function ClinicPage({ props }) {
                 }
             }),
             description: serverClinic.description,
-            hqs: serverClinic.clinic_offices.map((doc) => {
+            hqs: serverClinic.clinic_offices.map((hq) => {
                 return {
-                    photo: null,
-                    name: "",
-                    unit_types: [],
-                    address: "",
+                    photo: hq.profile_picture,
+                    link: hq.link,
+                    name: hq.name,
+                    medical_unit_types: hq.medical_unit_types,
+                    address: hq.address,
                 }
             }),
             doctors: serverClinic.collaborator_doctor.map((doc) => {
                 return {
-                    photo: null,
-                    name: "",
-                    academic_degree: [],
-                    speciality: [],
-                    medical_skill: [],
+                    photo: doc.profile_picture,
+                    name: doc.doctor_name,
+                    academic_degree: doc.academic_degree,
+                    speciality: doc.speciality,
+                    medical_skill: doc.medical_skill,
+                    //TODO in response we don't have address
                     address: "",
                 }
             })
@@ -327,8 +330,6 @@ function ClinicPage({ props }) {
                             )}
                         </div>
                     </div>
-                    {/* TODO Display doc and hq also on mobile */}
-                    {/* TODO display reviews */}
                     <div onClick={scrollingTop} className="view-reviews">Vezi toate recenziile</div>
                 </div>
             </div>
@@ -344,6 +345,13 @@ function ClinicPage({ props }) {
                         <div className="mobi">{renderClinicHeaderMobile()}</div>
                         <div className="col-2">
                             <div className="info-left-container ">
+
+                                <div className="doctors-container">
+                                    {clinic.doctors.map((doc, i) =>
+                                        <DoctorCard doctor={doc} key={i} />
+                                    )}
+                                </div>
+
                                 <div className="container-title">Testimoniale</div>
                                 <Carousel onScroll={scrollingTop} content={clinic.testimonials} />
                                 <iframe
@@ -368,11 +376,11 @@ function ClinicPage({ props }) {
                             <div className="info-right-container">
                                 <div className="container-title">Cautare</div>
                                 <div className="col">
-                                    <Dropdown options={options} title={"Specialitati"} />
+                                    <Dropdown options={specialities} title={"Specialitati"} />
                                 </div>
                                 <div className="col-2">
-                                    <Dropdown options={options} title={"Oras"} />
-                                    <Dropdown options={options} title={"Clinica"} />
+                                    <Dropdown options={academicDegreesDropDown} title={"Grade academice"} />
+                                    <Dropdown options={competences} title={"Competente medicale"} />
                                 </div>
                                 <div className="description-container">
                                     <p>

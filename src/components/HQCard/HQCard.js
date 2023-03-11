@@ -13,8 +13,8 @@ const HQCard = (props) => {
                         <div className="specialty">{spec}</div>)}
                 </div> */}
                 <div className="types-wrapper">
-                    {props.hq.unit_types.map((type) =>
-                        <div className="type">{type}</div>)}
+                    {props.hq.medical_unit_types.map((type, i) =>
+                        <div key={i} className="type">{type}</div>)}
                 </div>
                 <div className="location-wrapper">
                     <img src={"/images/icons/location.svg"} />
