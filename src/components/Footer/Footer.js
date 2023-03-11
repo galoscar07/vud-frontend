@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Footer.scss'
-import {routes} from "../../utils/routes";
-import {NavLink} from "react-router-dom";
+import { routes } from "../../utils/routes";
+import { NavLink } from "react-router-dom";
 
 const socials = [
   {
@@ -199,13 +199,14 @@ const navLinks = [
   }
 ]
 
-
 function Footer() {
+  const [displayMoreCards, setDisplayMoreCards] = React.useState(true);
+
   return (
     <div className={'footer-wrapper'}>
       <div className={'footer-menu'}>
         <div className={'nav-links'}>
-          <img alt={'Vreau un doctor logo'} src={'/logo.svg'}/>
+          <img alt={'Vreau un doctor logo'} src={'/logo.svg'} />
           <div className={'nav-links-container'}>
             {navLinks.map((speciality, index) => {
               return (
@@ -216,16 +217,21 @@ function Footer() {
               )
             })}
           </div>
+
         </div>
         <div className={'specialities'}>
           {specialitiesLinks.map((speciality, index) => {
             return (
               <NavLink
+                className={`${displayMoreCards && 'mobile '}${displayMoreCards && index > 10 ? ' hide' : ''}`}
                 key={index}
                 to={speciality.link}
               >{speciality.label}</NavLink>
             )
           })}
+        </div>
+        <div className="view-more-btn mobile" onClick={() => setDisplayMoreCards(!displayMoreCards)}>
+          {displayMoreCards ? 'Vezi mai multe' : 'Vezi mai putine'}
         </div>
       </div>
       <div className={'footer-copy-rights'}>

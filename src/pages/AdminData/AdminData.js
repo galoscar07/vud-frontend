@@ -4,24 +4,23 @@ import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/rout
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
 
-const AdminData = () => {
+const AdminData = (props) => {
     const navigate = useNavigate();
 
     const [values, setValues] = React.useState({
-        firstName: '',
-        lastName: '',
-        phoneNo: '',
-        email: '',
-        phoneNoOpt: '',
-        emailOpt: '',
-        company: '',
-        position: '',
-        street: '',
-        streetNo: '',
-        street: '',
-        county: 'Bucuresti',
-        town: 'Bucuresti',
-        fileList: [],
+        firstName: props?.selected?.firstName || '',
+        lastName: props?.selected?.lastName || '',
+        phoneNo: props?.selected?.phoneNo || '',
+        email: props?.selected?.email || '',
+        phoneNoOpt: props?.selected?.phoneNoOpt || '',
+        emailOpt: props?.selected?.emailOpt || '',
+        company: props?.selected?.company || '',
+        position: props?.selected?.position || '',
+        streetNo: props?.selected?.streetNo || '',
+        street: props?.selected?.street || '',
+        county: props?.selected?.county || 'Bucuresti',
+        town: props?.selected?.town || 'Bucuresti',
+        fileList: props?.selected?.fileList || [],
         error: ''
     });
 
@@ -33,7 +32,11 @@ const AdminData = () => {
         event.preventDefault();
         if (values.firstName.length === 0 || values.lastName.length === 0 || values.street.length === 0) {
             setValues({ ...values, error: "Va rugam sa completati campurile obligatorii" })
-        } else {
+        }
+        if (props.onSubmit) {
+            props.onSubmit(values)
+        }
+        else {
             // TODO Validate data
             makeRequestLogged(
                 getAPILink(API_MAP.UPDATE_ADMIN_DATA),
@@ -216,7 +219,7 @@ const AdminData = () => {
                     <div className="image-upload">
                         <label htmlFor="file">
                             <img className="upload-photo"
-                                src="images/upload.svg" />
+                                src="/images/upload.svg" />
                         </label>
                         <input style={{ display: "none" }} name="files" id="file" type="file" multiple
                             onChange={(e) => updateList(e.target.value, e.target.name)} />

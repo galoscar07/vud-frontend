@@ -13,6 +13,9 @@ export const API_MAP = {
   REFRESH_TOKEN: 'auth/refresh-token/',
   // Forget Password
   FORGET_PASSWORD: 'auth/password-reset-request/',
+  //Reset Password
+  RESET_PASS: 'auth/password-reset/',
+  RESET_PASS_COMPLETE: 'auth/password-reset-complete/',
   // CRUD User Profile
   // GET User Profile
   USER_PROFILE: 'auth/get-user-profile/',
@@ -64,6 +67,10 @@ export const routes = {
   DELETE_PROFILE: '/delete-profile',
   PROFILE: '/clinic-profile',
   DASHBOARD: '/dashboard',
+  DASHBOARD_ADMIN_DATA:'/dashboard/admin-data',
+  DASHBOARD_PROFILE_DATA:'/dashboard/profile-data',
+  DASHBOARD_UNIT_DATA:'/dashboard/unit-data',
+
   FILTER_PAGE: '/filter'
 }
 

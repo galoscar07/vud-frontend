@@ -309,13 +309,114 @@
                 color: white;
                 cursor: pointer;
             }
-            .hide{
+
+            .hide {
                 display: none;
             }
         }
 
         .desktop {
             display: none;
+        }
+    }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+    .home-page {
+        .content {
+            display: flex;
+            flex-direction: column;
+
+            .container-title {
+                .title {
+                    text-align: left;
+                }
+
+                .subtitle {
+                    text-align: right;
+                }
+            }
+
+            .carousel-container {
+                margin-top: $spacing-medium;
+            }
+
+            .slick-track,
+            .slick-list,
+            .carousel-container {
+                width: 75vw !important;
+
+                .text-container {
+                    margin-left: 0;
+                }
+
+                .carousel-text {
+                    width: 50vw;
+                }
+            }
+
+            .clinic-filter-container {
+                flex-direction: column;
+
+                .text-container {
+                    align-items: center;
+                    margin-left: 0;
+                }
+
+                .contact-wrapper {
+                    display: none;
+                }
+            }
+        }
+
+        .newsletter-component {
+            img {
+                display: none;
+            }
+
+            .button {
+                width: 100% !important;
+            }
+        }
+
+        .main-title {
+            display: flex;
+            flex-direction: column;
+            font-size: $font-subtitle;
+            row-gap: $spacing-small;
+        }
+
+        .searchbar {
+            padding: 0;
+            margin-bottom: $spacing-small;
+        }
+
+        .tags-wrapper {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            row-gap: $spacing-small;
+
+            .tag-container {
+                flex-direction: column;
+                padding: $spacing-xsmall ;
+                min-width: auto;
+
+                .text-wrapper {
+                    margin: 0;
+                    align-items: center;
+                }
+
+                .title {
+                    font-weight: $font-weight-bold;
+                    font-size: $font-size-small !important;
+
+                }
+
+                img {
+                    width: 3.1rem !important;
+                    height: 3.1rem !important;
+                }
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import './ForgetPassword.scss'
-import {API_MAP, getAPILink, routes} from "../../../utils/routes";
+import { API_MAP, getAPILink, routes } from "../../../utils/routes";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 
@@ -74,10 +74,10 @@ const ForgetPassword = (props) => {
               <label>Email</label>
               <input className="full-width" type="text" value={email}
                 onChange={handleEmail} />
-                 {state.server.error &&
+              {state.server.error &&
                 <div className={'error'}>{state.server.error}</div>
               }
-              <input className="button margin-top" type="submit" value="Schimbare parola" />
+              <button className="button border-button margin-top" >Schimbare parola </button>
             </form>
           </React.Fragment>
         )

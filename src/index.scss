@@ -75,6 +75,10 @@ label {
   }
 }
 
+.margin-top {
+  margin-top: $spacing-default;
+}
+
 @media screen and (max-width: $mobile-big-width) {
   h1 {
     font-size: 1.5rem;
