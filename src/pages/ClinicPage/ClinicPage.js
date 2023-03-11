@@ -6,6 +6,7 @@ import "./ClinicPage.scss";
 
 import { API_MAP, getAPILink } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import HQCard from '../../components/HQCard/HQCard';
 
 const options = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -57,10 +58,7 @@ function ClinicPage({ props }) {
     }
 
     const handleAddReview = (event) => {
-        console.log(id, 'ID')
         event.preventDefault();
-                //     POST auth/clinic-review/?clinic_id=
-
         fetch(
             getAPILink(API_MAP.ADD_REVIEW + id), {
             method: 'POST',
@@ -336,7 +334,6 @@ function ClinicPage({ props }) {
             </div>
         )
     }
-
     return (
         <div className="clinic-page">
             {
@@ -360,6 +357,12 @@ function ClinicPage({ props }) {
                                     aria-hidden="false"
                                     tabIndex="0"
                                 />
+                                <div className="container-title">Sedii</div>
+                                <div className="hqs-container">
+                                    {clinic.hqs.map((hq, i) =>
+                                        <HQCard hq={hq} key={i} />
+                                    )}
+                                </div>
                             </div>
 
                             <div className="info-right-container">
