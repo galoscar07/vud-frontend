@@ -7,14 +7,9 @@ const HQCard = (props) => {
             <img className="profile" src={props.hq.photo} />
             <div className="text-container">
                 <div className="title">{props.hq.name}</div>
-                {/* TODO SPECIALTIES?? */}
-                {/* <div className="specialties-wrapper">
-                    {props.hq.specialties.map((spec) =>
-                        <div className="specialty">{spec}</div>)}
-                </div> */}
                 <div className="types-wrapper">
                     {props.hq.medical_unit_types.map((type, i) =>
-                        <div key={i} className="type">{type}</div>)}
+                        <div key={i} className="type">{type.label}</div>)}
                 </div>
                 <div className="location-wrapper">
                     <img src={"/images/icons/location.svg"} />

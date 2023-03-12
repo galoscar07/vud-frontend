@@ -267,6 +267,7 @@ const ClinicProfile = (props) => {
       website_google: state.website_google,
       website_linkedin: state.website_linkedin,
       website_youtube: state.website_youtube,
+      profile_picture: state.profile_picture,
 
       // 2nd card
       description: state.description,
@@ -311,6 +312,7 @@ const ClinicProfile = (props) => {
       const mapped = mapStateToObject()
       const formData = new FormData()
       formData.append('clinic_name', mapped.clinic_name)
+      formData.append('profile_picture', mapped.clinic_name)
       formData.append('clinic_street', mapped.clinic_street)
       formData.append('clinic_number', mapped.clinic_number)
       formData.append('clinic_town', mapped.clinic_town)
@@ -343,7 +345,6 @@ const ClinicProfile = (props) => {
         images_keys.push(key)
         formData.append(key, el.profile_photo)
       })
-      formData.append('photoKeys', JSON.stringify(images_keys))
 
       makeRequestLogged(
         getAPILink(API_MAP.PUT_UPDATE_CLINIC_PROFILE),

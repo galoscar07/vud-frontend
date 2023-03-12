@@ -9,13 +9,6 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import HQCard from '../../components/HQCard/HQCard';
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
 
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-    { value: 'blueberry', label: 'Blueberry' },
-    { value: 'bannana', label: 'Bannana' },
-]
 
 function ClinicPage({ props }) {
 
@@ -151,8 +144,7 @@ function ClinicPage({ props }) {
                     academic_degree: doc.academic_degree,
                     speciality: doc.speciality,
                     medical_skill: doc.medical_skill,
-                    //TODO in response we don't have address
-                    address: "",
+                    link: doc.link,
                 }
             })
         }
@@ -370,12 +362,6 @@ function ClinicPage({ props }) {
                         <div className="col-2">
                             <div className="info-left-container ">
 
-                                <div className="doctors-container">
-                                    {filteredDoctors && filteredDoctors.map((doc, i) =>
-                                        <DoctorCard doctor={doc} key={i} />
-                                    )}
-                                </div>
-
                                 <div className="container-title">Testimoniale</div>
                                 <Carousel onScroll={scrollingTop} content={clinic.testimonials} />
                                 <iframe
@@ -406,10 +392,16 @@ function ClinicPage({ props }) {
                                     <Dropdown options={academicDegreesDropDown} title={"Grade academice"} onSelect={handleSubmitDegrees} />
                                     <Dropdown options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} />
                                 </div>
+                                <div style={{marginBottom: '20px'}} className="col">
+                                    {clinic.doctors && clinic.doctors.map((doc, i) =>
+                                      <DoctorCard doctor={doc} key={i} />
+                                    )}
+                                </div>
                                 <div className="description-container">
                                     <p>
                                         {clinic.description}
                                     </p>
+
                                 </div>
                             </div>
 
