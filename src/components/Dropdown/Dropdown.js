@@ -86,11 +86,7 @@ function Dropdown(props) {
 
     const handleSelectChange = (values) => {
         setSelected(values);
-        // props.onSelect(values)
-        console.log(selected, 'selected')
-        if (props.onSubmit) {
-            props.onSubmit(values)
-        }
+        props.onSelect(values)
     };
 
     const options = props?.options

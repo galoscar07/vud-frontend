@@ -400,11 +400,11 @@ function ClinicPage({ props }) {
                             <div className="info-right-container">
                                 <div className="container-title">Cautare</div>
                                 <div className="col">
-                                    <Dropdown options={specialities} title={"Specialitati"} onSubmit={handleSubmitSpecialties} />
+                                    <Dropdown options={specialities} title={"Specialitati"} onSelect={handleSubmitSpecialties} />
                                 </div>
                                 <div className="col-2">
-                                    <Dropdown options={academicDegreesDropDown} title={"Grade academice"} onSubmit={handleSubmitDegrees} />
-                                    <Dropdown options={competences} title={"Competente medicale"} onSubmit={handleSubmitCompetences} />
+                                    <Dropdown options={academicDegreesDropDown} title={"Grade academice"} onSelect={handleSubmitDegrees} />
+                                    <Dropdown options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} />
                                 </div>
                                 <div className="description-container">
                                     <p>
