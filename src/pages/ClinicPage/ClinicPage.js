@@ -225,8 +225,30 @@ function ClinicPage({ props }) {
         // TODO populate the dropdowns and name accordingly
         // TODO filter the list of doctors after these things
 
-
     }, [])
+
+    const [selectedSpecialties, setSelectedSpecialties] = React.useState([]);
+    const [selectedDegrees, setSelectedDegrees] = React.useState([]);
+    const [selectedCompetences, setSelectedCompetences] = React.useState([]);
+    const [filteredDoctors, setFilteredDoctors] = React.useState([]);
+
+
+    const handleSubmitCompetences = (selected) => {
+        setSelectedCompetences(selected)
+        console.log(selected, selectedCompetences, 'competences')
+    }
+    const handleSubmitDegrees = (selected) => {
+        setSelectedDegrees(selected)
+        console.log(selected, selectedDegrees, 'grade')
+    }
+    const handleSubmitSpecialties = (selected) => {
+        setSelectedSpecialties(selected)
+        console.log(selected, selectedSpecialties, 'spec')
+    }
+
+    useEffect(() => {
+
+    }, [selectedCompetences, selectedDegrees, selectedSpecialties])
 
     const renderClinicHeaderDesktop = () => {
         return (
@@ -335,6 +357,8 @@ function ClinicPage({ props }) {
             </div>
         )
     }
+
+    console.log(filteredDoctors, 'fill')
     return (
         <div className="clinic-page">
             {
@@ -347,7 +371,7 @@ function ClinicPage({ props }) {
                             <div className="info-left-container ">
 
                                 <div className="doctors-container">
-                                    {clinic.doctors.map((doc, i) =>
+                                    {filteredDoctors && filteredDoctors.map((doc, i) =>
                                         <DoctorCard doctor={doc} key={i} />
                                     )}
                                 </div>
@@ -376,11 +400,11 @@ function ClinicPage({ props }) {
                             <div className="info-right-container">
                                 <div className="container-title">Cautare</div>
                                 <div className="col">
-                                    <Dropdown options={specialities} title={"Specialitati"} />
+                                    <Dropdown options={specialities} title={"Specialitati"} onSubmit={handleSubmitSpecialties} />
                                 </div>
                                 <div className="col-2">
-                                    <Dropdown options={academicDegreesDropDown} title={"Grade academice"} />
-                                    <Dropdown options={competences} title={"Competente medicale"} />
+                                    <Dropdown options={academicDegreesDropDown} title={"Grade academice"} onSubmit={handleSubmitDegrees} />
+                                    <Dropdown options={competences} title={"Competente medicale"} onSubmit={handleSubmitCompetences} />
                                 </div>
                                 <div className="description-container">
                                     <p>

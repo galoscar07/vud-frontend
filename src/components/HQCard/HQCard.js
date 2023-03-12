@@ -4,7 +4,7 @@ import "./HQCard.scss"
 const HQCard = (props) => {
     return (
         <div className="hq-card-component">
-            <img src={props.hq.photo} />
+            <img className="profile" src={props.hq.photo} />
             <div className="text-container">
                 <div className="title">{props.hq.name}</div>
                 {/* TODO SPECIALTIES?? */}

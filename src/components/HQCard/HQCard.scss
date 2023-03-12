@@ -7,6 +7,11 @@
     column-gap: $spacing-small;
     text-align: left;
 
+    .profile {
+        width: 4rem;
+        height: 4rem;
+    }
+
     .title {
         font-weight: 600;
     }

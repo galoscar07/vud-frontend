@@ -1,5 +1,5 @@
 import Select, { components } from "react-select";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import "./Dropdown.scss";
 
 const styles = {
@@ -76,12 +76,6 @@ const OptionsOutsideSelect = (props) => {
     );
 };
 
-const optionsDefault = [
-    {value: 1, label: "Option 1"},
-    {value: 2, label: "Option 2"},
-    {value: 3, label: "Option 3"},
-    {value: 4, label: "Option 4"}
-]
 
 function Dropdown(props) {
     const [selected, setSelected] = useState(props.selected || []);
@@ -92,11 +86,14 @@ function Dropdown(props) {
 
     const handleSelectChange = (values) => {
         setSelected(values);
-        props.onSelect(values)
+        // props.onSelect(values)
         console.log(selected, 'selected')
+        if (props.onSubmit) {
+            props.onSubmit(values)
+        }
     };
 
-    const options = props?.options 
+    const options = props?.options
 
     return (
         <div className="dropdown">

@@ -4,7 +4,7 @@ import "./DoctorCard.scss"
 const DoctorCard = (props) => {
     return (
         <div className="doctor-card-component">
-            <img src={props.doctor.photo} />
+            <img className="profile" src={props.doctor.photo} />
             <div className="text-container">
                 <div className="title">{props.doctor.name}</div>
                 <div className="academic-wrapper">
