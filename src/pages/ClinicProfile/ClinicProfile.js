@@ -161,12 +161,14 @@ const ClinicProfile = (props) => {
     }
   }
   const handleChangeInputDoctor = (event, index) => {
+    debugger
     const copy = _.cloneDeep(doctor)
     copy[index][event.target.name] = event.target.value
     setDoctor(copy)
   }
   const handleDropdownDoctor = (event, index, label) => {
     const copy = _.cloneDeep(doctor)
+    debugger
     copy[index][label] = event
     setDoctor(copy)
 
@@ -330,19 +332,16 @@ const ClinicProfile = (props) => {
 
       formData.append('hq', JSON.stringify(mapped.hqs))
       formData.append('doctor', JSON.stringify(mapped.doctors))
-      let index = 1
       let images_keys = []
-      hq.forEach((el) => {
+      hq.forEach((el, index) => {
         const key = el.name.split(' ').join('|') + '_hq_' + index
         images_keys.push(key)
         formData.append(key, el.profile_picture)
-        index += 1
       })
-      doctor.forEach((el) => {
+      doctor.forEach((el, index) => {
         const key = el.name.split(' ').join('|') + '_doc_' + index
         images_keys.push(key)
         formData.append(key, el.profile_photo)
-        index += 1
       })
       formData.append('photoKeys', JSON.stringify(images_keys))
 

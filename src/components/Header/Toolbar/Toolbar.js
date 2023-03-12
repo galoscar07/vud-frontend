@@ -17,7 +17,9 @@ function Toolbar() {
         <NavLink
           to={routes.DASHBOARD_UNIT_DATA}
         >Administrare Unitate Medicala</NavLink>
-
+        <NavLink
+          to={routes.LOG_OUT}
+        >Delogheaza-te</NavLink>
       </div>
     </div>
   );
