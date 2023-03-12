@@ -113,10 +113,10 @@ function Homepage() {
         </div> pentru tine ?
       </div>
       <h1>GOOGLE DDS</h1>
-      {/* <AdSense.Google
+      <AdSense.Google
         client='ca-pub-1837999521110876'
         slot='f08c47fec0942fa0'
-      /> */}
+      />
       <form onSubmit={(ev) => {ev.preventDefault()}} className="searchbar">
         <input value={state} onChange={(ev) => setState(ev.target.value)} className="search" type="text" placeholder="Cauta" name="search" />
         <button className="button border-button" onClick={handleSearch}>Cauta</button>
