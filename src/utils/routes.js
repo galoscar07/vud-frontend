@@ -1,5 +1,5 @@
-// const API_URL_DEV = 'http://127.0.0.1:8000/'
-const API_URL = 'https://vud-be.herokuapp.com/'
+const API_URL_DEV = 'http://127.0.0.1:8000/'
+// const API_URL = 'https://vud-be.herokuapp.com/'
 
 export const API_MAP = {
   // Creates new account and send link to verify email
@@ -47,8 +47,8 @@ export const API_MAP = {
 }
 
 export const getAPILink = (url) => {
-  // return API_URL_DEV + url
-  return API_URL + url
+  return API_URL_DEV + url
+  // return API_URL + url
 }
 
 export const routes = {
@@ -72,6 +72,7 @@ export const routes = {
   DASHBOARD_ADMIN_DATA:'/dashboard/admin-data',
   DASHBOARD_PROFILE_DATA:'/dashboard/profile-data',
   DASHBOARD_UNIT_DATA:'/dashboard/unit-data',
+  LOG_OUT:'/log-out',
 
   FILTER_PAGE: '/filter'
 }
@@ -82,7 +83,7 @@ export const AUTH_CLINIC_MAP_STEP = {
   '2': routes.ADMIN_DATA,
   '3': routes.ADD_UNIT,
   '4': routes.PROFILE,
-  '5': routes.THANK_YOU
+  '5': routes.THANK_YOU,
 }
 
 export const makeRequestLogged = (url, method, body, authToken, type = null) => {

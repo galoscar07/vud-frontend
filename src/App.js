@@ -27,6 +27,9 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import DashboardAdminData from './pages/Dashboard/AdminData/DashboardAdminData';
 import DashboardProfileData from './pages/Dashboard/ProfileData/DashboardProfileData';
 import DashboardUnitData from './pages/Dashboard/UnitData/DashboardUnitData';
+import LogOut from './pages/Dashboard/LogOut/LogOut';
+
+
 
 function App() {
   return (
@@ -52,6 +55,7 @@ function App() {
             <Route path={routes.DASHBOARD_PROFILE_DATA} element={<DashboardProfileData />} />
             <Route path={routes.DASHBOARD_ADMIN_DATA} element={<DashboardAdminData />} />
           </Route>
+          <Route path={routes.LOG_OUT} element={<LogOut />} />
         </Route>
 
         <Route element={<MainLayout />}>

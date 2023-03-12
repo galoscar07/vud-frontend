@@ -65,7 +65,6 @@ const Login = () => {
 
 
   const handleSubmit = useCallback(event => {
-    // TODO handle user sign in / sign out in header
     event.preventDefault();
     // if (!isFormValid()) {
     //   console.log('invalid')
@@ -96,13 +95,15 @@ const Login = () => {
             return response.json()
           })
           .then((resp) => {
+            debugger
             if (resp.step) {
-              navigate(AUTH_CLINIC_MAP_STEP[resp.step])
+              navigate(AUTH_CLINIC_MAP_STEP[resp.step.toString()])
             }
             if (resp.error === 'No profile') {
               navigate(routes.ADD_PROFILE)
+            } else {
+              navigate(routes.HOMEPAGE)
             }
-            navigate(routes.HOMEPAGE)
           })
           .catch((err) => {
           })

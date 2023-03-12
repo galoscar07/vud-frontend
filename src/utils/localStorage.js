@@ -18,3 +18,9 @@ export const getAuthTokenFromLocal = () => {
 export const getRefreshToken = () => {
   return localStorage.getItem('refreshToken')
 }
+
+export const logOutFromStorage = () => {
+  localStorage.removeItem('authToken')
+  localStorage.removeItem('refreshToken')
+  localStorage.removeItem('user')
+}
