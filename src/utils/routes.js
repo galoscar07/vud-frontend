@@ -16,6 +16,8 @@ export const API_MAP = {
   //Reset Password
   RESET_PASS: 'auth/password-reset/',
   RESET_PASS_COMPLETE: 'auth/password-reset-complete/',
+  //ADD REVIEW
+  ADD_REVIEW: 'auth/clinic-review/?clinic_id=',
   // CRUD User Profile
   // GET User Profile
   USER_PROFILE: 'auth/get-user-profile/',

@@ -1,0 +1,45 @@
+@import 'src/styles/base';
+
+.hq-card-component {
+    background: white;
+    padding: $spacing-small;
+    display: flex;
+    column-gap: $spacing-small;
+    text-align: left;
+
+    .profile {
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .title {
+        font-weight: 600;
+    }
+
+    .specialty {
+        color: $color-primary;
+        font-size: $font-size-small;
+        font-weight: 600;
+    }
+
+    .type {
+        color: $color-blue;
+        font-size: $font-size-small;
+    }
+
+    .specialties-wrapper,
+    .types-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .location-wrapper {
+        display: flex;
+
+        .location {
+            font-weight: 300;
+            font-size: $font-size-small;
+            margin-left: $spacing-xsmall;
+        }
+    }
+}

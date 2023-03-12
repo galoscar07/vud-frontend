@@ -7,7 +7,7 @@ const Review = (props) => {
         <div className="review-component">
             <div className="review-info">
                 <span className="name"> {props.review.name}</span>
-                <span className="no-of-reviews">{props.review.noOfReviews} de recenzii</span>
+                {/* <span className="no-of-reviews">{props.review.noOfReviews} de recenzii</span> */}
                 <div className="stars-wrapper">
                     <div className="stars-container">
                         {Array(5).fill(1).map((el, i) =>
@@ -18,7 +18,7 @@ const Review = (props) => {
                 <p>{props.review.text}</p>
             </div>
             <div className="horizontal-divider" />
-            <div className="evaluate-review">
+            {/* <div className="evaluate-review">
                 <span>Evaleaza recenzia</span>
                 <div className="thumbs-container">
                     <img src="/images/icons/Thumbs_up.svg" />
@@ -28,7 +28,7 @@ const Review = (props) => {
                     <img src="/images/icons/Thumbs_down.svg" />
                     {props.review.thumbsDown}
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }
