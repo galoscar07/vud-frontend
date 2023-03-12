@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import "./Homepage.scss"
 import Select, { components } from "react-select";
 import ClinicFilterContainer from '../../components/ClinicFilterContainer/ClinicFilterContainer';
 import Newsletter from '../../components/Newsletter/Newsletter';
-import AdSense from 'react-adsense';
-import {API_MAP, getAPILink, routes} from "../../utils/routes";
+import { API_MAP, getAPILink, routes } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {Adsense} from '@ctrl/react-adsense';
 
 const tags = [
   {
@@ -58,8 +58,8 @@ function Homepage() {
         score: 8.4, // TODO
         noOfReviews: 641, // TODO
         rating: 4, // TODO
-        specialty: clinic.clinic_specialities.map((cs) => {return cs.label}).join(", "),
-        type: clinic.medical_unit_types.map((mut) => {return mut.label}).join(", "),
+        specialty: clinic.clinic_specialities.map((cs) => { return cs.label }).join(", "),
+        type: clinic.medical_unit_types.map((mut) => { return mut.label }).join(", "),
         contact: [
           { type: 'phoneNo', value: clinic.primary_phone },
           { type: "location", value: clinic.clinic_town },
@@ -79,11 +79,11 @@ function Homepage() {
   useEffect(() => {
     fetch(
       getAPILink(API_MAP.GET_TOP_CLINICS), {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        }
-      })
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
       .then((res) => res.json())
       .then((res) => {
         setLoading(false)
@@ -113,11 +113,17 @@ function Homepage() {
         </div> pentru tine ?
       </div>
       <h1>GOOGLE DDS</h1>
-      <AdSense.Google
+      {/* <AdSense.Google
         client='ca-pub-1837999521110876'
         slot='f08c47fec0942fa0'
+      /> */}
+      <Adsense
+        client="ca-pub-7640562161899788"
+        slot="7259870550"
+        style={{ width: 500, height: 300 }}
+        format=""
       />
-      <form onSubmit={(ev) => {ev.preventDefault()}} className="searchbar">
+      <form onSubmit={(ev) => { ev.preventDefault() }} className="searchbar">
         <input value={state} onChange={(ev) => setState(ev.target.value)} className="search" type="text" placeholder="Cauta" name="search" />
         <button className="button border-button" onClick={handleSearch}>Cauta</button>
       </form>
@@ -148,8 +154,8 @@ function Homepage() {
               loading
                 ? <LoadingSpinner />
                 : topClinics.map((clinic, i) =>
-                    <ClinicFilterContainer displayReviews key={i} clinic={clinic} />
-                  )
+                  <ClinicFilterContainer displayReviews key={i} clinic={clinic} />
+                )
             }
           </div>
         </div>
