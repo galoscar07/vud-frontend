@@ -92,13 +92,14 @@ function ClinicPage({ props }) {
     };
 
     const mapServerRespToFront = (serverClinic) => {
+        debugger
         return {
             id: serverClinic.id,
             name: serverClinic.clinic_name,
             imgUrl: serverClinic.profile_picture,
-            score: 8.4, // TODO
-            rating: 4, // TODO
-            noOfReviews: 641, // TODO
+            score: serverClinic?.average_rating * 2 || 0,
+            noOfReviews: serverClinic?.review_count || 0,
+            rating: serverClinic?.average_rating || 0,
             address: `Str. ${serverClinic.clinic_street} nr. ${serverClinic.clinic_number}, ${serverClinic.clinic_town}`,
             typeOfClinic: serverClinic.medical_unit_types.map((mut) => { return mut.label }).join(", "),
             facilities: serverClinic.unity_facilities.map((mut) => { return mut.label }),

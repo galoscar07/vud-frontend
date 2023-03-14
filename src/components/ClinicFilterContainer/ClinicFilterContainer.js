@@ -32,7 +32,6 @@ const ClinicFilterContainer = (props) => {
                     <div className="specialties">{props.clinic.specialty}</div>
                     <div className="type">{props.clinic.type}</div>
                     {props.clinic.contact && <div className="contact-wrapper">
-                        {/* TODO <a> tag on click, either call either email */}
                         {props.clinic.contact.map((el, i) =>
                             <div className="contact" key={i}>
                                 <img alt={el.type} src={`/images/icons/${el.type}.svg`} />

@@ -161,14 +161,12 @@ const ClinicProfile = (props) => {
     }
   }
   const handleChangeInputDoctor = (event, index) => {
-    debugger
     const copy = _.cloneDeep(doctor)
     copy[index][event.target.name] = event.target.value
     setDoctor(copy)
   }
   const handleDropdownDoctor = (event, index, label) => {
     const copy = _.cloneDeep(doctor)
-    debugger
     copy[index][label] = event
     setDoctor(copy)
 

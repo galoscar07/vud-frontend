@@ -38,7 +38,6 @@ const AddUnit = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    debugger
     if (props.onSubmit) {
       props.onSubmit(state.selected)
     }

@@ -95,7 +95,6 @@ const Login = () => {
             return response.json()
           })
           .then((resp) => {
-            debugger
             if (resp.step) {
               navigate(AUTH_CLINIC_MAP_STEP[resp.step.toString()])
             }

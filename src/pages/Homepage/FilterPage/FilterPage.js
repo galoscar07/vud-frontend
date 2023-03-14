@@ -51,9 +51,9 @@ const FilterPage = (props) => {
                 id: clinic.id,
                 name: clinic.clinic_name,
                 image: clinic.profile_picture,
-                score: 8.4, // TODO
-                noOfReviews: 641, // TODO
-                rating: 4, // TODO
+                score: clinic?.average_rating * 2 || 0,
+                noOfReviews: clinic?.review_count || 0,
+                rating: clinic?.average_rating || 0,
                 specialty: clinic.clinic_specialities.map((cs) => {return cs.label}).join(", "),
                 type: clinic.medical_unit_types.map((mut) => {return mut.label}).join(", "),
                 contact: [

@@ -55,9 +55,9 @@ function Homepage() {
         id: clinic.id,
         name: clinic.clinic_name,
         image: clinic.profile_picture,
-        score: 8.4, // TODO
-        noOfReviews: 641, // TODO
-        rating: 4, // TODO
+        score: clinic?.average_rating * 2 || 0,
+        noOfReviews: clinic?.review_count || 0,
+        rating: clinic?.average_rating || 0,
         specialty: clinic.clinic_specialities.map((cs) => { return cs.label }).join(", "),
         type: clinic.medical_unit_types.map((mut) => { return mut.label }).join(", "),
         contact: [
@@ -112,17 +112,6 @@ function Homepage() {
           </select>
         </div> pentru tine ?
       </div>
-      <h1>GOOGLE DDS</h1>
-      {/* <AdSense.Google
-        client='ca-pub-1837999521110876'
-        slot='f08c47fec0942fa0'
-      /> */}
-      <Adsense
-        client="ca-pub-7640562161899788"
-        slot="7259870550"
-        style={{ width: 500, height: 300 }}
-        format=""
-      />
       <form onSubmit={(ev) => { ev.preventDefault() }} className="searchbar">
         <input value={state} onChange={(ev) => setState(ev.target.value)} className="search" type="text" placeholder="Cauta" name="search" />
         <button className="button border-button" onClick={handleSearch}>Cauta</button>
@@ -164,6 +153,18 @@ function Homepage() {
           <Newsletter />
         </div>
       </div>
+
+      <h1>GOOGLE DDS</h1>
+      {/* <AdSense.Google
+        client='ca-pub-1837999521110876'
+        slot='f08c47fec0942fa0'
+      /> */}
+      <Adsense
+        client="ca-pub-7640562161899788"
+        slot="7259870550"
+        style={{ width: 500, height: 300 }}
+        format=""
+      />
 
     </div>
   );
