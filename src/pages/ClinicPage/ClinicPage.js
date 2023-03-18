@@ -6,7 +6,6 @@ import "./ClinicPage.scss";
 
 import { API_MAP, getAPILink } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import HQCard from '../../components/HQCard/HQCard';
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
 
 
@@ -130,15 +129,6 @@ function ClinicPage({ props }) {
                 }
             }),
             description: serverClinic.description,
-            // hqs: serverClinic.clinic_offices.map((hq) => {
-            //     return {
-            //         photo: hq.profile_picture,
-            //         link: hq.link,
-            //         name: hq.name,
-            //         medical_unit_types: hq.medical_unit_types,
-            //         address: hq.address,
-            //     }
-            // }),
             doctors: serverClinic.collaborator_doctor.map((doc) => {
                 return {
                     photo: doc.profile_picture,
@@ -363,7 +353,6 @@ function ClinicPage({ props }) {
                         <div className="mobi">{renderClinicHeaderMobile()}</div>
                         <div className="col-2">
                             <div className="info-left-container ">
-
                                 <div className="container-title">Testimoniale</div>
                                 <Carousel onScroll={scrollingTop} content={clinic.testimonials} />
                                 <iframe
@@ -377,12 +366,6 @@ function ClinicPage({ props }) {
                                     aria-hidden="false"
                                     tabIndex="0"
                                 />
-                                <div className="container-title">Sedii</div>
-                                {/* <div className="hqs-container">
-                                    {clinic.hqs.map((hq, i) =>
-                                        <HQCard hq={hq} key={i} />
-                                    )}
-                                </div> */}
                             </div>
 
                             <div className="info-right-container">
