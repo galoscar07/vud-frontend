@@ -111,6 +111,11 @@ form {
         grid-template-columns: 1fr 1fr 1fr 1fr;
         gap: $spacing-small;
     }
+    .col-5{
+        display: grid;
+        grid-template-columns: 15.6% 15.6% 15.6% 15.6% 15.6%;
+        gap: $spacing-small;
+    }
 }
 
 @media screen and (max-width: $mobile-big-width) {

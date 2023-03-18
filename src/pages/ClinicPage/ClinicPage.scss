@@ -350,6 +350,10 @@
             display: none;
         }
     }
+
+    .col-85 {
+        width: 85%;
+    }
 }
 
 @media screen and (max-width: $mobile-big-width) {
