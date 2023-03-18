@@ -67,14 +67,6 @@ function Header() {
             to={routes.HOMEPAGE}
             onClick={() => toggleMenu(false)}
           >Acasă</NavLink>
-          <NavLink
-            to={routes.MEDICAL_INFO}
-            onClick={() => toggleMenu(false)}
-          >Informații medicale</NavLink>
-          <NavLink
-            to={routes.CHARITY}
-            onClick={() => toggleMenu(false)}
-          >Caritate</NavLink>
         </div>
         {renderUserProfile()}
         <span className={'close_btn'} onClick={() => toggleMenu(false)}><img src={'/images/close_btn.svg'} /></span>

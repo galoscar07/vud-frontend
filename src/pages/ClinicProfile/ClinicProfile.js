@@ -40,6 +40,7 @@ const ClinicProfile = (props) => {
     website_google: props?.selected?.website_google || '',
     website_linkedin: props?.selected?.website_linkedin || '',
     website_youtube: props?.selected?.website_youtube || '',
+    whatsapp: props?.selected?.whatsapp || '',
     description: props?.selected?.description || '',
     clinic_specialities: props?.selected?.clinic_specialities || [],
     clinic_facilities: props?.selected?.clinic_facilities || [],
@@ -62,6 +63,7 @@ const ClinicProfile = (props) => {
     website_google: '',
     website_linkedin: '',
     website_youtube: '',
+    whatsapp: '',
     description: '',
   })
 
@@ -504,14 +506,14 @@ const ClinicProfile = (props) => {
           </div>
         </div>
         <div className="fields-wrapper">
-          <div className="col">
+          <div className="col-85">
             <div className="input-wrapper">
               <label>Adresa website</label>
               <input className={errorState.website && 'error'} name="website" type="text" value={state.website}
                 onChange={handleFieldChange} placeholder={'ex. www.sofarfarm.ro'} />
             </div>
           </div>
-          <div className="col-4">
+          <div className="col-5">
             <div className="input-wrapper">
               <label>Profil Facebook</label>
               <input name="website_facebook" type="text" value={state.website_facebook} onChange={handleFieldChange}
@@ -531,6 +533,11 @@ const ClinicProfile = (props) => {
               <label>Youtube</label>
               <input name="website_youtube" type="text" value={state.website_youtube} onChange={handleFieldChange}
                 placeholder={'LinkedIn link'} />
+            </div>
+            <div className="input-wrapper">
+              <label>Whatsapp</label>
+              <input name="whatsapp" type="text" value={state.whatsapp} onChange={handleFieldChange}
+                placeholder={'Whatsapp'} />
             </div>
           </div>
         </div>

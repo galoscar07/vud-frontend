@@ -24,7 +24,8 @@ const FilterPage = (props) => {
         name: new URLSearchParams(window.location.search).get('searchTerm'),
         town: [],
         clinic_specialities: [],
-        unity_facilities: []
+        unity_facilities: [],
+        unity_types: [],
     })
 
     const [clinics, setClinics] = useState([])
@@ -32,6 +33,7 @@ const FilterPage = (props) => {
     const [town, setTown] = useState([])
     const [clinicSpecialities, setClinicSpecialities] = useState([])
     const [medicalFacilities, setMedicalFacilities] = useState([])
+    const [unityTypes, setUnityTypes] = useState([])
 
     const handleChange = (selectedOption) => {
         setSelected(selectedOption);
@@ -104,6 +106,9 @@ const FilterPage = (props) => {
         if (state.clinic_specialities.length !== 0) {
             link += `&unity_facilities=${state.unity_facilities.map((t) => t.value).join("|")}`
         }
+        if (state.unity_types.length !== 0) {
+            link += `&unity_types=${state.unity_types.map((t) => t.value).join("|")}`
+        }
         return link ? '?' + link : ''
     }
 
@@ -131,6 +136,20 @@ const FilterPage = (props) => {
           .then((response) => {
               const mapped = response.map((el) => { return { value: el.id, label: el.label } })
               setClinicSpecialities(mapped)
+          })
+          .catch((err) => {
+              console.log(err)
+          })
+          fetch(getAPILink(API_MAP.GET_MEDICAL_UNITY_TYPE), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+              setUnityTypes(mapped)
           })
           .catch((err) => {
               console.log(err)
@@ -173,7 +192,7 @@ const FilterPage = (props) => {
                     <Dropdown onSelect={(values) => handleSelectFilters(values, 'town')} options={towns} title={"Oras"} />
                     <Dropdown onSelect={(values) => handleSelectFilters(values, 'clinic_specialities')} options={clinicSpecialities} title={"Specilitati Clinica"} />
                     <Dropdown onSelect={(values) => handleSelectFilters(values, 'unity_facilities')} options={medicalFacilities} title={"Facilitati Clinica"} />
-
+                    <Dropdown onSelect={(values) => handleSelectFilters(values, 'unity_types')} options={unityTypes} title={"Tip unitate medicala"} />
                 </div>
                 <div className="center-side">
                     <div className="results-container">
