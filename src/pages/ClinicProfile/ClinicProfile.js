@@ -176,55 +176,6 @@ const ClinicProfile = (props) => {
     setDocHighlighted(docHighlighted + 1)
   }
 
-  // States for HQs
-  const [hq, setHq] = useState([{
-    name: '',
-    address: '',
-    link: '',
-    profile_picture: null,
-    profile_picture_preview: null,
-    medical_unit_types: []
-  }])
-  const [hqHighlighted, setHqHighlighted] = useState(0)
-  const inputRef = useRef();
-  const handleHQPhotoUploadClick = () => {
-    inputRef.current.click();
-  };
-  const handleFileChangeHQ = (event) => {
-    const copy = _.cloneDeep(hq)
-    copy[hqHighlighted].profile_picture = event.target.files[0]
-    copy[hqHighlighted].profile_picture_preview = URL.createObjectURL(event.target.files[0])
-    setHq(copy)
-  }
-  const deleteHighlight = (index) => {
-    if (index === 0) {
-      setHq([{ name: '', address: '', link: '', profile_picture: null, profile_picture_preview: null, medical_unit_types: [] }])
-    } else {
-      const copy = _.cloneDeep(hq)
-      copy.splice(index, 1)
-      setHq(copy)
-      setHqHighlighted(hqHighlighted - 1)
-    }
-  }
-  const handleChangeInputHQ = (event, index) => {
-    const copy = _.cloneDeep(hq)
-    copy[index][event.target.name] = event.target.value
-    setHq(copy)
-  }
-  const handleDropdownHQ = (event, index) => {
-    const copy = _.cloneDeep(hq)
-    copy[index].medical_unit_types = event
-    setHq(copy)
-
-  }
-  const saveCurrentHq = () => {
-    addNewHq()
-    setHqHighlighted(hqHighlighted + 1)
-  }
-  const addNewHq = () => {
-    setHq([...hq, { name: '', address: '', link: '', profile_picture: null, profile_picture_preview: null, medical_unit_types: [] }])
-  }
-
   // Dropdown States
   const [unitTypeDropdown, setUnitTypeDropdown] = useState([])
   const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState([])
@@ -269,17 +220,6 @@ const ClinicProfile = (props) => {
 
       // 2nd card
       description: state.description,
-      // 3rd card
-      hqs: hq.filter((el) => el.name)
-        .map((el) => {
-          return {
-            name: el.name,
-            profile_picture: el.profile_picture,
-            link: el.link,
-            address: el.address,
-            medical_unit_types: el.medical_unit_types.map((md) => { return md.value })
-          }
-        }),
       // 4th card
       doctors: doctor.filter((el) => el.name)
         .map((doc) => {
@@ -330,17 +270,9 @@ const ClinicProfile = (props) => {
       formData.append('clinic_facilities', JSON.stringify(mapped.clinic_facilities))
       formData.append('clinic_schedule', mapped.clinic_schedule)
 
-      formData.append('hq', JSON.stringify(mapped.hqs))
       formData.append('doctor', JSON.stringify(mapped.doctors))
-      let images_keys = []
-      hq.forEach((el, index) => {
-        const key = el.name.split(' ').join('|') + '_hq_' + index
-        images_keys.push(key)
-        formData.append(key, el.profile_picture)
-      })
       doctor.forEach((el, index) => {
         const key = el.name.split(' ').join('|') + '_doc_' + index
-        images_keys.push(key)
         formData.append(key, el.profile_photo)
       })
 
@@ -619,76 +551,6 @@ const ClinicProfile = (props) => {
       </div>
     )
   }
-  const renderHQ = () => {
-    return (
-      <div className="hq-container">
-        <div className="container-title">
-          Sedii
-        </div>
-        <div className="fields-wrapper">
-          <div className="col-4">
-            {
-              hq.map((hqElem, index) => {
-                return (
-                  <div key={index} onClick={() => setHqHighlighted(index)} className={`card-HQ ${hqHighlighted === index && 'highlight'}`}>
-                    <img alt="Imagine uploaded sediu" src={hqElem.profile_picture_preview ? hqElem.profile_picture_preview : '/images/user.svg'} />
-                    <div className={'hq-data'}>
-                      <div>{hqElem.name}</div>
-                    </div>
-                  </div>
-                )
-              })
-            }
-          </div>
-
-          <div className="add-another" onClick={addNewHq}>
-            <img alt="adauga inca un sediu" src="/images/add.svg" />
-            <span>Adauga inca un sediu</span>
-          </div>
-
-          <div className="col">
-            <span onClick={handleHQPhotoUploadClick} className={'add-photo'}>Incarca poza profil</span>
-            <input type="file" accept="image/*" onChange={handleFileChangeHQ} ref={inputRef} style={{ display: 'none' }} />
-          </div>
-          <div className="col">
-            <div className="input-wrapper">
-              <label>*Denumirea unitatii medicale </label>
-              <input name='name' type="text" value={hq[hqHighlighted].name}
-                onChange={(e) => { handleChangeInputHQ(e, hqHighlighted); }} />
-            </div>
-          </div>
-          <Dropdown selected={hq[hqHighlighted].medical_unit_types}
-            onSelect={(values) => {
-              handleDropdownHQ(values, hqHighlighted)
-            }}
-            options={unitTypeDropdown}
-            title="*Tip unitate" />
-          <div className="col">
-            <div className="input-wrapper">
-              <label>*Adresa postala</label>
-              <input name="address" type="text" value={hq[hqHighlighted].address}
-                onChange={(e) => { handleChangeInputHQ(e, hqHighlighted); }} />
-            </div>
-          </div>
-          <div className="col">
-            <div className="input-wrapper">
-              <label>Link pagina </label>
-              <input name="link" type="text" value={hq[hqHighlighted].link}
-                onChange={(e) => { handleChangeInputHQ(e, hqHighlighted); }} />
-            </div>
-          </div>
-          <div className="delete-button" onClick={() => deleteHighlight(hqHighlighted)}>
-            <div>
-              sterge unitate
-            </div>
-          </div>
-          <div className="button border-button" onClick={saveCurrentHq} >
-            Salveaza
-          </div>
-        </div>
-      </div>
-    )
-  }
   const renderDoctors = () => {
     return (
       <div className="hq-container">
@@ -844,7 +706,6 @@ const ClinicProfile = (props) => {
               <form onSubmit={handleSubmit}>
                 {renderContactData()}
                 {renderDescription()}
-                {renderHQ()}
                 {renderDoctors()}
                 {renderSpecialities()}
                 {renderFacilities()}
