@@ -129,23 +129,30 @@
         }
     }
 
-    .add-review-form {
-        row-gap: $spacing-xsmall;
-        display: flex;
-        flex-direction: column;
-
-        label {
-            text-align: left;
+    .add-review-wrapper {
+        .button {
+            width: 30%;
+            margin: auto;
         }
 
-        img {
-            cursor: pointer;
-            height: 1.5rem;
-            width: 1.5rem;
-        }
+        .add-review-form {
+            row-gap: $spacing-xsmall;
+            display: flex;
+            flex-direction: column;
 
-        .stars-container {
-            margin-bottom: $spacing-small;
+            label {
+                text-align: left;
+            }
+
+            img {
+                cursor: pointer;
+                height: 1.5rem;
+                width: 1.5rem;
+            }
+
+            .stars-container {
+                margin-bottom: $spacing-small;
+            }
         }
     }
 

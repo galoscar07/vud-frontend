@@ -402,7 +402,7 @@ function ClinicPage({ props }) {
                         <div className="add-review-wrapper">
                             {!isReviewFormDisplayed
                                 ?
-                                <button onClick={setIsReviewFormDisplayed(true)} className={`button border-button round`}>Adauga recenzie</button>
+                                <button onClick={()=>setIsReviewFormDisplayed(true)} className={`button border-button round`}>Adauga recenzie</button>
                                 :
                                 <React.Fragment>
                                     <div className="container-title">Adauga o recenzie</div>
