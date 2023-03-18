@@ -1,0 +1,50 @@
+@import 'src/styles/base';
+
+.not-found-page {
+    padding: 5.5rem 10rem 5.5rem 5.5rem;
+
+    img {
+        margin: 2rem 0;
+    }
+
+    .white-container {
+        background-color: white;
+        padding: 1rem 0 5.8rem 0;
+        font-size: 2rem;
+
+        .searchbar {
+            display: flex;
+            margin-bottom: $spacing-xbig;
+            padding: 0 16rem;
+            margin-top: 3.25rem;
+
+            .search {
+                background: white url("/images/search.svg") no-repeat 13px center;
+                padding-left: $spacing-huge;
+                width: 100%;
+
+                &::placeholder {
+                    font-style: italic;
+                    font-size: $font-normal;
+                }
+            }
+
+            .border-button {
+                background: $color-primary;
+                color: white;
+                padding: $spacing-small;
+                width: fit-content;
+                font-size: $font-normal;
+                font-weight: 600;
+                margin-left: $spacing-small;
+            }
+        }
+    }
+
+    .redirect-button {
+        margin: 4.3rem auto auto auto;
+        background-color: transparent;
+        width: 30%;
+        border-radius: 0.37rem;
+    }
+}
