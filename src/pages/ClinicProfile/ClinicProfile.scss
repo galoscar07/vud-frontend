@@ -183,9 +183,6 @@
 
 @media screen and (max-width: $mobile-big-width) {
   .clinic-profile-page {
-    .desktop {
-      display: none !important;
-    }
 
     .button {
       &.border-button {

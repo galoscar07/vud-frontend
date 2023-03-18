@@ -185,18 +185,6 @@ const navLinks = [
     label: 'Acasa',
     link: routes.HOMEPAGE,
   },
-  {
-    label: 'Informatii Medicale',
-    link: routes.MEDICAL_INFO,
-  },
-  {
-    label: 'Caritate',
-    link: routes.CHARITY,
-  },
-  {
-    label: 'Contact',
-    link: routes.CONTACT,
-  }
 ]
 
 function Footer() {
@@ -222,12 +210,17 @@ function Footer() {
         <div className={'specialities'}>
           {specialitiesLinks.map((speciality, index) => {
             return (
+              <React.Fragment>
+              <NavLink className="desktop"
+              key={index}
+              to={speciality.link}
+            >{speciality.label}</NavLink>
               <NavLink
-                className={`${displayMoreCards && 'mobile '}${displayMoreCards && index > 10 ? ' hide' : ''}`}
+                className={`mobile ${displayMoreCards && index > 10 ? ' hide' : ''}`}
                 key={index}
                 to={speciality.link}
               >{speciality.label}</NavLink>
-            )
+           </React.Fragment> )
           })}
         </div>
         <div className="view-more-btn mobile" onClick={() => setDisplayMoreCards(!displayMoreCards)}>
