@@ -21,7 +21,8 @@ const AdminData = (props) => {
         county: props?.selected?.county || 'Bucuresti',
         town: props?.selected?.town || 'Bucuresti',
         fileList: props?.selected?.fileList || [],
-        error: ''
+        error: '',
+        uploadWarning: ''
     });
 
     const handleFieldChange = (value, title) => {
@@ -77,8 +78,12 @@ const AdminData = (props) => {
             files = values.fileList;
         } else files = [];
         let input = document.getElementById('file');
-        for (let i = 0; i < input.files.length; ++i) {
-            files.push(input.files.item(i).name)
+        for (let i = 1; i < input.files.length; ++i) {
+            if (i < 3) {
+                files.push(input.files.item(i).name)
+            } else {
+                setValues({ ...values, uploadWarning: "Va rugam adaugati maxim 2 fisiere." })
+            }
         }
         setValues({ ...values, fileList: files })
         handleFieldChange(name, value)
@@ -236,6 +241,9 @@ const AdminData = (props) => {
                             </div>) : (<div className="selected-file">
                                 No selected file
                             </div>)}
+                            {
+                        values.uploadWarning && <div className={'error'}>{values.uploadWarning}</div>
+                    }
                         </div>
                     </div>
                     {
