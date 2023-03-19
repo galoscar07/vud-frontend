@@ -1,5 +1,6 @@
 // const API_URL_DEV = 'http://127.0.0.1:8000/'
 const API_URL = 'https://vud-be.herokuapp.com/'
+export const API_URL_MEDIA = 'https://vud-be.herokuapp.com'
 
 export const API_MAP = {
   // Creates new account and send link to verify email
@@ -43,6 +44,7 @@ export const API_MAP = {
   GET_CLINIC_SPECIALITIES: 'options/clinic-specialities/',
   GET_MEDICAL_FACILITIES: 'options/medical-facilities/',
   GET_FOOTER_LABELS: 'options/footer/',
+  GET_BANNER_CARDS: 'options/banners/',
   POST_NEWSLETTER: 'options/newsletter/'
 }
 

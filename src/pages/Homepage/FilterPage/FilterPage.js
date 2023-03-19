@@ -17,8 +17,12 @@ const towns = [
 ];
 
 const FilterPage = (props) => {
-    // TODO add pagination
     const [selectedOption, setSelected] = React.useState([]);
+    const [pagination, setPagination] = React.useState({
+        perPage: 4,
+        currentPage: 1,
+        maxPage: null,
+    })
 
     const [state, setState] = useState({
         name: new URLSearchParams(window.location.search).get('searchTerm'),
@@ -90,12 +94,32 @@ const FilterPage = (props) => {
           })
     }, [state])
 
+    useEffect(() => {
+        nextPage()
+    }, [pagination])
+
+    const nextPage = () => {
+        fetch(getAPILink(API_MAP.GET_CLINICS_FILTER + getQueryFromState(state)), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              setClinics(mapServerRespToFront(response.results))
+          })
+          .catch((err) => {
+              console.log(err)
+          })
+    }
+
     const handleSearch = () => { }
 
     const getQueryFromState = (state) => {
-        let link = ''
+        let link = '?page='+pagination.currentPage+'&page_size='+pagination.perPage
         if (state.name) {
-            link += `name=${state.name || ''}`
+            link += `&name=${state.name || ''}`
         }
         if (state.town.length !== 0) {
             link += `&town=${state.town.map((t) => t.value).join("|")}`
@@ -109,7 +133,7 @@ const FilterPage = (props) => {
         if (state.unity_types.length !== 0) {
             link += `&unity_types=${state.unity_types.map((t) => t.value).join("|")}`
         }
-        return link ? '?' + link : ''
+        return link
     }
 
     useEffect(() => {
@@ -122,6 +146,10 @@ const FilterPage = (props) => {
           .then((resp) => resp.json())
           .then((response) => {
               setClinics(mapServerRespToFront(response.results))
+              setPagination((prev) => ({
+                  ...prev,
+                  maxPage: Math.ceil(response.count / 4)
+              }))
           })
           .catch((err) => {
               console.log(err)
@@ -199,6 +227,17 @@ const FilterPage = (props) => {
                         {clinics.map((clinic, i) =>
                             <ClinicFilterContainer key={i} clinic={clinic} />
                         )}
+                    </div>
+                    {/* Pagination */}
+                    <div className={'pagination'}>
+                        { pagination.maxPage !== 1 &&
+                            Array(pagination.maxPage).fill(1).map((e, index) => {
+                                return <span
+                                  onClick={() => {setPagination((prev) => ({...prev, currentPage: index + 1}))}}
+                                  className={pagination.currentPage === index + 1 ? 'active': ''}>{index + 1}
+                                </span>
+                            })
+                        }
                     </div>
                 </div>
                 <div className="right-side">

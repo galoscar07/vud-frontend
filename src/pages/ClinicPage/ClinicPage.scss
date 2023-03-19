@@ -3,6 +3,49 @@
 .clinic-page {
     padding: $spacing-big;
     color: $color-blue;
+    .schedule-container {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        margin: $spacing-medium 0;
+        .fields-wrapper {
+            display: grid;
+            padding: 0 $spacing-small $spacing-small;
+            gap: $spacing-small;
+        }
+        .container-title {
+            font-size: $font-subtitle;
+            margin-bottom: $spacing-small;
+        }
+        .weekdays-container {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        }
+        .day {
+            background-color: rgba($color-primary, 0.8);
+            padding: $spacing-small 10px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: inherit;
+
+            &.active {
+                background-color: $color-primary;
+
+                .interval {
+                    img {
+                        background-color: white;
+                        opacity: 1;
+                        pointer-events: unset;
+                    }
+                }
+            }
+        }
+
+    }
 
     .container-title {
         font-size: $font-subtitle;
