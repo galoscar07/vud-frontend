@@ -3,6 +3,22 @@
 .filter-page {
     padding: $spacing-xbig;
 
+    .pagination {
+        margin-top: 30px;
+        span {
+            padding: 10px 15px 10px;
+            border-radius: 40%;
+            background-color: #CCD0D6;
+            color: #0E3A41;
+            margin-right: 10px;
+            cursor: pointer;
+            &.active {
+                background-color: #0E3A41;
+                color: #FFFFFF;
+            }
+        }
+    }
+
     .center-side {
         margin-top: $spacing-small;
     }

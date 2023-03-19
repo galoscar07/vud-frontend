@@ -47,7 +47,7 @@ function ClinicPage({ props }) {
         }
     })
     const day = dayMapping[new Date().getDay()]
-    console.log(day)
+
     // Doctors filter & pagination
     const [doctorState, setDoctorState] = useState({
         doctors: [],
