@@ -499,8 +499,11 @@ function ClinicPage({ props }) {
                                     <Dropdown selected={selectedCompetences} options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} />
                                 </div>
                                 <div style={{marginBottom: '20px'}} className="col">
-                                    {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1].map((doc, i) =>
-                                      <DoctorCard doctor={doc} key={i} />
+                                    {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
+                                      .map((doc, i) => {
+                                          return <DoctorCard doctor={doc} key={i} />
+                                      })
+                                    }
                                     <div style={{display: 'flex'}}>
                                         {
                                            doctorState.currentPage !== 1 &&
