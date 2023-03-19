@@ -52,6 +52,10 @@ option {
   }
 }
 
+.bold {
+  font-weight: 600;
+}
+
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -79,6 +83,14 @@ label {
   margin-top: $spacing-default;
 }
 
+.mobi {
+  display: none;
+}
+
+.desktop {
+  display: block;
+}
+
 @media screen and (max-width: $mobile-big-width) {
   h1 {
     font-size: 1.5rem;
@@ -92,5 +104,13 @@ label {
   p {
     font-size: 1.06rem !important;
     text-align: justify;
+  }
+
+  .mobi {
+    display: block;
+  }
+
+  .desktop {
+    display: none;
   }
 }

@@ -22,6 +22,7 @@ const dayMapping = {
 function ClinicPage({ props }) {
     const [clinic, setClinic] = React.useState({});
     const [loading, setLoading] = React.useState(true)
+    const [isReviewFormDisplayed, setIsReviewFormDisplayed] = React.useState(false)
     const [id, setId] = React.useState(null)
     const [error, setError] = React.useState('');
     const [displayMoreCards, setDisplayMoreCards] = React.useState(true);
@@ -500,7 +501,6 @@ function ClinicPage({ props }) {
                                 <div style={{marginBottom: '20px'}} className="col">
                                     {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1].map((doc, i) =>
                                       <DoctorCard doctor={doc} key={i} />
-                                    )}
                                     <div style={{display: 'flex'}}>
                                         {
                                            doctorState.currentPage !== 1 &&
@@ -533,33 +533,40 @@ function ClinicPage({ props }) {
 
 
                         <div className="add-review-wrapper">
-                            <div className="container-title">Adauga o recenzie</div>
-                            <form onSubmit={handleAddReview} autoComplete="off" className="add-review-form">
-                                <label>Nume</label>
-                                <input className="full-width" type="text" name="name" value={review.name.value}
-                                    onChange={handleChange} onBlur={isFormEmpty} />
-                                <label>Email</label>
-                                <input className="full-width" type="email" name="email" value={review.email.value}
-                                    onChange={handleChange} onBlur={isFormEmpty} />
-                                <label>Recenzie</label>
-                                <textarea rows="6" className="full-width" type="comment" name="comment" value={review.comment.value}
-                                    onChange={handleChange} onBlur={isFormEmpty} />
-                                <label>Rating</label>
-                                <div className="stars-wrapper">
-                                    <div className="stars-container">
-                                        {Array(5).fill(1).map((el, i) =>
-                                            <span onClick={() => setReview({ ...review, rating: { value: i + 1 } })}  >
-                                                <img key={i} src={i >= review.rating.value ? "/images/star_empty.svg" : "/images/star_full.svg"} />
-                                            </span>)}
-                                    </div>
-                                </div>
+                            {!isReviewFormDisplayed
+                                ?
+                                <button onClick={()=>setIsReviewFormDisplayed(true)} className={`button border-button round`}>Adauga recenzie</button>
+                                :
+                                <React.Fragment>
+                                    <div className="container-title">Adauga o recenzie</div>
+                                    <form onSubmit={handleAddReview} autoComplete="off" className="add-review-form">
+                                        <label>Nume</label>
+                                        <input className="full-width" type="text" name="name" value={review.name.value}
+                                            onChange={handleChange} onBlur={isFormEmpty} />
+                                        <label>Email</label>
+                                        <input className="full-width" type="email" name="email" value={review.email.value}
+                                            onChange={handleChange} onBlur={isFormEmpty} />
+                                        <label>Recenzie</label>
+                                        <textarea rows="6" className="full-width" type="comment" name="comment" value={review.comment.value}
+                                            onChange={handleChange} onBlur={isFormEmpty} />
+                                        <label>Rating</label>
+                                        <div className="stars-wrapper">
+                                            <div className="stars-container">
+                                                {Array(5).fill(1).map((el, i) =>
+                                                    <span onClick={() => setReview({ ...review, rating: { value: i + 1 } })}  >
+                                                        <img key={i} src={i >= review.rating.value ? "/images/star_empty.svg" : "/images/star_full.svg"} />
+                                                    </span>)}
+                                            </div>
+                                        </div>
 
-                                <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Adauga recenzie</button>
-                                {
-                                    review.server.error &&
-                                    <div className={'error'}>Ceva a mers rau! Va rugam incercati mai tarziu.</div>
-                                }
-                            </form>
+                                        <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Adauga recenzie</button>
+                                        {
+                                            review.server.error &&
+                                            <div className={'error'}>Ceva a mers rau! Va rugam incercati mai tarziu.</div>
+                                        }
+                                    </form>
+                                </React.Fragment>
+                            }
                         </div>
                     </React.Fragment>
             }

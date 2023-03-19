@@ -28,6 +28,7 @@ import DashboardAdminData from './pages/Dashboard/AdminData/DashboardAdminData';
 import DashboardProfileData from './pages/Dashboard/ProfileData/DashboardProfileData';
 import DashboardUnitData from './pages/Dashboard/UnitData/DashboardUnitData';
 import LogOut from './pages/Dashboard/LogOut/LogOut';
+import NotFoundPage from './pages/NotFound/NotFound';
 
 
 
@@ -56,6 +57,7 @@ function App() {
             <Route path={routes.DASHBOARD_ADMIN_DATA} element={<DashboardAdminData />} />
           </Route>
           <Route path={routes.LOG_OUT} element={<LogOut />} />
+          <Route path='*' element={<NotFoundPage/>} />
         </Route>
 
         <Route element={<MainLayout />}>

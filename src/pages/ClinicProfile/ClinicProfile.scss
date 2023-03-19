@@ -175,13 +175,14 @@
       margin-left: 5px;
     }
   }
+
+  .col-85 {
+    width: 85%;
+  }
 }
 
 @media screen and (max-width: $mobile-big-width) {
   .clinic-profile-page {
-    .desktop {
-      display: none!important;
-    }
 
     .button {
       &.border-button {
