@@ -9,6 +9,15 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
 import _ from "lodash";
 
+const dayMapping = {
+    0: 6,
+    1: 0,
+    2: 1,
+    3: 2,
+    4: 3,
+    5: 4,
+    6: 5
+}
 
 function ClinicPage({ props }) {
     const [clinic, setClinic] = React.useState({});
@@ -37,7 +46,8 @@ function ClinicPage({ props }) {
             error: null
         }
     })
-
+    const day = dayMapping[new Date().getDay()]
+    console.log(day)
     // Doctors filter & pagination
     const [doctorState, setDoctorState] = useState({
         doctors: [],
@@ -208,7 +218,8 @@ function ClinicPage({ props }) {
                     medical_skill: doc.medical_skill,
                     link: doc.link,
                 }
-            })
+            }),
+            schedule: JSON.parse(serverClinic.clinic_schedule)
         }
     }
 
@@ -379,6 +390,30 @@ function ClinicPage({ props }) {
                         </div>
                     )}
                 </div>
+                {clinic.schedule &&
+                  <div className="schedule-container">
+                      <div className="fields-wrapper">
+                          <div className="weekdays-container">
+                              {Object.entries(clinic.schedule).map(([weekday, inter], i) => {
+                                  return (
+                                    <div className={`day ${day === i ? 'active' : ''}`} key={i}>
+                                        <span>{weekday}</span>
+                                        {
+                                            inter.length > 0
+                                              ? inter.map((interval, index) => {
+                                                  return <span key={index} className={'interval'}>{interval.startTime} - {interval.endTime}</span>
+                                              })
+                                              : <span className={'interval'}>Inchis</span>
+
+                                        }
+                                        {}
+                                    </div>
+                                  )
+                              })}
+                          </div>
+                      </div>
+                  </div>
+                }
             </div>
         )
     }
