@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Footer.scss'
-import { routes } from "../../utils/routes";
+import { API_MAP, getAPILink, routes } from "../../utils/routes";
 import { NavLink } from "react-router-dom";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+
 
 const socials = [
   {
@@ -21,165 +23,6 @@ const socials = [
   }
 ]
 
-const specialitiesLinks = [
-  {
-    label: 'Alergologie si Imunologie Clinica',
-    link: '/nothing',
-  },
-  {
-    label: 'Anatomie Patologica',
-    link: '/nothing',
-  },
-  {
-    label: 'Anestezie si Terapie Intensiva',
-    link: '/nothing',
-  },
-  {
-    label: 'Boli Infectioase',
-    link: '/nothing',
-  },
-  {
-    label: 'Cardiologie',
-    link: '/nothing',
-  },
-  {
-    label: 'Chirurgie Cardiovasculara',
-    link: '/nothing',
-  },
-  {
-    label: 'Chirurgie Dento - Alveolara',
-    link: '/nothing',
-  },
-  {
-    label: 'Chirurgie Generala',
-    link: '/nothing',
-  },
-  {
-    label: 'Chirurgie Orala si Maxilo - Faciala',
-    link: '/nothing',
-  },
-  {
-    label: 'Chirurgie Pediatrica',
-    link: '/nothing',
-  },
-  {
-    label: 'Dermatovenerologie',
-    link: '/nothing',
-  },
-  {
-    label: 'Diabet Zaharat, Nutritie si Boli Metabolice',
-    link: '/nothing',
-  },
-  {
-    label: 'Endocrinologie',
-    link: '/nothing',
-  },
-  {
-    label: 'Epidemiologie',
-    link: '/nothing',
-  },
-  {
-    label: 'Expertiza Medicala a Capacitatii de Munca',
-    link: '/nothing',
-  },
-  {
-    label: 'Gastroenterologie',
-    link: '/nothing',
-  },
-  {
-    label: 'Genetica Medicala',
-    link: '/nothing',
-  },
-  {
-    label: 'Geriatrie si Gerontologie',
-    link: '/nothing',
-  },
-  {
-    label: 'Hematologie',
-    link: '/nothing',
-  },
-  {
-    label: 'Oncologie Medicala',
-    link: '/nothing',
-  },
-  {
-    label: 'Ortopedie si Traumatologie',
-    link: '/nothing',
-  },
-  {
-    label: 'Otorinolaringologie (ORL)',
-    link: '/nothing',
-  },
-  {
-    label: 'Pediatrie',
-    link: '/nothing',
-  },
-  {
-    label: 'Pneumologie',
-    link: '/nothing',
-  },
-  {
-    label: 'Psihiatrie',
-    link: '/nothing',
-  },
-  {
-    label: 'Psihiatrie Pediatrica',
-    link: '/nothing',
-  },
-  {
-    label: 'Psihologie',
-    link: '/nothing',
-  },
-  {
-    label: 'Radiologie - Imagistica Medicala',
-    link: '/nothing',
-  },
-  {
-    label: 'Radioterapie',
-    link: '/nothing',
-  },
-  {
-    label: 'Alergologie si Imunologie Clinica',
-    link: '/nothing',
-  },
-  {
-    label: 'Anatomie Patologica',
-    link: '/nothing',
-  },
-  {
-    label: 'Anestezie si Terapie Intensiva',
-    link: '/nothing',
-  },
-  {
-    label: 'Boli Infectioase',
-    link: '/nothing',
-  },
-  {
-    label: 'Cardiologie',
-    link: '/nothing',
-  },
-  {
-    label: 'Chirurgie Cardiovasculara',
-    link: '/nothing',
-  },
-  {
-    label: 'Chirurgie Dento - Alveolara',
-    link: '/nothing',
-  },
-  {
-    label: 'Chirurgie Generala',
-    link: '/nothing',
-  },
-  {
-    label: 'Chirurgie Orala si Maxilo - Faciala',
-    link: '/nothing',
-  },
-  {
-    label: 'Chirurgie Pediatrica',
-    link: '/nothing',
-  }
-]
-
 const navLinks = [
   {
     label: 'Acasa',
@@ -189,6 +32,24 @@ const navLinks = [
 
 function Footer() {
   const [displayMoreCards, setDisplayMoreCards] = React.useState(true);
+  const [footerOptions, setFooterOptions] = React.useState([])
+  const [loading, setLoading] = React.useState(true)
+  
+  useEffect(() => {
+    fetch(
+      getAPILink(API_MAP.GET_FOOTER_LABELS), {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setLoading(false)
+        setFooterOptions(res)
+      })
+  }
+    , [])
 
   return (
     <div className={'footer-wrapper'}>
@@ -208,7 +69,7 @@ function Footer() {
 
         </div>
         <div className={'specialities'}>
-          {specialitiesLinks.map((speciality, index) => {
+          {footerOptions.map((speciality, index) => {
             return (
               <React.Fragment key={index}
               >
@@ -228,8 +89,8 @@ function Footer() {
       </div>
       <div className={'footer-copy-rights'}>
         <div className={'icons'}>
-          {
-            socials.map((socialItem, index) => {
+          {loading ? <LoadingSpinner />
+            : socials.map((socialItem, index) => {
               return (
                 <a rel="noreferrer" key={index} href={socialItem.href} target={"_blank"}>
                   <img alt={socialItem.imageAlt} src={socialItem.iconPath} />
