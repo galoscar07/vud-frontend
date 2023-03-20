@@ -131,7 +131,7 @@ function ClinicPage({ props }) {
             description: serverClinic?.description,
             doctors: serverClinic?.collaborator_doctor?.map((doc) => {
                 return {
-                    photo: doc.profile_picture,
+                    photo: doc.profile_picture || '/images/user.svg' ,
                     name: doc.doctor_name,
                     academic_degree: doc.academic_degree,
                     speciality: doc.speciality,
