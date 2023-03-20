@@ -52,7 +52,6 @@ function Homepage() {
 
   const mapServerRespToFront = (listOfClinics) => {
     return listOfClinics.map((clinic) => {
-      console.log(JSON.parse(clinic.primary_phone),'cllll')
       return {
         id: clinic.id,
         name: clinic.clinic_name,
