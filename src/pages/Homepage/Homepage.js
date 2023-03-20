@@ -52,6 +52,7 @@ function Homepage() {
 
   const mapServerRespToFront = (listOfClinics) => {
     return listOfClinics.map((clinic) => {
+      console.log(JSON.parse(clinic.primary_phone),'cllll')
       return {
         id: clinic.id,
         name: clinic.clinic_name,
@@ -62,9 +63,9 @@ function Homepage() {
         specialty: clinic.clinic_specialities.map((cs) => { return cs.label }).join(", "),
         type: clinic.medical_unit_types.map((mut) => { return mut.label }).join(", "),
         contact: [
-          { type: 'phoneNo', value: clinic.primary_phone },
-          { type: "location", value: clinic.clinic_town },
-          { type: "email", value: clinic.primary_email }
+          { type: 'phoneNo', value: JSON.parse(clinic.primary_phone).value },
+          { type: "location", value: clinic?.clinic_town },
+          { type: "email", value: clinic?.primary_email }
         ],
         reviews: clinic.recent_reviews?.map((rev) => {
           return {

@@ -34,6 +34,7 @@ const ClinicProfile = (props) => {
     clinic_county: props?.selected?.clinic_county || '',
     clinic_other_details: props?.selected?.clinic_other_details || '',
     primary_phone: props?.selected?.primary_phone || '',
+    primary_phone_label: props.selected?.primary_phone_label || 'phone',
     primary_email: props?.selected?.primary_email || '',
     website: props?.selected?.website || '',
     website_facebook: props?.selected?.website_facebook || '',
@@ -88,6 +89,7 @@ const ClinicProfile = (props) => {
 
   // States and Functions for extra phone number and emails
   const [multiplePhones, setMultiplePhones] = useState([])
+  const [multiplePhoneLabels, setMultiplePhoneLabels] = useState([])
   const [multipleEmails, setMultipleEmails] = useState([])
   const addAnotherInput = (name) => {
     if (name === 'phone') {
@@ -104,11 +106,13 @@ const ClinicProfile = (props) => {
       }
     }
   }
+
   const handlePhoneEmailChange = (value, index, list, fct) => {
     const copy = _.cloneDeep(list)
     copy[index] = value
     fct(copy)
   }
+
   const handleRemoveOtherInput = (index, type) => {
     if (type === 'phone') {
       if (multiplePhones.length === 5) {
@@ -177,7 +181,6 @@ const ClinicProfile = (props) => {
     setDoctor([...doctor, { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null }])
     setDocHighlighted(docHighlighted + 1)
   }
-
   // Dropdown States
   const [unitTypeDropdown, setUnitTypeDropdown] = useState([])
   const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState([])
@@ -209,8 +212,9 @@ const ClinicProfile = (props) => {
       clinic_town: state.clinic_town,
       clinic_county: state.clinic_county,
       clinic_other_details: state.clinic_other_details,
-      primary_phone: state.primary_phone,
-      secondary_phone: multiplePhones.join("|"),
+      primary_phone: JSON.stringify({ label: state.primary_phone_label, value: state.primary_phone }),
+      secondary_phone: multiplePhones,
+      secondary_phone_labels: multiplePhoneLabels,
       primary_email: state.primary_email,
       secondary_email: multipleEmails.join("|"),
       website: state.website,
@@ -219,7 +223,7 @@ const ClinicProfile = (props) => {
       website_linkedin: state.website_linkedin,
       website_youtube: state.website_youtube,
       profile_picture: state.profile_picture,
-
+      ana: { label: multiplePhoneLabels, value: multiplePhones },
       // 2nd card
       description: state.description,
       // 4th card
@@ -227,7 +231,7 @@ const ClinicProfile = (props) => {
         .map((doc) => {
           return {
             name: doc.name,
-            profile_photo: doc.profile_photo,
+            profile_photo: doc.profile_photo || '/images/user.svg',
             link: doc.link,
             academic_degree: doc.academic_degree.map((md) => { return md.value }),
             speciality: doc.speciality.map((md) => { return md.value }),
@@ -249,6 +253,9 @@ const ClinicProfile = (props) => {
       //TODO PLS CHECK THIS;
       props.onSubmit(state)
     } else {
+      const secondary_phones_sorted = multiplePhoneLabels.map(function (value, index) {
+        return [value, multiplePhones[index]]
+      });
       const mapped = mapStateToObject()
       const formData = new FormData()
       formData.append('clinic_name', mapped.clinic_name)
@@ -259,7 +266,7 @@ const ClinicProfile = (props) => {
       formData.append('clinic_county', mapped.clinic_county)
       formData.append('clinic_other_details', mapped.clinic_other_details)
       formData.append('primary_phone', mapped.primary_phone)
-      formData.append('secondary_phone', mapped.secondary_phone)
+      formData.append('secondary_phone', JSON.stringify(secondary_phones_sorted))
       formData.append('primary_email', mapped.primary_email)
       formData.append('secondary_email', mapped.secondary_email)
       formData.append('website', mapped.website)
@@ -277,7 +284,6 @@ const ClinicProfile = (props) => {
         const key = el.name.split(' ').join('|') + '_doc_' + index
         formData.append(key, el.profile_photo)
       })
-
       makeRequestLogged(
         getAPILink(API_MAP.PUT_UPDATE_CLINIC_PROFILE),
         'PUT',
@@ -459,14 +465,35 @@ const ClinicProfile = (props) => {
         />
         <div className="fields-wrapper flex">
           <div className="field-container">
-            <label>*Telefon call center</label>
+            <label>*Denumire telefon</label>
+            <select value="emergency" name="primary_phone_label" id="searching" onChange={handleFieldChange} required>
+              <option value="phone">Telefon</option>
+              <option value="emergency">Urgente</option>
+              <option value="ambulance">Ambulanta</option>
+              <option value="contact">Contact</option>
+              <option value="call-center">Call center</option>
+              <option value="reception">Receptie</option>
+              <option value="fax">Fax</option>
+            </select>
+            <label>*Telefon</label>
             <input className={errorState.primary_phone && 'error'} name="primary_phone" type="text"
-              value={state.primary_phone} onChange={handleFieldChange} placeholder={'Call center'} />
+              value={state.primary_phone} onChange={handleFieldChange} />
             {
               multiplePhones.map((el, index) => {
                 return (
                   <div className={'extra_data_row'} key={index}>
-                    <input name={index.toString()} type="text" placeholder={`Al ${index + 2}-lea numar`}
+                    <label>*Denumire telefon</label>
+                    <select name={index.toString()} id="searching" onChange={(e) => handlePhoneEmailChange(e.target.value, index, multiplePhoneLabels, setMultiplePhoneLabels)}>
+                      <option value="phone">Telefon</option>
+                      <option value="emergency">Urgente</option>
+                      <option value="ambulance">Ambulanta</option>
+                      <option value="contact">Contact</option>
+                      <option value="call-center">Call center</option>
+                      <option value="reception">Receptie</option>
+                      <option value="fax">Fax</option>
+                    </select>
+                    <label>*Telefon</label>
+                    <input name={index.toString()} type="text"
                       value={el} onChange={(e) => handlePhoneEmailChange(e.target.value, index, multiplePhones, setMultiplePhones)} />
                     <img alt="close button" src={'/images/close_btn.svg'} onClick={() => handleRemoveOtherInput(index, 'phone')} />
                   </div>
