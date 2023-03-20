@@ -35,6 +35,7 @@ const AddUnit = (props) => {
         console.log(err)
       })
   }, [])
+    console.log('unitttt types', state)
 
   const onSubmit = (e) => {
     e.preventDefault()

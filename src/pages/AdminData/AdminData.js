@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import "./AdminData.scss"
 import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/routes";
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
@@ -78,14 +78,23 @@ const AdminData = (props) => {
             files = values.fileList;
         } else files = [];
         let input = document.getElementById('file');
-        for (let i = 1; i < input.files.length; ++i) {
+        for (let i = 0; i < input.files.length; ++i) {
             if (i < 3) {
                 files.push(input.files.item(i).name)
             } else {
                 setValues({ ...values, uploadWarning: "Va rugam adaugati maxim 2 fisiere." })
             }
         }
+        console.log('update')
         setValues({ ...values, fileList: files })
+        console.log('if', values.fileList, values.fileList.length)
+
+        if (values.fileList.length > 2) {
+            console.log('if', values.fileList, values.fileList.length)
+            let maxFiles = values.fileList.slice(0, 2)
+            setValues({ ...values, fileList: maxFiles })
+
+        }
         handleFieldChange(name, value)
     }
 
@@ -242,8 +251,8 @@ const AdminData = (props) => {
                                 No selected file
                             </div>)}
                             {
-                        values.uploadWarning && <div className={'error'}>{values.uploadWarning}</div>
-                    }
+                                values.uploadWarning && <div className={'error'}>{values.uploadWarning}</div>
+                            }
                         </div>
                     </div>
                     {
