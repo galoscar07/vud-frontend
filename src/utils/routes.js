@@ -1,4 +1,4 @@
-// const API_URL_DEV = 'http://127.0.0.1:8000/'
+const API_URL_DEV = 'http://127.0.0.1:8000/'
 const API_URL = 'https://vud-be.herokuapp.com/'
 export const API_URL_MEDIA = 'https://vud-be.herokuapp.com'
 
@@ -17,6 +17,8 @@ export const API_MAP = {
   //Reset Password
   RESET_PASS: 'auth/password-reset/',
   RESET_PASS_COMPLETE: 'auth/password-reset-complete/',
+  // DELETE Profile
+  DELETE_PROFILE: 'auth/delete-profile/',
   //ADD REVIEW
   ADD_REVIEW: 'auth/clinic-review/?clinic_id=',
   // CRUD User Profile
@@ -49,8 +51,8 @@ export const API_MAP = {
 }
 
 export const getAPILink = (url) => {
-  // return API_URL_DEV + url
-  return API_URL + url
+  return API_URL_DEV + url
+  // return API_URL + url
 }
 
 export const routes = {
