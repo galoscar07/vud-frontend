@@ -8,6 +8,7 @@ import { API_MAP, getAPILink } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
 import _ from "lodash";
+import {NavLink} from "react-router-dom";
 
 const dayMapping = {
     0: 6,
@@ -220,7 +221,8 @@ function ClinicPage({ props }) {
                     link: doc.link,
                 }
             }),
-            schedule: JSON.parse(serverClinic.clinic_schedule)
+            schedule: JSON.parse(serverClinic.clinic_schedule),
+            has_user: !!serverClinic.user,
         }
     }
 
@@ -287,9 +289,6 @@ function ClinicPage({ props }) {
             .catch((err) => {
                 console.log(err)
             })
-
-        // TODO populate the dropdowns and name accordingly
-        // TODO filter the list of doctors after these things
     }, [])
 
     const flattenedResponse = (el) =>
@@ -415,13 +414,20 @@ function ClinicPage({ props }) {
                             </div>
                             <div>
 
-                                <div className="links-wrapper">
+                                <div className={`links-wrapper ${!clinic.has_user && 'small-margin-bottom'}`}>
                                     {clinic?.links?.map((link, i) =>
                                         <a href={link.value && link.value.includes('http') ? link.value : `http://${link.value}`} target={"_blank"} rel="noreferrer" className={`link ${!link.value && 'hide'}`}>
                                             <img key={i} alt={link.type} src={`/images/icons/${link.type}.svg`} />
                                         </a>
                                     )}
                                 </div>
+                                {!clinic.has_user &&
+                                  <div className={'revendica'}>
+                                      <div>Reprezinti {clinic.name}?</div>
+                                      <NavLink className={'button'} to={''} > Revendică profilul  </NavLink>
+                                  </div>
+                                }
+
                             </div>
                         </div>
                         <div className="rating-container">
@@ -558,26 +564,30 @@ function ClinicPage({ props }) {
                                     <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"Grade academice"} onSelect={handleSubmitDegrees} />
                                     <Dropdown selected={selectedCompetences} options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} />
                                 </div>
-                                <div style={{ marginBottom: '20px' }} className="col">
-                                    {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
+                                {
+                                    doctorState.doctors.length > 0 &&
+                                        <div style={{ marginBottom: '20px' }} className="col">
+                                      {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
                                         .map((doc, i) => {
                                             return <DoctorCard doctor={doc} key={i} />
                                         })
-                                    }
-                                    <div style={{ display: 'flex' }}>
-                                        {
+                                      }
+                                      <div style={{ display: 'flex' }}>
+                                          {
                                             doctorState.currentPage !== 1 &&
                                             <div onClick={previousPage} className={'button'}>Anterior</div>
-                                        }
-                                        {
+                                          }
+                                          {
                                             doctorState.currentPage < doctorState.maxPage &&
                                             <div onClick={nextPage} className={'button'}>Urmator</div>
-                                        }
-                                    </div>
-                                    <div style={{ marginTop: '10px' }}>
-                                        Pagina {doctorState.currentPage} din {doctorState.maxPage}
-                                    </div>
-                                </div>
+                                          }
+                                      </div>
+                                      <div style={{ marginTop: '10px' }}>
+                                          Pagina {doctorState.currentPage} din {doctorState.maxPage}
+                                      </div>
+                                  </div>
+
+                                }
                                 {clinic.description && <div className="description-container">
                                     <p>
                                         {clinic.description}

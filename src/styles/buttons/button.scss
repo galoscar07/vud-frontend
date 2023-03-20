@@ -20,12 +20,32 @@
     border-radius: 0.37rem;
   }
 
+  &.danger {
+    background-color: $color-secondary;
+    &:hover {
+      background-color: rgba($color-secondary, 0.8) !important;
+    }
+    &:focus {
+      background-color: darken($color-secondary, 5%);
+      box-shadow: 0 3px 4px 0 rgba(black, 0.25);
+    }
+
+    &:active {
+      box-shadow: 0 1px 2px 0 rgba(black, 0.3);
+      background-color: $color-secondary !important;
+      border: 2px solid $color-secondary !important;
+      transform: scale(0.99);
+      transition: box-shadow 0.15s $bouncy-out, background-color 0.15s $bouncy-out, transform 0.2s $big-bouncy-out;
+    }
+
+  }
+
   &.custom-width {
     width: 30%;
   }
 
   &:hover {
-    border: 2px solid $color-primary-hover !important;
+    //border: 2px solid $color-primary-hover !important;
     box-shadow: 0 3px 8px 0 rgba(black, 0.2);
     background-color: $color-primary-hover !important;
   }
