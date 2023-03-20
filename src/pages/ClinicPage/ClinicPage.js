@@ -183,7 +183,7 @@ function ClinicPage({ props }) {
             rating: serverClinic?.average_rating || 0,
             address: `Str. ${serverClinic?.clinic_street} nr. ${serverClinic?.clinic_number}, ${serverClinic?.clinic_town}`,
             typeOfClinic: serverClinic?.medical_unit_types?.map((mut) => { return mut.label }).join(", "),
-            facilities: serverClinic?.unity_facilities?.map((mut) => { return mut.label }),
+            facilities: serverClinic?.unity_facilities,
             links: [
                 { type: "Facebook", value: serverClinic.website_facebook || null },
                 { type: "Linkedin", value: serverClinic.website_linkedin || null },
