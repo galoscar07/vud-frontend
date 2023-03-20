@@ -104,17 +104,17 @@ function ClinicPage({ props }) {
     };
 
     const previousPage = () =>
-      setDoctorState(prevState => ({
-          ...prevState,
-          currentPage: prevState.currentPage - 1
-      }))
+        setDoctorState(prevState => ({
+            ...prevState,
+            currentPage: prevState.currentPage - 1
+        }))
 
     // Next Page
     const nextPage = () =>
-      setDoctorState(prevState => ({
-          ...prevState,
-          currentPage: prevState.currentPage + 1
-      }))
+        setDoctorState(prevState => ({
+            ...prevState,
+            currentPage: prevState.currentPage + 1
+        }))
 
     useEffect(() => {
         reorganiseDoctors()
@@ -212,7 +212,7 @@ function ClinicPage({ props }) {
             description: serverClinic?.description,
             doctors: serverClinic?.collaborator_doctor?.map((doc) => {
                 return {
-                    photo: doc.profile_picture || '/images/user.svg' ,
+                    photo: doc.profile_picture || '/images/user.svg',
                     name: doc.doctor_name,
                     academic_degree: doc.academic_degree,
                     speciality: doc.speciality,
@@ -291,6 +291,7 @@ function ClinicPage({ props }) {
         // TODO populate the dropdowns and name accordingly
         // TODO filter the list of doctors after these things
     }, [])
+
     const flattenedResponse = (el) =>
         el.flatMap((item) => {
             if (Array.isArray(item)) {
@@ -299,6 +300,7 @@ function ClinicPage({ props }) {
                 return [item];
             }
         });
+
     const [selectedSpecialties, setSelectedSpecialties] = React.useState([]);
     const [selectedDegrees, setSelectedDegrees] = React.useState([]);
     const [selectedCompetences, setSelectedCompetences] = React.useState([]);
@@ -333,60 +335,61 @@ function ClinicPage({ props }) {
             }
         }))
     }
-
     const handleContactType = (el, i, isMobile) => {
-        switch (el.type) {
-            case "email":
-                return (
-                    <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
-                        {el?.icon && <img alt={"contact-icon"} src={`/images/icons/email.svg`} />}
-                        <div>
-                            <span className="type">{el?.type}</span>
-                            <a href={`mailto:${el.value}`}>{el.value}</a>
+        if (el && el.value && el.type) {
+            switch (el.type) {
+                case "email":
+                    return (
+                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                            {el?.icon && <img alt={"contact-icon"} src={`/images/icons/email.svg`} />}
+                            <div>
+                                <span className="type">{el?.type}</span>
+                                <a href={`mailto:${el.value}`}>{el.value}</a>
+                            </div>
                         </div>
-                    </div>
-                )
-            case "website":
-                return (
-                    <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
-                        {el?.icon && <img alt={"contact-icon"} src={`/images/icons/website.svg`} />}
-                        <div>
-                            <span className="type">{el?.type}</span>
-                            <a href={el.value.includes('http') ? el.value : `http://${el.value}`}>{el?.value}</a>
+                    )
+                case "website":
+                    return (
+                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                            {el?.icon && <img alt={"contact-icon"} src={`/images/icons/website.svg`} />}
+                            <div>
+                                <span className="type">{el?.type}</span>
+                                <a href={el.value.includes('http') ? el.value : `http://${el.value}`}>{el?.value}</a>
+                            </div>
                         </div>
-                    </div>
-                )
-            case "emergency":
-            case "ambulance":
-                return (
-                    <div className={`contact-card emergency ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
-                        {el?.icon && <img alt={"contact-icon"} src={`/images/icons/emergency.svg`} />}
-                        <div>
-                            <span className="type">{el?.type}</span>
-                            <a href={`tel:${el.value}`}>{el.value}</a>
+                    )
+                case "emergency":
+                case "ambulance":
+                    return (
+                        <div className={`contact-card emergency ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                            {el?.icon && <img alt={"contact-icon"} src={`/images/icons/emergency.svg`} />}
+                            <div>
+                                <span className="type">{el?.type}</span>
+                                <a href={`tel:${el.value}`}>{el.value}</a>
+                            </div>
                         </div>
-                    </div>
-                )
-            case "fax":
-                return (
-                    <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
-                        {el?.icon && <img alt={"contact-icon"} src={`/images/icons/fax.svg`} />}
-                        <div>
-                            <span className="type">{el?.type}</span>
-                            <a href={`tel:${el.value}`}>{el.value}</a>
+                    )
+                case "fax":
+                    return (
+                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                            {el?.icon && <img alt={"contact-icon"} src={`/images/icons/fax.svg`} />}
+                            <div>
+                                <span className="type">{el?.type}</span>
+                                <a href={`tel:${el.value}`}>{el.value}</a>
+                            </div>
                         </div>
-                    </div>
-                )
-            default:
-                return (
-                    <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
-                        {el?.icon && <img alt={"contact-icon"} src={`/images/icons/phone.svg`} />}
-                        <div>
-                            <span className="type">{el?.type}</span>
-                            <a href={`tel:${el.value}`}>{el.value}</a>
+                    )
+                default:
+                    return (
+                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                            {el?.icon && <img alt={"contact-icon"} src={`/images/icons/phone.svg`} />}
+                            <div>
+                                <span className="type">{el?.type}</span>
+                                <a href={`tel:${el.value}`}>{el.value}</a>
+                            </div>
                         </div>
-                    </div>
-                )
+                    )
+            }
         }
     }
 
@@ -394,6 +397,7 @@ function ClinicPage({ props }) {
         reorganiseDoctors()
     }, [selectedCompetences, selectedDegrees, selectedSpecialties])
 
+    console.log(clinic, 'clinic')
     const renderClinicHeaderDesktop = () => {
         return (
             <div className="clinic-header-container">
@@ -451,28 +455,28 @@ function ClinicPage({ props }) {
                     )}
                 </div>
                 {clinic.schedule &&
-                  <div className="schedule-container">
-                      <div className="fields-wrapper">
-                          <div className="weekdays-container">
-                              {Object.entries(clinic.schedule).map(([weekday, inter], i) => {
-                                  return (
-                                    <div className={`day ${day === i ? 'active' : ''}`} key={i}>
-                                        <span>{weekday}</span>
-                                        {
-                                            inter.length > 0
-                                              ? inter.map((interval, index) => {
-                                                  return <span key={index} className={'interval'}>{interval.startTime} - {interval.endTime}</span>
-                                              })
-                                              : <span className={'interval'}>Inchis</span>
+                    <div className="schedule-container">
+                        <div className="fields-wrapper">
+                            <div className="weekdays-container">
+                                {Object.entries(clinic.schedule).map(([weekday, inter], i) => {
+                                    return (
+                                        <div className={`day ${day === i ? 'active' : ''}`} key={i}>
+                                            <span>{weekday}</span>
+                                            {
+                                                inter.length > 0
+                                                    ? inter.map((interval, index) => {
+                                                        return <span key={index} className={'interval'}>{interval.startTime} - {interval.endTime}</span>
+                                                    })
+                                                    : <span className={'interval'}>Inchis</span>
 
-                                        }
-                                        {}
-                                    </div>
-                                  )
-                              })}
-                          </div>
-                      </div>
-                  </div>
+                                            }
+                                            { }
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
                 }
             </div>
         )
@@ -554,23 +558,23 @@ function ClinicPage({ props }) {
                                     <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"Grade academice"} onSelect={handleSubmitDegrees} />
                                     <Dropdown selected={selectedCompetences} options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} />
                                 </div>
-                                <div style={{marginBottom: '20px'}} className="col">
+                                <div style={{ marginBottom: '20px' }} className="col">
                                     {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
-                                      .map((doc, i) => {
-                                          return <DoctorCard doctor={doc} key={i} />
-                                      })
+                                        .map((doc, i) => {
+                                            return <DoctorCard doctor={doc} key={i} />
+                                        })
                                     }
-                                    <div style={{display: 'flex'}}>
+                                    <div style={{ display: 'flex' }}>
                                         {
-                                           doctorState.currentPage !== 1 &&
+                                            doctorState.currentPage !== 1 &&
                                             <div onClick={previousPage} className={'button'}>Anterior</div>
                                         }
                                         {
-                                          doctorState.currentPage < doctorState.maxPage &&
-                                            <div onClick={nextPage}  className={'button'}>Urmator</div>
+                                            doctorState.currentPage < doctorState.maxPage &&
+                                            <div onClick={nextPage} className={'button'}>Urmator</div>
                                         }
                                     </div>
-                                    <div style={{marginTop: '10px'}}>
+                                    <div style={{ marginTop: '10px' }}>
                                         Pagina {doctorState.currentPage} din {doctorState.maxPage}
                                     </div>
                                 </div>
