@@ -108,6 +108,10 @@
                 flex-direction: row;
                 column-gap: $spacing-small;
                 margin-bottom: $spacing-medium;
+
+                a {
+                    margin: 0;
+                }
             }
 
             .favorite-button {
@@ -242,15 +246,6 @@
             line-height: 1.5rem;
         }
     }
-
-    .mobi {
-        display: none;
-    }
-
-    .desktop {
-        display: block;
-        ;
-    }
 }
 
 @media screen and (max-width: $mobile-big-width) {
@@ -345,14 +340,6 @@
                 display: none;
             }
         }
-
-        .desktop {
-            display: none;
-        }
-    }
-
-    .col-85 {
-        width: 85%;
     }
 }
 

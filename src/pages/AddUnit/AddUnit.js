@@ -73,7 +73,7 @@ const AddUnit = (props) => {
         <form>
           <img alt={'imagine unitate medicala'} src="/images/unit.svg" />
           <h1>Adaugă Unitate medicală</h1>
-          <Dropdown selected={props?.selected || state.selected} onSubmit={onSelect} options={state.dropdownValues} title={"Cauta tip unitate"}></Dropdown>
+          <Dropdown selected={props?.selected || state.selected} onSelect={onSelect} options={state.dropdownValues} title={"Cauta tip unitate"}></Dropdown>
           {
             state.error && <div className={'error'}>{state.error}</div>
           }

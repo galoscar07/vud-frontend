@@ -210,17 +210,16 @@ function Footer() {
         <div className={'specialities'}>
           {specialitiesLinks.map((speciality, index) => {
             return (
-              <React.Fragment>
-              <NavLink className="desktop"
-              key={index}
-              to={speciality.link}
-            >{speciality.label}</NavLink>
-              <NavLink
-                className={`mobile ${displayMoreCards && index > 10 ? ' hide' : ''}`}
-                key={index}
-                to={speciality.link}
-              >{speciality.label}</NavLink>
-           </React.Fragment> )
+              <React.Fragment key={index}
+              >
+                <NavLink className="desktop"
+                  to={speciality.link}
+                >{speciality.label}</NavLink>
+                <NavLink
+                  className={`mobile ${displayMoreCards && index > 10 ? ' hide' : ''}`}
+                  to={speciality.link}
+                >{speciality.label}</NavLink>
+              </React.Fragment>)
           })}
         </div>
         <div className="view-more-btn mobile" onClick={() => setDisplayMoreCards(!displayMoreCards)}>
