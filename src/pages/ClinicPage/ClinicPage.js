@@ -7,11 +7,19 @@ import "./ClinicPage.scss";
 import { API_MAP, getAPILink } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
-import { flatten } from 'lodash';
+import _ from "lodash";
 
+const dayMapping = {
+    0: 6,
+    1: 0,
+    2: 1,
+    3: 2,
+    4: 3,
+    5: 4,
+    6: 5
+}
 
 function ClinicPage({ props }) {
-
     const [clinic, setClinic] = React.useState({});
     const [loading, setLoading] = React.useState(true)
     const [isReviewFormDisplayed, setIsReviewFormDisplayed] = React.useState(false)
@@ -39,6 +47,80 @@ function ClinicPage({ props }) {
             error: null
         }
     })
+    const day = dayMapping[new Date().getDay()]
+
+    // Doctors filter & pagination
+    const [doctorState, setDoctorState] = useState({
+        doctors: [],
+        perPage: 3,
+        currentPage: 1,
+        maxPage: null,
+        filter: {
+            specialities: [],
+            academicDegrees: [],
+            medicalCompetences: []
+        }
+    })
+    const reorganiseDoctors = () => {
+        let doctors = clinic.doctors;
+        if (doctorState.filter.specialities.length > 0 || doctorState.filter.academicDegrees.length || doctorState.filter.medicalCompetences.length) {
+            if (doctorState.filter.specialities.length > 0)
+                doctors = doctors.filter((doc) => {
+                    let ok = true
+                    doctorState.filter.specialities.forEach((el) => {
+                        const found = doc.speciality.findIndex((e) => e.id === el.value)
+                        if (found === -1) ok = false
+                    })
+                    return ok
+                })
+            if (doctorState.filter.academicDegrees.length > 0)
+                doctors = doctors.filter((doc) => {
+                    let ok = true
+                    doctorState.filter.academicDegrees.forEach((el) => {
+                        const found = doc.academic_degree.findIndex((e) => e.id === el.value)
+                        if (found === -1) ok = false
+                    })
+                    return ok
+                })
+            if (doctorState.filter.medicalCompetences.length > 0)
+                doctors = doctors.filter((doc) => {
+                    let ok = true
+                    doctorState.filter.medicalCompetences.forEach((el) => {
+                        const found = doc.medical_skill.findIndex((e) => e.id === el.value)
+                        if (found === -1) ok = false
+                    })
+                    return ok
+                })
+        }
+
+        doctors = _.chunk(doctors, doctorState.perPage);
+
+        setDoctorState({
+            ...doctorState,
+            doctors,
+            currentPage: 1,
+            maxPage: doctors.length === 0 ? 1 : doctors.length
+        });
+    };
+
+    const previousPage = () =>
+      setDoctorState(prevState => ({
+          ...prevState,
+          currentPage: prevState.currentPage - 1
+      }))
+
+    // Next Page
+    const nextPage = () =>
+      setDoctorState(prevState => ({
+          ...prevState,
+          currentPage: prevState.currentPage + 1
+      }))
+
+    useEffect(() => {
+        reorganiseDoctors()
+    }, [clinic.doctors])
+
+
 
     const isFormEmpty = () => {
         if (review.email.value && review.name.value && review.comment.value && review.rating.value) {
@@ -84,8 +166,7 @@ function ClinicPage({ props }) {
 
     const targetElement = useRef();
     const scrollingTop = (event) => {
-        const elmnt = targetElement;
-        elmnt.current.scrollIntoView({
+        targetElement.current.scrollIntoView({
             behavior: "smooth",
             block: "center",
             inline: "start"
@@ -138,7 +219,8 @@ function ClinicPage({ props }) {
                     medical_skill: doc.medical_skill,
                     link: doc.link,
                 }
-            })
+            }),
+            schedule: JSON.parse(serverClinic.clinic_schedule)
         }
     }
 
@@ -220,20 +302,36 @@ function ClinicPage({ props }) {
     const [selectedSpecialties, setSelectedSpecialties] = React.useState([]);
     const [selectedDegrees, setSelectedDegrees] = React.useState([]);
     const [selectedCompetences, setSelectedCompetences] = React.useState([]);
-    const [filteredDoctors, setFilteredDoctors] = React.useState([]);
-
 
     const handleSubmitCompetences = (selected) => {
         setSelectedCompetences(selected)
-        console.log(selected, selectedCompetences, 'competences')
+        setDoctorState((prev) => ({
+            ...prev,
+            filter: {
+                ...prev.filter,
+                medicalCompetences: selected
+            }
+        }))
     }
     const handleSubmitDegrees = (selected) => {
         setSelectedDegrees(selected)
-        console.log(selected, selectedDegrees, 'grade')
+        setDoctorState((prev) => ({
+            ...prev,
+            filter: {
+                ...prev.filter,
+                academicDegrees: selected
+            }
+        }))
     }
     const handleSubmitSpecialties = (selected) => {
         setSelectedSpecialties(selected)
-        console.log(selected, selectedSpecialties, 'spec')
+        setDoctorState((prev) => ({
+            ...prev,
+            filter: {
+                ...prev.filter,
+                specialities: selected
+            }
+        }))
     }
 
     const handleContactType = (el, i, isMobile) => {
@@ -293,7 +391,7 @@ function ClinicPage({ props }) {
     }
 
     useEffect(() => {
-
+        reorganiseDoctors()
     }, [selectedCompetences, selectedDegrees, selectedSpecialties])
 
     const renderClinicHeaderDesktop = () => {
@@ -338,7 +436,7 @@ function ClinicPage({ props }) {
                                 <span>Facilitati clinica</span>
                                 <div>
                                     {clinic?.facilities?.map((facility, i) =>
-                                        <img key={i} alt={facility} src={`/images/facilities/${facility}.svg`} />
+                                        <img key={i} alt={facility.label} src={facility.icon} />
                                     )}
                                 </div>
                             </div>
@@ -352,6 +450,30 @@ function ClinicPage({ props }) {
                         </React.Fragment>
                     )}
                 </div>
+                {clinic.schedule &&
+                  <div className="schedule-container">
+                      <div className="fields-wrapper">
+                          <div className="weekdays-container">
+                              {Object.entries(clinic.schedule).map(([weekday, inter], i) => {
+                                  return (
+                                    <div className={`day ${day === i ? 'active' : ''}`} key={i}>
+                                        <span>{weekday}</span>
+                                        {
+                                            inter.length > 0
+                                              ? inter.map((interval, index) => {
+                                                  return <span key={index} className={'interval'}>{interval.startTime} - {interval.endTime}</span>
+                                              })
+                                              : <span className={'interval'}>Inchis</span>
+
+                                        }
+                                        {}
+                                    </div>
+                                  )
+                              })}
+                          </div>
+                      </div>
+                  </div>
+                }
             </div>
         )
     }
@@ -426,16 +548,31 @@ function ClinicPage({ props }) {
                             <div className="info-right-container">
                                 <div className="container-title">Cautare</div>
                                 <div className="col">
-                                    <Dropdown options={specialities} title={"Specialitati"} onSelect={handleSubmitSpecialties} />
+                                    <Dropdown selected={selectedSpecialties} options={specialities} title={"Specialitati"} onSelect={handleSubmitSpecialties} />
                                 </div>
                                 <div className="col-2">
-                                    <Dropdown options={academicDegreesDropDown} title={"Grade academice"} onSelect={handleSubmitDegrees} />
-                                    <Dropdown options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} />
+                                    <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"Grade academice"} onSelect={handleSubmitDegrees} />
+                                    <Dropdown selected={selectedCompetences} options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} />
                                 </div>
-                                <div style={{ marginBottom: '20px' }} className="col">
-                                    {clinic.doctors && clinic.doctors.map((doc, i) =>
-                                        <DoctorCard doctor={doc} key={i} />
-                                    )}
+                                <div style={{marginBottom: '20px'}} className="col">
+                                    {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
+                                      .map((doc, i) => {
+                                          return <DoctorCard doctor={doc} key={i} />
+                                      })
+                                    }
+                                    <div style={{display: 'flex'}}>
+                                        {
+                                           doctorState.currentPage !== 1 &&
+                                            <div onClick={previousPage} className={'button'}>Anterior</div>
+                                        }
+                                        {
+                                          doctorState.currentPage < doctorState.maxPage &&
+                                            <div onClick={nextPage}  className={'button'}>Urmator</div>
+                                        }
+                                    </div>
+                                    <div style={{marginTop: '10px'}}>
+                                        Pagina {doctorState.currentPage} din {doctorState.maxPage}
+                                    </div>
                                 </div>
                                 {clinic.description && <div className="description-container">
                                     <p>

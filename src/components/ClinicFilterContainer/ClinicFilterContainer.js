@@ -1,8 +1,8 @@
 import React from 'react'
 import "./ClinicFilterContainer.scss"
 import Carousel from '../Carousel/Carousel';
-import { useNavigate } from "react-router-dom";
-import { routes } from "../../utils/routes";
+import {useNavigate} from "react-router-dom";
+import {API_URL_MEDIA, routes} from "../../utils/routes";
 
 const ClinicFilterContainer = (props) => {
     const navigate = useNavigate();
@@ -12,7 +12,7 @@ const ClinicFilterContainer = (props) => {
             <div className="info-container">
                 <div className="rating-container">
                     {/* TODO default image in case is not set */}
-                    <img className="clinic-img" src={props.clinic.image || '/images/unit.svg'} />
+                    <img className="clinic-img" src={ API_URL_MEDIA + props.clinic.image || '/images/unit.svg'} />
                     {props.clinic.score > 0 && <div className="score-wrapper">
                         {props.clinic.score}
                     </div>}

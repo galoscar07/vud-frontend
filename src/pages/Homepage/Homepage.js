@@ -3,7 +3,7 @@ import "./Homepage.scss"
 import Select, { components } from "react-select";
 import ClinicFilterContainer from '../../components/ClinicFilterContainer/ClinicFilterContainer';
 import Newsletter from '../../components/Newsletter/Newsletter';
-import { API_MAP, getAPILink, routes } from "../../utils/routes";
+import {API_MAP, API_URL_MEDIA, getAPILink, routes} from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import {Adsense} from '@ctrl/react-adsense';
@@ -44,6 +44,7 @@ const options = [
 
 function Homepage() {
   const [selectedOption, setSelected] = React.useState([]);
+  const [banners, setBanners] = useState([])
   const [loading, setLoading] = useState(true)
   const [state, setState] = useState('')
   const [topClinics, setTopClinics] = useState([])
@@ -78,6 +79,26 @@ function Homepage() {
   }
 
   useEffect(() => {
+    fetch(
+      getAPILink(API_MAP.GET_BANNER_CARDS), {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        }
+      })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.length > 0) {
+          setBanners(res.map((re) => {
+            return {
+              title: re.title,
+              icon: `${API_URL_MEDIA + re.profile_picture}`,
+              text: re.subtitle,
+              redirectLink: re.link
+            }
+          }))
+        }
+      })
     fetch(
       getAPILink(API_MAP.GET_TOP_CLINICS), {
       method: 'GET',
@@ -118,9 +139,9 @@ function Homepage() {
         <button className="button border-button" onClick={handleSearch}>Cauta</button>
       </form>
       <div className="tags-wrapper">
-        {tags.map((tag, i) =>
+        {banners.map((tag, i) =>
           <div className="tag-container" key={i}>
-            <img key={i} alt={tag.icon} src={`/images/icons/${tag.icon}.svg`} />
+            <img key={i} alt={tag.icon} src={`${tag.icon}`} />
             <div className="text-wrapper">
               <span className="title">{tag.title}</span>
               <span className="redirect">{tag.text}</span>
