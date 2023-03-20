@@ -236,19 +236,58 @@ function ClinicPage({ props }) {
         console.log(selected, selectedSpecialties, 'spec')
     }
 
-    const handleContactType = (el) => {
+    const handleContactType = (el, i, isMobile) => {
         switch (el.type) {
             case "email":
                 return (
-                    <a href={`mailto:${el.value}`}>{el.value}</a>
+                    <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                        {el?.icon && <img alt={"contact-icon"} src={`/images/icons/email.svg`} />}
+                        <div>
+                            <span className="type">{el?.type}</span>
+                            <a href={`mailto:${el.value}`}>{el.value}</a>
+                        </div>
+                    </div>
                 )
             case "website":
                 return (
-                    <a href={el.value.includes('http') ? el.value : `http://${el.value}`}>{el?.value}</a>
+                    <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                        {el?.icon && <img alt={"contact-icon"} src={`/images/icons/website.svg`} />}
+                        <div>
+                            <span className="type">{el?.type}</span>
+                            <a href={el.value.includes('http') ? el.value : `http://${el.value}`}>{el?.value}</a>
+                        </div>
+                    </div>
+                )
+            case "emergency":
+            case "ambulance":
+                return (
+                    <div className={`contact-card emergency ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                        {el?.icon && <img alt={"contact-icon"} src={`/images/icons/emergency.svg`} />}
+                        <div>
+                            <span className="type">{el?.type}</span>
+                            <a href={`tel:${el.value}`}>{el.value}</a>
+                        </div>
+                    </div>
+                )
+            case "fax":
+                return (
+                    <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                        {el?.icon && <img alt={"contact-icon"} src={`/images/icons/fax.svg`} />}
+                        <div>
+                            <span className="type">{el?.type}</span>
+                            <a href={`tel:${el.value}`}>{el.value}</a>
+                        </div>
+                    </div>
                 )
             default:
                 return (
-                    <a href={`tel:${el.value}`}>{el.value}</a>
+                    <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                        {el?.icon && <img alt={"contact-icon"} src={`/images/icons/phone.svg`} />}
+                        <div>
+                            <span className="type">{el?.type}</span>
+                            <a href={`tel:${el.value}`}>{el.value}</a>
+                        </div>
+                    </div>
                 )
         }
     }
@@ -308,13 +347,9 @@ function ClinicPage({ props }) {
                 </div>
                 <div className="contact-container">
                     {clinic.contact && flattenedResponse(clinic.contact).map((el, i) =>
-                        <div className={`contact-card ${el?.icon === 'emergency' && 'emergency'} ${!el?.value && 'hide'}`} key={i}>
-                            {el?.icon && <img alt={"contact-icon"} src={`/images/icons/${el?.icon}.svg`} />}
-                            <div>
-                                <span className="type">{el?.type}</span>
-                                {handleContactType(el)}
-                            </div>
-                        </div>
+                        <React.Fragment>
+                            {handleContactType(el, i)}
+                        </React.Fragment>
                     )}
                 </div>
             </div>
@@ -338,13 +373,9 @@ function ClinicPage({ props }) {
                 </div>
                 <div className="contact-container">
                     {clinic.contact && flattenedResponse(clinic.contact).map((el, i) =>
-                        <div className={`contact-card ${el?.icon === 'emergency' && 'emergency'} ${displayMoreCards && i > 1 && 'hide'}`} key={i}>
-                            {el?.icon && <img alt={"contact-icon"} src={`/images/icons/${el?.icon}.svg`} />}
-                            <div>
-                                <span className="type">{el?.type}</span>
-                                {handleContactType(el)}
-                            </div>
-                        </div>
+                        <React.Fragment>
+                            {handleContactType(el, i, true)}
+                        </React.Fragment>
                     )}
                 </div>
                 <div className="view-more-btn" onClick={() => setDisplayMoreCards(!displayMoreCards)}>
