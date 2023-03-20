@@ -63,7 +63,7 @@ const FilterPage = (props) => {
                 specialty: clinic.clinic_specialities.map((cs) => {return cs.label}).join(", "),
                 type: clinic.medical_unit_types.map((mut) => {return mut.label}).join(", "),
                 contact: [
-                    { type: 'phoneNo', value: clinic.primary_phone },
+                    { type: 'phoneNo', value: JSON.parse(clinic.primary_phone).value },
                     { type: "location", value: clinic.clinic_town },
                     { type: "email", value: clinic.primary_email }
                 ],
