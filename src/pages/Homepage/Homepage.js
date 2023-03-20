@@ -3,10 +3,10 @@ import "./Homepage.scss"
 import Select, { components } from "react-select";
 import ClinicFilterContainer from '../../components/ClinicFilterContainer/ClinicFilterContainer';
 import Newsletter from '../../components/Newsletter/Newsletter';
-import {API_MAP, API_URL_MEDIA, getAPILink, routes} from "../../utils/routes";
+import { API_MAP, API_URL_MEDIA, getAPILink, routes } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
-import {Adsense} from '@ctrl/react-adsense';
+import { Adsense } from '@ctrl/react-adsense';
 
 const tags = [
   {
@@ -52,7 +52,6 @@ function Homepage() {
 
   const mapServerRespToFront = (listOfClinics) => {
     return listOfClinics.map((clinic) => {
-      console.log(JSON.parse(clinic.primary_phone),'cllll')
       return {
         id: clinic.id,
         name: clinic.clinic_name,
@@ -81,11 +80,11 @@ function Homepage() {
   useEffect(() => {
     fetch(
       getAPILink(API_MAP.GET_BANNER_CARDS), {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        }
-      })
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
       .then((res) => res.json())
       .then((res) => {
         if (res.length > 0) {
@@ -118,7 +117,9 @@ function Homepage() {
     console.log(`Option selected:`, selectedOption);
   }
 
-  const showAll = () => { }
+  const showAll = () => {
+    navigate(`${routes.FILTER_PAGE}`)
+  }
   const handleSearch = () => {
     navigate(`${routes.FILTER_PAGE}?searchTerm=${state}`)
   }
@@ -140,13 +141,14 @@ function Homepage() {
       </form>
       <div className="tags-wrapper">
         {banners.map((tag, i) =>
-          <div className="tag-container" key={i}>
-            <img key={i} alt={tag.icon} src={`${tag.icon}`} />
+          <a className="tag-container" 
+          key={i} href={tag.redirectLink}>
+              <img key={i} alt={tag.icon} src={`${tag.icon}`} />
             <div className="text-wrapper">
               <span className="title">{tag.title}</span>
               <span className="redirect">{tag.text}</span>
             </div>
-          </div>)}
+          </a>)}
       </div>
 
       <div className="content">

@@ -8,10 +8,9 @@ const ClinicFilterContainer = (props) => {
     const navigate = useNavigate();
 
     return (
-        <div className="clinic-filter-container" onClick={() => { navigate(routes.CLINIC_PAGE + `/?id=${props.clinic.id}`) }}>
-            <div className="info-container">
+        <div className="clinic-filter-container">
+            <div className="info-container" onClick={() => { navigate(routes.CLINIC_PAGE + `/?id=${props.clinic.id}`) }}>
                 <div className="rating-container">
-                    {/* TODO default image in case is not set */}
                     <img className="clinic-img" src={props.clinic?.image?.includes('http') ? props.clinic.image : API_URL_MEDIA + props.clinic.image || '/images/unit.svg'} />
                     {props.clinic.score > 0 && <div className="score-wrapper">
                         {props.clinic.score}

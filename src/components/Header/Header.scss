@@ -17,10 +17,10 @@
     display: flex;
     align-items: center;
     width: inherit;
-    justify-content: space-between;
+    justify-content: end;
 
     .menu_items {
-      padding-left: 3.125rem;
+      padding-right: 1.625rem;
     }
   }
 
