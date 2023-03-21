@@ -3,6 +3,7 @@ import "./FilterPage.scss"
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import ClinicFilterContainer from '../../../components/ClinicFilterContainer/ClinicFilterContainer';
 import { API_MAP, getAPILink } from "../../../utils/routes";
+import { useNavigate, useSearchParams, updatedSearchParams } from "react-router-dom"
 
 const options = [
     { value: 'clinica', label: 'Clinica' },
@@ -17,6 +18,11 @@ const towns = [
 ];
 
 const FilterPage = (props) => {
+    const navigate = useNavigate()
+
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set('page', '3');
+
     const [selectedOption, setSelected] = React.useState([]);
     const [pagination, setPagination] = React.useState({
         perPage: 4,
@@ -26,15 +32,13 @@ const FilterPage = (props) => {
 
     const [state, setState] = useState({
         name: new URLSearchParams(window.location.search).get('searchTerm') || '',
-        town: new URLSearchParams(window.location.search).get('town') || [],
-        clinic_specialities: new URLSearchParams(window.location.search).get('clinicSpecialities') || [],
-        unity_facilities: new URLSearchParams(window.location.search).get('unitFacilities') || [],
-        unity_types: new URLSearchParams(window.location.search).get('unitTypes') || [],
+        clinic_specialities: new URLSearchParams(window.location.search).get('clinic_specialities') || [],
+        unity_facilities: new URLSearchParams(window.location.search).get('unit_facilities') || [],
+        unity_types: new URLSearchParams(window.location.search).get('unity_types') || [],
     })
 
     const [clinics, setClinics] = useState([])
 
-    const [town, setTown] = useState([])
     const [clinicSpecialities, setClinicSpecialities] = useState([])
     const [medicalFacilities, setMedicalFacilities] = useState([])
     const [unityTypes, setUnityTypes] = useState([])
@@ -45,10 +49,13 @@ const FilterPage = (props) => {
 
     const handleInput = (ev) => {
         setState({ ...state, [ev.target.name]: ev.target.value })
+
     }
 
     const handleSelectFilters = (values, label) => {
+        console.log(state, 'BEFORE>>>>')
         setState({ ...state, [label]: values })
+        console.log(state, 'STATE::::')
     }
 
     const mapServerRespToFront = (listOfClinics) => {
@@ -92,6 +99,8 @@ const FilterPage = (props) => {
             .catch((err) => {
                 console.log(err)
             })
+        navigate(`${getQueryFromState(state)}`)
+
     }, [state])
 
     useEffect(() => {
@@ -99,7 +108,6 @@ const FilterPage = (props) => {
     }, [pagination])
 
     const nextPage = () => {
-        console.log('here net page')
         fetch(getAPILink(API_MAP.GET_CLINICS_FILTER + getQueryFromState(state)), {
             method: 'GET',
             headers: {
@@ -118,26 +126,24 @@ const FilterPage = (props) => {
     const handleSearch = () => { }
 
     const getQueryFromState = (state) => {
-        console.log(state, "STATE")
-        console.log(state.clinic_specialities.length, 'elelelel')
         let link = '?page=' + pagination.currentPage + '&page_size=' + pagination.perPage
         if (state.name) {
             link += `&name=${state.name || ''}`
         }
-        if (state.town.length !== 0) {
-            link += `&town=${state.town.map((t) => t.value).join("|")}`
-        }
-
         if (typeof state.clinic_specialities == "string") {
             link += `&clinic_specialities=${state.clinic_specialities || ''}`
         } else {
+            console.log('da')
             link += `&clinic_specialities=${state.clinic_specialities.map((t) => t.value).join("|")}`
         }
-
-        if (state.unity_facilities.length !== 0) {
-            link += `&unity_facilities=${state.unity_facilities.map((t) => t.value).join("|")}`
+        if (typeof state.unity_facilities == "string") {
+            link += `&unit_facilities=${state.unity_facilities || ''}`
+        } else {
+            link += `&unit_facilities=${state.unity_facilities.map((t) => t.value).join("|")}`
         }
-        if (state.unity_types.length !== 0) {
+        if (typeof state.unity_types == "string") {
+            link += `&unity_types=${state.unity_types || ''}`
+        } else {
             link += `&unity_types=${state.unity_types.map((t) => t.value).join("|")}`
         }
         return link
@@ -170,7 +176,6 @@ const FilterPage = (props) => {
             .then((resp) => resp.json())
             .then((response) => {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-                console.log(mapped, 'specilaiitioti')
                 setClinicSpecialities(mapped)
             })
             .catch((err) => {
@@ -205,7 +210,35 @@ const FilterPage = (props) => {
                 console.log(err)
             })
     }, [])
-console.log(state.clinic_specialities,'SPECIALITATI')
+
+
+    let specArray = ""
+    let selectedSpecialities = []
+    if (typeof state.clinic_specialities === 'string') {
+        specArray = state.clinic_specialities.split('|')
+        selectedSpecialities = clinicSpecialities.filter(item => specArray.includes(String(item.value)));
+    } else {
+        selectedSpecialities = state.clinic_specialities;
+    }
+
+    let facilitiesArray = ""
+    let selectedFacilities = []
+    if (typeof state.unity_facilities === 'string') {
+        facilitiesArray = state.unity_facilities.split('|')
+        selectedFacilities = medicalFacilities.filter(item => facilitiesArray.includes(String(item.value)));
+    } else {
+        selectedFacilities = state.unity_facilities;
+    }
+
+    let typesArray = ""
+    let selectedTypes = []
+    if (typeof state.unity_types === 'string') {
+        typesArray = state.unity_types.split('|')
+        selectedTypes = unityTypes.filter(item => typesArray.includes(String(item.value)));
+    } else {
+        selectedTypes = state.unity_types;
+    }
+
     return (
         <div className="filter-page">
             <div className="filter-main-content">
@@ -226,9 +259,9 @@ console.log(state.clinic_specialities,'SPECIALITATI')
                         </div>
                     </div>
                     <Dropdown onSelect={(values) => handleSelectFilters(values, 'town')} options={towns} title={"Oras"} />
-                    <Dropdown  onSelect={(values) => handleSelectFilters(values, 'clinic_specialities')} options={clinicSpecialities} title={"Specilitati Clinica"} />
-                    <Dropdown onSelect={(values) => handleSelectFilters(values, 'unity_facilities')} options={medicalFacilities} title={"Facilitati Clinica"} />
-                    <Dropdown onSelect={(values) => handleSelectFilters(values, 'unity_types')} options={unityTypes} title={"Tip unitate medicala"} />
+                    <Dropdown selected={selectedSpecialities || []} onSelect={(values) => handleSelectFilters(values, 'clinic_specialities')} options={clinicSpecialities} title={"Specilitati Clinica"} />
+                    <Dropdown selected={selectedFacilities || []} onSelect={(values) => handleSelectFilters(values, 'unity_facilities')} options={medicalFacilities} title={"Facilitati Clinica"} />
+                    <Dropdown selected={selectedTypes || []} onSelect={(values) => handleSelectFilters(values, 'unity_types')} options={unityTypes} title={"Tip unitate medicala"} />
                 </div>
                 <div className="center-side">
                     <div className="results-container">

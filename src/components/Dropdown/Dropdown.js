@@ -56,17 +56,12 @@ const OptionsOutsideSelect = (props) => {
     };
 
     const { isMulti, value } = props;
-    console.log(value, 'valllllelelellelelelelelelelle')
     return (
         <div>
             <Select {...props} controlShouldRenderValue={!isMulti} styles={styles} classNamePrefix='filter' />
             <div className="selected-container">
                 <div className="selected-wrapper">
-<<<<<<< HEAD
                     {isMulti && value.length !==0 ? value.map((val) =>
-=======
-                    {value && isMulti ? value.map((val) =>
->>>>>>> d4493b8ea2d9e8da286faa520e32e167cbf51d48
                         <div className="selected-option" key={val.value}><span>{val.label}</span>
                             <button name={val.value} onClick={handleRemoveValue}>
                                 X
