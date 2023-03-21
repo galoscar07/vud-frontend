@@ -85,12 +85,9 @@ const AdminData = (props) => {
                 setValues({ ...values, uploadWarning: "Va rugam adaugati maxim 2 fisiere." })
             }
         }
-        console.log('update')
         setValues({ ...values, fileList: files })
-        console.log('if', values.fileList, values.fileList.length)
 
         if (values.fileList.length > 2) {
-            console.log('if', values.fileList, values.fileList.length)
             let maxFiles = values.fileList.slice(0, 2)
             setValues({ ...values, fileList: maxFiles })
 
