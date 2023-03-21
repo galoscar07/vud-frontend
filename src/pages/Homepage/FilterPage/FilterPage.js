@@ -134,7 +134,7 @@ const FilterPage = (props) => {
             link += `&clinic_specialities=${state.clinic_specialities.map((t) => t.value).join("|")}`
         }
 
-        if (state.clinic_specialities.length !== 0) {
+        if (state.unity_facilities.length !== 0) {
             link += `&unity_facilities=${state.unity_facilities.map((t) => t.value).join("|")}`
         }
         if (state.unity_types.length !== 0) {

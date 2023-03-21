@@ -20,7 +20,6 @@ const ForgetPassword = (props) => {
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
-    console.log(email, 'dsads')
   };
 
   console.log(props)
