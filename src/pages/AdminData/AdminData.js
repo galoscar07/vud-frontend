@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import "./AdminData.scss"
 import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/routes";
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
@@ -97,6 +97,12 @@ const AdminData = (props) => {
             }
         }
         setValues({ ...values, fileList: files })
+
+        if (values.fileList.length > 2) {
+            let maxFiles = values.fileList.slice(0, 2)
+            setValues({ ...values, fileList: maxFiles })
+
+        }
         handleFieldChange(name, value)
     }
 
@@ -256,8 +262,8 @@ const AdminData = (props) => {
                                 No selected file
                             </div>)}
                             {
-                        values.uploadWarning && <div className={'error'}>{values.uploadWarning}</div>
-                    }
+                                values.uploadWarning && <div className={'error'}>{values.uploadWarning}</div>
+                            }
                         </div>
                     </div>
                     {

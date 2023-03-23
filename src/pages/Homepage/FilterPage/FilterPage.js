@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import "./FilterPage.scss"
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import ClinicFilterContainer from '../../../components/ClinicFilterContainer/ClinicFilterContainer';
-import {API_MAP, getAPILink} from "../../../utils/routes";
+import { API_MAP, getAPILink } from "../../../utils/routes";
+import { useNavigate, useSearchParams, updatedSearchParams } from "react-router-dom"
 
 const options = [
     { value: 'clinica', label: 'Clinica' },
@@ -17,6 +18,11 @@ const towns = [
 ];
 
 const FilterPage = (props) => {
+    const navigate = useNavigate()
+
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set('page', '3');
+
     const [selectedOption, setSelected] = React.useState([]);
     const [pagination, setPagination] = React.useState({
         perPage: 4,
@@ -25,16 +31,14 @@ const FilterPage = (props) => {
     })
 
     const [state, setState] = useState({
-        name: new URLSearchParams(window.location.search).get('searchTerm'),
-        town: [],
-        clinic_specialities: [],
-        unity_facilities: [],
-        unity_types: [],
+        name: new URLSearchParams(window.location.search).get('searchTerm') || '',
+        clinic_specialities: new URLSearchParams(window.location.search).get('clinic_specialities') || [],
+        unity_facilities: new URLSearchParams(window.location.search).get('unit_facilities') || [],
+        unity_types: new URLSearchParams(window.location.search).get('unity_types') || [],
     })
 
     const [clinics, setClinics] = useState([])
 
-    const [town, setTown] = useState([])
     const [clinicSpecialities, setClinicSpecialities] = useState([])
     const [medicalFacilities, setMedicalFacilities] = useState([])
     const [unityTypes, setUnityTypes] = useState([])
@@ -44,11 +48,14 @@ const FilterPage = (props) => {
     }
 
     const handleInput = (ev) => {
-        setState({...state, [ev.target.name]: ev.target.value})
+        setState({ ...state, [ev.target.name]: ev.target.value })
+
     }
 
     const handleSelectFilters = (values, label) => {
-        setState({...state, [label]: values})
+        console.log(state, 'BEFORE>>>>')
+        setState({ ...state, [label]: values })
+        console.log(state, 'STATE::::')
     }
 
     const mapServerRespToFront = (listOfClinics) => {
@@ -60,8 +67,8 @@ const FilterPage = (props) => {
                 score: clinic?.average_rating * 2 || 0,
                 noOfReviews: clinic?.review_count || 0,
                 rating: clinic?.average_rating || 0,
-                specialty: clinic.clinic_specialities.map((cs) => {return cs.label}).join(", "),
-                type: clinic.medical_unit_types.map((mut) => {return mut.label}).join(", "),
+                specialty: clinic.clinic_specialities.map((cs) => { return cs.label }).join(", "),
+                type: clinic.medical_unit_types.map((mut) => { return mut.label }).join(", "),
                 contact: [
                     { type: 'phoneNo', value: JSON.parse(clinic.primary_phone).value },
                     { type: "location", value: clinic.clinic_town },
@@ -85,13 +92,15 @@ const FilterPage = (props) => {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              setClinics(mapServerRespToFront(response.results))
-          })
-          .catch((err) => {
-              console.log(err)
-          })
+            .then((resp) => resp.json())
+            .then((response) => {
+                setClinics(mapServerRespToFront(response.results))
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        navigate(`${getQueryFromState(state)}`)
+
     }, [state])
 
     useEffect(() => {
@@ -105,32 +114,36 @@ const FilterPage = (props) => {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              setClinics(mapServerRespToFront(response.results))
-          })
-          .catch((err) => {
-              console.log(err)
-          })
+            .then((resp) => resp.json())
+            .then((response) => {
+                setClinics(mapServerRespToFront(response.results))
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     const handleSearch = () => { }
 
     const getQueryFromState = (state) => {
-        let link = '?page='+pagination.currentPage+'&page_size='+pagination.perPage
+        let link = '?page=' + pagination.currentPage + '&page_size=' + pagination.perPage
         if (state.name) {
             link += `&name=${state.name || ''}`
         }
-        if (state.town.length !== 0) {
-            link += `&town=${state.town.map((t) => t.value).join("|")}`
-        }
-        if (state.clinic_specialities.length !== 0) {
+        if (typeof state.clinic_specialities == "string") {
+            link += `&clinic_specialities=${state.clinic_specialities || ''}`
+        } else {
+            console.log('da')
             link += `&clinic_specialities=${state.clinic_specialities.map((t) => t.value).join("|")}`
         }
-        if (state.unity_facilities.length !== 0) {
-            link += `&unity_facilities=${state.unity_facilities.map((t) => t.value).join("|")}`
+        if (typeof state.unity_facilities == "string") {
+            link += `&unit_facilities=${state.unity_facilities || ''}`
+        } else {
+            link += `&unit_facilities=${state.unity_facilities.map((t) => t.value).join("|")}`
         }
-        if (state.unity_types.length !== 0) {
+        if (typeof state.unity_types == "string") {
+            link += `&unity_types=${state.unity_types || ''}`
+        } else {
             link += `&unity_types=${state.unity_types.map((t) => t.value).join("|")}`
         }
         return link
@@ -143,60 +156,88 @@ const FilterPage = (props) => {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              setClinics(mapServerRespToFront(response.results))
-              setPagination((prev) => ({
-                  ...prev,
-                  maxPage: Math.ceil(response.count / 4)
-              }))
-          })
-          .catch((err) => {
-              console.log(err)
-          })
+            .then((resp) => resp.json())
+            .then((response) => {
+                setClinics(mapServerRespToFront(response.results))
+                setPagination((prev) => ({
+                    ...prev,
+                    maxPage: Math.ceil(response.count / 4)
+                }))
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         fetch(getAPILink(API_MAP.GET_CLINIC_SPECIALITIES), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-              setClinicSpecialities(mapped)
-          })
-          .catch((err) => {
-              console.log(err)
-          })
-          fetch(getAPILink(API_MAP.GET_MEDICAL_UNITY_TYPE), {
+            .then((resp) => resp.json())
+            .then((response) => {
+                const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                setClinicSpecialities(mapped)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        fetch(getAPILink(API_MAP.GET_MEDICAL_UNITY_TYPE), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-              setUnityTypes(mapped)
-          })
-          .catch((err) => {
-              console.log(err)
-          })
+            .then((resp) => resp.json())
+            .then((response) => {
+                const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                setUnityTypes(mapped)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         fetch(getAPILink(API_MAP.GET_MEDICAL_FACILITIES), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-              setMedicalFacilities(mapped)
-          })
-          .catch((err) => {
-              console.log(err)
-          })
+            .then((resp) => resp.json())
+            .then((response) => {
+                const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                setMedicalFacilities(mapped)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }, [])
+
+
+    let specArray = ""
+    let selectedSpecialities = []
+    if (typeof state.clinic_specialities === 'string') {
+        specArray = state.clinic_specialities.split('|')
+        selectedSpecialities = clinicSpecialities.filter(item => specArray.includes(String(item.value)));
+    } else {
+        selectedSpecialities = state.clinic_specialities;
+    }
+
+    let facilitiesArray = ""
+    let selectedFacilities = []
+    if (typeof state.unity_facilities === 'string') {
+        facilitiesArray = state.unity_facilities.split('|')
+        selectedFacilities = medicalFacilities.filter(item => facilitiesArray.includes(String(item.value)));
+    } else {
+        selectedFacilities = state.unity_facilities;
+    }
+
+    let typesArray = ""
+    let selectedTypes = []
+    if (typeof state.unity_types === 'string') {
+        typesArray = state.unity_types.split('|')
+        selectedTypes = unityTypes.filter(item => typesArray.includes(String(item.value)));
+    } else {
+        selectedTypes = state.unity_types;
+    }
 
     return (
         <div className="filter-page">
@@ -218,9 +259,9 @@ const FilterPage = (props) => {
                         </div>
                     </div>
                     <Dropdown onSelect={(values) => handleSelectFilters(values, 'town')} options={towns} title={"Oras"} />
-                    <Dropdown onSelect={(values) => handleSelectFilters(values, 'clinic_specialities')} options={clinicSpecialities} title={"Specilitati Clinica"} />
-                    <Dropdown onSelect={(values) => handleSelectFilters(values, 'unity_facilities')} options={medicalFacilities} title={"Facilitati Clinica"} />
-                    <Dropdown onSelect={(values) => handleSelectFilters(values, 'unity_types')} options={unityTypes} title={"Tip unitate medicala"} />
+                    <Dropdown selected={selectedSpecialities || []} onSelect={(values) => handleSelectFilters(values, 'clinic_specialities')} options={clinicSpecialities} title={"Specilitati Clinica"} />
+                    <Dropdown selected={selectedFacilities || []} onSelect={(values) => handleSelectFilters(values, 'unity_facilities')} options={medicalFacilities} title={"Facilitati Clinica"} />
+                    <Dropdown selected={selectedTypes || []} onSelect={(values) => handleSelectFilters(values, 'unity_types')} options={unityTypes} title={"Tip unitate medicala"} />
                 </div>
                 <div className="center-side">
                     <div className="results-container">
@@ -230,11 +271,11 @@ const FilterPage = (props) => {
                     </div>
                     {/* Pagination */}
                     <div className={'pagination'}>
-                        { pagination.maxPage !== 1 &&
+                        {pagination.maxPage !== 1 &&
                             Array(pagination.maxPage).fill(1).map((e, index) => {
-                                return <span
-                                  onClick={() => {setPagination((prev) => ({...prev, currentPage: index + 1}))}}
-                                  className={pagination.currentPage === index + 1 ? 'active': ''}>{index + 1}
+                                return <span key={index}
+                                    onClick={() => { setPagination((prev) => ({ ...prev, currentPage: index + 1 })) }}
+                                    className={pagination.currentPage === index + 1 ? 'active' : ''}>{index + 1}
                                 </span>
                             })
                         }

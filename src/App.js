@@ -24,7 +24,6 @@ import ResetPassword from './pages/Auth/ResetPassword/ResetPassword';
 import ClinicPage from './pages/ClinicPage/ClinicPage';
 import FilterPage from './pages/Homepage/FilterPage/FilterPage';
 import Dashboard from './pages/Dashboard/Dashboard';
-import DashboardAdminData from './pages/Dashboard/AdminData/DashboardAdminData';
 import DashboardProfileData from './pages/Dashboard/ProfileData/DashboardProfileData';
 import DashboardUnitData from './pages/Dashboard/UnitData/DashboardUnitData';
 import LogOut from './pages/Dashboard/LogOut/LogOut';
@@ -54,7 +53,6 @@ function App() {
             <Route path={routes.DASHBOARD} element={<Navigate to={routes.DASHBOARD_UNIT_DATA} replace />} />
             <Route path={routes.DASHBOARD_UNIT_DATA} element={<DashboardUnitData />} />
             <Route path={routes.DASHBOARD_PROFILE_DATA} element={<DashboardProfileData />} />
-            <Route path={routes.DASHBOARD_ADMIN_DATA} element={<DashboardAdminData />} />
           </Route>
           <Route path={routes.LOG_OUT} element={<LogOut />} />
           <Route path='*' element={<NotFoundPage/>} />
