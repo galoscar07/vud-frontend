@@ -3,12 +3,12 @@ import Carousel from '../../components/Carousel/Carousel';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import Review from '../../components/Review/Review';
 import "./ClinicPage.scss";
-
+import { routes } from "../../utils/routes";
 import { API_MAP, getAPILink } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
 import _ from "lodash";
-import {NavLink} from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const dayMapping = {
     0: 6,
@@ -395,8 +395,13 @@ function ClinicPage({ props }) {
     useEffect(() => {
         reorganiseDoctors()
     }, [selectedCompetences, selectedDegrees, selectedSpecialties])
+    const navigate = useNavigate();
+    const goToRedeem = () =>
+        navigate({
+            pathname: routes.HOW_TO_REDEEM,
+            search: `?id=${id}`,
+        });
 
-    console.log(clinic, 'clinic')
     const renderClinicHeaderDesktop = () => {
         return (
             <div className="clinic-header-container">
@@ -422,10 +427,10 @@ function ClinicPage({ props }) {
                                     )}
                                 </div>
                                 {!clinic.has_user &&
-                                  <div className={'revendica'}>
-                                      <div>Reprezinti {clinic.name}?</div>
-                                      <NavLink className={'button'} to={''} > Revendică profilul  </NavLink>
-                                  </div>
+                                    <div className={'revendica'}>
+                                        <div>Reprezinti {clinic.name}?</div>
+                                        <div className={'button'} onClick={goToRedeem} > Revendică profilul  </div>
+                                    </div>
                                 }
 
                             </div>
@@ -566,26 +571,26 @@ function ClinicPage({ props }) {
                                 </div>
                                 {
                                     doctorState.doctors.length > 0 &&
-                                        <div style={{ marginBottom: '20px' }} className="col">
-                                      {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
-                                        .map((doc, i) => {
-                                            return <DoctorCard doctor={doc} key={i} />
-                                        })
-                                      }
-                                      <div style={{ display: 'flex' }}>
-                                          {
-                                            doctorState.currentPage !== 1 &&
-                                            <div onClick={previousPage} className={'button'}>Anterior</div>
-                                          }
-                                          {
-                                            doctorState.currentPage < doctorState.maxPage &&
-                                            <div onClick={nextPage} className={'button'}>Urmator</div>
-                                          }
-                                      </div>
-                                      <div style={{ marginTop: '10px' }}>
-                                          Pagina {doctorState.currentPage} din {doctorState.maxPage}
-                                      </div>
-                                  </div>
+                                    <div style={{ marginBottom: '20px' }} className="col">
+                                        {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
+                                            .map((doc, i) => {
+                                                return <DoctorCard doctor={doc} key={i} />
+                                            })
+                                        }
+                                        <div style={{ display: 'flex' }}>
+                                            {
+                                                doctorState.currentPage !== 1 &&
+                                                <div onClick={previousPage} className={'button'}>Anterior</div>
+                                            }
+                                            {
+                                                doctorState.currentPage < doctorState.maxPage &&
+                                                <div onClick={nextPage} className={'button'}>Urmator</div>
+                                            }
+                                        </div>
+                                        <div style={{ marginTop: '10px' }}>
+                                            Pagina {doctorState.currentPage} din {doctorState.maxPage}
+                                        </div>
+                                    </div>
 
                                 }
                                 {clinic.description && <div className="description-container">

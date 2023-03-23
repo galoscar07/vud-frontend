@@ -28,6 +28,7 @@ import DashboardProfileData from './pages/Dashboard/ProfileData/DashboardProfile
 import DashboardUnitData from './pages/Dashboard/UnitData/DashboardUnitData';
 import LogOut from './pages/Dashboard/LogOut/LogOut';
 import NotFoundPage from './pages/NotFound/NotFound';
+import HowToRedeemPage from './pages/HowToRedeem/HowToRedeem';
 
 
 
@@ -56,6 +57,7 @@ function App() {
           </Route>
           <Route path={routes.LOG_OUT} element={<LogOut />} />
           <Route path='*' element={<NotFoundPage/>} />
+          <Route path={routes.HOW_TO_REDEEM} element={<HowToRedeemPage />} />
         </Route>
 
         <Route element={<MainLayout />}>

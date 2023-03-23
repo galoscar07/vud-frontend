@@ -3,7 +3,7 @@ import "./FilterPage.scss"
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import ClinicFilterContainer from '../../../components/ClinicFilterContainer/ClinicFilterContainer';
 import { API_MAP, getAPILink } from "../../../utils/routes";
-import { useNavigate, useSearchParams, updatedSearchParams } from "react-router-dom"
+import { useNavigate} from "react-router-dom"
 
 const options = [
     { value: 'clinica', label: 'Clinica' },
@@ -49,13 +49,10 @@ const FilterPage = (props) => {
 
     const handleInput = (ev) => {
         setState({ ...state, [ev.target.name]: ev.target.value })
-
     }
 
     const handleSelectFilters = (values, label) => {
-        console.log(state, 'BEFORE>>>>')
         setState({ ...state, [label]: values })
-        console.log(state, 'STATE::::')
     }
 
     const mapServerRespToFront = (listOfClinics) => {
