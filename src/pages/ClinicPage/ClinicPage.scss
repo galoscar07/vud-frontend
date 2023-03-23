@@ -3,8 +3,10 @@
 .clinic-page {
     padding: $spacing-big;
     color: $color-blue;
+
     .revendica {
         margin-bottom: 15px;
+
         div:first-of-type {
             margin-bottom: 5px;
             color: #17616C;
@@ -17,20 +19,24 @@
         flex-direction: column;
         text-align: left;
         margin: $spacing-medium 0;
+
         .fields-wrapper {
             display: grid;
             padding: 0 $spacing-small $spacing-small;
             gap: $spacing-small;
         }
+
         .container-title {
             font-size: $font-subtitle;
             margin-bottom: $spacing-small;
         }
+
         .weekdays-container {
             width: 100%;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
         }
+
         .day {
             background-color: rgba($color-primary, 0.8);
             padding: $spacing-small 10px;
@@ -94,16 +100,27 @@
             justify-content: space-between;
             width: 100%;
 
+
             .flex-wrapper {
                 display: flex;
                 justify-content: space-between;
                 margin-left: $spacing-small;
                 align-items: center;
 
+                .type,
+                .name {
+                    text-align: start;
+                }
+
+                .address {
+                    margin-bottom: $spacing-default;
+
+                }
             }
 
             .rating-container {
-                display: flex;
+                display: grid;
+                grid-template-columns: 3fr 1fr;
                 background-color: white;
                 justify-content: space-between;
                 align-items: center;
@@ -161,9 +178,11 @@
                 flex-direction: row;
                 column-gap: $spacing-small;
                 margin-bottom: $spacing-medium;
+
                 &.small-margin-bottom {
                     margin-bottom: 10px;
                 }
+
                 a {
                     margin: 0;
                 }
@@ -190,6 +209,7 @@
 
     .add-review-wrapper {
         margin-top: 20px;
+
         .button {
             width: 30%;
             margin: auto;
@@ -213,6 +233,12 @@
             .stars-container {
                 margin-bottom: $spacing-small;
             }
+        }
+    }
+
+    .reviews-container {
+        .container-title {
+            text-align: center;
         }
     }
 
@@ -277,7 +303,12 @@
     .info-left-container {}
 
     .info-right-container {
-
+        .result-title {
+            color: $color-dark-blue;
+            font-weight: 300;
+            text-align: start;
+            margin-bottom: $spacing-small;
+        }
 
         .col,
         .col-2 {
@@ -307,10 +338,6 @@
 @media screen and (max-width: $mobile-big-width) {
     .clinic-page {
         padding: $spacing-small;
-
-        .reviews-container {
-            margin-top: $spacing-small;
-        }
 
         .col-2 {
             flex-direction: column !important;
