@@ -1,0 +1,48 @@
+@import 'src/styles/base';
+
+.how-to-redeem-page {
+
+    margin: $spacing-page;
+    .container-title {
+        font-size: $font-title;
+        font-weight: 500;
+        margin-top:$spacing-small;
+    }
+
+    .steps {
+        text-align: start;
+    }
+
+    ol {
+        padding: 1.25rem;
+    }
+
+    .contact-data {
+        margin-top: $spacing-xbig;
+
+        label {
+            text-align: start;
+        }
+
+        p {
+            color: $color-dark-blue;
+        }
+    }
+
+    .image-upload {
+        margin-bottom: $spacing-xbig !important;
+    }
+
+    .terms {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: $spacing-xbig;
+
+        a {
+            color: $color-primary;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+}

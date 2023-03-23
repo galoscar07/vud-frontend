@@ -77,6 +77,7 @@ export const routes = {
   DASHBOARD_PROFILE_DATA:'/dashboard/profile-data',
   DASHBOARD_UNIT_DATA:'/dashboard/unit-data',
   LOG_OUT:'/log-out',
+  HOW_TO_REDEEM:'/how-to-redeem',
 
   FILTER_PAGE: '/filter'
 }

@@ -220,7 +220,7 @@ const AdminData = (props) => {
                             </div>
                         </div>
                     </div>
-                    <p>
+                    <p className="italic">
                         Pentru a ne asigura ca actionati in numele entitatii a carei pagina o completati/recuperati,
                         va rugam sa parcurgeti pasii de identificare si confirmare:Incarcati o copie a CUI Incarcati
                         un document care sa ateste ca actionati in numele societatii al carui CUI l-ati incarcat
