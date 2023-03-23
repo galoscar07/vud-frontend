@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import "./Register.scss"
 import _ from 'lodash';
-import { API_MAP, getAPILink } from "../../../utils/routes";
+import {API_MAP, getAPILink, routes} from "../../../utils/routes";
 
 const Register = () => {
   const [state, setState] = React.useState({
@@ -169,7 +169,7 @@ const Register = () => {
                 <div>
                   <input className="checkbox" type="checkbox" value={areTermsChecked}
                     onChange={handleTermsChecked} />
-                  <label>Sunt de acord cu <span>termenii si conditiile</span></label>
+                  <label>Sunt de acord cu <a href={routes.TERMS_AND_CONDITION} target={'_blank'}>termenii si conditiile</a></label>
                 </div>
               </div>
               {state.server.error &&

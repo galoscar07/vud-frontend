@@ -239,7 +239,8 @@ const AdminData = (props) => {
                         va rugam sa parcurgeti pasii de identificare si confirmare:Incarcati o copie a CUI Incarcati
                         un document care sa ateste ca actionati in numele societatii al carui CUI l-ati incarcat
                         (certificat constatator din care sa reiasa ca sunteti administrator sau un document de
-                        imputernicire din partea administratorului societatii – puteti folosi urmatorul model
+                        imputernicire din partea administratorului societatii – puteti folosi
+                        <a href={routes.EXAMPLE_COMPLETE} target={"_blank"}>urmatorul model</a>
                     </p>
                     <div className="image-upload">
                         <label htmlFor="file">

@@ -29,7 +29,8 @@ import DashboardUnitData from './pages/Dashboard/UnitData/DashboardUnitData';
 import LogOut from './pages/Dashboard/LogOut/LogOut';
 import NotFoundPage from './pages/NotFound/NotFound';
 import HowToRedeemPage from './pages/HowToRedeem/HowToRedeem';
-
+import TermsAndCond from "./pages/TermsAndCond/TermsAndCond";
+import ExempluCompletare from "./pages/ExempluCompletare/ExempluCompletare";
 
 
 function App() {
@@ -56,14 +57,16 @@ function App() {
             <Route path={routes.DASHBOARD_PROFILE_DATA} element={<DashboardProfileData />} />
           </Route>
           <Route path={routes.LOG_OUT} element={<LogOut />} />
-          <Route path='*' element={<NotFoundPage/>} />
           <Route path={routes.HOW_TO_REDEEM} element={<HowToRedeemPage />} />
+          <Route path={routes.EXAMPLE_COMPLETE} element={<ExempluCompletare />} />
+          <Route path='*' element={<NotFoundPage/>} />
         </Route>
 
         <Route element={<MainLayout />}>
           <Route path={routes.HOMEPAGE} element={<Homepage />} />
           <Route path={routes.FILTER_PAGE} element={<FilterPage />} />
           <Route path={routes.CLINIC_PAGE} element={<ClinicPage />} />
+          <Route path={routes.TERMS_AND_CONDITION} element={<TermsAndCond />} />
         </Route>
       </Routes>
     </div>

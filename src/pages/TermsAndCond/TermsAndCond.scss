@@ -1,0 +1,14 @@
+@import 'src/styles/base';
+
+.terms-and-cond-page {
+  padding: 5.5rem 10rem 5.5rem 5.5rem;
+  .title {
+    font-size: $font-title;
+    font-weight: 500;
+    margin: $spacing-small 0;
+  }
+  p {
+    width: 70%;
+    margin: auto;
+  }
+}

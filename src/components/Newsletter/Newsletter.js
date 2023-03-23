@@ -1,6 +1,6 @@
 import React from 'react'
 import "./Newsletter.scss"
-import { API_MAP, getAPILink } from "../../utils/routes";
+import {API_MAP, getAPILink, routes} from "../../utils/routes";
 import { value } from "lodash/seq";
 
 const Newsletter = (props) => {
@@ -86,7 +86,7 @@ const Newsletter = (props) => {
           onChange={handleChange} onBlur={isFormEmpty} />
         <div className="checkbox-container">
 
-          <label><span>Termeni si conditii de abonare</span></label>
+          <label><a href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni si conditii de abonare</a></label>
           <div className="checkbox-wrapper">
             <input className="checkbox" type="checkbox" value={state.areTermsChecked.value}
               onChange={handleChange} />
