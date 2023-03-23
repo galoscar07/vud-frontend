@@ -4,11 +4,11 @@ export const setAuthParamsToLocal = (authToken, refreshToken) => {
 }
 
 export const setUserToLocal = (user) => {
-  localStorage.setItem('user', JSON.stringify(user))
+  localStorage.setItem('user_profile', JSON.stringify(user))
 }
 
 export const getUserFromLocal = () => {
-  return JSON.parse(localStorage.getItem('user') || "{}")
+  return JSON.parse(localStorage.getItem('user_profile') || "{}")
 }
 
 export const getAuthTokenFromLocal = () => {
