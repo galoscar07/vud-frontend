@@ -1,6 +1,10 @@
 @import 'src/styles/form';
 
 .clinic-profile-page {
+  .grid{
+    display: grid;
+    grid-template-columns: 1fr 3fr;;
+  }
   .extra_data_row {
     display: flex;
     align-items: center;
@@ -34,6 +38,7 @@
     color: $color-secondary;
     text-decoration: underline;
     margin-left: $spacing-small;
+    margin-top: $spacing-small;
     cursor: pointer;
     text-align: right;
   }
@@ -182,9 +187,9 @@
     }
   }
 
-  .col-85 {
-    width: 85%;
-  }
+  // .col-85 {
+  //   width: 85%;
+  // }
 }
 
 @media screen and (max-width: $mobile-big-width) {

@@ -9,13 +9,29 @@
   .company-data,
   .schedule-container,
   .facilities-container,
-  .specialities-container {
+  .specialities-container,
+  .hq-container {
     display: flex;
     flex-direction: column;
     background: white;
     padding: $spacing-small;
     text-align: left;
     margin: $spacing-medium 0;
+
+    .profile-photo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .pp {
+        display: flex;
+        align-items: center;
+
+        img {
+          margin-left: $spacing-small;
+        }
+      }
+    }
 
     .container-title {
       font-size: $font-subtitle;

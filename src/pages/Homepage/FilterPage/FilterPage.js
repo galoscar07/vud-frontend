@@ -3,7 +3,7 @@ import "./FilterPage.scss"
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import ClinicFilterContainer from '../../../components/ClinicFilterContainer/ClinicFilterContainer';
 import { API_MAP, getAPILink } from "../../../utils/routes";
-import { useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const options = [
     { value: 'clinica', label: 'Clinica' },
@@ -68,7 +68,9 @@ const FilterPage = (props) => {
                 type: clinic.medical_unit_types.map((mut) => { return mut.label }).join(", "),
                 contact: [
                     { type: 'phoneNo', value: JSON.parse(clinic.primary_phone).value },
-                    { type: "location", value: clinic.clinic_town },
+                    {
+                        type: "location", value: `Str. ${clinic?.clinic_street} ${clinic?.clinic_number ? 'nr.' + clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}`,
+                    },
                     { type: "email", value: clinic.primary_email }
                 ],
                 reviews: clinic.recent_reviews?.map((rev) => {
@@ -235,7 +237,7 @@ const FilterPage = (props) => {
     } else {
         selectedTypes = state.unity_types;
     }
-
+    console.log(clinics, 'sllslss')
     return (
         <div className="filter-page">
             <div className="filter-main-content">
@@ -290,6 +292,8 @@ const FilterPage = (props) => {
                         aria-hidden="false"
                         tabIndex="0"
                     />
+                    <img className="add" src="/images/ads/add8.svg" />
+
                 </div>
             </div >
 

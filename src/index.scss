@@ -24,6 +24,10 @@ h1 {
   font-size: $font-title;
 }
 
+textarea {
+  padding: $spacing-xsmall;
+}
+
 .checkbox {
   height: 1.25rem;
   width: 1.25rem;
@@ -97,6 +101,11 @@ label {
 
 .hide {
   display: none !important;
+}
+
+.container-title-small {
+  font-size: $font-size-xbig !important;
+  font-weight: 600;
 }
 
 @media screen and (max-width: $mobile-big-width) {

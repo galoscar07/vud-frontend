@@ -63,7 +63,7 @@ function Homepage() {
         type: clinic.medical_unit_types.map((mut) => { return mut.label }).join(", "),
         contact: [
           { type: 'phoneNo', value: JSON.parse(clinic.primary_phone).value },
-          { type: "location", value: clinic?.clinic_town },
+          { type: "location", value: `Str. ${clinic?.clinic_street} ${clinic?.clinic_number ? 'nr.' + clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}`, },
           { type: "email", value: clinic?.primary_email }
         ],
         reviews: clinic.recent_reviews?.map((rev) => {
@@ -141,9 +141,9 @@ function Homepage() {
       </form>
       <div className="tags-wrapper">
         {banners.map((tag, i) =>
-          <a className="tag-container" 
-          key={i} href={tag.redirectLink}>
-              <img key={i} alt={tag.icon} src={`${tag.icon}`} />
+          <a className="tag-container"
+            key={i} href={tag.redirectLink}>
+            <img key={i} alt={tag.icon} src={`${tag.icon}`} />
             <div className="text-wrapper">
               <span className="title">{tag.title}</span>
               <span className="redirect">{tag.text}</span>
@@ -171,14 +171,19 @@ function Homepage() {
                 )
             }
           </div>
+          <div className="ads-container">
+            <img className="add" src="/images/ads/add7.svg" />
+          </div>
         </div>
 
         <div className="side-content">
+          <img className="add" src="/images/ads/add4.svg" />
+          <img className="add" src="/images/ads/add5.svg" />
           <Newsletter />
+          <img className="add" src="/images/ads/ad1.svg" />
         </div>
       </div>
 
-      <h1>GOOGLE DDS</h1>
       {/* <AdSense.Google
         client='ca-pub-1837999521110876'
         slot='f08c47fec0942fa0'

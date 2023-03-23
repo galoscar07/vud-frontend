@@ -111,17 +111,21 @@ form {
         grid-template-columns: 1fr 1fr 1fr 1fr;
         gap: $spacing-small;
     }
-    .col-5{
+
+    .col-5 {
         display: grid;
-        grid-template-columns: 15.6% 15.6% 15.6% 15.6% 15.6%;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
         gap: $spacing-small;
     }
 }
 
 @media screen and (max-width: $mobile-big-width) {
-    .col-4{
-        grid-template-columns: 1fr!important;
+
+    .col-4,
+    .col-5 {
+        grid-template-columns: 1fr !important;
     }
+
     .button {
         width: 50% !important;
     }
