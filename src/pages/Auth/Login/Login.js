@@ -23,7 +23,6 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-
   const [formValid, setFormValid] = React.useState(false)
   const isFormEmpty = () => {
     if (state.password.value && state.email.value) {
@@ -66,10 +65,10 @@ const Login = () => {
 
   const handleSubmit = useCallback(event => {
     event.preventDefault();
-    // if (!isFormValid()) {
-    //   console.log('invalid')
-    //   return
-    // }
+    if (!isFormValid()) {
+      console.log('invalid')
+      return
+    }
     fetch(
       getAPILink(API_MAP.LOGIN), {
       method: 'POST',
@@ -109,11 +108,6 @@ const Login = () => {
           })
           .catch((err) => {
           })
-        // fetch(getAPILink(API_MAP.USER_PROFILE), )
-        // console.log(data.access_token)
-        // console.log(data.email)
-        // console.log(data.refresh_token)
-
       })
       .catch((err) => {
         setState({ ...state, server: { error: "Credentialele nu sunt corecte. Va rugam sa incercati din nou" } })
@@ -126,13 +120,13 @@ const Login = () => {
       <img alt={'vreau un doctor'} src="/images/login.svg" />
       <div className="auth-container">
         <h1>Login</h1>
-        <form onSubmit={handleSubmit} autoComplete="off">
+        <form onSubmit={handleSubmit} autoComplete="nope">
           <label>Email</label>
           <input className="full-width" type="email" name="email" value={state.email.value}
-            onChange={handleChange} onBlur={isFormEmpty} />
+            onChange={handleChange} onBlur={isFormEmpty} autoComplete="nope" />
           <label>Password</label>
           <input className="full-width" type="password" name="password" value={state.password.value}
-            onChange={handleChange} onBlur={isFormEmpty} />
+            onChange={handleChange} onBlur={isFormEmpty} autoComplete="nope" />
           <div className={'links'}>
             <Link to={routes.REGISTER} className="forgot-password">nu ai cont?</Link>
             <Link to={routes.FORGET_PASSWORD} className="forgot-password">ai uitat parola?</Link>
@@ -140,7 +134,10 @@ const Login = () => {
           {state.server.error &&
             <div className={'error'}>{state.server.error}</div>
           }
-          <button className={`button round custom-width ${!formValid ? 'disabled' : ''}`} onClick={handleSubmit} >Login</button>
+          <button disabled={!formValid}
+                  className={`button round custom-width ${!formValid ? 'disabled' : ''}`}
+                  onClick={handleSubmit}
+          >Login</button>
 
         </form>
       </div>

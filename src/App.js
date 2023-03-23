@@ -38,7 +38,6 @@ function App() {
     <div className="App">
       <Header />
       <Routes>
-        {/* TODO some of this don't make sense to be in auth layout. */}
         <Route element={<AuthLayout />}>
           <Route path={routes.LOGIN} element={<Login />} />
           <Route path={routes.REGISTER} element={<Register />} />

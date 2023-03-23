@@ -6,8 +6,6 @@ import {getUserFromLocal} from "../../utils/localStorage";
 
 
 function Header() {
-  // TODO Make all the elements to be centered
-  // TODO After login it doesn't change the icon
   const navigate = useNavigate();
 
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)

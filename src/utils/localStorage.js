@@ -23,4 +23,5 @@ export const logOutFromStorage = () => {
   localStorage.removeItem('authToken')
   localStorage.removeItem('refreshToken')
   localStorage.removeItem('user')
+  localStorage.removeItem('user_profile')
 }
