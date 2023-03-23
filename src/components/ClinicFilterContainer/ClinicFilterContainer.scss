@@ -14,6 +14,10 @@
         .rating-container {
             row-gap: $spacing-xsmall;
 
+            .stars-container {
+                min-width: 6rem;
+            }
+
             .clinic-img {
                 width: 4rem;
                 height: 4rem;
@@ -50,6 +54,7 @@
             .type {
                 color: $color-blue;
                 font-size: $font-medium;
+                text-align: start;
             }
         }
 
@@ -63,6 +68,7 @@
                 display: flex;
                 column-gap: $spacing-xsmall;
             }
+
         }
     }
 }

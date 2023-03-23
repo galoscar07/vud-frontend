@@ -1,8 +1,8 @@
 import React from 'react'
 import "./ClinicFilterContainer.scss"
 import Carousel from '../Carousel/Carousel';
-import {useNavigate} from "react-router-dom";
-import {API_URL_MEDIA, routes} from "../../utils/routes";
+import { useNavigate } from "react-router-dom";
+import { API_URL_MEDIA, routes } from "../../utils/routes";
 
 const ClinicFilterContainer = (props) => {
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ const ClinicFilterContainer = (props) => {
                     <div className="type">{props.clinic.type}</div>
                     {props.clinic.contact && <div className="contact-wrapper">
                         {props.clinic.contact.map((el, i) =>
-                            <div className={`contact ${!el?.value && 'hide'}`} key={i}>
+                            <div className={`contact ${!el?.value && 'hide'} ${el.type === 'email' && 'hide'}`} key={i}>
                                 <img alt={el.type} src={`/images/icons/${el.type}.svg`} />
                                 <span>{el.value}</span>
                             </div>)}

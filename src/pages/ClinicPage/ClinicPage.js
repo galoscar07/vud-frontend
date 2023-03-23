@@ -44,7 +44,9 @@ function ClinicPage({ props }) {
         comment: {
             value: '',
             error: null
-        }, server: {
+        },
+        isReviewSubmitted: false,
+        server: {
             error: null
         }
     })
@@ -124,7 +126,7 @@ function ClinicPage({ props }) {
 
 
     const isFormEmpty = () => {
-        if (review.email.value && review.name.value && review.comment.value && review.rating.value) {
+        if (review.email.value && review.name.value && review.comment.value) {
             setFormValid(true)
         } else {
             setFormValid(false)
@@ -141,7 +143,7 @@ function ClinicPage({ props }) {
             getAPILink(API_MAP.ADD_REVIEW + id), {
             method: 'POST',
             body: JSON.stringify({
-                rating: review.rating.value,
+                rating: review.rating.value === 0 ? 1 : review.rating.value,
                 comment: review.comment.value,
                 name: review.name.value,
                 email: review.email.value
@@ -151,9 +153,10 @@ function ClinicPage({ props }) {
             }
         })
             .then((response) => {
-                if (response.status !== 200) {
+                if (response.status !== 201) {
                     throw Error
                 }
+                setReview({ ...review, isReviewSubmitted: true })
                 return response.json()
             })
             .then((data) => {
@@ -193,10 +196,11 @@ function ClinicPage({ props }) {
                 { type: "Whatsapp", value: serverClinic.whatsapp || null },
             ],
             contact: [
+                { type: JSON.parse(serverClinic.primary_phone).label || 'Telefon', value: JSON.parse(serverClinic.primary_phone).value, icon: "phone" },
+                serverClinic.secondary_phone && JSON.parse(serverClinic.secondary_phone).map((el) => { return { type: el[0], value: el[1], icon: "phone" } }),
                 serverClinic.secondary_email && { ...serverClinic?.secondary_email?.split('|').map((sc) => { return { type: "email", value: sc, icon: "email" } }) },
                 { type: "email", value: serverClinic?.primary_email, icon: "email" },
                 { type: "website", value: serverClinic?.website, icon: "website" },
-                serverClinic.secondary_phone && JSON.parse(serverClinic.secondary_phone).map((el) => { return { type: el[0], value: el[1], icon: "phone" } })
             ],
             testimonials: serverClinic?.reviews?.map((re) => {
                 return {
@@ -451,7 +455,7 @@ function ClinicPage({ props }) {
                                 <span>Facilitati clinica</span>
                                 <div>
                                     {clinic?.facilities?.map((facility, i) =>
-                                        <img key={i} alt={facility.label} src={facility.icon} />
+                                        <img key={i} title={facility.label} src={facility.icon} />
                                     )}
                                 </div>
                             </div>
@@ -566,32 +570,33 @@ function ClinicPage({ props }) {
                                     <Dropdown selected={selectedSpecialties} options={specialities} title={"Specialitati"} onSelect={handleSubmitSpecialties} />
                                 </div>
                                 <div className="col-2">
-                                    <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"Grade academice"} onSelect={handleSubmitDegrees} />
+                                    <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"Grade medicale"} onSelect={handleSubmitDegrees} />
                                     <Dropdown selected={selectedCompetences} options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} />
                                 </div>
-                                {
-                                    doctorState.doctors.length > 0 &&
-                                    <div style={{ marginBottom: '20px' }} className="col">
-                                        {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
-                                            .map((doc, i) => {
-                                                return <DoctorCard doctor={doc} key={i} />
-                                            })
-                                        }
-                                        <div style={{ display: 'flex' }}>
-                                            {
-                                                doctorState.currentPage !== 1 &&
-                                                <div onClick={previousPage} className={'button'}>Anterior</div>
+                                {doctorState.doctors.length > 0 &&
+                                    <React.Fragment>
+                                        <div className="result-title">Rezultate filtrare:</div>
+                                        <div style={{ marginBottom: '20px' }} className="col">
+                                            {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
+                                                .map((doc, i) => {
+                                                    return <DoctorCard doctor={doc} key={i} />
+                                                })
                                             }
-                                            {
-                                                doctorState.currentPage < doctorState.maxPage &&
-                                                <div onClick={nextPage} className={'button'}>Urmator</div>
-                                            }
+                                            <div style={{ display: 'flex' }}>
+                                                {
+                                                    doctorState.currentPage !== 1 &&
+                                                    <div onClick={previousPage} className={'button'}>Anterior</div>
+                                                }
+                                                {
+                                                    doctorState.currentPage < doctorState.maxPage &&
+                                                    <div onClick={nextPage} className={'button'}>Urmator</div>
+                                                }
+                                            </div>
+                                            <div style={{ marginTop: '10px' }}>
+                                                Pagina {doctorState.currentPage} din {doctorState.maxPage}
+                                            </div>
                                         </div>
-                                        <div style={{ marginTop: '10px' }}>
-                                            Pagina {doctorState.currentPage} din {doctorState.maxPage}
-                                        </div>
-                                    </div>
-
+                                    </React.Fragment>
                                 }
                                 {clinic.description && <div className="description-container">
                                     <p>
@@ -609,8 +614,7 @@ function ClinicPage({ props }) {
                                 <Review key={i} review={review} />)}
                         </div>
 
-
-                        <div className="add-review-wrapper">
+                        {!review.isReviewSubmitted && <div className="add-review-wrapper">
                             {!isReviewFormDisplayed
                                 ?
                                 <button onClick={() => setIsReviewFormDisplayed(true)} className={`button border-button round`}>Adauga recenzie</button>
@@ -645,7 +649,7 @@ function ClinicPage({ props }) {
                                     </form>
                                 </React.Fragment>
                             }
-                        </div>
+                        </div>}
                     </React.Fragment>
             }
         </div>
