@@ -78,8 +78,9 @@ export const routes = {
   DASHBOARD_UNIT_DATA:'/dashboard/unit-data',
   LOG_OUT:'/log-out',
   HOW_TO_REDEEM:'/how-to-redeem',
-
-  FILTER_PAGE: '/filter'
+  FILTER_PAGE: '/filter',
+  TERMS_AND_CONDITION: '/terms-and-cond',
+  EXAMPLE_COMPLETE: '/terms-and-cond',
 }
 
 export const AUTH_CLINIC_MAP_STEP = {
