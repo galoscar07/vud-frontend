@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import "./HowToRedeem.scss"
+import {routes} from "../../utils/routes";
 
 const HowToRedeemPage = () => {
 
@@ -125,7 +126,8 @@ const HowToRedeemPage = () => {
                     va rugam sa parcurgeti pasii de identificare si confirmare:Incarcati o copie a CUI Incarcati
                     un document care sa ateste ca actionati in numele societatii al carui CUI l-ati incarcat
                     (certificat constatator din care sa reiasa ca sunteti administrator sau un document de
-                    imputernicire din partea administratorului societatii – puteti folosi urmatorul model
+                    imputernicire din partea administratorului societatii – puteti folosi
+                    <a href={routes.EXAMPLE_COMPLETE} target={"_blank"} rel="noreferrer">urmatorul model</a>
                 </p>
                 <div className="image-upload">
                     <label htmlFor="file">
@@ -157,7 +159,7 @@ const HowToRedeemPage = () => {
                         <input className="checkbox" type="checkbox" value={values.areTermsChecked}
                             onChange={(e) => handleFieldChange(e.target.value, e.target.name)} />
                     </div>
-                    <label><a>Termeni si conditii</a></label>
+                    <label><a href={routes.TERMS_AND_CONDITION} target={'_blank'}>Termeni si conditii</a></label>
                 </div>
                 {
                     values.error && <div className={'error'}>{values.error}</div>
