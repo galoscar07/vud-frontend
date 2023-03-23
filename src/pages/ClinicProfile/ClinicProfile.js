@@ -393,9 +393,9 @@ const ClinicProfile = (props) => {
   const renderContactData = () => {
     return (
       <div className="contact-data">
-        <div className="container-title profile-photo">
+        <div className="container-title-small profile-photo">
           Date de contact profil
-          <div className="col desktop">
+          <div className="col desktop pp">
             <span onClick={handleProfilePictureUser} className={'add-photo'}>Adaugă poză de profil</span>
             <input type="file" accept="image/*" onChange={handleFileChangeProfilePicUser} ref={profileImgRef} style={{ display: 'none' }} />
             <img alt='profile uploaded user' src={state.profile_picture_preview ? state.profile_picture_preview : '/images/user.svg'} />
@@ -574,7 +574,7 @@ const ClinicProfile = (props) => {
   const renderDescription = () => {
     return (
       <div className="contact-data">
-        <div className="container-title">
+        <div className="container-title-small">
           Descriere Unitate
         </div>
         <div className="fields-wrapper">
@@ -588,7 +588,7 @@ const ClinicProfile = (props) => {
   const renderDoctors = () => {
     return (
       <div className="hq-container">
-        <div className="container-title">
+        <div className="container-title-small">
           Medici colaboratori
         </div>
         <div className="fields-wrapper">
@@ -680,7 +680,7 @@ const ClinicProfile = (props) => {
   const renderSchedule = () => {
     return (
       <div className="schedule-container">
-        <div className="container-title"> Program </div>
+        <div className="container-title-small"> Program </div>
         <div className="fields-wrapper">
           <div className="weekdays-container">
             {Object.entries(schedule).map(([weekday, inter], i) => {

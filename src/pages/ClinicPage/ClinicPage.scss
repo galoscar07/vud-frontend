@@ -4,6 +4,16 @@
     padding: $spacing-big;
     color: $color-blue;
 
+    .profile-photo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .pp {
+            align-items: center;
+        }
+    }
+
     .revendica {
         margin-bottom: 15px;
 

@@ -34,6 +34,7 @@
     color: $color-secondary;
     text-decoration: underline;
     margin-left: $spacing-small;
+    margin-top: $spacing-small;
     cursor: pointer;
     text-align: right;
   }
@@ -182,9 +183,9 @@
     }
   }
 
-  .col-85 {
-    width: 85%;
-  }
+  // .col-85 {
+  //   width: 85%;
+  // }
 }
 
 @media screen and (max-width: $mobile-big-width) {

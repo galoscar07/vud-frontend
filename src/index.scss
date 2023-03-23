@@ -98,6 +98,10 @@ label {
 .hide {
   display: none !important;
 }
+.container-title-small{
+  font-size: $font-size-xbig!important;
+  font-weight: 600;
+}
 
 @media screen and (max-width: $mobile-big-width) {
   h1 {
