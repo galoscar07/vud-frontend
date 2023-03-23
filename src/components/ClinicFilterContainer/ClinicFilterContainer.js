@@ -6,7 +6,6 @@ import { API_URL_MEDIA, routes } from "../../utils/routes";
 
 const ClinicFilterContainer = (props) => {
     const navigate = useNavigate();
-
     return (
         <div className="clinic-filter-container">
             <div className="info-container" onClick={() => { navigate(routes.CLINIC_PAGE + `/?id=${props.clinic.id}`) }}>
@@ -28,7 +27,6 @@ const ClinicFilterContainer = (props) => {
                 </div>
                 <div className="text-container">
                     <div className="title">{props.clinic.name}</div>
-                    <div className="specialties">{props.clinic.specialty}</div>
                     <div className="type">{props.clinic.type}</div>
                     {props.clinic.contact && <div className="contact-wrapper">
                         {props.clinic.contact.map((el, i) =>
