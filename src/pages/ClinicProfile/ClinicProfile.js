@@ -47,26 +47,33 @@ const ClinicProfile = (props) => {
     clinic_facilities: props?.selected?.clinic_facilities || [],
     profile_picture: props?.selected?.profile_picture || null,
     profile_picture_preview: props?.selected?.profile_picture_preview || null,
+    error: '',
   })
   const [errorState, setErrorState] = useState({
-    clinic_name: '',
-    clinic_street: '',
-    clinic_number: '',
-    clinic_town: '',
-    clinic_county: '',
-    clinic_other_details: '',
-    primary_phone: '',
-    primary_email: '',
+    clinic_name: false,
+    clinic_street: false,
+    clinic_number: false,
+    primary_phone: false,
+    primary_email: false,
     multiple_phones: '',
     multiple_emails: '',
-    website: '',
-    website_facebook: '',
-    website_google: '',
-    website_linkedin: '',
-    website_youtube: '',
-    whatsapp: '',
-    description: '',
+    website: false,
   })
+
+  const isFormValid = () => {
+    let errorCopy = _.cloneDeep(errorState)
+    let ok = true
+    Object.keys(errorState).forEach((key) => {
+      errorCopy[key] = !state[key]
+      if (!state[key] && key !== 'multiple_phones' && key!=='multiple_emails') {
+        ok = false
+      }
+    })
+    setErrorState(errorCopy)
+    if (!ok) setState({...state, error: "Va rugam sa completati campurile obligatorii"})
+    return ok
+  }
+
 
   // Handles normal inputs
   const handleFieldChange = (event) => {
@@ -249,6 +256,7 @@ const ClinicProfile = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!isFormValid()) return
     if (props.onSubmit) {
       //TODO PLS CHECK THIS;
       props.onSubmit(state)
@@ -405,19 +413,19 @@ const ClinicProfile = (props) => {
           <div className="col">
             <div className="input-wrapper">
               <label>*Denumirea unității medicale</label>
-              <input className={errorState.clinic_name && 'error'} name="clinic_name" type="text"
+              <input className={errorState.clinic_name ? 'error' : ''} name="clinic_name" type="text"
                 value={state.clinic_name} onChange={handleFieldChange} placeholder={'Denumirea'} />
             </div>
           </div>
           <div className="col-3">
             <div className="input-wrapper">
               <label>*Strada</label>
-              <input className={errorState.clinic_street && 'error'} name="clinic_street" type="text"
+              <input className={errorState.clinic_street ? 'error' : ''} name="clinic_street" type="text"
                 value={state.clinic_street} onChange={handleFieldChange} placeholder={'Numele strazii'} />
             </div>
             <div className="input-wrapper">
               <label>*Numarul strazii</label>
-              <input className={errorState.clinic_number && 'error'} name="clinic_number" type="text"
+              <input className={errorState.clinic_number ? 'error' : ''} name="clinic_number" type="text"
                 value={state.clinic_number} onChange={handleFieldChange} placeholder={'Numarul'} />
             </div>
           </div>
@@ -432,7 +440,7 @@ const ClinicProfile = (props) => {
               </select>
             </div>
             <div className="input-wrapper">
-              <label>Judet</label>
+              <label>*Judet</label>
               <select id="county" name="county" onChange={handleFieldChange}>
                 <option value="Alba">Alba</option>
                 <option value="Cluj">Cluj</option>
@@ -444,14 +452,13 @@ const ClinicProfile = (props) => {
           <div className="col">
             <div className="input-wrapper">
               <label>Alte detalii</label>
-              <input className={errorState.clinic_other_details && 'error'} name="clinic_other_details" type="text"
+              <input name="clinic_other_details" type="text"
                 value={state.clinic_other_details} onChange={handleFieldChange}
                 placeholder={'Alte detalii utile despre locatie'}
               />
             </div>
           </div>
         </div>
-        {/* TODO after completing the address reposition the map */}
         <iframe
           title={'google maps'}
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
@@ -535,8 +542,8 @@ const ClinicProfile = (props) => {
         <div className="fields-wrapper">
           <div className="col-85">
             <div className="input-wrapper">
-              <label>Adresa website</label>
-              <input className={errorState.website && 'error'} name="website" type="text" value={state.website}
+              <label>*Adresa website</label>
+              <input className={errorState.website ? 'error' : ''} name="website" type="text" value={state.website}
                 onChange={handleFieldChange} placeholder={'ex. www.sofarfarm.ro'} />
             </div>
           </div>
@@ -744,6 +751,9 @@ const ClinicProfile = (props) => {
                 {renderSpecialities()}
                 {renderFacilities()}
                 {renderSchedule()}
+                {
+                  state.error && <div style={{marginBottom: '15px'}} className={'error'}>{state.error}</div>
+                }
                 <button className="button round " onClick={handleSubmit} >Salveaza</button>
               </form>
             )

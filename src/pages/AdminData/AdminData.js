@@ -3,9 +3,24 @@ import "./AdminData.scss"
 import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/routes";
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
+import _ from "lodash";
 
 const AdminData = (props) => {
     const navigate = useNavigate();
+
+    const [formValid, setFormValid] = React.useState(false)
+
+    const [error, setError] = React.useState({
+        firstName: false,
+        lastName: false,
+        phoneNo: false,
+        email: false,
+        company: false,
+        position: false,
+        streetNo: false,
+        street: false,
+        fileList: false,
+    })
 
     const [values, setValues] = React.useState({
         firstName: props?.selected?.firstName || '',
@@ -18,8 +33,8 @@ const AdminData = (props) => {
         position: props?.selected?.position || '',
         streetNo: props?.selected?.streetNo || '',
         street: props?.selected?.street || '',
-        county: props?.selected?.county || 'Bucuresti',
-        town: props?.selected?.town || 'Bucuresti',
+        county: props?.selected?.county || '',
+        town: props?.selected?.town || '',
         fileList: props?.selected?.fileList || [],
         files: props?.selected?.files || [],
         error: '',
@@ -30,15 +45,30 @@ const AdminData = (props) => {
         setValues((prevState) => ({ ...prevState, [title]: value }));
     };
 
+    const isFormValid = () => {
+        let errorCopy = _.cloneDeep(error)
+        let ok = true
+        Object.keys(error).forEach((key) => {
+            if (key === 'fileList') {
+                errorCopy[key] = values[key].length === 0
+            } else {
+                errorCopy[key] = !values[key]
+            }
+            if (!values[key]) {
+                ok = false
+            }
+        })
+        setError(errorCopy)
+        if (!ok) setValues({...values, error: "Va rugam sa completati campurile obligatorii"})
+        return ok
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (values.firstName.length === 0 || values.lastName.length === 0 || values.street.length === 0) {
-            setValues({ ...values, error: "Va rugam sa completati campurile obligatorii" })
-        }
+        if (!isFormValid()) return
         if (props.onSubmit) {
             props.onSubmit(values)
-        }
-        else {
+        } else {
             const formData = new FormData()
             formData.append('first_name', values.firstName)
             formData.append('last_name', values.lastName)
@@ -47,7 +77,7 @@ const AdminData = (props) => {
             formData.append('phone_number_optional', values.phoneNoOpt)
             formData.append('contact_email_optional', values.emailOpt)
             formData.append('company', values.company)
-            formData.append('company_role', values.company_role)
+            formData.append('company_role', values.position)
             formData.append('county', values.county)
             formData.append('town', values.town)
             formData.append('street', values.street)
@@ -128,14 +158,14 @@ const AdminData = (props) => {
                             <div className="col-2">
                                 <div className="input-wrapper">
                                     <label>*Nume</label>
-                                    <input name="lastName" type="text" value={values.lastName}
+                                    <input className={error.lastName ? 'error' : ''} name="lastName" type="text" value={values.lastName}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
                                 </div>
                                 <div className="input-wrapper">
                                     <label>*Prenume</label>
-                                    <input name="firstName" type="text" value={values.firstName}
+                                    <input  className={error.firstName ? 'error' : ''} name="firstName" type="text" value={values.firstName}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
@@ -143,15 +173,15 @@ const AdminData = (props) => {
                             </div>
                             <div className="col-2">
                                 <div className="input-wrapper">
-                                    <label>Telefon</label>
-                                    <input name="phoneNo" type="text" value={values.phoneNo}
+                                    <label>*Telefon</label>
+                                    <input  className={error.phoneNo ? 'error' : ''} name="phoneNo" type="text" value={values.phoneNo}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
                                 </div>
                                 <div className="input-wrapper">
-                                    <label>Email de contact</label>
-                                    <input name="email" type="text" value={values.email}
+                                    <label>*Email de contact</label>
+                                    <input className={error.email ? 'error' : ''} name="email" type="text" value={values.email}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
@@ -180,15 +210,15 @@ const AdminData = (props) => {
                         <div className="fields-wrapper">
                             <div className="col-2">
                                 <div className="input-wrapper">
-                                    <label>Functia</label>
-                                    <input name="position" type="text" value={values.position}
+                                    <label>*Functia</label>
+                                    <input className={error.position ? 'error' : ''} name="position" type="text" value={values.position}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
                                 </div>
                                 <div className="input-wrapper">
-                                    <label>Compania</label>
-                                    <input name="company" type="text" value={values.company}
+                                    <label>*Compania</label>
+                                    <input className={error.company ? 'error' : ''} name="company" type="text" value={values.company}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
@@ -206,7 +236,7 @@ const AdminData = (props) => {
                                     </select>
                                 </div>
                                 <div className="input-wrapper">
-                                    <label>Judet</label>
+                                    <label>*Judet</label>
                                     <select id="county" name="county"
                                         onChange={(e) => handleFieldChange(e.target.value, e.target.name)}>
                                         <option value="Bucuresti">Bucuresti</option>
@@ -219,14 +249,14 @@ const AdminData = (props) => {
                             <div className="col-2">
                                 <div className="input-wrapper">
                                     <label>*Strada</label>
-                                    <input name="street" type="text" value={values.street}
+                                    <input className={error.street ? 'error' : ''} name="street" type="text" value={values.street}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
                                 </div>
                                 <div className="input-wrapper">
-                                    <label>Numarul</label>
-                                    <input name='streetNo' type="text" value={values.streetNo}
+                                    <label>*Numarul</label>
+                                    <input className={error.streetNo ? 'error' : ''} name='streetNo' type="text" value={values.streetNo}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
@@ -259,16 +289,16 @@ const AdminData = (props) => {
                                         </span>
                                     </div>
                                 )}
-                            </div>) : (<div className="selected-file">
+                            </div>) : (<div className={`selected-file ${error.fileList ? 'error' : ''}`}>
                                 No selected file
                             </div>)}
                             {
-                                values.uploadWarning && <div className={'error'}>{values.uploadWarning}</div>
+                                (values.uploadWarning || error.fileList) && <div className={'error'}>{values.uploadWarning}</div>
                             }
                         </div>
                     </div>
                     {
-                        values.error && <div className={'error'}>{values.error}</div>
+                        values.error && <div style={{marginBottom: '15px'}} className={'error'}>{values.error}</div>
                     }
                     <button className="button round custom-width" onClick={handleSubmit}> Salveaza </button>
                 </form>

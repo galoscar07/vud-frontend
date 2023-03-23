@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, {useCallback, useEffect} from 'react'
 import "./Register.scss"
 import _ from 'lodash';
 import {API_MAP, getAPILink, routes} from "../../../utils/routes";
@@ -28,7 +28,7 @@ const Register = () => {
   const [step, setStep] = React.useState(0)
 
   const isFormEmpty = () => {
-    if (state.password.value && state.confirmPassword.value && state.email.value) {
+    if (state.password.value && state.confirmPassword.value && state.email.value && areTermsChecked) {
       setFormValid(true)
     } else {
       setFormValid(false)
@@ -40,7 +40,6 @@ const Register = () => {
     stateCopy.password.error = null
     stateCopy.confirmPassword.error = null
     stateCopy.email.error = null
-    stateCopy.server.error = null
 
     if (!state.password.value) {
       stateCopy.password.error = 'Acest camp nu poate fi gol'
@@ -64,6 +63,10 @@ const Register = () => {
       stateCopy.confirmPassword.error = 'Parola trebuie sa coincida'
       stateCopy.password.error = 'Parola trebuie sa coincida'
     }
+    if (!areTermsChecked) {
+      stateCopy.server.error = 'Trebuie sa fi de acord cu termenii si conditiile'
+    }
+
     if (JSON.stringify(stateCopy) !== JSON.stringify(state)) {
       setState(stateCopy)
       return false
@@ -73,16 +76,19 @@ const Register = () => {
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: { ...state[event.target.name], value: event.target.value } })
-    isFormEmpty()
   }
 
   const handleTermsChecked = (event) => {
     setTermsChecked(!areTermsChecked);
   };
 
+  useEffect(() => {
+    isFormEmpty()
+  }, [areTermsChecked, state])
+
   const handleSubmit = useCallback(event => {
     event.preventDefault();
-    if (!isFormValid() || !formValid) {
+    if (!isFormValid()) {
       return
     }
     fetch(
@@ -141,27 +147,24 @@ const Register = () => {
       <img alt={'vreau un doctor'} src="/images/login.svg" />
       <div className="auth-container">
         <h1>Înregistrare cont</h1>
-        <form onSubmit={handleSubmit} autoComplete="off">
+        <form autoComplete="off">
           {step === 0 &&
             <React.Fragment>
               <label>Email</label>
               <input className={`full-width ${state.email.error && 'error'}`} type="email"
-                name="email" value={state.email.value} onChange={handleChange}
-                onBlur={isFormEmpty} />
+                name="email" value={state.email.value} onChange={handleChange} />
               {state.email.error &&
                 <div className={'error'}>{state.email.error}</div>
               }
               <label>Password</label>
               <input className={`full-width ${state.password.error && 'error'}`} type="password"
-                name="password" value={state.password.value} onChange={handleChange}
-                onBlur={isFormEmpty} />
+                name="password" value={state.password.value} onChange={handleChange} />
               {state.password.error &&
                 <div className={'error'}>{state.password.error}</div>
               }
               <label>Confirm password</label>
               <input className={`full-width ${state.confirmPassword.error && 'error'}`} type="password"
-                name="confirmPassword" value={state.confirmPassword.value} onChange={handleChange}
-                onBlur={isFormEmpty} />
+                name="confirmPassword" value={state.confirmPassword.value} onChange={handleChange} />
               {state.confirmPassword.error &&
                 <div className={'error'}>{state.confirmPassword.error}</div>
               }
@@ -176,7 +179,11 @@ const Register = () => {
                 <div className={'error'}>{state.server.error}</div>
               }
 
-              <button className={`button custom-width round ${!areTermsChecked || !formValid ? 'disabled' : ''}`} onClick={handleSubmitResendEmail} >Inregistrare</button>
+              <button
+                className={`button custom-width round ${!formValid ? 'disabled' : ''}`}
+                onClick={handleSubmit}
+                disabled={!formValid}
+              >Inregistrare</button>
 
             </React.Fragment>
           }

@@ -17,7 +17,11 @@ const AddUnit = (props) => {
   const navigate = useNavigate();
 
   const onSelect = (elems) => {
-    setState({ ...state, selected: elems })
+    if (elems.length < 2) {
+      setState({ ...state, selected: elems })
+    } else {
+      setState({...state, selected: elems.filter((el) => el.value !== state.selected[0].value) })
+    }
   }
 
   useEffect(() => {
