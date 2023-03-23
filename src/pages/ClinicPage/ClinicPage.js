@@ -546,7 +546,7 @@ function ClinicPage({ props }) {
                     : <React.Fragment>
                         <div className="desktop">{renderClinicHeaderDesktop()}</div>
                         <div className="mobi">{renderClinicHeaderMobile()}</div>
-                        <div className="col-2">
+                        <div className="grid">
                             <div className="info-left-container ">
                                 {clinic?.testimonials?.length > 0 && <React.Fragment>
                                     <div className="container-title">Testimoniale</div>
@@ -562,6 +562,7 @@ function ClinicPage({ props }) {
                                     aria-hidden="false"
                                     tabIndex="0"
                                 />
+                                <img className="add" src="/images/ads/ad1.svg" />
                             </div>
 
                             <div className="info-right-container">
@@ -582,7 +583,7 @@ function ClinicPage({ props }) {
                                                     return <DoctorCard doctor={doc} key={i} />
                                                 })
                                             }
-                                            <div style={{ display: 'flex' }}>
+                                            <div className="page-btn">
                                                 {
                                                     doctorState.currentPage !== 1 &&
                                                     <div onClick={previousPage} className={'button'}>Anterior</div>
@@ -604,6 +605,7 @@ function ClinicPage({ props }) {
                                     </p>
 
                                 </div>}
+                                <img className="add mobi" src="/images/ads/add2.svg" />
                             </div>
 
                         </div>

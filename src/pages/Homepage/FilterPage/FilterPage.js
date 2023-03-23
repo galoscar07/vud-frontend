@@ -57,7 +57,6 @@ const FilterPage = (props) => {
 
     const mapServerRespToFront = (listOfClinics) => {
         return listOfClinics.map((clinic) => {
-            console.log(clinic, 'AIII')
             return {
                 id: clinic.id,
                 name: clinic.clinic_name,
@@ -70,7 +69,7 @@ const FilterPage = (props) => {
                 contact: [
                     { type: 'phoneNo', value: JSON.parse(clinic.primary_phone).value },
                     {
-                        type: "location", value: `Str. ${clinic?.clinic_street} ${clinic?.clinic_number ? 'nr.' + clinic?.clinic_number: ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town :''}`,
+                        type: "location", value: `Str. ${clinic?.clinic_street} ${clinic?.clinic_number ? 'nr.' + clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}`,
                     },
                     { type: "email", value: clinic.primary_email }
                 ],
@@ -293,6 +292,8 @@ const FilterPage = (props) => {
                         aria-hidden="false"
                         tabIndex="0"
                     />
+                    <img className="add" src="/images/ads/add8.svg" />
+
                 </div>
             </div >
 

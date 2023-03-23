@@ -12,7 +12,7 @@
         font-size: $font-title ;
         font-weight: 600;
         column-gap: $spacing-huge;
-        margin-bottom:$spacing-default;
+        margin-bottom: $spacing-default;
     }
 
     .dropdown {
@@ -157,8 +157,25 @@
         column-gap: $spacing-small;
     }
 
-    .side-content {
-        margin-top: 4.5rem;
+    .ads-container {
+        display: flex;
+        margin-top: $spacing-small;
+
+        img {
+            width: auto;
+        }
     }
 
+    .side-content {
+        max-width: 14rem;
+        margin-top: 4.5rem;
+        row-gap: $spacing-xsmall;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .add {
+        width: 100%;
+        height: auto;
+    }
 }

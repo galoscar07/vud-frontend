@@ -4,14 +4,17 @@
     padding: $spacing-big;
     color: $color-blue;
 
-    .profile-photo {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    .add {
+        width: 100%;
+        margin-top: $spacing-xsmall;
+    }
 
-        .pp {
-            align-items: center;
-        }
+    .grid {
+        display: grid;
+        grid-template-columns: 30% 70%;
+        column-gap: $spacing-small;
+
+
     }
 
     .revendica {
@@ -76,7 +79,7 @@
         font-size: $font-subtitle;
         text-align: start;
         width: 100%;
-        margin-bottom: $spacing-small;
+        margin: $spacing-small 0;
     }
 
     .rating {
@@ -320,6 +323,13 @@
             margin-bottom: $spacing-small;
         }
 
+        .page-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: $spacing-small;
+        }
+
         .col,
         .col-2 {
             .dropdown {
@@ -351,6 +361,16 @@
 
         .col-2 {
             flex-direction: column !important;
+        }
+
+        .grid {
+            display: flex !important;
+            flex-direction: column-reverse !important;
+        }
+
+        .container-title {
+            margin-top: $spacing-small;
+
         }
 
         .mobi {

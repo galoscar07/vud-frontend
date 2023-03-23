@@ -32,6 +32,7 @@
     .academic-wrapper {
         display: flex;
         flex-direction: row;
+
         div {
             margin-left: 5px;
         }
@@ -39,6 +40,7 @@
 
     .location-wrapper {
         display: flex;
+        align-items: center;
 
         .location {
             font-weight: 300;

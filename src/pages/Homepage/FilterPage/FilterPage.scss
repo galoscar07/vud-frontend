@@ -5,6 +5,7 @@
 
     .pagination {
         margin-top: 30px;
+
         span {
             padding: 10px 15px 10px;
             border-radius: 40%;
@@ -12,6 +13,7 @@
             color: #0E3A41;
             margin-right: 10px;
             cursor: pointer;
+
             &.active {
                 background-color: #0E3A41;
                 color: #FFFFFF;
@@ -21,6 +23,13 @@
 
     .center-side {
         margin-top: $spacing-small;
+    }
+
+    .right-side {
+        max-width: 20rem;
+        img{
+            width: 100%;
+        }
     }
 
     .results-container {
