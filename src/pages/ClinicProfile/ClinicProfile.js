@@ -473,7 +473,7 @@ const ClinicProfile = (props) => {
         <div className="fields-wrapper flex">
           <div className="field-container">
             <label>*Denumire telefon</label>
-            <select value="emergency" name="primary_phone_label" id="searching" onChange={handleFieldChange} required>
+            <select name="primary_phone_label" id="searching" onChange={handleFieldChange} required>
               <option value="phone">Telefon</option>
               <option value="emergency">Urgente</option>
               <option value="ambulance">Ambulanta</option>
