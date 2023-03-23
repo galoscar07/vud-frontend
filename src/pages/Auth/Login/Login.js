@@ -95,14 +95,17 @@ const Login = () => {
             return response.json()
           })
           .then((resp) => {
-            if (resp.step) {
+            if (resp.step && !resp.is_visible) {
+              localStorage.setItem('user', JSON.stringify({...resp}))
               navigate(AUTH_CLINIC_MAP_STEP[resp.step.toString()])
-            }
-            if (resp.error === 'No profile') {
+            } else if (resp.error === 'No profile') {
+              localStorage.setItem('user', JSON.stringify({...resp, step: '1'}))
               navigate(routes.ADD_PROFILE)
             } else {
+              localStorage.setItem('user', JSON.stringify({...resp}))
               navigate(routes.HOMEPAGE)
             }
+            window.location.reload()
           })
           .catch((err) => {
           })

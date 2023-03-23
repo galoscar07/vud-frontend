@@ -21,6 +21,7 @@ const AdminData = (props) => {
         county: props?.selected?.county || 'Bucuresti',
         town: props?.selected?.town || 'Bucuresti',
         fileList: props?.selected?.fileList || [],
+        files: props?.selected?.files || [],
         error: '',
         uploadWarning: ''
     });
@@ -38,29 +39,39 @@ const AdminData = (props) => {
             props.onSubmit(values)
         }
         else {
-            // TODO Validate data
+            const formData = new FormData()
+            formData.append('first_name', values.firstName)
+            formData.append('last_name', values.lastName)
+            formData.append('phone_number', values.phoneNo)
+            formData.append('contact_email', values.email)
+            formData.append('phone_number_optional', values.phoneNoOpt)
+            formData.append('contact_email_optional', values.emailOpt)
+            formData.append('company', values.company)
+            formData.append('company_role', values.company_role)
+            formData.append('county', values.county)
+            formData.append('town', values.town)
+            formData.append('street', values.street)
+            formData.append('number', values.number)
+            let files = []
+            let input = document.getElementById('file');
+            for (let i = 0; i < input.files.length; ++i) {
+                if (i < 3) {
+                    files.push(input.files.item(i))
+                }
+            }
+            formData.append('file1', files[0])
+            formData.append('file2', files[1])
+
             makeRequestLogged(
                 getAPILink(API_MAP.UPDATE_ADMIN_DATA),
                 'PUT',
-                JSON.stringify({
-                    first_name: values.firstName,
-                    last_name: values.lastName,
-                    phone_number: values.phoneNo,
-                    contact_email: values.email,
-                    phone_number_optional: values.phoneNoOpt,
-                    contact_email_optional: values.emailOpt,
-                    company: values.company,
-                    company_role: values.position,
-                    county: values.county,
-                    town: values.town,
-                    street: values.street,
-                    number: values.streetNo,
-                    // fileList:values.fileList,
-                }),
-                getAuthTokenFromLocal()
+                formData,
+                getAuthTokenFromLocal(),
+                'multipart/form-data'
             ).then((response) => response.json())
                 .then((resp) => {
                     if (resp.success === 'Saved') {
+                        localStorage.setItem('user', JSON.stringify({is_visible: false, step: '3'}))
                         navigate(routes.ADD_UNIT)
                     } else {
                         setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
@@ -99,7 +110,10 @@ const AdminData = (props) => {
         let updatedList = values.fileList.filter(function (item) {
             return item !== fileName;
         })
-        setValues({ ...values, fileList: updatedList })
+        let updatedListFi = values.files.filter(function (item) {
+            return item.name !== fileName;
+        })
+        setValues({ ...values, fileList: updatedList, files: updatedListFi })
     }
 
     return (

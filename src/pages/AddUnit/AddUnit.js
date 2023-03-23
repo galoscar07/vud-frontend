@@ -55,6 +55,7 @@ const AddUnit = (props) => {
           .then((response) => response.json())
           .then((resp) => {
             if (resp.success === 'Success') {
+              localStorage.setItem('user', JSON.stringify({is_visible: false, step: '4'}))
               navigate(routes.PROFILE)
             } else {
               setState({ ...state, error: "Ceva nu a funcționat. Vă rugăm să încercați în câteva minute" })
