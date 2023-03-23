@@ -43,7 +43,7 @@ function Header() {
             to={routes.DASHBOARD}
           >Cont {user.firstName} {user.lastName}</NavLink>
           <img alt={'imagine profile user'} className={'profile_pic'}
-               src={user.profilePicture ? URL.createObjectURL(user.profilePicture) : '/images/user.svg' } />
+               src={user.profilePicture ? window.URL.createObjectURL(user.profilePicture) : '/images/user.svg' } />
         </div>
       )
     } else {

@@ -84,7 +84,7 @@ const ClinicProfile = (props) => {
     profileImgRef.current.click();
   }
   const handleFileChangeProfilePicUser = (event) => {
-    setState({ ...state, profile_picture: event.target.files[0], profile_picture_preview: URL.createObjectURL(event.target.files[0]) })
+    setState({ ...state, profile_picture: event.target.files[0], profile_picture_preview: window.URL.createObjectURL(event.target.files[0]) })
   }
 
   // States and Functions for extra phone number and emails
@@ -153,7 +153,7 @@ const ClinicProfile = (props) => {
   const handleFileChangeDoctor = (event) => {
     const copy = _.cloneDeep(doctor)
     copy[docHighlighted].profile_photo = event.target.files[0]
-    copy[docHighlighted].profile_picture_preview = URL.createObjectURL(event.target.files[0])
+    copy[docHighlighted].profile_picture_preview = window.URL.createObjectURL(event.target.files[0])
     setDoctor(copy)
   }
   const deleteHighlightDoctor = (index) => {
