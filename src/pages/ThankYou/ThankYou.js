@@ -1,12 +1,27 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import "./ThankYou.scss";
 import {useNavigate} from "react-router-dom";
-import {routes} from "../../utils/routes";
+import {API_MAP, AUTH_CLINIC_MAP_STEP, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
+import {getAuthTokenFromLocal} from "../../utils/localStorage";
 
 const ThankYou = () => {
   const navigate = useNavigate();
-
-    return (
+  useEffect(() => {
+    makeRequestLogged(getAPILink(API_MAP.USER_PROFILE), 'GET', null, getAuthTokenFromLocal())
+      .then((response) => {
+        return response.json()
+      })
+      .then((resp) => {
+        localStorage.setItem('user', JSON.stringify({...resp}))
+        if (resp.is_visible) {
+          navigate(routes.DASHBOARD)
+        }
+      })
+      .catch((err) => {
+        // navigate(routes.LOG_OUT)
+      })
+  }, [])
+  return (
         <div className="thank-you-page">
             <img alt={'Imagine multumire creare cont'} src="/images/thank-you.svg"/>
             <h1>Vă mulțumim pentru înscrierea <br/>în comunitatea Vreauundoctor</h1>

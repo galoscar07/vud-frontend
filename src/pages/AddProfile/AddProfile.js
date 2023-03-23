@@ -38,6 +38,7 @@ const AddProfile = () => {
     )
       .then((response) => response.json())
       .then((resp) => {
+        localStorage.setItem('user', JSON.stringify({is_visible: false, step: '2'}))
         if (resp.error !== 'Something went wrong') {
           navigate(routes.ADMIN_DATA)
         } else {
