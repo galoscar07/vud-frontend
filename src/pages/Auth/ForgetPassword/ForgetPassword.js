@@ -22,8 +22,6 @@ const ForgetPassword = (props) => {
     setEmail(event.target.value);
   };
 
-  console.log(props)
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -49,7 +47,6 @@ const ForgetPassword = (props) => {
         setStep(1)
       })
       .catch((err) => {
-        console.log('ERRR')
         setState({ ...state, server: { error: "Ceva a mers prost. Va rugam incercati mai tarziu" } })
       })
 

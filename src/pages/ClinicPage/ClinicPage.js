@@ -262,9 +262,7 @@ function ClinicPage({ props }) {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
                 setAcademicDegreesDropDown(mapped)
             })
-            .catch((err) => {
-                console.log(err)
-            })
+            .catch((err) => {})
         fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
             method: 'GET',
             headers: {
@@ -276,9 +274,7 @@ function ClinicPage({ props }) {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
                 setSpecialities(mapped)
             })
-            .catch((err) => {
-                console.log(err)
-            })
+            .catch((err) => {})
         fetch(getAPILink(API_MAP.GET_COMPETENCES), {
             method: 'GET',
             headers: {
@@ -290,9 +286,7 @@ function ClinicPage({ props }) {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
                 setCompetences(mapped)
             })
-            .catch((err) => {
-                console.log(err)
-            })
+            .catch((err) => {})
     }, [])
 
     const flattenedResponse = (el) =>

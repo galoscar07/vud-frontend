@@ -20,9 +20,6 @@ const towns = [
 const FilterPage = (props) => {
     const navigate = useNavigate()
 
-    let currentUrlParams = new URLSearchParams(window.location.search);
-    currentUrlParams.set('page', '3');
-
     const [selectedOption, setSelected] = React.useState([]);
     const [pagination, setPagination] = React.useState({
         perPage: 4,
@@ -93,9 +90,7 @@ const FilterPage = (props) => {
             .then((response) => {
                 setClinics(mapServerRespToFront(response.results))
             })
-            .catch((err) => {
-                console.log(err)
-            })
+            .catch((err) => {})
         navigate(`${getQueryFromState(state)}`)
 
     }, [state])
@@ -115,9 +110,7 @@ const FilterPage = (props) => {
             .then((response) => {
                 setClinics(mapServerRespToFront(response.results))
             })
-            .catch((err) => {
-                console.log(err)
-            })
+            .catch((err) => {})
     }
 
     const handleSearch = () => { }
@@ -130,7 +123,6 @@ const FilterPage = (props) => {
         if (typeof state.clinic_specialities == "string") {
             link += `&clinic_specialities=${state.clinic_specialities || ''}`
         } else {
-            console.log('da')
             link += `&clinic_specialities=${state.clinic_specialities.map((t) => t.value).join("|")}`
         }
         if (typeof state.unity_facilities == "string") {
@@ -161,9 +153,7 @@ const FilterPage = (props) => {
                     maxPage: Math.ceil(response.count / 4)
                 }))
             })
-            .catch((err) => {
-                console.log(err)
-            })
+            .catch((err) => {})
         fetch(getAPILink(API_MAP.GET_CLINIC_SPECIALITIES), {
             method: 'GET',
             headers: {
@@ -175,9 +165,7 @@ const FilterPage = (props) => {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
                 setClinicSpecialities(mapped)
             })
-            .catch((err) => {
-                console.log(err)
-            })
+            .catch((err) => {})
         fetch(getAPILink(API_MAP.GET_MEDICAL_UNITY_TYPE), {
             method: 'GET',
             headers: {
@@ -189,9 +177,7 @@ const FilterPage = (props) => {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
                 setUnityTypes(mapped)
             })
-            .catch((err) => {
-                console.log(err)
-            })
+            .catch((err) => {})
         fetch(getAPILink(API_MAP.GET_MEDICAL_FACILITIES), {
             method: 'GET',
             headers: {
@@ -203,9 +189,7 @@ const FilterPage = (props) => {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
                 setMedicalFacilities(mapped)
             })
-            .catch((err) => {
-                console.log(err)
-            })
+            .catch((err) => {})
     }, [])
 
 
@@ -251,7 +235,7 @@ const FilterPage = (props) => {
                                         {/*<option value="specialitate">Specialitate</option>*/}
                                     </select>
                                 </div>
-                                <button className="button" onClick={handleSearch}>Cauta</button>
+                                <button className="button" >Cauta</button>
                             </form>
                         </div>
                     </div>

@@ -32,7 +32,6 @@ const Newsletter = (props) => {
   }
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: { ...state[event.target.name], value: event.target.value } })
-    console.log(state)
     isFormEmpty()
   }
   const handleSubmit = (event) => {

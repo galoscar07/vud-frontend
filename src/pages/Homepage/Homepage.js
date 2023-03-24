@@ -114,7 +114,6 @@ function Homepage() {
 
   const handleChange = (selectedOption) => {
     setSelected(selectedOption);
-    console.log(`Option selected:`, selectedOption);
   }
 
   const showAll = () => {

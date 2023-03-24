@@ -66,7 +66,6 @@ const Login = () => {
   const handleSubmit = useCallback(event => {
     event.preventDefault();
     if (!isFormValid()) {
-      console.log('invalid')
       return
     }
     fetch(

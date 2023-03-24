@@ -321,9 +321,7 @@ const ClinicProfile = (props) => {
         const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setUnitTypeDropdown(mapped)
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      .catch((err) => {})
     fetch(getAPILink(API_MAP.GET_ACADEMIC_DEGREES), {
       method: 'GET',
       headers: {
@@ -335,9 +333,7 @@ const ClinicProfile = (props) => {
         const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setAcademicDegreesDropDown(mapped)
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      .catch((err) => {})
     fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
       method: 'GET',
       headers: {
@@ -349,9 +345,7 @@ const ClinicProfile = (props) => {
         const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setSpecialities(mapped)
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      .catch((err) => {})
     fetch(getAPILink(API_MAP.GET_COMPETENCES), {
       method: 'GET',
       headers: {
@@ -363,9 +357,7 @@ const ClinicProfile = (props) => {
         const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setCompetences(mapped)
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      .catch((err) => {})
     fetch(getAPILink(API_MAP.GET_CLINIC_SPECIALITIES), {
       method: 'GET',
       headers: {
@@ -377,9 +369,7 @@ const ClinicProfile = (props) => {
         const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setClinicSpecialities(mapped)
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      .catch((err) => {})
     fetch(getAPILink(API_MAP.GET_MEDICAL_FACILITIES), {
       method: 'GET',
       headers: {
@@ -392,9 +382,7 @@ const ClinicProfile = (props) => {
         setMedicalFacilities(mapped)
         setLoading(false)
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      .catch((err) => {})
   }, [])
 
   // Renders
