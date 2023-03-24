@@ -221,7 +221,6 @@ const FilterPage = (props) => {
     } else {
         selectedTypes = state.unity_types;
     }
-    console.log(clinics, 'sllslss')
     return (
         <div className="filter-page">
             <div className="filter-main-content">
@@ -251,8 +250,15 @@ const FilterPage = (props) => {
                         {clinics.length>0 ?
                         <React.Fragment>
                         <div className="results-container">
-                            {clinics.map((clinic, i) =>
-                                <ClinicFilterContainer key={i} clinic={clinic} />
+                        {clinics.map((clinic, i) =>
+                              <React.Fragment>
+                                  <ClinicFilterContainer key={i} clinic={clinic} />
+                                  {i === 1 &&
+                                    <div>
+                                        <img className="add" src="/images/ads/add2.svg" />
+                                    </div>
+                                  }
+                              </React.Fragment>
                             )}
                         </div>
                         <div className={'pagination'}>
