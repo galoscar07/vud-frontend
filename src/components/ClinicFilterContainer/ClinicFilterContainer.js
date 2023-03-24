@@ -12,7 +12,7 @@ const ClinicFilterContainer = (props) => {
                 <div className="rating-container">
                     <img className="clinic-img" src={!props.clinic.image ? '/images/unit.svg' : props.clinic?.image?.includes('http') ? props.clinic.image : API_URL_MEDIA + props.clinic.image } />
                     {props.clinic.score > 0 && <div className="score-wrapper">
-                        {props.clinic.score}
+                        {Math.floor(props.clinic.score)}
                     </div>}
                     <div className="reviews">
                         {props.clinic.noOfReviews} recenzii
