@@ -37,7 +37,7 @@ const ForgetPassword = (props) => {
       }
     })
       .then((response) => {
-        if (response.status !== 201) {
+        if (response.status !== 200) {
           throw Error
         }
         return response.json()
