@@ -263,22 +263,28 @@ const FilterPage = (props) => {
                     <Dropdown selected={selectedTypes || []} onSelect={(values) => handleSelectFilters(values, 'unity_types')} options={unityTypes} title={"Tip unitate medicala"} />
                 </div>
                 <div className="center-side">
-                    <div className="results-container">
-                        {clinics.map((clinic, i) =>
-                            <ClinicFilterContainer key={i} clinic={clinic} />
-                        )}
-                    </div>
-                    {/* Pagination */}
-                    <div className={'pagination'}>
-                        {pagination.maxPage !== 1 &&
-                            Array(pagination.maxPage).fill(1).map((e, index) => {
-                                return <span key={index}
-                                    onClick={() => { setPagination((prev) => ({ ...prev, currentPage: index + 1 })) }}
-                                    className={pagination.currentPage === index + 1 ? 'active' : ''}>{index + 1}
-                                </span>
-                            })
-                        }
-                    </div>
+                    <React.Fragment>
+                        {clinics.length>0 ?
+                        <React.Fragment>
+                        <div className="results-container">
+                            {clinics.map((clinic, i) =>
+                                <ClinicFilterContainer key={i} clinic={clinic} />
+                            )}
+                        </div>
+                        <div className={'pagination'}>
+                            {pagination.maxPage !== 1 &&
+                                Array(pagination.maxPage).fill(1).map((e, index) => {
+                                    return <span key={index}
+                                        onClick={() => { setPagination((prev) => ({ ...prev, currentPage: index + 1 })) }}
+                                        className={pagination.currentPage === index + 1 ? 'active' : ''}>{index + 1}
+                                    </span>
+                                })
+                            }
+                        </div>
+                        </React.Fragment>
+                        : <p>Ne pare rau, dar nu am gasit rezultate pentru cautarea curenta.</p>
+}
+                    </React.Fragment>
                 </div>
                 <div className="right-side">
                     <iframe

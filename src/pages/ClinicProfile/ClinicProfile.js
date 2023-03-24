@@ -70,7 +70,8 @@ const ClinicProfile = (props) => {
       }
     })
     setErrorState(errorCopy)
-    if (!ok) setState({...state, error: "Va rugam sa completati campurile obligatorii"})
+    if (!ok) {console.log("INTRA")
+      setState({...state, error: "Va rugam sa completati campurile obligatorii"})}
     return ok
   }
 
@@ -115,8 +116,9 @@ const ClinicProfile = (props) => {
   }
 
   const handlePhoneEmailChange = (value, index, list, fct) => {
+    console.log(value, 'VALOARE')
     const copy = _.cloneDeep(list)
-    copy[index] = value
+    copy[index] = value || 'phone'
     fct(copy)
   }
 
@@ -255,11 +257,13 @@ const ClinicProfile = (props) => {
   }
 
   const handleSubmit = (event) => {
+    console.log('STATE:',state)
+    console.log('MAP:',mapStateToObject())
     event.preventDefault();
     if (!isFormValid()) return
     if (props.onSubmit) {
       //TODO PLS CHECK THIS;
-      props.onSubmit(state)
+      props.onSubmit(mapStateToObject())
     } else {
       const secondary_phones_sorted = multiplePhoneLabels.map(function (value, index) {
         return [value, multiplePhones[index]]
@@ -473,7 +477,7 @@ const ClinicProfile = (props) => {
         <div className="fields-wrapper flex">
           <div className="field-container">
             <label>*Denumire telefon</label>
-            <select value="emergency" name="primary_phone_label" id="searching" onChange={handleFieldChange} required>
+            <select name="primary_phone_label" id="searching" onChange={handleFieldChange} required>
               <option value="phone">Telefon</option>
               <option value="emergency">Urgente</option>
               <option value="ambulance">Ambulanta</option>
