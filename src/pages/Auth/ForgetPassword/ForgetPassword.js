@@ -22,8 +22,6 @@ const ForgetPassword = (props) => {
     setEmail(event.target.value);
   };
 
-  console.log(props)
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -39,7 +37,7 @@ const ForgetPassword = (props) => {
       }
     })
       .then((response) => {
-        if (response.status !== 201) {
+        if (response.status !== 200) {
           throw Error
         }
         return response.json()
