@@ -15,6 +15,7 @@ const DashboardProfileData = () => {
     const [values, setValues] = React.useState(selected);
 
     const handleSubmit = (selected) => {
+        console.log(selected,'sel here ')
         setValues(selected)
     }
 
