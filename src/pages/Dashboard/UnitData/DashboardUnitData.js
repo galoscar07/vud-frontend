@@ -21,7 +21,7 @@ const DashboardUnitData = (props) => {
             getAuthTokenFromLocal()
         )
             .then((response) => response.json())
-            .catch((err) => console.log(err))
+            .catch((err) => {})
     }
 
     return (

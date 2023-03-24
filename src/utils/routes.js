@@ -47,7 +47,8 @@ export const API_MAP = {
   GET_MEDICAL_FACILITIES: 'options/medical-facilities/',
   GET_FOOTER_LABELS: 'options/footer/',
   GET_BANNER_CARDS: 'options/banners/',
-  POST_NEWSLETTER: 'options/newsletter/'
+  POST_NEWSLETTER: 'options/newsletter/',
+  POST_REDEEM_CLINIC: 'auth/revendica-clinica/',
 }
 
 export const getAPILink = (url) => {
@@ -80,7 +81,7 @@ export const routes = {
   HOW_TO_REDEEM:'/how-to-redeem',
   FILTER_PAGE: '/filter',
   TERMS_AND_CONDITION: '/terms-and-cond',
-  EXAMPLE_COMPLETE: '/terms-and-cond',
+  EXAMPLE_COMPLETE: '/exemplu-completare',
 }
 
 export const AUTH_CLINIC_MAP_STEP = {

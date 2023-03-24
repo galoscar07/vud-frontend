@@ -35,9 +35,7 @@ const AddUnit = (props) => {
         const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setState({ ...state, loading: false, dropdownValues: mapped })
       })
-      .catch((err) => {
-        console.log(err)
-      })
+      .catch((err) => {})
   }, [])
 
   const onSubmit = (e) => {

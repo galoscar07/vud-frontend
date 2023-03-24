@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import "./HowToRedeem.scss"
-import {routes} from "../../utils/routes";
+import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
+import _ from "lodash";
+import {getAuthTokenFromLocal} from "../../utils/localStorage";
+import {useNavigate} from "react-router-dom";
 
 const HowToRedeemPage = () => {
+
+    const navigate = useNavigate()
 
     const [values, setValues] = React.useState({
         firstName: '',
@@ -12,10 +17,44 @@ const HowToRedeemPage = () => {
         message: '',
         job: '',
         fileList: [],
+        clinic_id: '',
         areTermsChecked: false,
         uploadWarning: '',
         error: '',
     });
+
+    const [error, setError] = React.useState({
+        firstName: false,
+        lastName: false,
+        phoneNo: false,
+        email: false,
+        message: false,
+        job: false,
+        fileList: false,
+        clinic_id: false,
+    });
+
+    const isFormValid = () => {
+        let errorCopy = _.cloneDeep(error)
+        let ok = true
+        Object.keys(error).forEach((key) => {
+            if (key === 'fileList') {
+                errorCopy[key] = values[key].length === 0
+            } else {
+                errorCopy[key] = !values[key]
+            }
+            if (!values[key]) {
+                ok = false
+            }
+        })
+        setError(errorCopy)
+        if (!ok) setValues({...values, error: "Va rugam sa completati campurile obligatorii"})
+        return ok
+    }
+
+    useEffect(() => {
+        setValues({...values, clinic_id: new URLSearchParams(window.location.search).get('id')})
+    }, [])
     
     const handleFieldChange = (value, title) => {
         setValues((prevState) => ({ ...prevState, [title]: value }));
@@ -49,8 +88,44 @@ const HowToRedeemPage = () => {
         setValues({ ...values, fileList: updatedList })
     }
     const handleSubmit = (event) => {
-        //TODO submit; 
         event.preventDefault();
+        if (!isFormValid()) return
+        const formData = new FormData()
+        formData.append('first_name', values.firstName)
+        formData.append('last_name', values.lastName)
+        formData.append('email', values.email)
+        formData.append('phone', values.phoneNo)
+        formData.append('company_role', values.job)
+        formData.append('message', values.message)
+        formData.append('clinic_id', values.clinic_id)
+        let files = []
+        let input = document.getElementById('file');
+        for (let i = 0; i < input.files.length; ++i) {
+            if (i < 3) {
+                files.push(input.files.item(i))
+            }
+        }
+        formData.append('file1', files[0])
+        formData.append('file2', files[1])
+        debugger
+        fetch(getAPILink(API_MAP.POST_REDEEM_CLINIC), {
+            method: "POST",
+            headers: {
+                'Content-type': 'multipart/form-data',
+            }
+        }).then((response) => response.json())
+          .then((resp) => {
+              debugger
+              if (resp.success) {
+                  navigate(routes.THANK_YOU)
+              } else {
+                  setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+              }
+          })
+          .catch((err) => {
+              debugger
+              setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+          })
     }
     return (
         <div className="how-to-redeem-page">
@@ -59,8 +134,8 @@ const HowToRedeemPage = () => {
             <div className="info-container">
                 <div className="steps">
                     <ol>
-                        <li>    Acceseaza pagina de profil a unitatii medicale si apasa pe butonul "Revendica profilul".</li>
-                        <li> Completeaza formularul de mai jos cu datele de contact.</li>
+                        <li>Acceseaza pagina de profil a unitatii medicale si apasa pe butonul "Revendica profilul".</li>
+                        <li>Completeaza formularul de mai jos cu datele de contact.</li>
                         <li>Pentru a dovedi ca esti reprezentantul legal al unitatii medicale, va trebui sa furnizezi documente justificative.</li>
                         <li>Dupa ce documentele justificative au fost verificate si aprobate, vei primi un email de confirmare ca revendicarea profilului a fost facuta cu succes si vei putea sa editezi si sa actualizezi informatiile de pe pagina de profil a unitatii medicale accesand link-ul din continutul email-ului.</li>
                         <li> Daca revendicarea profilului nu a fost aprobata, vei primi un email informativ ca revendicarea nu a fost acceptata si care va contine si posibile motive pentru aceasta decizie.</li>
@@ -77,6 +152,7 @@ const HowToRedeemPage = () => {
                             <div className="input-wrapper">
                                 <label>*Nume</label>
                                 <input name="lastName" type="text" value={values.lastName}
+                                       className={error.lastName ? 'error' : ''}
                                     onChange={(e) => {
                                         handleFieldChange(e.target.value, e.target.name);
                                     }} />
@@ -84,6 +160,7 @@ const HowToRedeemPage = () => {
                             <div className="input-wrapper">
                                 <label>*Prenume</label>
                                 <input name="firstName" type="text" value={values.firstName}
+                                       className={error.firstName ? 'error' : ''}
                                     onChange={(e) => {
                                         handleFieldChange(e.target.value, e.target.name);
                                     }} />
@@ -91,23 +168,26 @@ const HowToRedeemPage = () => {
                         </div>
                         <div className="col-2">
                             <div className="input-wrapper">
-                                <label>Telefon</label>
+                                <label>*Telefon</label>
                                 <input name="phoneNo" type="text" value={values.phoneNo}
+                                       className={error.phoneNo ? 'error' : ''}
                                     onChange={(e) => {
                                         handleFieldChange(e.target.value, e.target.name);
                                     }} />
                             </div>
                             <div className="input-wrapper">
-                                <label>Email de contact</label>
+                                <label>*Email de contact</label>
                                 <input name="email" type="text" value={values.email}
+                                       className={error.email ? 'error' : ''}
                                     onChange={(e) => {
                                         handleFieldChange(e.target.value, e.target.name);
                                     }} />
                             </div>
                         </div>
                         <div className="input-wrapper">
-                            <label>Functie</label>
-                            <input name="job" type="text" value={values.emajobil}
+                            <label>*Functie</label>
+                            <input name="job" type="text" value={values.job}
+                                   className={error.job ? 'error' : ''}
                                 onChange={(e) => {
                                     handleFieldChange(e.target.value, e.target.name);
                                 }} />
@@ -115,6 +195,7 @@ const HowToRedeemPage = () => {
                         <div className="input-wrapper">
                             <label>Mesaj (optional)</label>
                             <input name="message" type="text" value={values.message}
+                                   className={error.message ? 'error' : ''}
                                 onChange={(e) => {
                                     handleFieldChange(e.target.value, e.target.name);
                                 }} />
@@ -146,7 +227,7 @@ const HowToRedeemPage = () => {
                                     </span>
                                 </div>
                             )}
-                        </div>) : (<div className="selected-file">
+                        </div>) : (<div className={`selected-file  ${error.fileList ? 'error' : ''}`}>
                             No selected file
                         </div>)}
                         {
@@ -162,7 +243,7 @@ const HowToRedeemPage = () => {
                     <label><a href={routes.TERMS_AND_CONDITION} target={'_blank'}>Termeni si conditii</a></label>
                 </div>
                 {
-                    values.error && <div className={'error'}>{values.error}</div>
+                    values.error && <div style={{marginBottom: '15px'}} className={'error'}>{values.error}</div>
                 }
 
                 <button className="button round custom-width" onClick={handleSubmit}> Trimite formular </button>
