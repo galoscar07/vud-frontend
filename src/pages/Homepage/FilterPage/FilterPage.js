@@ -268,7 +268,6 @@ const FilterPage = (props) => {
                                     )}
                                 </div>
                                 <div className={'pagination'}>
-                                    <h1>CLL: {clinics.length}</h1>
                                     {pagination.maxPage !== 1 && (pagination.currentPage!==1 || clinics.length===4) &&
                                         Array(pagination.maxPage).fill(1).map((e, index) => {
                                             return <span key={index}
