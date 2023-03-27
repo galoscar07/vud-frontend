@@ -39,7 +39,7 @@ const ClinicFilterContainer = (props) => {
             </div>
             {props.displayReviews && props.clinic.reviews.length>0 &&
                 <React.Fragment>
-                    <div className="line-separator"></div>
+                    <div className="line-separator mobile"></div>
                     <div className="reviews-container">
                         <Carousel content={props.clinic.reviews} fullReview />
                     </div>
