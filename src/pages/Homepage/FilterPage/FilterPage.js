@@ -40,6 +40,7 @@ const FilterPage = (props) => {
     const [medicalFacilities, setMedicalFacilities] = useState([])
     const [unityTypes, setUnityTypes] = useState([])
 
+    const [selectedSpecialities, setSelectedSpecialities] = useState([]);
     const handleChange = (selectedOption) => {
         setSelected(selectedOption);
     }
@@ -93,11 +94,11 @@ const FilterPage = (props) => {
                 setClinics(mapServerRespToFront(response.results))
                 let specArray = response.specialities?.split('|') || null
                 if (specArray) {
-                    selectedSpecialities = clinicSpecialities.filter(item => specArray.includes(String(item.value)))
+                    let selected = (clinicSpecialities.filter(item => specArray.includes(String(item.value))));
+                    setSelectedSpecialities(selected);
                 }
-
             })
-            .catch((err) => {})
+            .catch((err) => { })
         navigate(`${getQueryFromState(state)}`)
 
     }, [state])
@@ -117,7 +118,7 @@ const FilterPage = (props) => {
             .then((response) => {
                 setClinics(mapServerRespToFront(response.results))
             })
-            .catch((err) => {})
+            .catch((err) => { })
     }
 
     const handleSearch = () => { }
@@ -160,7 +161,7 @@ const FilterPage = (props) => {
                     maxPage: Math.ceil(response.count / 4)
                 }))
             })
-            .catch((err) => {})
+            .catch((err) => { })
         fetch(getAPILink(API_MAP.GET_CLINIC_SPECIALITIES), {
             method: 'GET',
             headers: {
@@ -172,7 +173,7 @@ const FilterPage = (props) => {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
                 setClinicSpecialities(mapped)
             })
-            .catch((err) => {})
+            .catch((err) => { })
         fetch(getAPILink(API_MAP.GET_MEDICAL_UNITY_TYPE), {
             method: 'GET',
             headers: {
@@ -184,7 +185,7 @@ const FilterPage = (props) => {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
                 setUnityTypes(mapped)
             })
-            .catch((err) => {})
+            .catch((err) => { })
         fetch(getAPILink(API_MAP.GET_MEDICAL_FACILITIES), {
             method: 'GET',
             headers: {
@@ -196,18 +197,17 @@ const FilterPage = (props) => {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
                 setMedicalFacilities(mapped)
             })
-            .catch((err) => {})
+            .catch((err) => { })
+
+
+        let specArray = ""
+        if (typeof state.clinic_specialities === 'string') {
+            specArray = state.clinic_specialities.split('|')
+            setSelectedSpecialities(clinicSpecialities.filter(item => specArray.includes(String(item.value))));
+        } else {
+            setSelectedSpecialities(state.clinic_specialities);
+        }
     }, [])
-
-
-    let specArray = ""
-    let selectedSpecialities = []
-    if (typeof state.clinic_specialities === 'string') {
-        specArray = state.clinic_specialities.split('|')
-        selectedSpecialities = clinicSpecialities.filter(item => specArray.includes(String(item.value)));
-    } else {
-        selectedSpecialities = state.clinic_specialities;
-    }
 
     let facilitiesArray = ""
     let selectedFacilities = []
@@ -226,6 +226,7 @@ const FilterPage = (props) => {
     } else {
         selectedTypes = state.unity_types;
     }
+
     return (
         <div className="filter-page">
             <div className="filter-main-content">
@@ -252,33 +253,33 @@ const FilterPage = (props) => {
                 </div>
                 <div className="center-side">
                     <React.Fragment>
-                        {clinics.length>0 ?
-                        <React.Fragment>
-                        <div className="results-container">
-                        {clinics.map((clinic, i) =>
-                              <React.Fragment>
-                                  <ClinicFilterContainer key={i} clinic={clinic} />
-                                  {i === 1 &&
-                                    <div>
-                                        <img className="add" src="/images/ads/add2.svg" />
-                                    </div>
-                                  }
-                              </React.Fragment>
-                            )}
-                        </div>
-                        <div className={'pagination'}>
-                            {pagination.maxPage !== 1 &&
-                                Array(pagination.maxPage).fill(1).map((e, index) => {
-                                    return <span key={index}
-                                        onClick={() => { setPagination((prev) => ({ ...prev, currentPage: index + 1 })) }}
-                                        className={pagination.currentPage === index + 1 ? 'active' : ''}>{index + 1}
-                                    </span>
-                                })
-                            }
-                        </div>
-                        </React.Fragment>
-                        : <p>Ne pare rau, dar nu am gasit rezultate pentru cautarea curenta.</p>
-}
+                        {clinics.length > 0 ?
+                            <React.Fragment>
+                                <div className="results-container">
+                                    {clinics.map((clinic, i) =>
+                                        <React.Fragment>
+                                            <ClinicFilterContainer key={i} clinic={clinic} />
+                                            {i === 1 &&
+                                                <div>
+                                                    <img className="add" src="/images/ads/add2.svg" />
+                                                </div>
+                                            }
+                                        </React.Fragment>
+                                    )}
+                                </div>
+                                <div className={'pagination'}>
+                                    {pagination.maxPage !== 1 &&
+                                        Array(pagination.maxPage).fill(1).map((e, index) => {
+                                            return <span key={index}
+                                                onClick={() => { setPagination((prev) => ({ ...prev, currentPage: index + 1 })) }}
+                                                className={pagination.currentPage === index + 1 ? 'active' : ''}>{index + 1}
+                                            </span>
+                                        })
+                                    }
+                                </div>
+                            </React.Fragment>
+                            : <p>Ne pare rau, dar nu am gasit rezultate pentru cautarea curenta.</p>
+                        }
                     </React.Fragment>
                 </div>
                 <div className="right-side">
