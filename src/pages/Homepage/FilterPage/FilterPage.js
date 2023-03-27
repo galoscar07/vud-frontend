@@ -207,34 +207,7 @@ const FilterPage = (props) => {
         } else {
             setSelectedSpecialities(state.clinic_specialities);
         }
-
-        // let facilitiesArray = ""
-        // let selectedFacilities = []
-        // if (typeof state.unity_facilities === 'string') {
-        //     facilitiesArray = state.unity_facilities.split('|')
-        //     selectedFacilities = medicalFacilities.filter(item => facilitiesArray.includes(String(item.value)));
-        // } else {
-        //     selectedFacilities = state.unity_facilities;
-        // }
-
-        // let typesArray = ""
-        // let selectedTypes = []
-        // if (typeof state.unity_types === 'string') {
-        //     typesArray = state.unity_types.split('|')
-        //     selectedTypes = unityTypes.filter(item => typesArray.includes(String(item.value)));
-        // } else {
-        //     selectedTypes = state.unity_types;
-        // }
     }, [])
-
-
-    // let specArray = ""
-    // if (typeof state.clinic_specialities === 'string') {
-    //     specArray = state.clinic_specialities.split('|')
-    //     // setSelectedSpecialities(clinicSpecialities.filter(item => specArray.includes(String(item.value))));
-    // } else {
-    //     // setSelectedSpecialities(state.clinic_specialities);
-    // }
 
     let facilitiesArray = ""
     let selectedFacilities = []
