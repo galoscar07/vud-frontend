@@ -536,12 +536,12 @@
         .tags-wrapper {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            row-gap: $spacing-small;
+            row-gap: 1.18rem;
 
             .tag-container {
                 flex-direction: column;
                 padding: $spacing-xsmall ;
-                min-width: 41.5vw;
+                min-width: 40vw;
                 margin: 0;
                 width: 100%;
 
