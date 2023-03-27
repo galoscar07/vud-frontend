@@ -108,6 +108,13 @@ label {
   font-weight: 600;
 }
 
+.line-separator {
+  width: 100%;
+  height: 1px;
+  background-color: #E5E7EA;
+  margin-top: $spacing-small;
+}
+
 @media screen and (max-width: $mobile-big-width) {
   h1 {
     font-size: 1.5rem;
@@ -128,6 +135,6 @@ label {
   }
 
   .desktop {
-    display: none;
+    display: none !important;
   }
 }

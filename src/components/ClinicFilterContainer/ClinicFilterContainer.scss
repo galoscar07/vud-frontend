@@ -83,10 +83,43 @@
         }
     }
 }
+
 @media screen and (max-width: $mobile-big-width) {
     .clinic-filter-container {
-        .info-container{
+        .info-container {
+            flex-direction: row;
+
+            .text-container {
+                div {
+                    width: 100%;
+                }
+
+                .title {
+                    font-size: $font-size-17;
+                    text-align: start;
+                    margin-bottom: $spacing-xsmall;
+
+                }
+
+                .type {
+                    font-size: $font-small;
+                }
+            }
+        }
+
+        .contact-wrapper {
+            display: flex !important;
             flex-direction: column;
+            align-items: start;
+            font-size: $font-small;
+            font-weight: 300;
+            margin-top: $spacing-xsmall;
+            ;
+
+            .contact {
+                justify-content: start !important;
+                text-align: start;
+            }
         }
     }
 }
