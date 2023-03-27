@@ -91,6 +91,11 @@ const FilterPage = (props) => {
             .then((resp) => resp.json())
             .then((response) => {
                 setClinics(mapServerRespToFront(response.results))
+                let specArray = response.specialities?.split('|') || null
+                if (specArray) {
+                    selectedSpecialities = clinicSpecialities.filter(item => specArray.includes(String(item.value)))
+                }
+
             })
             .catch((err) => {})
         navigate(`${getQueryFromState(state)}`)
