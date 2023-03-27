@@ -457,6 +457,11 @@
 }
 
 @media screen and (max-width: $mobile-big-width) {
+    .clinic-filter-container {
+        max-width: 85vw;
+        ;
+    }
+
     .home-page {
         .content {
             display: flex;

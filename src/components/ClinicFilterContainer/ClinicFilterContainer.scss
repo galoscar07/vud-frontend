@@ -66,9 +66,27 @@
 
             .contact {
                 display: flex;
+                align-items: center;
+                justify-content: center;
                 column-gap: $spacing-xsmall;
+
+                span {
+                    min-width: 6.5rem;
+                }
+
+                img {
+                    width: 0.75rem;
+                    height: 0.75rem;
+                }
             }
 
+        }
+    }
+}
+@media screen and (max-width: $mobile-big-width) {
+    .clinic-filter-container {
+        .info-container{
+            flex-direction: column;
         }
     }
 }

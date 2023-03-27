@@ -3,6 +3,10 @@
 .filter-page {
     padding: $spacing-xbig;
 
+    .add {
+        width: 100%ß;
+    }
+
     .pagination {
         margin-top: 30px;
 
@@ -27,7 +31,8 @@
 
     .right-side {
         max-width: 20rem;
-        img{
+
+        img {
             width: 100%;
         }
     }
@@ -63,4 +68,15 @@
             }
         }
     }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+    .filter-main-content {
+        grid-template-columns: 1fr !important;
+
+        .search-container,.dropdown{
+            max-width: 85vw;
+        }
+    }
+
 }
