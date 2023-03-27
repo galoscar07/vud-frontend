@@ -152,7 +152,7 @@ function Homepage() {
 
       <div className="content">
         <div className="main-content">
-          <div className="container-title">
+          <div className="container-title desktop">
             <div className="title">
               <img src="/images/star_full.svg" />
               Top unitati medicale

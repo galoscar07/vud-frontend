@@ -66,9 +66,60 @@
 
             .contact {
                 display: flex;
+                align-items: center;
+                justify-content: center;
                 column-gap: $spacing-xsmall;
+
+                span {
+                    min-width: 6.5rem;
+                }
+
+                img {
+                    width: 0.75rem;
+                    height: 0.75rem;
+                }
             }
 
+        }
+    }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+    .clinic-filter-container {
+        .info-container {
+            flex-direction: row;
+
+            .text-container {
+                div {
+                    width: 100%;
+                }
+
+                .title {
+                    font-size: $font-size-17;
+                    text-align: start;
+                    margin-bottom: $spacing-xsmall;
+
+                }
+
+                .type {
+                    font-size: $font-small;
+                }
+            }
+        }
+
+        .contact-wrapper {
+            display: flex !important;
+            flex-direction: column;
+            align-items: start;
+            font-size: $font-small;
+            font-weight: 300;
+            margin-top: $spacing-xsmall;
+            ;
+
+            .contact {
+                justify-content: start !important;
+                text-align: start;
+            }
         }
     }
 }

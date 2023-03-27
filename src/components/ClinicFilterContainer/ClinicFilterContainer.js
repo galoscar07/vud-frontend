@@ -10,14 +10,14 @@ const ClinicFilterContainer = (props) => {
         <div className="clinic-filter-container">
             <div className="info-container" onClick={() => { navigate(routes.CLINIC_PAGE + `/?id=${props.clinic.id}`) }}>
                 <div className="rating-container">
-                    <img className="clinic-img" src={!props.clinic.image ? '/images/unit.svg' : props.clinic?.image?.includes('http') ? props.clinic.image : API_URL_MEDIA + props.clinic.image } />
-                    {props.clinic.score > 0 && <div className="score-wrapper">
+                    <img className="clinic-img" src={!props.clinic.image ? '/images/unit.svg' : props.clinic?.image?.includes('http') ? props.clinic.image : API_URL_MEDIA + props.clinic.image} />
+                    {props.clinic.score > 0 && <div className="score-wrapper desktop">
                         {Math.floor(props.clinic.score)}
                     </div>}
-                    <div className="reviews">
+                    <div className="reviews desktop">
                         {props.clinic.noOfReviews} recenzii
                     </div>
-                    <div className="stars-wrapper">
+                    <div className="stars-wrapper desktop">
                         <div className="stars-container">
                             {Array(5).fill(1).map((el, i) =>
                                 <img key={i} src={i >= props.clinic.rating ? "/images/star_empty.svg" : "/images/star_full.svg"} />
@@ -37,9 +37,14 @@ const ClinicFilterContainer = (props) => {
                     </div>}
                 </div>
             </div>
-            {props.displayReviews && <div className="reviews-container">
-                <Carousel content={props.clinic.reviews} fullReview />
-            </div>}
+            {props.displayReviews && props.clinic.reviews.length>0 &&
+                <React.Fragment>
+                    <div className="line-separator"></div>
+                    <div className="reviews-container">
+                        <Carousel content={props.clinic.reviews} fullReview />
+                    </div>
+                </React.Fragment>
+            }
         </div>
     );
 }

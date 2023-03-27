@@ -56,7 +56,7 @@
 
     .tags-wrapper {
         display: flex;
-        column-gap: $spacing-small;
+        column-gap: 1.18rem;
         justify-content: center;
         flex-wrap: wrap;
 
@@ -162,6 +162,7 @@
         margin-top: $spacing-small;
 
         img {
+            max-width: 85vw;
             width: auto;
         }
     }
@@ -177,5 +178,15 @@
     .add {
         width: 100%;
         height: auto;
+    }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+    .home-page {
+        padding: 1.5rem;
+
+        .side-content {
+            max-width: 85vw;
+        }
     }
 }
