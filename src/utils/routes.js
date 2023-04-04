@@ -1,6 +1,6 @@
 // const API_URL_DEV = 'http://127.0.0.1:8000/'
-const API_URL = 'https://vud-be.herokuapp.com/'
-export const API_URL_MEDIA = 'https://vud-be.herokuapp.com'
+const API_URL = 'http://env-vud.eba-ccip93hm.us-west-2.elasticbeanstalk.com/'
+export const API_URL_MEDIA = 'http://env-vud.eba-ccip93hm.us-west-2.elasticbeanstalk.com/'
 
 export const API_MAP = {
   // Creates new account and send link to verify email
