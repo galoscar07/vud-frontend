@@ -359,6 +359,7 @@
 @media screen and (max-width: $mobile-big-width) {
     .clinic-page {
         padding: $spacing-small;
+        width: 100vw;
 
         .col-2 {
             flex-direction: column !important;
