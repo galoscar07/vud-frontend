@@ -262,7 +262,7 @@ function ClinicPage({ props }) {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
                 setAcademicDegreesDropDown(mapped)
             })
-            .catch((err) => {})
+            .catch((err) => { })
         fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
             method: 'GET',
             headers: {
@@ -274,7 +274,7 @@ function ClinicPage({ props }) {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
                 setSpecialities(mapped)
             })
-            .catch((err) => {})
+            .catch((err) => { })
         fetch(getAPILink(API_MAP.GET_COMPETENCES), {
             method: 'GET',
             headers: {
@@ -286,7 +286,7 @@ function ClinicPage({ props }) {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
                 setCompetences(mapped)
             })
-            .catch((err) => {})
+            .catch((err) => { })
     }, [])
 
     const flattenedResponse = (el) =>
@@ -512,6 +512,36 @@ function ClinicPage({ props }) {
                             {handleContactType(el, i, true)}
                         </React.Fragment>
                     )}
+                    {!displayMoreCards && <div className='additional mobile'>
+                        <iframe
+                            title={'google maps'}
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
+                            width="100%"
+                            height="210"
+                            frameBorder="0"
+                            style={{ border: 0, marginTop: 5 }}
+                            allowFullScreen=""
+                            aria-hidden="false"
+                            tabIndex="0"
+                        />
+                        <div className="facilities additional mobile">
+                            <div>
+                                {clinic?.facilities?.map((facility, i) =>
+                                    <div className="facilities-wrapper">
+                                        <img key={i} title={facility.label} src={facility.icon} />
+                                        <span>{facility.label}</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className={`additional mobile links-wrapper ${!clinic.has_user && 'small-margin-bottom'}`}>
+                            {clinic?.links?.map((link, i) =>
+                                <a href={link.value && link.value.includes('http') ? link.value : `http://${link.value}`} target={"_blank"} rel="noreferrer" className={`link ${!link.value && 'hide'}`}>
+                                    <img key={i} alt={link.type} src={`/images/icons/${link.type}.svg`} />
+                                </a>
+                            )}
+                        </div>
+                    </div>}
                 </div>
                 <div className="view-more-btn" onClick={() => setDisplayMoreCards(!displayMoreCards)}>
                     {displayMoreCards ? 'Vezi toate datele de contact' : 'Afiseaza mai putin'}
