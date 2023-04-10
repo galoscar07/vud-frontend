@@ -48,3 +48,22 @@
         border-radius: 0.37rem;
     }
 }
+
+@media screen and (max-width: $mobile-big-width) {
+    .not-found-page {
+        padding: 0.75rem;
+
+        .redirect-button {
+            margin-top: $spacing-default;
+        }
+
+        .white-container {
+            padding-bottom: 0.75rem;
+
+            .searchbar {
+                padding: 0.75rem;
+                ;
+            }
+        }
+    }
+}

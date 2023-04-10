@@ -93,7 +93,6 @@
 
   .mobile {
     display: none;
-    ;
   }
 }
 
@@ -101,6 +100,7 @@
   .footer-wrapper {
     height: auto;
     padding-bottom: $spacing-big;
+    width:100vw;
 
     .footer-menu,
     .specialities {
@@ -120,6 +120,6 @@
   }
 
   .mobile {
-    display: block!important;
+    display: block;
   }
 }

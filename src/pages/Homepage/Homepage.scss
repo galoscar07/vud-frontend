@@ -65,14 +65,14 @@
             display: flex;
             align-items: center;
             border-radius: 0.5rem;
-            padding: 1.6rem;
-            max-width: 20rem;
+            padding: 1.5rem 1.5rem 1.5rem 0.75rem;
+            width: 20rem;
             margin-top: 10px;
             cursor: pointer;
 
             img {
                 width: 4.3rem;
-                height: 100%;
+                height: auto;
             }
 
             .text-wrapper {
@@ -162,7 +162,7 @@
         margin-top: $spacing-small;
 
         img {
-            max-width: 85vw;
+            max-width: 100%;
             width: auto;
         }
     }
@@ -184,9 +184,9 @@
 @media screen and (max-width: $mobile-big-width) {
     .home-page {
         padding: 1.5rem;
+    }
 
-        .side-content {
-            max-width: 85vw;
-        }
+    .side-content {
+        max-width: 100%!important; 
     }
 }

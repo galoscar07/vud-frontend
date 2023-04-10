@@ -276,7 +276,7 @@
             &.emergency {
                 background-color: #FCEAE8;
                 border: 1px solid #EB8676;
-                order:-1;
+                order: -1;
 
                 div {
                     .type {
@@ -359,6 +359,11 @@
 @media screen and (max-width: $mobile-big-width) {
     .clinic-page {
         padding: $spacing-small;
+        width: 100vw;
+
+        .additional {
+            width: 100%;
+        }
 
         .col-2 {
             flex-direction: column !important;
@@ -374,7 +379,7 @@
 
         }
 
-        .mobi {
+        .mobile {
             display: block;
 
             .header-container {
@@ -456,9 +461,31 @@
         }
     }
 
-    .clinic-filter-container {
-        max-width: 85vw;
+    .facilities {
+        background-color: #F5F9F9;
+        width: 100%;
+        padding: 0.75rem;
+        margin: $spacing-small 0;
+        box-shadow: 0 3px 6px 0 rgba(black, 0.2);
 
+        div {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            row-gap: $spacing-small;
+
+            .facilities-wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                row-gap: 0;
+                font-size: $font-size-xxsmall;
+
+                img {
+                    width: 1.5rem;
+                    height: auto;
+                }
+            }
+        }
     }
 
     .home-page {
@@ -559,7 +586,6 @@
 
                 img {
                     width: 3.1rem !important;
-                    height: 3.1rem !important;
                 }
             }
         }
