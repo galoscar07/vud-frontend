@@ -73,10 +73,6 @@
 @media screen and (max-width: $mobile-big-width) {
     .filter-main-content {
         grid-template-columns: 1fr !important;
-
-        .search-container,.dropdown{
-            max-width: 85vw;
-        }
     }
 
 }

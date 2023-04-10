@@ -539,7 +539,7 @@ function ClinicPage({ props }) {
                     ? <LoadingSpinner />
                     : <React.Fragment>
                         <div className="desktop">{renderClinicHeaderDesktop()}</div>
-                        <div className="mobi">{renderClinicHeaderMobile()}</div>
+                        <div className="mobile">{renderClinicHeaderMobile()}</div>
                         <div className="grid">
                             <div className="info-left-container ">
                                 {clinic?.testimonials?.length > 0 && <React.Fragment>
@@ -599,7 +599,7 @@ function ClinicPage({ props }) {
                                     </p>
 
                                 </div>}
-                                <img className="add mobi" src="/images/ads/add2.svg" />
+                                <img className="add mobile" src="/images/ads/add2.svg" />
                             </div>
 
                         </div>

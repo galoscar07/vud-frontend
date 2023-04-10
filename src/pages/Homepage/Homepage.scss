@@ -162,7 +162,7 @@
         margin-top: $spacing-small;
 
         img {
-            max-width: 85vw;
+            max-width: 100%;
             width: auto;
         }
     }
@@ -184,9 +184,9 @@
 @media screen and (max-width: $mobile-big-width) {
     .home-page {
         padding: 1.5rem;
+    }
 
-        .side-content {
-            max-width: 85vw;
-        }
+    .side-content {
+        max-width: 100%!important; 
     }
 }
