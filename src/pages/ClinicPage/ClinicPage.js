@@ -406,7 +406,7 @@ function ClinicPage({ props }) {
                 <div className="clinic-container">
                     <div className="image-container">
                         <img src={clinic.imgUrl} alt="clinic-logo" />
-                        {clinic.score > 0 && <div className="rating">{clinic.score}</div>}
+                        {clinic.score > 0 && <div className="rating">{Math.floor(clinic.score)}</div>}
                     </div>
                     <div className="info-container">
                         <div className="flex-wrapper">
@@ -575,7 +575,7 @@ function ClinicPage({ props }) {
                 </div>
                 <div className="reviews-container">
                     <div className="stars-wrapper">
-                        {clinic.score > 0 && <div className="rating">{clinic.score}</div>}
+                        {clinic.score > 0 && <div className="rating">{Math.floor(clinic.score)}</div>}
                         <span>{clinic.noOfReviews} recenzii</span>
                         <div className="stars-container">
                             {Array(5).fill(1).map((el, i) =>
