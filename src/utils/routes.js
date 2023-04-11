@@ -1,5 +1,6 @@
 // const API_URL_DEV = 'http://127.0.0.1:8000/'
-const API_URL = 'http://vud-api.eu-central-1.elasticbeanstalk.com/'
+// const API_URL = 'http://vud-api.eu-central-1.elasticbeanstalk.com/'
+const API_URL = 'https://vud-api.eu-central-1.elasticbeanstalk.com/'
 export const API_URL_MEDIA = ''
 
 export const API_MAP = {
