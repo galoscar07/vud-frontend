@@ -524,6 +524,33 @@ function ClinicPage({ props }) {
                             aria-hidden="false"
                             tabIndex="0"
                         />
+                        {clinic.schedule &&
+                            <React.Fragment>
+                                <span className='mobile program'>Program</span>
+                                <div className="schedule-container additional mobile">
+                                    <div className="fields-wrapper">
+                                        <div className="weekdays-container ">
+                                            {Object.entries(clinic.schedule).map(([weekday, inter], i) => {
+                                                return (
+                                                    <div className={`day ${day === i ? 'active' : ''}`} key={i}>
+                                                        <span className="weekday">{weekday}</span>
+                                                        {
+                                                            inter.length > 0
+                                                                ? inter.map((interval, index) => {
+                                                                    return <span key={index} className={'interval'}>{interval.startTime} - {interval.endTime}</span>
+                                                                })
+                                                                : <span className={'interval'}>Inchis</span>
+
+                                                        }
+                                                        { }
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                            </React.Fragment>
+                        }
                         <div className="facilities additional mobile">
                             <div>
                                 {clinic?.facilities?.map((facility, i) =>
@@ -544,7 +571,7 @@ function ClinicPage({ props }) {
                     </div>}
                 </div>
                 <div className="view-more-btn" onClick={() => setDisplayMoreCards(!displayMoreCards)}>
-                    {displayMoreCards ? 'Vezi toate datele de contact' : 'Afiseaza mai putin'}
+                    {displayMoreCards ? 'Vezi toate datele de contact' : 'Inchide datele de contact'}
                 </div>
                 <div className="reviews-container">
                     <div className="stars-wrapper">
@@ -575,17 +602,19 @@ function ClinicPage({ props }) {
                                 {clinic?.testimonials?.length > 0 && <React.Fragment>
                                     <div className="container-title">Testimoniale</div>
                                     <Carousel onScroll={scrollingTop} content={clinic.testimonials} /></React.Fragment>}
-                                <iframe
-                                    title={'google maps'}
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
-                                    width="100%"
-                                    height="210"
-                                    frameBorder="0"
-                                    style={{ border: 0, marginTop: 5 }}
-                                    allowFullScreen=""
-                                    aria-hidden="false"
-                                    tabIndex="0"
-                                />
+                                <div className='desktop'>
+                                    <iframe
+                                        title={'google maps'}
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
+                                        width="100%"
+                                        height="210"
+                                        frameBorder="0"
+                                        style={{ border: 0, marginTop: 5 }}
+                                        allowFullScreen=""
+                                        aria-hidden="false"
+                                        tabIndex="0"
+                                    />
+                                </div>
                                 <img className="add" src="/images/ads/ad1.svg" />
                             </div>
 

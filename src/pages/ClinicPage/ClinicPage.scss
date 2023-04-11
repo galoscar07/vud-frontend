@@ -73,6 +73,26 @@
             }
         }
 
+        &.additional {
+            margin: 0;
+            box-shadow: 0 3px 6px 0 rgba(black, 0.2);
+
+            .fields-wrapper {
+                padding: 0;
+
+                .weekdays-container {
+                    grid-template-columns: 1fr;
+
+                    .weekday {
+                        margin-bottom: $spacing-small;
+                    }
+                }
+            }
+        }
+    }
+
+    .program {
+        margin: $spacing-small auto $spacing-small auto;
     }
 
     .container-title {
@@ -104,6 +124,8 @@
 
             img {
                 height: 12rem;
+                max-width: 14.5rem;
+                object-fit: cover;
             }
         }
 
