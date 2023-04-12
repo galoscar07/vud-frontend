@@ -1,7 +1,7 @@
 @import 'src/styles/form';
 
 .clinic-profile-page {
-  
+
   .extra_data_row {
     display: flex;
     align-items: center;
@@ -29,6 +29,12 @@
     margin-left: $spacing-small;
     cursor: pointer;
     font-size: $font-normal;
+
+    img {
+      width: 4rem;
+      height: 4rem;
+      object-fit: cover;
+    }
   }
 
   .delete-button {

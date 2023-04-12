@@ -168,7 +168,7 @@ const Register = () => {
                 <div>
                   <input className="checkbox" type="checkbox" value={areTermsChecked}
                     onChange={handleTermsChecked} />
-                  <label>Sunt de acord cu <a href={routes.TERMS_AND_CONDITION} target={'_blank'}>termenii si conditiile</a></label>
+                  <label>Sunt de acord cu <a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'}>termenii si conditiile</a></label>
                 </div>
               </div>
               {state.server.error &&
