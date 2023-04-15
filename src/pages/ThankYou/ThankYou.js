@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import "./ThankYou.scss";
 import {useNavigate} from "react-router-dom";
-import {API_MAP, AUTH_CLINIC_MAP_STEP, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
+import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
 import {getAuthTokenFromLocal} from "../../utils/localStorage";
 
 const ThankYou = () => {

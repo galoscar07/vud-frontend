@@ -6,6 +6,7 @@ import "./ClinicPage.scss";
 import { routes } from "../../utils/routes";
 import { API_MAP, getAPILink } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import MapWrapper from "../../components/Map/Map";
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
 import _ from "lodash";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -225,7 +226,7 @@ function ClinicPage({ props }) {
                     link: doc.link,
                 }
             }),
-            schedule: JSON.parse(serverClinic.clinic_schedule),
+            schedule: JSON.parse(serverClinic.clinic_schedule || "{}"),
             has_user: !!serverClinic.user,
         }
     }
@@ -419,8 +420,8 @@ function ClinicPage({ props }) {
 
                                 <div className={`links-wrapper ${!clinic.has_user && 'small-margin-bottom'}`}>
                                     {clinic?.links?.map((link, i) =>
-                                        <a href={link.value && link.value.includes('http') ? link.value : `http://${link.value}`} target={"_blank"} rel="noreferrer" className={`link ${!link.value && 'hide'}`}>
-                                            <img key={i} alt={link.type} src={`/images/icons/${link.type}.svg`} />
+                                        <a key={i} href={link.value && link.value.includes('http') ? link.value : `http://${link.value}`} target={"_blank"} rel="noreferrer" className={`link ${!link.value && 'hide'}`}>
+                                            <img alt={link.type} src={`/images/icons/${link.type}.svg`} />
                                         </a>
                                     )}
                                 </div>
@@ -458,7 +459,7 @@ function ClinicPage({ props }) {
                 </div>
                 <div className="contact-container">
                     {clinic.contact && flattenedResponse(clinic.contact).map((el, i) =>
-                        <React.Fragment>
+                        <React.Fragment key={i}>
                             {handleContactType(el, i)}
                         </React.Fragment>
                     )}
@@ -513,17 +514,10 @@ function ClinicPage({ props }) {
                         </React.Fragment>
                     )}
                     {!displayMoreCards && <div className='additional mobile'>
-                        <iframe
-                            title={'google maps'}
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
-                            width="100%"
-                            height="210"
-                            frameBorder="0"
-                            style={{ border: 0, marginTop: 5 }}
-                            allowFullScreen=""
-                            aria-hidden="false"
-                            tabIndex="0"
-                        />
+                        <MapWrapper
+                          classes={'map-clinic-page'}
+                          locations={[{address: clinic.address, name: clinic.name, description: clinic.description}]}
+                        ></MapWrapper>
                         {clinic.schedule &&
                             <React.Fragment>
                                 <span className='mobile program'>Program</span>
@@ -563,7 +557,7 @@ function ClinicPage({ props }) {
                         </div>
                         <div className={`additional mobile links-wrapper ${!clinic.has_user && 'small-margin-bottom'}`}>
                             {clinic?.links?.map((link, i) =>
-                                <a href={link.value && link.value.includes('http') ? link.value : `http://${link.value}`} target={"_blank"} rel="noreferrer" className={`link ${!link.value && 'hide'}`}>
+                                <a key={i} href={link.value && link.value.includes('http') ? link.value : `http://${link.value}`} target={"_blank"} rel="noreferrer" className={`link ${!link.value && 'hide'}`}>
                                     <img key={i} alt={link.type} src={`/images/icons/${link.type}.svg`} />
                                 </a>
                             )}
@@ -605,17 +599,10 @@ function ClinicPage({ props }) {
                                     <Carousel onScroll={scrollingTop} content={clinic.testimonials} /></React.Fragment>}
                                     </div>
                                 <div className='desktop'>
-                                    <iframe
-                                        title={'google maps'}
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
-                                        width="100%"
-                                        height="210"
-                                        frameBorder="0"
-                                        style={{ border: 0, marginTop: 5 }}
-                                        allowFullScreen=""
-                                        aria-hidden="false"
-                                        tabIndex="0"
-                                    />
+                                    <MapWrapper
+                                        classes={'map-clinic-page'}
+                                        locations={[{address: clinic.address, name: clinic.name, description: clinic.description}]}
+                                    ></MapWrapper>
                                 </div>
                                 <img className="add" src="/images/ads/ad1.svg" />
                             </div>
