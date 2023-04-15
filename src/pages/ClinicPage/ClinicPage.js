@@ -593,12 +593,11 @@ function ClinicPage({ props }) {
                         <div className="mobile">{renderClinicHeaderMobile()}</div>
                         <div className="grid">
                             <div className="info-left-container ">
-                                {clinic?.testimonials?.length > 0 &&
-                                  <React.Fragment>
+                                <div className="desktop">
+                                {clinic?.testimonials?.length > 0 && <React.Fragment>
                                     <div className="container-title">Testimoniale</div>
-                                    <Carousel onScroll={scrollingTop} content={clinic.testimonials} />
-                                  </React.Fragment>
-                                }
+                                    <Carousel onScroll={scrollingTop} content={clinic.testimonials} /></React.Fragment>}
+                                    </div>
                                 <div className='desktop'>
                                     <MapWrapper
                                         classes={'map-clinic-page'}
@@ -609,6 +608,7 @@ function ClinicPage({ props }) {
                             </div>
 
                             <div className="info-right-container">
+                                <img className="add mobile" src="/images/ads/add2.svg" />
                                 <div className="container-title">Cautare</div>
                                 <div className="col">
                                     <Dropdown selected={selectedSpecialties} options={specialities} title={"Specialitati"} onSelect={handleSubmitSpecialties} />

@@ -85,7 +85,7 @@ const Newsletter = (props) => {
           onChange={handleChange} onBlur={isFormEmpty} />
         <div className="checkbox-container">
 
-          <label><a href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni si conditii de abonare</a></label>
+          <label><a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni si conditii de abonare</a></label>
           <div className="checkbox-wrapper">
             <input className="checkbox" type="checkbox" value={state.areTermsChecked.value}
               onChange={handleChange} />

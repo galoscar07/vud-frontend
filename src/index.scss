@@ -87,6 +87,12 @@ label {
   }
 }
 
+.terms-hyper{
+cursor: pointer;
+text-decoration: underline;
+color: $color-primary;
+}
+
 .margin-top {
   margin-top: $spacing-default;
 }

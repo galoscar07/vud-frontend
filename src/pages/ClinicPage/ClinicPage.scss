@@ -501,6 +501,7 @@
                 align-items: center;
                 row-gap: 0;
                 font-size: $font-size-xxsmall;
+                padding: 0 0.25rem 0 0.25rem;
 
                 img {
                     width: 1.5rem;
@@ -587,6 +588,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             row-gap: 1.18rem;
+            column-gap: 1.18rem;
 
             .tag-container {
                 flex-direction: column;
