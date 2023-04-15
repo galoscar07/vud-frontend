@@ -6,6 +6,7 @@ import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/rout
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
+import MapWrapper from "../../components/Map/Map";
 
 const days = {
   'Luni': [],
@@ -59,6 +60,15 @@ const ClinicProfile = (props) => {
     multiple_emails: '',
     website: false,
   })
+
+  const [mapState, setMapState] = useState({
+    complete: false,
+    address: '',
+  })
+
+  useEffect(() => {
+    setMapState({complete: !!state.clinic_street && !!state.clinic_number && !!state.clinic_town, address: `Str. ${state.clinic_street}, nr. ${state.clinic_number}, ${state.clinic_town}`})
+  }, [state.clinic_street, state.clinic_number, state.clinic_town])
 
   const isFormValid = () => {
     let errorCopy = _.cloneDeep(errorState)
@@ -424,7 +434,7 @@ const ClinicProfile = (props) => {
           <div className="col-3">
             <div className="input-wrapper">
               <label>*Oras</label>
-              <select id="city" name="city" onChange={handleFieldChange}>
+              <select id="clinic_town" name="clinic_town" onChange={handleFieldChange}>
                 <option value="Alba-Iulia">Alba-Iulia</option>
                 <option value="Cluj-Napoca">Cluj-Napoca</option>
                 <option value="Bucuresti">Bucuresti</option>
@@ -451,17 +461,10 @@ const ClinicProfile = (props) => {
             </div>
           </div>
         </div>
-        <iframe
-          title={'google maps'}
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
-          width="100%"
-          height="210"
-          frameBorder="0"
-          style={{ border: 0, marginTop: 15 }}
-          allowFullScreen=""
-          aria-hidden="false"
-          tabIndex="0"
-        />
+        <MapWrapper
+          classes={'map-clinic-page'}
+          locations={mapState.complete ? [{address: mapState.address, name: state.clinic_name, description: state.clinic_other_details}] : []}
+        ></MapWrapper>
         <div className="fields-wrapper flex">
           <div className="field-container">
             <label>*Denumire telefon</label>
