@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import "./HowToRedeem.scss"
-import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
+import {API_MAP, getAPILink, routes} from "../../utils/routes";
 import _ from "lodash";
-import {getAuthTokenFromLocal} from "../../utils/localStorage";
 import {useNavigate} from "react-router-dom";
 
 const HowToRedeemPage = () => {
@@ -129,7 +128,7 @@ const HowToRedeemPage = () => {
     }
     return (
         <div className="how-to-redeem-page">
-                <img src="/images/user.svg" />
+                <img alt={'User icon'} src="/images/user.svg" />
             <div className="container-title">Cum sa revendici contul paginii de profil a unitatii medicale pe vreauundoctor.ro:</div>
             <div className="info-container">
                 <div className="steps">
@@ -212,7 +211,7 @@ const HowToRedeemPage = () => {
                 </p>
                 <div className="image-upload">
                     <label htmlFor="file">
-                        <img className="upload-photo"
+                        <img alt="upload icon for files" className="upload-photo"
                             src="/images/upload_icon.svg" />
                     </label>
                     <input style={{ display: "none" }} name="files" id="file" type="file" multiple
@@ -223,7 +222,7 @@ const HowToRedeemPage = () => {
                                 <div className="selected-file" key={i}>
                                     {file}
                                     <span onClick={() => deleteFile(file)}>
-                                        <img src="/images/delete.svg" />
+                                        <img alt='Delete icon' src="/images/delete.svg" />
                                     </span>
                                 </div>
                             )}
@@ -240,7 +239,7 @@ const HowToRedeemPage = () => {
                         <input className="checkbox" type="checkbox" value={values.areTermsChecked}
                             onChange={(e) => handleFieldChange(e.target.value, e.target.name)} />
                     </div>
-                    <label><a href={routes.TERMS_AND_CONDITION} target={'_blank'}>Termeni si conditii</a></label>
+                    <label><a href={routes.TERMS_AND_CONDITION} rel="noreferrer" target={'_blank'}>Termeni si conditii</a></label>
                 </div>
                 {
                     values.error && <div style={{marginBottom: '15px'}} className={'error'}>{values.error}</div>
