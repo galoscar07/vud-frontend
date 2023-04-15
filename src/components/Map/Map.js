@@ -5,7 +5,7 @@ import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-load
 const token = 'pk.eyJ1IjoidnJlYXVkb2N0b3IiLCJhIjoiY2xmcXpvMmF0MDNrczN4cWhtZzQ4a3J3NyJ9.YrlkCUsRnjK4BlOCyaHxiA'
 mapboxgl.accessToken = token
 
-function MapWrapper({locations, classes}) {
+function MapWrapper({locations, location, classes}) {
 
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -45,6 +45,7 @@ function MapWrapper({locations, classes}) {
       for (const mstate of markersState) {
         mstate.remove()
       }
+      if (!mapState) return
       markersCoordinates.map((feature) => {
         const tempMarker = new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(mapState)
         markersList.push(tempMarker)
@@ -55,13 +56,18 @@ function MapWrapper({locations, classes}) {
 
   useEffect( () => {
     if (locations && locations.length > 0) {
-      console.log(locations, locState)
       if (JSON.stringify(locations) !== JSON.stringify(locState)) {
-        setLocState(locations)
         getLatAndLongFromAddresses(locations)
+        setLocState(locations)
       }
     }
   }, [locations])
+
+  useEffect( () => {
+    if (location && location.length > 0) {
+      getLatAndLongFromAddresses(location)
+    }
+  }, [location])
 
   useEffect(() => {
     if (map.current) return; // initialize map only once

@@ -463,7 +463,7 @@ const ClinicProfile = (props) => {
         </div>
         <MapWrapper
           classes={'map-clinic-page'}
-          locations={mapState.complete ? [{address: mapState.address, name: state.clinic_name, description: state.clinic_other_details}] : []}
+          location={mapState.complete ? [{address: mapState.address, name: state.clinic_name, description: state.clinic_other_details}] : []}
         ></MapWrapper>
         <div className="fields-wrapper flex">
           <div className="field-container">
@@ -625,19 +625,19 @@ const ClinicProfile = (props) => {
                 onChange={(e) => { handleChangeInputDoctor(e, docHighlighted); }} />
             </div>
           </div>
-          <Dropdown selected={doctor[docHighlighted].academic_degree}
+          <Dropdown noNumber selected={doctor[docHighlighted].academic_degree}
             onSelect={(values) => {
               handleDropdownDoctor(values, docHighlighted, 'academic_degree')
             }}
             options={academicDegreesDropDown}
             title="Grad Academic" />
-          <Dropdown selected={doctor[docHighlighted].speciality}
+          <Dropdown noNumber selected={doctor[docHighlighted].speciality}
             onSelect={(values) => {
               handleDropdownDoctor(values, docHighlighted, 'speciality')
             }}
             options={specialities}
             title="Specializare" />
-          <Dropdown selected={doctor[docHighlighted].competences}
+          <Dropdown noNumber selected={doctor[docHighlighted].competences}
             onSelect={(values) => {
               handleDropdownDoctor(values, docHighlighted, 'competences')
             }}

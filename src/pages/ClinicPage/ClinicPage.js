@@ -516,7 +516,7 @@ function ClinicPage({ props }) {
                     {!displayMoreCards && <div className='additional mobile'>
                         <MapWrapper
                           classes={'map-clinic-page'}
-                          locations={[{address: clinic.address, name: clinic.name, description: clinic.description}]}
+                          location={[{address: clinic.address, name: clinic.name, description: clinic.description}]}
                         ></MapWrapper>
                         {clinic.schedule &&
                             <React.Fragment>
@@ -601,7 +601,7 @@ function ClinicPage({ props }) {
                                 <div className='desktop'>
                                     <MapWrapper
                                         classes={'map-clinic-page'}
-                                        locations={[{address: clinic.address, name: clinic.name, description: clinic.description}]}
+                                        location={[{address: clinic.address, name: clinic.name, description: clinic.description}]}
                                     ></MapWrapper>
                                 </div>
                                 <img className="add" src="/images/ads/ad1.svg" />

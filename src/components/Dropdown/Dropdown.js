@@ -69,7 +69,7 @@ const OptionsOutsideSelect = (props) => {
                         </div>)
                         : null}
                 </div>
-                {value.length > 0 && <div className="counter">+{value.length}</div>}
+                {!props.noNumber && value.length > 0 && <div className="counter">+{value.length}</div>}
             </div>
         </div>
     );
@@ -94,6 +94,7 @@ function Dropdown(props) {
         <div className="dropdown">
             <div className="dropdown-title">{props.title}</div>
             <OptionsOutsideSelect
+                noNumber={props?.noNumber}
                 options={options}
                 value={selected}
                 isMulti
