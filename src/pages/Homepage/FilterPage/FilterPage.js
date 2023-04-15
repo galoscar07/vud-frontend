@@ -4,6 +4,7 @@ import Dropdown from '../../../components/Dropdown/Dropdown';
 import ClinicFilterContainer from '../../../components/ClinicFilterContainer/ClinicFilterContainer';
 import { API_MAP, getAPILink } from "../../../utils/routes";
 import { useNavigate } from "react-router-dom"
+import MapWrapper from "../../../components/Map/Map";
 
 const options = [
     { value: 'clinica', label: 'Clinica' },
@@ -62,6 +63,8 @@ const FilterPage = (props) => {
                 score: clinic?.average_rating * 2 || 0,
                 noOfReviews: clinic?.review_count || 0,
                 rating: clinic?.average_rating || 0,
+                address: `Str. ${clinic?.clinic_street} ${clinic?.clinic_number ? 'nr.' + clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}`,
+                description: clinic?.description,
                 specialty: clinic.clinic_specialities.map((cs) => { return cs.label }).join(", "),
                 type: clinic.medical_unit_types.map((mut) => { return mut.label }).join(", "),
                 contact: [
@@ -283,19 +286,13 @@ const FilterPage = (props) => {
                     </React.Fragment>
                 </div>
                 <div className="right-side">
-                    <iframe
-                        title={'google maps'}
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e67356080477!2sPT%20Kulkul%20Teknologi%20Internasional!5e0!3m2!1sen!2sid!4v1601138221085!5m2!1sen!2sid"
-                        width="100%"
-                        height="810"
-                        frameBorder="0"
-                        style={{ border: 0, marginTop: 15 }}
-                        allowFullScreen=""
-                        aria-hidden="false"
-                        tabIndex="0"
-                    />
+                    <MapWrapper
+                      classes={'map-filter-page'}
+                      locations={clinics.map((cli) => {
+                          return {address: cli.address, name: cli.name, description: cli.description}
+                      })}
+                    ></MapWrapper>
                     <img className="add" src="/images/ads/add8.svg" />
-
                 </div>
             </div >
 
