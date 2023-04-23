@@ -1,8 +1,8 @@
-import React from 'react'
+import React ,{useEffect} from 'react'
 import "./AddProfile.scss"
-import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
-import {getAuthTokenFromLocal} from "../../utils/localStorage";
-import {useNavigate} from "react-router-dom";
+import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/routes";
+import { getAuthTokenFromLocal } from "../../utils/localStorage";
+import { useNavigate } from "react-router-dom";
 
 const AddProfile = () => {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const AddProfile = () => {
     )
       .then((response) => response.json())
       .then((resp) => {
-        localStorage.setItem('user', JSON.stringify({is_visible: false, step: '2'}))
+        localStorage.setItem('user', JSON.stringify({ is_visible: false, step: '2' }))
         if (resp.error !== 'Something went wrong') {
           navigate(routes.ADMIN_DATA)
         } else {
@@ -50,6 +50,10 @@ const AddProfile = () => {
       })
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   return (
     <div className="add-profile-page">
       <img src="/images/unit.svg" />
@@ -57,7 +61,7 @@ const AddProfile = () => {
       <div className="profiles-container">
         {cards.map((card, i) =>
           <div className="profile-card" key={i}>
-            <img alt={card.alt} src={card.icon}/>
+            <img alt={card.alt} src={card.icon} />
             <span>{card.title}</span>
             <div onClick={() => handleClick(card)} className={`button round border-button ${card.disabled && 'disabled'}`}>Adaugă</div>
           </div>)}

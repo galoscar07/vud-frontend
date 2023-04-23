@@ -83,7 +83,6 @@ function Homepage() {
   const [loading, setLoading] = useState(true)
   const [state, setState] = useState('')
   const [topClinics, setTopClinics] = useState([])
-  const [adds, setAds] = useState([]);
   const navigate = useNavigate();
   const [addsToDisplay, setAddsToDisplay] = useState({})
 
@@ -116,6 +115,7 @@ function Homepage() {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     const jsonArray = JSON.parse(localStorage.getItem('ads'));
     const filteredAds = jsonArray.filter(item => item.location.includes('homepage'));
     let dictAdds = {}
@@ -128,9 +128,7 @@ function Homepage() {
       }
     }
     setAddsToDisplay(dictAdds)
-    console.log(addsToDisplay, ' to display', addsToDisplay['homepage_1'])
 
-    setAds(filteredAds)
     fetch(
       getAPILink(API_MAP.GET_BANNER_CARDS), {
       method: 'GET',
@@ -163,8 +161,6 @@ function Homepage() {
         setLoading(false)
         setTopClinics(mapServerRespToFront(res))
       })
-    console.log(adds, 'adds')
-
   }
     ,
     [])

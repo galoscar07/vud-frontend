@@ -146,6 +146,10 @@ const AdminData = (props) => {
         setValues({ ...values, fileList: updatedList, files: updatedListFi })
     }
 
+    useEffect(() => {
+        window.scrollTo(0, 0)
+      }, [])
+      
     return (
         <div className="admin-data-page">
             <div className="data-container">
