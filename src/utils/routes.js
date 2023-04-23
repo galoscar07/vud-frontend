@@ -32,6 +32,7 @@ export const API_MAP = {
   // PUT Update medical clinic data types
   PUT_MEDICAL_TYPES: 'auth/update-clinic-type-data/',
   PUT_UPDATE_CLINIC_PROFILE: 'auth/update-clinic-profile/',
+  
 
   // GET TOP Clinics
   GET_TOP_CLINICS: 'auth/get-top-clinics/',
@@ -48,6 +49,7 @@ export const API_MAP = {
   GET_MEDICAL_FACILITIES: 'options/medical-facilities/',
   GET_FOOTER_LABELS: 'options/footer/',
   GET_BANNER_CARDS: 'options/banners/',
+  GET_ADDS: 'options/adds',
   POST_NEWSLETTER: 'options/newsletter/',
   POST_REDEEM_CLINIC: 'auth/revendica-clinica/',
 }

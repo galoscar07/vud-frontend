@@ -21,6 +21,20 @@ const dayMapping = {
     6: 5
 }
 
+const label_ads = [
+    'clinicpage_1'
+]
+
+const default_adds = {
+    'clinicpage_1': {
+        id: 1,
+        href: 'www.google.com',
+        alt: 'add-1',
+        photo: "/images/ads/ad1.svg",
+        size: '437x437',
+    }
+}
+
 function ClinicPage({ props }) {
     const [clinic, setClinic] = React.useState({});
     const [loading, setLoading] = React.useState(true)
@@ -29,6 +43,7 @@ function ClinicPage({ props }) {
     const [error, setError] = React.useState('');
     const [displayMoreCards, setDisplayMoreCards] = React.useState(true);
     const [formValid, setFormValid] = React.useState(false)
+    const [addsToDisplay, setAddsToDisplay] = useState({})
     const [review, setReview] = React.useState({
         email: {
             value: '',
@@ -236,6 +251,19 @@ function ClinicPage({ props }) {
     const [competences, setCompetences] = useState([])
 
     useEffect(() => {
+        const jsonArray = JSON.parse(localStorage.getItem('ads'));
+        const filteredAds = jsonArray.filter(item => item.location.includes('clinicpage'));
+        let dictAdds = {}
+        for (const label of label_ads) {
+            const exists = filteredAds.find((el) => el.location === label)
+            if (exists) {
+                dictAdds[label] = exists
+            } else {
+                dictAdds[label] = default_adds[label]
+            }
+        }
+        setAddsToDisplay(dictAdds)
+
         const query = window.location.search
         const queryParams = new URLSearchParams(query)
         const id = queryParams.get('id')
@@ -515,8 +543,8 @@ function ClinicPage({ props }) {
                     )}
                     {!displayMoreCards && <div className='additional mobile'>
                         <MapWrapper
-                          classes={'map-clinic-page'}
-                          location={[{address: clinic.address, name: clinic.name, description: clinic.description}]}
+                            classes={'map-clinic-page'}
+                            location={[{ address: clinic.address, name: clinic.name, description: clinic.description }]}
                         ></MapWrapper>
                         {clinic.schedule &&
                             <React.Fragment>
@@ -594,17 +622,17 @@ function ClinicPage({ props }) {
                         <div className="grid">
                             <div className="info-left-container ">
                                 <div className="desktop">
-                                {clinic?.testimonials?.length > 0 && <React.Fragment>
-                                    <div className="container-title">Testimoniale</div>
-                                    <Carousel onScroll={scrollingTop} content={clinic.testimonials} /></React.Fragment>}
-                                    </div>
+                                    {clinic?.testimonials?.length > 0 && <React.Fragment>
+                                        <div className="container-title">Testimoniale</div>
+                                        <Carousel onScroll={scrollingTop} content={clinic.testimonials} /></React.Fragment>}
+                                </div>
                                 <div className='desktop'>
                                     <MapWrapper
                                         classes={'map-clinic-page'}
-                                        location={[{address: clinic.address, name: clinic.name, description: clinic.description}]}
+                                        location={[{ address: clinic.address, name: clinic.name, description: clinic.description }]}
                                     ></MapWrapper>
                                 </div>
-                                <img className="add" src="/images/ads/ad1.svg" />
+                                <img className="add" src={addsToDisplay['clinicpage_1']?.photo} />
                             </div>
 
                             <div className="info-right-container">
