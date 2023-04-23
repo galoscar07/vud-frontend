@@ -136,6 +136,7 @@ function ClinicPage({ props }) {
         }))
 
     useEffect(() => {
+        window.scrollTo(0, 0)
         reorganiseDoctors()
     }, [clinic.doctors])
 

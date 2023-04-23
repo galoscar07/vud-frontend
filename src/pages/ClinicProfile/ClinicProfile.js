@@ -324,6 +324,7 @@ const ClinicProfile = (props) => {
   // useEffect
   // get all options for dropdowns - kinda componentDidMount
   useEffect(() => {
+    window.scrollTo(0, 0)
     fetch(getAPILink(API_MAP.GET_MEDICAL_UNITY_TYPE), {
       method: 'GET',
       headers: {
