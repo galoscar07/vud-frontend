@@ -4,6 +4,14 @@
     padding: $spacing-big;
     color: $color-blue;
 
+    .next {
+        background-color: $color-primary;
+    }
+
+    .prev {
+        background-color: $color-primary-hover ;
+    }
+
     .add {
         width: 100%;
         margin-top: $spacing-xsmall;

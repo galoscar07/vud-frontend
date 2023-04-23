@@ -658,11 +658,11 @@ function ClinicPage({ props }) {
                                             <div className="page-btn">
                                                 {
                                                     doctorState.currentPage !== 1 &&
-                                                    <div onClick={previousPage} className={'button'}>Anterior</div>
+                                                    <div onClick={previousPage} className={'button prev'}>Anterior</div>
                                                 }
                                                 {
                                                     doctorState.currentPage < doctorState.maxPage &&
-                                                    <div onClick={nextPage} className={'button'}>Urmator</div>
+                                                    <div onClick={nextPage} className={'button next'}>Urmator</div>
                                                 }
                                             </div>
                                             <div style={{ marginTop: '10px' }}>
