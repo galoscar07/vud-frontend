@@ -6,6 +6,26 @@ import { API_MAP, getAPILink } from "../../../utils/routes";
 import { useNavigate } from "react-router-dom"
 import MapWrapper from "../../../components/Map/Map";
 
+const label_ads = [
+    'searchpage_1', 'searchpage_2'
+]
+const default_adds = {
+    'searchpage_1': {
+        id: 1,
+        href: 'www.google.com',
+        alt: 'add-1',
+        photo: "/images/ads/add2.svg",
+        size: '437x437',
+    },
+    'searchpage_2': {
+        id: 2,
+        href: 'www.google.com',
+        alt: 'add-1',
+        photo: "/images/ads/add8.svg",
+        size: '437x437',
+    },
+}
+
 const options = [
     { value: 'clinica', label: 'Clinica' },
     // { value: 'doctor', label: 'Doctor' },
@@ -40,6 +60,7 @@ const FilterPage = (props) => {
     const [clinicSpecialities, setClinicSpecialities] = useState([])
     const [medicalFacilities, setMedicalFacilities] = useState([])
     const [unityTypes, setUnityTypes] = useState([])
+    const [addsToDisplay, setAddsToDisplay] = useState({})
 
     const [selectedSpecialities, setSelectedSpecialities] = useState([]);
     const handleChange = (selectedOption) => {
@@ -86,6 +107,19 @@ const FilterPage = (props) => {
     }
 
     useEffect(() => {
+        const jsonArray = JSON.parse(localStorage.getItem('ads'));
+        const filteredAds = jsonArray.filter(item => item.location.includes('searchpage'));
+        let dictAdds = {}
+        for (const label of label_ads) {
+            const exists = filteredAds.find((el) => el.location === label)
+            if (exists) {
+                dictAdds[label] = exists
+            } else {
+                dictAdds[label] = default_adds[label]
+            }
+        }
+        setAddsToDisplay(dictAdds)
+
         fetch(getAPILink(API_MAP.GET_CLINICS_FILTER + getQueryFromState(state)), {
             method: 'GET',
             headers: {
@@ -264,14 +298,14 @@ const FilterPage = (props) => {
                                             <ClinicFilterContainer key={i} clinic={clinic} />
                                             {i === 1 &&
                                                 <div>
-                                                    <img className="add" src="/images/ads/add2.svg" />
+                                                    <img className="add" src={addsToDisplay['searchpage_1']?.photo} />
                                                 </div>
                                             }
                                         </React.Fragment>
                                     )}
                                 </div>
                                 <div className={'pagination'}>
-                                    {pagination.maxPage !== 1 && (pagination.currentPage!==1 || clinics.length===4) &&
+                                    {pagination.maxPage !== 1 && (pagination.currentPage !== 1 || clinics.length === 4) &&
                                         Array(pagination.maxPage).fill(1).map((e, index) => {
                                             return <span key={index}
                                                 onClick={() => { setPagination((prev) => ({ ...prev, currentPage: index + 1 })) }}
@@ -287,12 +321,12 @@ const FilterPage = (props) => {
                 </div>
                 <div className="right-side">
                     <MapWrapper
-                      classes={'map-filter-page'}
-                      locations={clinics.map((cli) => {
-                          return {address: cli.address, name: cli.name, description: cli.description}
-                      })}
+                        classes={'map-filter-page'}
+                        locations={clinics.map((cli) => {
+                            return { address: cli.address, name: cli.name, description: cli.description }
+                        })}
                     ></MapWrapper>
-                    <img className="add" src="/images/ads/add8.svg" />
+                    <img className="add" src={addsToDisplay['searchpage_2']?.photo} />
                 </div>
             </div >
 

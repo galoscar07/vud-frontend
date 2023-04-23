@@ -1,7 +1,8 @@
 import './App.scss';
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import { Navigate } from 'react-router-dom';
-import { routes } from "./utils/routes";
+import { routes, API_MAP, GET_ADDS, getAPILink } from "./utils/routes";
+import React, { useState, useEffect } from 'react'
 
 // Footer
 import Header from "./components/Header/Header";
@@ -35,8 +36,22 @@ import CookieBot from 'react-cookiebot'
 
 const domainGroupId = '4ca262e1-9e52-410b-81d0-dc997ad6f624';
 
-
 function App() {
+  const [ads, setAds] = useState([]);
+  useEffect(() => {
+    fetch(
+      getAPILink(API_MAP.GET_ADDS), {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        localStorage.setItem('ads', JSON.stringify(res));
+      })
+    })
+
   return (
     <div className="App">
       <Header />

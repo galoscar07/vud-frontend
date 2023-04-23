@@ -1,12 +1,47 @@
 import React, { useEffect, useState } from 'react'
 import "./Homepage.scss"
-import Select, { components } from "react-select";
 import ClinicFilterContainer from '../../components/ClinicFilterContainer/ClinicFilterContainer';
 import Newsletter from '../../components/Newsletter/Newsletter';
 import { API_MAP, API_URL_MEDIA, getAPILink, routes } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import { Adsense } from '@ctrl/react-adsense';
+
+const label_ads = [
+  'homepage_1', 'homepage_2', 'homepage_3', 'homepage_4'
+]
+
+const default_adds = {
+  'homepage_1': {
+    id: 1, 
+    href: 'www.google.com',
+    alt: 'add-1',
+    photo: "/images/ads/add7.svg",
+    size: '437x437',
+  },
+  'homepage_2': {
+    id: 2, 
+    href: 'www.google.com',
+    alt: 'add-2',
+    photo: "/images/ads/add4.svg",
+    size: '211x882'
+  },
+  'homepage_3': {
+    id: 3, 
+    href: 'www.google.com',
+    alt: 'add-3',
+    photo: "/images/ads/add5.svg",
+    size: '154x224'
+  },
+  'homepage_4': {
+    id: 4, 
+    href: 'www.google.com',
+    alt: 'add-4',
+    photo: "/images/ads/ad1.svg",
+    size: '224x224'
+  },
+
+}
 
 const tags = [
   {
@@ -48,7 +83,10 @@ function Homepage() {
   const [loading, setLoading] = useState(true)
   const [state, setState] = useState('')
   const [topClinics, setTopClinics] = useState([])
+  const [adds, setAds] = useState([]);
   const navigate = useNavigate();
+  const [addsToDisplay, setAddsToDisplay] = useState({})
+
 
   const mapServerRespToFront = (listOfClinics) => {
     return listOfClinics.map((clinic) => {
@@ -78,6 +116,21 @@ function Homepage() {
   }
 
   useEffect(() => {
+    const jsonArray = JSON.parse(localStorage.getItem('ads'));
+    const filteredAds = jsonArray.filter(item => item.location.includes('homepage'));
+    let dictAdds = {}
+    for (const label of label_ads) {
+      const exists = filteredAds.find((el) => el.location === label)
+      if (exists) {
+        dictAdds[label] = exists
+      } else {
+        dictAdds[label] = default_adds[label]
+      }
+    }
+    setAddsToDisplay(dictAdds)
+    console.log(addsToDisplay, ' to display', addsToDisplay['homepage_1'])
+
+    setAds(filteredAds)
     fetch(
       getAPILink(API_MAP.GET_BANNER_CARDS), {
       method: 'GET',
@@ -110,7 +163,11 @@ function Homepage() {
         setLoading(false)
         setTopClinics(mapServerRespToFront(res))
       })
-  }, [])
+    console.log(adds, 'adds')
+
+  }
+    ,
+    [])
 
   const handleChange = (selectedOption) => {
     setSelected(selectedOption);
@@ -171,15 +228,23 @@ function Homepage() {
             }
           </div>
           <div className="ads-container">
-            <img className="add" src="/images/ads/add7.svg" />
+          <img className="add"
+          //  style={{height: addsToDisplay['homepage_1']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_1']?.size.split("x")[1]+'px'}}
+            src={addsToDisplay['homepage_1']?.photo} />
           </div>
         </div>
 
         <div className="side-content">
-          <img className="add" src="/images/ads/add4.svg" />
-          <img className="add" src="/images/ads/add5.svg" />
-          <Newsletter />
-          <img className="add" src="/images/ads/ad1.svg" />
+        <img className="add"
+        //  style={{height: addsToDisplay['homepage_2']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_2']?.size.split("x")[1]+'px'}}
+          src={addsToDisplay['homepage_2']?.photo} />
+        <img className="add" 
+        // style={{height: addsToDisplay['homepage_3']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_3']?.size.split("x")[1]+'px'}} 
+        src={addsToDisplay['homepage_3']?.photo} />
+        <Newsletter/>
+        <img className="add" 
+        // style={{height: addsToDisplay['homepage_4']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_4']?.size.split("x")[1]+'px'}} 
+        src={addsToDisplay['homepage_4']?.photo} />
         </div>
       </div>
 
