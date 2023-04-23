@@ -50,10 +50,6 @@ const AddProfile = () => {
       })
   }
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
   return (
     <div className="add-profile-page">
       <img src="/images/unit.svg" />

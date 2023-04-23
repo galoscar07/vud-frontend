@@ -91,7 +91,7 @@ const FilterPage = (props) => {
                 contact: [
                     { type: 'phoneNo', value: JSON.parse(clinic.primary_phone).value },
                     {
-                        type: "location", value: `Str. ${clinic?.clinic_street} ${clinic?.clinic_number ? 'nr.' + clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}`,
+                        type: "location", value: `${clinic?.clinic_street} ${clinic?.clinic_number ? clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}`,
                     },
                     { type: "email", value: clinic.primary_email }
                 ],
@@ -107,6 +107,7 @@ const FilterPage = (props) => {
     }
 
     useEffect(() => {
+        window.scrollTo(0, 0)
         const jsonArray = JSON.parse(localStorage.getItem('ads'));
         const filteredAds = jsonArray.filter(item => item.location.includes('searchpage'));
         let dictAdds = {}

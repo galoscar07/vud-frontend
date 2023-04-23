@@ -100,7 +100,7 @@ function Homepage() {
         type: clinic.medical_unit_types.map((mut) => { return mut.label }).join(", "),
         contact: [
           { type: 'phoneNo', value: JSON.parse(clinic.primary_phone).value },
-          { type: "location", value: `Str. ${clinic?.clinic_street} ${clinic?.clinic_number ? 'nr.' + clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}`, },
+          { type: "location", value: `${clinic?.clinic_street} ${clinic?.clinic_number ? clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}`, },
           { type: "email", value: clinic?.primary_email }
         ],
         reviews: clinic.recent_reviews?.map((rev) => {
