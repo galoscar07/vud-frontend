@@ -7,7 +7,7 @@ const SingleArticle = (props) => {
         title: "Title",
         date: "12.04.2022",
         tags: [{ title: "tag1", link: "" }, { title: "tag2", link: '' }],
-        img: "/images/Placeholder.svg",
+        banner: "/images/Placeholder.svg",
         paragraphs: [
             {
                 headline: "Creierul și sistemul nervos influențează ",
@@ -90,7 +90,7 @@ const SingleArticle = (props) => {
                             )
                         })}
                     </div>
-                    <img className="banner" alt="articol" src={article.img} />
+                    <img className="banner" alt="articol" src={article.banner} />
                     <div className="content-container">
                         {article.paragraphs.map((para, i) => {
                             return (

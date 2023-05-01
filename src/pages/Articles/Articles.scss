@@ -1,0 +1,107 @@
+@import "../../styles/base.scss";
+
+.articles-page {
+    padding: 0 $spacing-medium;
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    column-gap: $spacing-small;
+
+    .main-content {
+
+        .search-container {
+            width: 25rem;
+            margin:auto;
+            margin-bottom: $spacing-medium;
+
+            .searchbar {
+                display: flex;
+
+                .search {
+                    background: white url("/images/search.svg") no-repeat 13px center;
+                    padding-left: $spacing-huge;
+                    width: 100%;
+
+                    &::placeholder {
+                        font-style: italic;
+                        font-size: $font-normal;
+                    }
+                }
+
+                .border-button {
+                    background: $color-primary;
+                    color: white;
+                    padding: $spacing-small;
+                    width: fit-content;
+                    font-size: $font-normal;
+                    font-weight: 600;
+                    margin-left: $spacing-small;
+                }
+            }
+        }
+
+        .title {
+            font-weight: $font-weight-bold;
+            font-size: $font-title;
+            margin-bottom: $spacing-default;
+        }
+
+        .articles-container {
+            display: flex;
+            flex-direction: column;
+            row-gap: $spacing-small;
+
+            .article-preview {
+                background-color: white;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                padding: $spacing-default;
+                row-gap: $spacing-default;
+                text-align: start;
+
+                .art-title {
+                    font-size: $font-size-xxxbig;
+                    color: $color-dark-blue;
+                    margin-bottom: $spacing-small;
+                }
+
+                .content {
+                    line-height: 24px;
+                }
+
+                .date {
+                    color: $color-dark-blue;
+                    font-size: $font-size-small;
+                    margin-bottom: $spacing-small;
+
+                }
+
+                .read {
+                    color: $color-primary;
+                    margin-top: $spacing-medium;
+                    cursor: pointer;
+                }
+
+                .art-banner {
+                    width: 16rem;
+                    height: 16rem;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+
+    .side-content {
+        max-width: 14rem;
+        margin-top: 4.5rem;
+        row-gap: $spacing-xsmall;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .add {
+        width: 100%;
+        height: auto;
+    }
+}
