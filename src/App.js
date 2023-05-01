@@ -33,7 +33,8 @@ import HowToRedeemPage from './pages/HowToRedeem/HowToRedeem';
 import TermsAndCond from "./pages/TermsAndCond/TermsAndCond";
 import ExempluCompletare from "./pages/ExempluCompletare/ExempluCompletare";
 import CookieBot from 'react-cookiebot'
-
+import SingleArticle from './pages/Articles/SingleArticle/SingleArticle';
+import ArticlesPage from './pages/Articles/Articles';
 const domainGroupId = '4ca262e1-9e52-410b-81d0-dc997ad6f624';
 
 function App() {
@@ -84,6 +85,9 @@ function App() {
           <Route path={routes.FILTER_PAGE} element={<FilterPage />} />
           <Route path={routes.CLINIC_PAGE} element={<ClinicPage />} />
           <Route path={routes.TERMS_AND_CONDITION} element={<TermsAndCond />} />
+          <Route path = {routes.SINGLE_ARTICLE} element={<SingleArticle/>}/>
+          <Route path = {routes.ARTICLES} element={<ArticlesPage/>}/>
+
         </Route>
       </Routes>
       <CookieBot domainGroupId={domainGroupId} />

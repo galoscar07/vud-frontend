@@ -85,6 +85,9 @@ export const routes = {
   FILTER_PAGE: '/filter',
   TERMS_AND_CONDITION: '/terms-and-cond',
   EXAMPLE_COMPLETE: '/exemplu-completare',
+  //TODO articles;
+  SINGLE_ARTICLE: '/article',
+  ARTICLES:'/articles'
 }
 
 export const AUTH_CLINIC_MAP_STEP = {
