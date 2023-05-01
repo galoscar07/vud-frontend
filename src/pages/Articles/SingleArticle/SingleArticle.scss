@@ -1,0 +1,79 @@
+@import "../../../styles//base.scss";
+
+.article {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    column-gap: $spacing-small;
+
+    .main-content {
+        .article-content {
+            padding: $spacing-default $spacing-section;
+
+            .banner {
+                width: 100%;
+            }
+
+            .title {
+                font-weight: $font-weight-bold;
+                font-size: $font-title;
+                color: $color-dark-blue;
+            }
+
+            .date {
+                color: $color-dark-blue;
+            }
+
+            .tags-container {
+                margin: $spacing-small 0 $spacing-huge 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                column-gap: 8px;
+
+                .tag {
+                    border: 1px solid $color-primary;
+                    border-radius: 128px;
+                    color: $color-primary;
+                    padding: 8px 16px;
+                    cursor: pointer;
+                }
+            }
+
+            .content-container {
+                text-align: start;
+                padding: 0 $spacing-big;
+
+                .headline {
+                    font-size: $font-subtitle;
+                    margin: $spacing-small 0;
+                }
+
+                .text {
+                    line-height: 24px;
+                }
+
+                .art-img {
+                    width: 100%;
+                    margin: $spacing-big 0;
+                }
+            }
+        }
+
+        .add {
+            margin-left: $spacing-xxbig;
+        }
+    }
+
+    .side-content {
+        max-width: 14rem;
+        margin-top: 4.5rem;
+        row-gap: $spacing-xsmall;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .add {
+        width: 100%;
+        height: auto;
+    }
+}
