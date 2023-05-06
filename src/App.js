@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react'
 
 // Footer
 import Header from "./components/Header/Header";
-
+//DEV BRANCH;
 // Pages
 import Homepage from "./pages/Homepage/Homepage";
 import Login from "./pages/Auth/Login/Login";
@@ -87,9 +87,9 @@ function App() {
           <Route path={routes.TERMS_AND_CONDITION} element={<TermsAndCond />} />
           <Route path = {routes.SINGLE_ARTICLE} element={<SingleArticle/>}/>
           <Route path = {routes.ARTICLES} element={<ArticlesPage/>}/>
-
         </Route>
       </Routes>
+
       <CookieBot domainGroupId={domainGroupId} />
     </div>
   );
