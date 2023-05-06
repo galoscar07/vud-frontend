@@ -106,6 +106,12 @@ form {
         gap: $spacing-small;
     }
 
+    .col-3-1 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: $spacing-small;
+    }
+
     .col-4 {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;

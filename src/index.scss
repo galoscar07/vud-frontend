@@ -87,17 +87,17 @@ label {
   }
 }
 
-.terms-hyper{
-cursor: pointer;
-text-decoration: underline;
-color: $color-primary;
+.terms-hyper {
+  cursor: pointer;
+  text-decoration: underline;
+  color: $color-primary;
 }
 
 .margin-top {
   margin-top: $spacing-default;
 }
 
-.mobile{
+.mobile {
   display: none;
 }
 
@@ -119,6 +119,31 @@ color: $color-primary;
   height: 1px;
   background-color: #E5E7EA;
   margin-top: $spacing-small;
+}
+
+.container-title {
+  font-size: $font-subtitle;
+  margin-bottom: $spacing-small;
+
+  &.profile-photo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        margin-left: 10px;
+        height: 65px;
+        width: 65px;
+        border-radius: 50%;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: $mobile-big-width) {
