@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import _ from "lodash";
 import Dropdown from '../../components/Dropdown/Dropdown';
 import { API_MAP, getAPILink, routes } from "../../utils/routes";
+import "./DoctorData.scss";
+import InviteCard from "./InviteCard/InviteCard";
 
 const DoctorData = (props) => {
     const navigate = useNavigate();
@@ -17,8 +19,48 @@ const DoctorData = (props) => {
 
     const [errorInvite, setInviteError] = useState({
         name: false,
-        email: false
+        email: false,
+        unit: false,
+        unitEmail: false,
     })
+
+    //MOCK;
+    const invitedDoctors = [
+        {
+            name: "Mihai Dumitrescu",
+            specialities: ["Spec1", "Spec2"],
+            competences: ["Comp1", "Comp2"],
+            unit: 'Unitate medicala',
+            email: "test@emailc.com",
+            img: "/images/user.svg",
+            status: "uninvited"
+        },
+        {
+            name: "Dorin Dumitrescu",
+            specialities: ["Spec1", "Spec2"],
+            competences: ["Comp1", "Comp2"],
+            unit: 'Unitate medicala',
+            email: "test@emailc.com",
+            img: "/images/user.svg",
+            status: "waiting"
+        },
+        {
+            name: "Ana Dumitrescu",
+            specialities: ["Spec1", "Spec2"],
+            competences: ["Comp1", "Comp2"],
+            unit: 'Unitate medicala',
+            email: "test@emailc.com",
+            img: "/images/user.svg",
+            status: "added"
+        }
+    ]
+    const invitedUnits = [{
+        img: "/images/user.svg",
+        name: "Clinica de pediatrie",
+        type: "Clinica privata",
+        status: "added"
+    }]
+
 
     const [values, setValues] = useState({
         firstName: props?.selected?.firstName || '',
@@ -43,18 +85,38 @@ const DoctorData = (props) => {
     const [inviteValues, setInviteValues] = useState({
         name: '',
         email: '',
-        message: ''
+        message: '',
+        unit: '',
+        unitEmail: '',
+        unitMessage: ''
     })
 
     const academicDegreesDropDown = ['one', 'two', 'three']
     const specialityDropDown = ['one', 'two', 'three']
     const [selectedSpecialties, setSelectedSpecialties] = React.useState([]);
     const [selectedDegrees, setSelectedDegrees] = React.useState([]);
+    const [toggleInvite, setToggleInvite] = React.useState(false);
+    const [toggleInviteU, setToggleInviteUnit] = React.useState(false);
 
+    const toggleInviteDoctor = (toggleInvite) => {
+        setToggleInvite(toggleInvite);
+    }
+
+    const toggleInviteUnit = (toggleInviteU) => {
+        setToggleInviteUnit(toggleInviteU);
+    }
 
     const handleFieldChange = (value, title) => {
         setValues((prevState) => ({ ...prevState, [title]: value }));
     };
+
+    const [pagination, setPagination] = React.useState({
+        perPage: 4,
+        currentPage: 1,
+        maxPage: null,
+    })
+
+    const [medics, setMedic] = useState('')
 
     const isFormValid = () => {
         let errorCopy = _.cloneDeep(error)
@@ -118,14 +180,16 @@ const DoctorData = (props) => {
     const inviteDoctor = () => {
         console.log('invite')
     }
-
+    const inviteUnit = () => {
+        console.log('invite')
+    }
 
     return (
         <div className="doctor-data-page">
+            <img src="/images/user.svg" />
+            <h1>Profil medic</h1>
             <div className="data-container">
-                <img src="/images/user.svg" />
-                <h1>Profil medic</h1>
-                <form onSubmit={handleSubmit}>
+                <form>
                     <div className="contact-data">
                         <div className="container-title">Date de contact</div>
                         <div className="fields-wrapper">
@@ -210,7 +274,7 @@ const DoctorData = (props) => {
                     <div className="description-data">
                         <div className="container-title">Descriere Personla</div>
                         <div className="fields-wrapper">
-                            <textarea rows="6" className="full-width" type="comment" name="description" value={values.description}
+                            <textarea rows="15" className="full-width" type="comment" name="description" value={values.description}
                                 onChange={(e) => {
                                     handleFieldChange(e.target.value, e.target.name);
                                 }} />
@@ -222,15 +286,74 @@ const DoctorData = (props) => {
                     </div>
                     <div className="collab-unit-data">
                         <div className="container-title">Unitate medicală colaboratoare</div>
+                        <div className="fields-wrapper">
+                            {/* <input onChange={handleInput} className="search" value={medic} type="text" placeholder="Cauta medic" name="name" /> */}
 
+                            {/* dropdown */}
+                            {invitedUnits.map((invited, i) => {
+                                return (
+                                    <InviteCard type="unit" unit={invited} />
+                                )
+                            })}
+                            {!toggleInviteU && <div className={`button border-button round invite-btn`} onClick={() => toggleInviteUnit(true)}>Invitați unitate medicală pe vreaudoctor.ro</div>}
+
+                            {toggleInviteU && <div className="invite-container">
+                                <div className="container-subtitle">
+                                    <span className="container-title">Invitați unitate medicala</span>
+                                    <span className="close" onClick={() => toggleInviteUnit(false)}>x</span>
+                                </div>
+                                <div className="col-1">
+                                    <div className="input-wrapper">
+                                        <label>*Nume unitate medicala</label>
+                                        <input className={errorInvite.unit ? 'error' : ''} name="unit" type="text" value={inviteValues.unit}
+                                            onChange={(e) => {
+                                                handleFieldChange(e.target.value, e.target.name);
+                                            }} />
+                                    </div>
+                                </div>
+                                <div className="col-1">
+                                    <div className="input-wrapper">
+                                        <label>*Adresa email</label>
+                                        <input className={errorInvite.unitEmail ? 'error' : ''} name="unitEmail" type="text" value={inviteValues.unitEmail}
+                                            onChange={(e) => {
+                                                handleFieldChange(e.target.value, e.target.name);
+                                            }} />
+                                    </div>
+                                </div>
+                                <div className="textarea-column">
+                                    <label>Personalizeaza mesaj</label>
+                                    <textarea rows="15" className="full-width" type="comment" name="unitMessage" value={inviteValues.unitMessage}
+                                        onChange={(e) => {
+                                            handleFieldChange(e.target.value, e.target.name);
+                                        }} />
+                                </div>
+                                <div className="button round custom-width" onClick={inviteUnit}> Trimiteți invitație </div>
+                            </div>}
+                            {/* medici invitati */}
+                            {/* medici adaugati */}
+                        </div>
                     </div>
-                    <div className="collab-doctos-data">
+                    <div className="collab-doctors-data">
                         <div className="container-title">Medici colaboratoari</div>
                         <div className="fields-wrapper">
+                            {/* <input onChange={handleInput} className="search" value={medic} type="text" placeholder="Cauta medic" name="name" /> */}
+
                             {/* dropdown */}
-                            {/* list */}
-                            <div className="invite-container">
-                                <div className="container-subtitle">Invitați medic</div>
+
+                            {invitedDoctors.map((invited, i) => {
+                                return (
+                                    <InviteCard type="doctor" doctor={invited} />
+                                )
+                            })}
+
+
+                            {!toggleInvite && <div className={`button border-button round invite-btn`} onClick={() => toggleInviteDoctor(true)}>Invitați medic pe vreaudoctor.ro</div>}
+
+                            {toggleInvite && <div className="invite-container">
+                                <div className="container-subtitle">
+                                    <span className="container-title">Invitați medic</span>
+                                    <span className="close" onClick={() => toggleInviteDoctor(false)}>x</span>
+                                </div>
                                 <div className="col-1">
                                     <div className="input-wrapper">
                                         <label>*Nume medic</label>
@@ -249,17 +372,20 @@ const DoctorData = (props) => {
                                             }} />
                                     </div>
                                 </div>
-                                <textarea rows="6" className="full-width" type="comment" name="message" value={inviteValues.message}
-                                    onChange={(e) => {
-                                        handleFieldChange(e.target.value, e.target.name);
-                                    }} />
-                                <button className="button round custom-width" onClick={inviteDoctor}> Trimiteți invitație </button>
-                            </div>
+                                <div className="textarea-column">
+                                    <label>Personalizeaza mesaj</label>
+                                    <textarea rows="15" className="full-width" type="comment" name="message" value={inviteValues.message}
+                                        onChange={(e) => {
+                                            handleFieldChange(e.target.value, e.target.name);
+                                        }} />
+                                </div>
+                                <div className="button round custom-width" onClick={inviteDoctor}> Trimiteți invitație </div>
+                            </div>}
                             {/* medici invitati */}
                             {/* medici adaugati */}
                         </div>
                     </div>
-                    <div className="file-data">
+                    <div className="file-data-doc">
                         <p className="italic">
                             Pentru a ne asigura că sunteți titularul legitim al datelor medicale înregistrate, vă rugăm să urmați pașii de identificare și confirmare următori:
                             - Încărcați o copie a diplomei de medic sau a certificatului de înregistrare la Colegiul Medicilor.
@@ -295,20 +421,17 @@ const DoctorData = (props) => {
                         {
                             values.error && <div style={{ marginBottom: '15px' }} className={'error'}>{values.error}</div>
                         }
-                    </div>
-                    <div className="checkbox-container">
-
-                        <label><a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni si conditii de abonare</a></label>
-                        <div className="checkbox-wrapper">
-                            <input className="checkbox" type="checkbox" value={values.areTermsChecked}
-                                onChange={(e) => {
-                                    handleFieldChange(e.target.value, e.target.name);
-                                }} />
+                        <div className="checkbox-container">
+                            <label><a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni si conditii de abonare</a></label>
+                            <div className="checkbox-wrapper">
+                                <input className="checkbox" type="checkbox" value={values.areTermsChecked}
+                                    onChange={(e) => {
+                                        handleFieldChange(e.target.value, e.target.name);
+                                    }} />
+                            </div>
                         </div>
-
                     </div>
                     <button className="button round custom-width" onClick={handleSubmit}> Salveaza </button>
-
                 </form>
             </div>
         </div>
