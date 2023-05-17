@@ -108,7 +108,7 @@ const FilterPage = (props) => {
 
     useEffect(() => {
         window.scrollTo(0, 0)
-        const jsonArray = JSON.parse(localStorage.getItem('ads'));
+        const jsonArray = JSON.parse(localStorage.getItem('ads') || '[]');
         const filteredAds = jsonArray.filter(item => item.location.includes('searchpage'));
         let dictAdds = {}
         for (const label of label_ads) {

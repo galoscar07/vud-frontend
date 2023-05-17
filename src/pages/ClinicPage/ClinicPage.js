@@ -252,7 +252,7 @@ function ClinicPage({ props }) {
     const [competences, setCompetences] = useState([])
 
     useEffect(() => {
-        const jsonArray = JSON.parse(localStorage.getItem('ads'));
+        const jsonArray = JSON.parse(localStorage.getItem('ads') || '[]');
         const filteredAds = jsonArray.filter(item => item.location.includes('clinicpage'));
         let dictAdds = {}
         for (const label of label_ads) {
