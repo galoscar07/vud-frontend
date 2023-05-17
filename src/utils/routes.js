@@ -87,7 +87,8 @@ export const routes = {
   EXAMPLE_COMPLETE: '/exemplu-completare',
   //TODO articles;
   SINGLE_ARTICLE: '/article',
-  ARTICLES:'/articles'
+  ARTICLES:'/articles',
+  DOCTOR_DATA: '/doctor-data'
 }
 
 export const AUTH_CLINIC_MAP_STEP = {

@@ -307,5 +307,4 @@ const AdminData = (props) => {
     )
 }
 
-
 export default AdminData;
