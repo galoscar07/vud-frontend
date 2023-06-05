@@ -4,65 +4,6 @@
 .admin-data-page,
 .clinic-profile-page {
   margin: $spacing-page;
-
-  .contact-data,
-  .company-data,
-  .schedule-container,
-  .facilities-container,
-  .specialities-container,
-  .hq-container {
-    display: flex;
-    flex-direction: column;
-    background: white;
-    padding: $spacing-small;
-    text-align: left;
-    margin: $spacing-medium 0;
-
-    .profile-photo {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .pp {
-        display: flex;
-        align-items: center;
-
-        img {
-          margin-left: $spacing-small;
-          width: 4rem;
-          height: 4rem;
-          object-fit: cover;
-          border-radius: 100%;
-
-        }
-      }
-    }
-
-    .container-title {
-      font-size: $font-subtitle;
-      margin-bottom: $spacing-small;
-
-      &.profile-photo {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-
-        div {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          img {
-            margin-left: 10px;
-            height: 65px;
-            width: 65px;
-            border-radius: 50%;
-          }
-        }
-      }
-    }
-  }
 }
 
 @media screen and (max-width: $mobile-big-width) {
