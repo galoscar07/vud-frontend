@@ -54,6 +54,8 @@ function App() {
       })
   })
 
+  console.log("App" + window.location.href + ' ' + window.location.search)
+
   return (
     <div className="App">
       <Header />
