@@ -34,6 +34,7 @@ export const API_MAP = {
   PUT_UPDATE_CLINIC_PROFILE: 'auth/update-clinic-profile/',
   GET_ARTICLE: 'options/blogposts/?blog_id=',
   GET_ARTICLES: 'options/blogposts',
+  GET_TAGS: 'options/tags',
   
 
   // GET TOP Clinics

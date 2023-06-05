@@ -67,7 +67,7 @@ const ArticlesPage = () => {
     const [state, setState] = useState('')
 
     const [tags, setTags] = useState({
-        tags: ['tag1', 'tag2', 'tag3'],
+        tags: [],
     })
 
     const [loading, setLoading] = useState(true)
@@ -124,6 +124,18 @@ const ArticlesPage = () => {
                 setLoading(false)
                 setArticles(res)
             })
+        fetch(
+            getAPILink(API_MAP.GET_TAGS), {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            }
+        ).then((res) => res.json())
+        .then((res) => {
+            setLoading(false)
+            setTags(res)
+        })
             .catch((err) => { })
     }, [])
 
@@ -136,10 +148,11 @@ const ArticlesPage = () => {
                     <div className="main-content">
                         <div className="title">Informatii Medicale</div>
                         <div className="search-container">                <form onSubmit={(ev) => { ev.preventDefault() }} className="searchbar">
+                            {/* TODO Investigate tags issue & filtering */}
                             <input value={state} onChange={(ev) => setState(ev.target.value)} className="search" type="text" placeholder="Cauta" name="search" />
                             <button className="button border-button" onClick={handleSearch}>Cauta</button>
                         </form>
-                            <Dropdown onSelect={onSelect} options={tags} />
+                            <Dropdown selected={Object.values(tags).map(item => item.name)} onSelect={onSelect} options={tags} />
                         </div>
                         <div className="articles-container">
                             {articles && articles?.map((article, i) => {
