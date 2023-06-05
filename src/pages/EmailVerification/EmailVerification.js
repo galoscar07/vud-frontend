@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import "./EmailVerification.scss";
-import {NavLink, useLocation} from "react-router-dom";
+import {NavLink, useLocation, useParams} from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import {API_MAP, getAPILink, routes} from "../../utils/routes";
 
 const EmailVerification = () => {
   // const search = useLocation().search
   // const searchParams = new URLSearchParams(search)
+  let { token } = useParams();
   console.log("1" + window.location.href + ' ' + window.location.search)
 
   const [state, setState] = useState({
@@ -23,10 +24,6 @@ const EmailVerification = () => {
   }
 
   useEffect(() => {
-    const search = window.location.search
-    const searchParams = new URLSearchParams(search)
-    const token = searchParams.get('token')
-    console.log("Muhaja")
     console.log(token)
     console.log("2" + window.location.href + ' ' + window.location.search)
     fetch(
