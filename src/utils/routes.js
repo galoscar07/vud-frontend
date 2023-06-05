@@ -88,7 +88,8 @@ export const routes = {
   //TODO articles;
   SINGLE_ARTICLE: '/article',
   ARTICLES:'/articles',
-  DOCTOR_DATA: '/doctor-data'
+  DOCTOR_DATA: '/doctor-data',
+  DOCTOR_PAGE: '/doctor-page'
 }
 
 export const AUTH_CLINIC_MAP_STEP = {

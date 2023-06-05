@@ -10,6 +10,7 @@ import MapWrapper from "../../components/Map/Map";
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
 import _ from "lodash";
 import { NavLink, useNavigate } from "react-router-dom";
+import { MapTouchEvent } from 'mapbox-gl';
 
 const dayMapping = {
     0: 6,
@@ -121,7 +122,6 @@ function ClinicPage({ props }) {
             maxPage: doctors.length === 0 ? 1 : doctors.length
         });
     };
-
     const previousPage = () =>
         setDoctorState(prevState => ({
             ...prevState,
@@ -280,6 +280,7 @@ function ClinicPage({ props }) {
             .then((res) => {
                 setLoading(false)
                 setClinic(mapServerRespToFront(res))
+                console.log(mapServerRespToFront(res), 'AIII')
             })
         fetch(getAPILink(API_MAP.GET_ACADEMIC_DEGREES), {
             method: 'GET',
@@ -406,7 +407,6 @@ function ClinicPage({ props }) {
                             </div>
                         </div>
                     )
-                default:
                     return (
                         <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
                             {el?.icon && <img alt={"contact-icon"} src={`/images/icons/phone.svg`} />}

@@ -22,7 +22,6 @@
         grid-template-columns: 30% 70%;
         column-gap: $spacing-small;
 
-
     }
 
     .revendica {
@@ -216,21 +215,6 @@
                 }
             }
 
-            .links-wrapper {
-                display: flex;
-                flex-direction: row;
-                column-gap: $spacing-small;
-                margin-bottom: $spacing-medium;
-
-                &.small-margin-bottom {
-                    margin-bottom: 10px;
-                }
-
-                a {
-                    margin: 0;
-                }
-            }
-
             .favorite-button {
                 border: 2px solid $color-primary;
                 padding: $spacing-small;
@@ -246,35 +230,6 @@
                 img {
                     margin-right: $spacing-small;
                 }
-            }
-        }
-    }
-
-    .add-review-wrapper {
-        margin-top: 20px;
-
-        .button {
-            width: 30%;
-            margin: auto;
-        }
-
-        .add-review-form {
-            row-gap: $spacing-xsmall;
-            display: flex;
-            flex-direction: column;
-
-            label {
-                text-align: left;
-            }
-
-            img {
-                cursor: pointer;
-                height: 1.5rem;
-                width: 1.5rem;
-            }
-
-            .stars-container {
-                margin-bottom: $spacing-small;
             }
         }
     }
@@ -343,8 +298,6 @@
     .info-left-container {
         width: 100%;
     }
-
-    .info-left-container {}
 
     .info-right-container {
         .result-title {
