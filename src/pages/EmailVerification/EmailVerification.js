@@ -7,6 +7,7 @@ import {API_MAP, getAPILink, routes} from "../../utils/routes";
 const EmailVerification = () => {
   const search = useLocation().search
   const searchParams = new URLSearchParams(search)
+  console.log("1" + window.location.href)
 
   const [state, setState] = useState({
     loading: true,
@@ -25,6 +26,7 @@ const EmailVerification = () => {
     const token = searchParams.get('token')
     console.log("Muhaja")
     console.log(token)
+    console.log(window.location.href)
     fetch(
       getAPILink(API_MAP.VERIFY_EMAIL) + `?token=${token}`, {
         method: 'GET',
