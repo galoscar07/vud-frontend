@@ -280,7 +280,6 @@ function ClinicPage({ props }) {
             .then((res) => {
                 setLoading(false)
                 setClinic(mapServerRespToFront(res))
-                console.log(mapServerRespToFront(res), 'AIII')
             })
         fetch(getAPILink(API_MAP.GET_ACADEMIC_DEGREES), {
             method: 'GET',
