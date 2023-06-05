@@ -24,7 +24,7 @@ const EmailVerification = () => {
   useEffect(() => {
     const token = searchParams.get('token')
     console.log("Muhaja")
-    debugger
+    console.log(token)
     fetch(
       getAPILink(API_MAP.VERIFY_EMAIL) + `?token=${token}`, {
         method: 'GET',
