@@ -36,6 +36,7 @@ import CookieBot from 'react-cookiebot'
 import SingleArticle from './pages/Articles/SingleArticle/SingleArticle';
 import ArticlesPage from './pages/Articles/Articles';
 import DoctorData from './pages/DoctorData/DoctorData';
+import ResendEmail from './pages/EmailVerification/ResendEmail/ResendEmail';
 const domainGroupId = '4ca262e1-9e52-410b-81d0-dc997ad6f624';
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
           <Route path={routes.REGISTER} element={<Register />} />
           <Route path={routes.FORGET_PASSWORD} element={<ForgetPassword />} />
           <Route path={routes.RESET_PASSWORD} element={<ResetPassword />} />
+          <Route path={routes.RESEND_EMAIL} element={<ResendEmail/>}/>
           <Route path={routes.ADD_PROFILE} element={<AddProfile />} />
           <Route path={routes.ADMIN_DATA} element={<AdminData />} />
           <Route path={routes.ADD_UNIT} element={<AddUnit />} />
