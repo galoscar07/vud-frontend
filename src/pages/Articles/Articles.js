@@ -162,7 +162,7 @@ const ArticlesPage = () => {
                                             <div className="art-title">{article.title}</div>
                                             <div className="date">Date {formatDate(article.date_created)}</div>
                                             <div className="content">{trimText(article.content_1, 300)}</div>
-                                            <div className="read" onClick={() => navigate((routes.SINGLE_ARTICLE) + '/'+ `${article.id}`)}>Citeste articolul</div>
+                                            <div className="read" onClick={() => navigate((routes.SINGLE_ARTICLE) + '/?article_id=' + `${article.id}`)}>Citeste articolul</div>
                                         </div>
                                         <img className="art-banner" src={article.banner_image} />
                                     </div>
