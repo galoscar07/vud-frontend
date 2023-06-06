@@ -67,7 +67,7 @@ const SingleArticle = (props) => {
     const [id, setId] = useState(null);
 
     useEffect(() => {
-        const jsonArray = JSON.parse(localStorage.getItem('ads'));
+        const jsonArray = JSON.parse(localStorage.getItem('ads') || '[]');
         const filteredAds = jsonArray.filter(item => item.location.includes('homepage'));
         let dictAdds = {}
         for (const label of label_ads) {

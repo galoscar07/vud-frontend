@@ -190,8 +190,6 @@ const Register = () => {
                 In cazul in care nu ai primit email-ul da click
                 <span onClick={handleSubmitResendEmail} className="code-label click"> aici </span>
               </span>
-              {/* TEST CODE */}
-              <span className="code-label click"> <a href={link} >Click to validate email </a></span>
             </React.Fragment>
           }
         </form>

@@ -77,6 +77,7 @@ export const routes = {
   ADD_UNIT: '/add-medical-unit',
   THANK_YOU: '/thank-you',
   EMAIL_VERIFICATION: '/email-verification',
+  RESEND_EMAIL: '/resend-email',
   DELETE_PROFILE: '/delete-profile',
   PROFILE: '/clinic-profile',
   DASHBOARD: '/dashboard',
