@@ -32,6 +32,9 @@ export const API_MAP = {
   // PUT Update medical clinic data types
   PUT_MEDICAL_TYPES: 'auth/update-clinic-type-data/',
   PUT_UPDATE_CLINIC_PROFILE: 'auth/update-clinic-profile/',
+  GET_ARTICLE: 'options/blogposts/?blog_id=',
+  GET_ARTICLES: 'options/blogposts',
+  GET_TAGS: 'options/tags',
   
 
   // GET TOP Clinics
@@ -89,7 +92,8 @@ export const routes = {
   //TODO articles;
   SINGLE_ARTICLE: '/article',
   ARTICLES:'/articles',
-  DOCTOR_DATA: '/doctor-data'
+  DOCTOR_DATA: '/doctor-data',
+  DOCTOR_PAGE: '/doctor-page'
 }
 
 export const AUTH_CLINIC_MAP_STEP = {

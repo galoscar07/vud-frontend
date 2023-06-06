@@ -1,0 +1,152 @@
+@import "../../styles/base.scss";
+
+.doctor-page {
+    padding: $spacing-big;
+
+    .add {
+        width: 100%;
+    }
+
+    .info-left-container {
+        row-gap: $spacing-small;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rating {
+        color: white;
+        background: $color-primary;
+        font-size: $font-size-xbig;
+        padding: 2px 0;
+        margin-top: $spacing-default;
+
+    }
+
+    .about-me {
+        display: flex;
+        flex-direction: column;
+        text-align: start;
+        background-color: white;
+        padding: $spacing-default;
+        font-style: italic;
+    }
+
+    .doctor-img {
+        height: 12rem;
+        max-width: 14.5rem;
+        object-fit: cover;
+        border-radius: 40px 40px 0 0;
+        background-color: $color-background;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 30% 70%;
+        column-gap: $spacing-small;
+        margin-top: $spacing-default;
+
+        .container-title {
+            text-align: start;
+
+        }
+    }
+
+    .reviews-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .round-spec {
+        color: $color-primary;
+        border: 1px solid $color-primary;
+        border-radius: 128px;
+        padding: 4px 15px;
+        text-align: center;
+    }
+
+    .stars-wrapper {
+        span {
+            font-size: $font-size-normal;
+        }
+    }
+
+    .see-reviews {
+        margin-top: $spacing-xsmall;
+        cursor: pointer;
+        color: $color-primary;
+        text-decoration: underline;
+
+    }
+
+    .doctor-container {
+        display: flex;
+        flex-direction: row;
+        column-gap: $spacing-small;
+
+        .info-container {
+            display: grid;
+            grid-template-columns: 4fr 1fr;
+            background-color: white;
+            padding: $spacing-huge $spacing-small;
+            height: fit-content;
+            border-radius: 4px;
+
+            .social-wrapper {
+                display: flex;
+                align-items: end;
+            }
+
+            .flex-wrapper {
+                display: flex;
+                flex-direction: column;
+                text-align: start;
+                row-gap: $spacing-medium;
+
+
+                .name {
+                    font-size: $font-title;
+                }
+
+                .contact-container {
+                    display: flex;
+                    flex-direction: row;
+                    column-gap: $spacing-medium;
+
+                    .contact-card {
+                        display: flex;
+                        flex-direction: row;
+                        column-gap: $spacing-xsmall;
+                    }
+                }
+
+                .specs-container {
+                    display: flex;
+                    flex-direction: row;
+                    column-gap: $spacing-small;
+
+                    .spec-wrapper {
+                        display: flex;
+                        flex-direction: row;
+                        column-gap: $spacing-small;
+
+                    }
+                }
+
+                .comp-wrapper {
+                    span {
+                        color: $color-dark-blue;
+                    }
+
+                    .competences-container {
+                        display: flex;
+                        flex-direction: row;
+                        column-gap: $spacing-small;
+                        margin-top: $spacing-xsmall;
+
+                    }
+                }
+            }
+        }
+    }
+}
