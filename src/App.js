@@ -55,6 +55,7 @@ function App() {
       })
   })
 
+
   return (
     <div className="App">
       <Header />
@@ -71,7 +72,9 @@ function App() {
           <Route path={routes.THANK_YOU} element={<ThankYou />} />
           <Route path={routes.DELETE_PROFILE} element={<DeleteAccount />} />
           <Route path={routes.PROFILE} element={<ClinicProfile />} />
-          <Route path={routes.EMAIL_VERIFICATION} element={<EmailVerification />} />
+          <Route path={routes.EMAIL_VERIFICATION}>
+            <Route path=":token" element={<EmailVerification />}/>
+          </Route>
           <Route path={routes.DASHBOARD} element={<Dashboard />} >
             <Route path={routes.DASHBOARD} element={<Navigate to={routes.DASHBOARD_UNIT_DATA} replace />} />
             <Route path={routes.DASHBOARD_UNIT_DATA} element={<DashboardUnitData />} />
