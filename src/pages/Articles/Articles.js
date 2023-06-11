@@ -140,6 +140,7 @@ const ArticlesPage = () => {
                 setLoading(false)
             })
     }, [])
+    
 console.log(articles, 'articl')
     return (
 
