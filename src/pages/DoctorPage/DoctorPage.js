@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Carousel from '../../components/Carousel/Carousel';
 import Review from '../../components/Review/Review';
-import { routes } from "../../utils/routes";
 import { API_MAP, getAPILink } from "../../utils/routes";
-import _ from "lodash";
-import { NavLink, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import "./DoctorPage.scss";
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
@@ -29,47 +26,9 @@ const default_adds = {
         size: '437x437',
     },
 }
-const doctorr = {
-    id: 1,
-    name: 'Tudor Andrei',
-    imageUrl: "/images/user.svg",
-    score: 4,
-    noOfReviews: 2,
-    rating: 3,
-    links: [
-        { type: "Facebook", value: "www.facebook.com" },
-        { type: "Linkedin", value: "www.linkedin.com" },
-        { type: "Youtube", value: "www.youtube.com" },
-        { type: "Google", value: "www.google.com" },
-        { type: "Whatsapp", value: "www.whatsapp.com" },
-    ],
-    contact: [
-        { type: 'Telefon', value: "0747771947", icon: "phone" },
-        { type: "email", value: "test@test.com", icon: "email" },
-        { type: "website", value: "www.test.com", icon: "website" },
-    ],
-    testimonials: [{ text: "Personal foarte calduros, pregatit si foarte orientat catre pacient. Sa nu mai vorbim de dotari, capitol la care stau foaarte bine! Recomand spitalul oricui si pt. serviciile din policlinica si pt. cele din spital." },
-    { text: "Am fost pacientul doamnei doctor Simona Filip si as recomanda oricand acest medic si acest spital oricui are nevoie. Nu doar doamna doctor (un om foarte cald, un profesionist desavarsit), dar si ceilalti medici (eu, ca pacient cu gastric sleeve am dezvoltat o relatie foarte apreciata si cu medicul nutritionist, de exemplu) si tot personalul clinicii face totul ca tu, ca pacient, sa ai o experienta cat mai usoara (ca placuta nu pot sa spun, daca ai ajuns si mai putin traumatizanta.Am fost anul asta la control, de cand s-au mutat in sediul nou din Aviatiei si pot sa va spun ca mai mult ca oricand m-am simtit ca intr-un spital occidental." }],
-    reviews: [
-        {
-            name: "Onuta",
-            rating: 4,
-            text: "Lorem ipsum"
-        },
-        {
-            name: "Oscar",
-            rating: 3,
-            text: "Lorem ipsum"
-        }
-    ],
-    about: "Lorem ipsum",
-    competences: ['Alergologie', 'Dializa cronica'],
-    specialities: ['Ortopedie', 'Traumatologie'],
-    degrees: ['Medic Primar'],
 
-}
 function DoctorPage({ props }) {
-    const [doctor, setDoctor] = React.useState({});
+    const [doctor, setDoctor] = React.useState({testimonials: [], collaborator_doctors: [], collaborator_clinics: []});
     const [loading, setLoading] = React.useState(true)
     const [isReviewFormDisplayed, setIsReviewFormDisplayed] = React.useState(false)
     const [id, setId] = React.useState(null)
@@ -77,6 +36,8 @@ function DoctorPage({ props }) {
     const [displayMoreCards, setDisplayMoreCards] = React.useState(true);
     const [formValid, setFormValid] = React.useState(false)
     const [addsToDisplay, setAddsToDisplay] = useState({})
+
+    // Review
     const [review, setReview] = React.useState({
         email: {
             value: '',
@@ -121,8 +82,7 @@ function DoctorPage({ props }) {
     const handleAddReview = (event) => {
         event.preventDefault();
         fetch(
-            //TODO add link
-            getAPILink(API_MAP.ADD_REVIEW + id), {
+            getAPILink(API_MAP.ADD_REVIEW_DOCTOR + id), {
             method: 'POST',
             body: JSON.stringify({
                 rating: review.rating.value === 0 ? 1 : review.rating.value,
@@ -159,6 +119,63 @@ function DoctorPage({ props }) {
             }
         });
 
+    const mapServerRespToFront = (res) => {
+        return {
+            id: res.id,
+            name: res.first_name + " " + res.last_name,
+            imageUrl: res.profile_picture || "/images/user.svg",
+            score: res.average_rating * 2 || 0,
+            noOfReviews: res.review_count || 0,
+            rating: res.average_rating || 0,
+            links: [
+                { type: "Facebook", value: res.website_facebook },
+                { type: "Linkedin", value: res.website_linkedin },
+                { type: "Youtube", value: res.website_youtube },
+                { type: "Google", value: res.website_google },
+                { type: "Whatsapp", value: res.whatsapp },
+            ],
+            contact: [
+                { type: 'Telefon', value: res.primary_phone, icon: "phone" },
+                { type: "email", value: res.primary_email, icon: "email" },
+                { type: "website", value: res.website, icon: "website" },
+            ],
+            testimonials: res.reviews.map((el) => {return {text: el.comment}}).slice(0,4) || [],
+            reviews: res.reviews.map((el) => {return {
+                name: el.name,
+                rating: el.rating,
+                text: el.comment
+            }}) || [],
+            about: res.description,
+            competences: res.medical_skill.map((el) => {return el.label}) || [],
+            specialities: res.speciality.map((el) => {return el.label}) || [],
+            degrees: res.academic_degree.map((el) => {return el.label}) || [],
+            collaborator_doctors: res.collaborator_doctor.map((doc) => {
+                return {
+                    academic_degree: doc.academic_degree || [],
+                    link: "/doctor-page/?id=" + doc.id,
+                    name: `${doc.first_name} ${doc.last_name}`,
+                    photo: doc.profile_picture || null,
+                    medical_skill: doc.medical_skill || [],
+                    speciality: doc.speciality || []
+                }
+            }),
+            collaborator_clinics: res.collaborator_clinic.map((clinic) => {
+                return {
+                    link: "/clinic-page/?id=" + clinic.id,
+                    name: clinic.clinic_name,
+                    photo: clinic.profile_picture,
+                    address: clinic.clinic_street + " " + clinic.clinic_number + " " + clinic.clinic_other_details + " " + clinic.clinic_town + " " + clinic.clinic_county ,
+                    medical_unit_type: clinic.medical_unit_type,
+                    phone: clinic.primary_phone,
+                }
+            })
+        }
+    }
+
+    const mapCollaboratorDoc = (res) => {
+
+    }
+
     const collab = [{
         academic_degree: [{ id: 4, label: "Medic Primar" }],
         link: "/",
@@ -172,28 +189,7 @@ function DoctorPage({ props }) {
         }]
     }]
 
-    const [doctorState, setDoctorState] = useState({
-        doctors: collab,
-        perPage: 3,
-        currentPage: 1,
-        maxPage: collab.length === 0 ? 1 : collab.length
-    })
-
-
-    const previousPage = () =>
-        setDoctorState(prevState => ({
-            ...prevState,
-            currentPage: prevState.currentPage - 1
-        }))
-
-    const nextPage = () =>
-        setDoctorState(prevState => ({
-            ...prevState,
-            currentPage: prevState.currentPage + 1
-        }))
-
     useEffect(() => {
-        setDoctor(doctorr);
         const jsonArray = JSON.parse(localStorage.getItem('ads'));
         const filteredAds = jsonArray.filter(item => item.location.includes('clinicpage'));
         let dictAdds = {}
@@ -206,9 +202,28 @@ function DoctorPage({ props }) {
             }
         }
         setAddsToDisplay(dictAdds)
-        setLoading(false)
+
+        const query = window.location.search
+        const queryParams = new URLSearchParams(query)
+        const id = queryParams.get('id')
+        setId(id);
+        fetch(
+          getAPILink(API_MAP.GET_DOCTOR_BY_ID + id + '/'), {
+              method: 'GET',
+              headers: {
+                  'Content-type': 'application/json; charset=UTF-8',
+              }
+          })
+          .then((res) => res.json())
+          .then((res) => {
+              setLoading(false)
+              const mapped = mapServerRespToFront(res)
+              setDoctor(mapped)
+          })
+
     },[])
-    console.log(doctorState, 'sttatteet')
+
+
 
     const handleContactType = (el, i, isMobile) => {
         if (el && el.value && el.type) {
@@ -243,8 +258,6 @@ function DoctorPage({ props }) {
             }
         }
     }
-
-
 
     const renderDoctorHeaderDesktop = () => {
         return (
@@ -329,6 +342,8 @@ function DoctorPage({ props }) {
             </div>
         )
     }
+
+
     return (
         <div className='doctor-page'>
             {
@@ -339,9 +354,12 @@ function DoctorPage({ props }) {
                         <div className="grid">
                             <div className="info-left-container ">
                                 <div className="desktop">
-                                    {doctor?.testimonials?.length > 0 && <React.Fragment>
+                                    {doctor?.testimonials?.length > 0 &&
+                                      <React.Fragment>
                                         <div className="container-title">Testimoniale</div>
-                                        <Carousel onScroll={scrollingTop} content={doctor.testimonials} /></React.Fragment>}
+                                        <Carousel onScroll={scrollingTop} content={doctor.testimonials} />
+                                      </React.Fragment>
+                                    }
                                 </div>
                                 <img className="add" src={addsToDisplay['doctorpage_1']?.photo} />
                                 <img className="add" src={addsToDisplay['doctorpage_2']?.photo} />
@@ -351,27 +369,14 @@ function DoctorPage({ props }) {
                                 <img className="add mobile" src="/images/ads/add2.svg" />
                                 <div className="container-title">Clinici unde ofer consultații</div>
                                 <div className="container-title">Medici colaboratori</div>
-                                {doctorState?.doctors?.length > 0 &&
+                                {doctor?.collaborator_doctors.length > 0 &&
                                     <React.Fragment>
                                         <div style={{ marginBottom: '20px' }} className="col">
-                                            {doctorState?.doctors?.length && doctorState?.doctors
-                                                .map((doc, i) => {
+                                            {doctor?.collaborator_doctors.length !== 0 &&
+                                              doctor?.collaborator_doctors.map((doc, i) => {
                                                     return <DoctorCard doctor={doc} key={i} />
                                                 })
                                             }
-                                            <div className="page-btn">
-                                                {
-                                                    doctorState?.currentPage !== 1 &&
-                                                    <div onClick={previousPage} className={'button prev'}>Anterior</div>
-                                                }
-                                                {
-                                                    doctorState?.currentPage < doctorState?.maxPage &&
-                                                    <div onClick={nextPage} className={'button next'}>Urmator</div>
-                                                }
-                                            </div>
-                                            <div style={{ marginTop: '10px' }}>
-                                                Pagina {doctorState?.currentPage} din {doctorState?.maxPage}
-                                            </div>
                                         </div>
                                     </React.Fragment>
                                 }

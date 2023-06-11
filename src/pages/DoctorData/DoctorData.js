@@ -2,29 +2,62 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react'
 import _ from "lodash";
 import Dropdown from '../../components/Dropdown/Dropdown';
-import { API_MAP, getAPILink, routes } from "../../utils/routes";
+import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
 import "./DoctorData.scss";
 import InviteCard from "./InviteCard/InviteCard";
+import {getAuthTokenFromLocal} from "../../utils/localStorage";
 
 const DoctorData = (props) => {
     const navigate = useNavigate();
+
+    // Form values
+    const [values, setValues] = useState({
+        firstName: props?.selected?.firstName || '',
+        lastName: props?.selected?.lastName || '',
+        phoneNo: props?.selected?.phoneNo || '',
+        email: props?.selected?.email || '',
+        website: props?.selected?.website || '',
+        facebook: props?.selected?.facebook || '',
+        google: props?.selected?.google || '',
+        linkedin: props?.selected?.linkedin || '',
+        youtube: props?.selected?.youtube || '',
+        whatsapp: props?.selected?.whatsapp || '',
+        description: props?.selected?.description || '',
+        medical_degree: props?.selected?.medical_degree || '',
+        speciality: props?.selected?.speciality || '',
+        fileList: props?.selected?.fileList || [],
+        files: props?.selected?.files || [],
+        error: '',
+        uploadWarning: '',
+        areTermsChecked: false,
+    })
     const [error, setError] = useState({
         firstName: false,
         lastName: false,
         phoneNo: false,
         email: false,
-        //tba
-
     })
+    const handleFieldChange = (value, title) => {
+        setValues((prevState) => ({ ...prevState, [title]: value }));
+    };
 
+
+    // Invited Doctors & Clinics
     const [errorInvite, setInviteError] = useState({
+        // TODO handle properly
         name: false,
         email: false,
         unit: false,
         unitEmail: false,
     })
-
-    //MOCK;
+    const [inviteValues, setInviteValues] = useState({
+        name: '',
+        email: '',
+        message: '',
+        unit: '',
+        unitEmail: '',
+        unitMessage: ''
+    })
     const invitedDoctors = [
         {
             name: "Mihai Dumitrescu",
@@ -60,41 +93,6 @@ const DoctorData = (props) => {
         type: "Clinica privata",
         status: "added"
     }]
-
-
-    const [values, setValues] = useState({
-        firstName: props?.selected?.firstName || '',
-        lastName: props?.selected?.lastName || '',
-        phoneNo: props?.selected?.phoneNo || '',
-        email: props?.selected?.email || '',
-        facebook: props?.selected?.facebook || '',
-        google: props?.selected?.google || '',
-        linkedin: props?.selected?.linkedin || '',
-        youtube: props?.selected?.youtube || '',
-        whatsapp: props?.selected?.whatsapp || '',
-        description: props?.selected?.description || '',
-        medical_degree: props?.selected?.medical_degree || '',
-        speciality: props?.selected?.speciality || '',
-        fileList: props?.selected?.fileList || [],
-        files: props?.selected?.files || [],
-        error: '',
-        uploadWarning: '',
-        areTermsChecked: false,
-    })
-
-    const [inviteValues, setInviteValues] = useState({
-        name: '',
-        email: '',
-        message: '',
-        unit: '',
-        unitEmail: '',
-        unitMessage: ''
-    })
-
-    const academicDegreesDropDown = ['one', 'two', 'three']
-    const specialityDropDown = ['one', 'two', 'three']
-    const [selectedSpecialties, setSelectedSpecialties] = React.useState([]);
-    const [selectedDegrees, setSelectedDegrees] = React.useState([]);
     const [toggleInvite, setToggleInvite] = React.useState(false);
     const [toggleInviteU, setToggleInviteUnit] = React.useState(false);
 
@@ -106,9 +104,68 @@ const DoctorData = (props) => {
         setToggleInviteUnit(toggleInviteU);
     }
 
-    const handleFieldChange = (value, title) => {
-        setValues((prevState) => ({ ...prevState, [title]: value }));
-    };
+
+    // Dropdowns
+    const [selectedSpecialties, setSelectedSpecialties] = React.useState([]);
+    const [selectedDegrees, setSelectedDegrees] = React.useState([]);
+    const [selectedCompetences, setSelectedCompetences] = React.useState([]);
+    const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState([])
+    const [specialities, setSpecialities] = useState([])
+    const [competences, setCompetences] = useState([])
+    useEffect(() => {
+        fetch(getAPILink(API_MAP.GET_ACADEMIC_DEGREES), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+              setAcademicDegreesDropDown(mapped)
+          })
+          .catch((err) => { })
+        fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+              setSpecialities(mapped)
+          })
+          .catch((err) => { })
+        fetch(getAPILink(API_MAP.GET_COMPETENCES), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+              setCompetences(mapped)
+          })
+          .catch((err) => { })
+    }, [])
+    const handleDropdownSubmit = (selected, name) => {
+        switch (name) {
+            case 'degree': {
+                setSelectedDegrees(selected)
+                break;
+            }
+            case 'speciality': {
+                setSelectedSpecialties(selected)
+                break;
+            }
+            case 'competences': {
+                setSelectedCompetences(selected)
+                break;
+            }
+        }
+    }
 
     const [pagination, setPagination] = React.useState({
         perPage: 4,
@@ -131,8 +188,14 @@ const DoctorData = (props) => {
                 ok = false
             }
         })
+        if (selectedCompetences.length === 0 || selectedDegrees.length === 0 || selectedSpecialties.length === 0) {
+            ok = false
+        }
         setError(errorCopy)
         if (!ok) setValues({ ...values, error: "Va rugam sa completati campurile obligatorii" })
+        if (!values.areTermsChecked) {
+            setValues({ ...values, error: "Va rugam sa acceptati termenii si conditiile" })
+        }
         return ok
     }
 
@@ -168,14 +231,78 @@ const DoctorData = (props) => {
         })
         setValues({ ...values, fileList: updatedList, files: updatedListFi })
     }
+
+    const mapStateToObject = () => {
+        return {
+            // 1st card
+            first_name: values.firstName,
+            last_name: values.lastName,
+            primary_phone: values.phoneNo,
+            primary_email: values.email,
+            website: values.website,
+            website_facebook: values.facebook,
+            website_google: values.google,
+            website_linkedin: values.linkedin,
+            website_youtube: values.youtube,
+            whatsapp: values.whatsapp,
+            // 2nd card
+            description: values.description,
+            // 3rd card
+            academic_degree: selectedDegrees.map(el => {return el.value}),
+            speciality: selectedSpecialties.map(el => {return el.value}),
+            medical_skill: selectedCompetences.map(el => {return el.value}),
+        }
+    }
+
     const handleSubmit = (event) => {
+        event.preventDefault()
+        // TODO check form
+        if (!isFormValid()) return
+        if (props.onSubmit) {
+            // TODO Finish this for the dashboard
+            props.onSubmit(mapStateToObject())
+        } else {
+            const mapped = mapStateToObject()
+            const formData = new FormData()
+            formData.append('first_name', mapped.first_name)
+            formData.append('last_name', mapped.last_name)
+            formData.append('primary_phone', mapped.primary_phone)
+            formData.append('primary_email', mapped.primary_email)
+            formData.append('website', mapped.website)
+            formData.append('website_facebook', mapped.website_facebook)
+            formData.append('website_google', mapped.website_google)
+            formData.append('website_linkedin', mapped.website_linkedin)
+            formData.append('website_youtube', mapped.website_youtube)
+            formData.append('whatsapp', mapped.whatsapp)
+            formData.append('description', mapped.description)
+            formData.append('academic_degree', JSON.stringify(mapped.academic_degree))
+            formData.append('speciality', JSON.stringify(mapped.speciality))
+            formData.append('medical_skill', JSON.stringify(mapped.medical_skill))
+
+            // TODO Finish file sending
+            // formData.append('file1', files[0])
+            // formData.append('file2', files[1])
+
+            makeRequestLogged(
+              getAPILink(API_MAP.PUT_DOCTOR_PROFILE),
+              'PUT',
+              formData,
+              getAuthTokenFromLocal(),
+              'multipart/form-data'
+            ).then((response) => response.json())
+              .then((resp) => {
+                  if (resp.success === 'Success') {
+                      if (resp.success) navigate(routes.THANK_YOU)
+                  } else {
+                      setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+                  }
+              })
+              .catch((err) => {
+                  setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+              })
+        }
+        debugger
         console.log('submitted')
-    }
-    const handleSubmitDegrees = (selected) => {
-        console.log('degrees')
-    }
-    const handleSubmitSpeciality = (selected) => {
-        console.log('spec')
     }
     const inviteDoctor = () => {
         console.log('invite')
@@ -226,7 +353,7 @@ const DoctorData = (props) => {
                                 </div>
                                 <div className="input-wrapper">
                                     <label>Website</label>
-                                    <input className={error.website ? 'error' : ''} name="website" type="text" value={values.website}
+                                    <input name="website" type="text" value={values.website}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
@@ -235,35 +362,35 @@ const DoctorData = (props) => {
                             <div className="col-5">
                                 <div className="input-wrapper">
                                     <label>Profil Facebook</label>
-                                    <input className={error.facebook ? 'error' : ''} name="facebook" type="text" value={values.facebook}
+                                    <input name="facebook" type="text" value={values.facebook}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
                                 </div>
                                 <div className="input-wrapper">
                                     <label>Profil Google</label>
-                                    <input className={error.google ? 'error' : ''} name="google" type="text" value={values.google}
+                                    <input name="google" type="text" value={values.google}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
                                 </div>
                                 <div className="input-wrapper">
                                     <label>Profil Linkedin</label>
-                                    <input className={error.linkedin ? 'error' : ''} name="linkedin" type="text" value={values.linkedin}
+                                    <input name="linkedin" type="text" value={values.linkedin}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
                                 </div>
                                 <div className="input-wrapper">
                                     <label>Youtube</label>
-                                    <input className={error.youtube ? 'error' : ''} name="youtube" type="text" value={values.youtube}
+                                    <input name="youtube" type="text" value={values.youtube}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
                                 </div>
                                 <div className="input-wrapper">
                                     <label>Whatsapp</label>
-                                    <input className={error.whatsapp ? 'error' : ''} name="whatsapp" type="text" value={values.whatsapp}
+                                    <input name="whatsapp" type="text" value={values.whatsapp}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
                                         }} />
@@ -279,112 +406,115 @@ const DoctorData = (props) => {
                                     handleFieldChange(e.target.value, e.target.name);
                                 }} />
                             <div className="col-2">
-                                <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"*Grad medical"} onSelect={handleSubmitDegrees} />
-                                <Dropdown selected={selectedSpecialties} options={specialityDropDown} title={"*Specialitate"} onSelect={handleSubmitSpeciality} />
+                                <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"*Grad medical"} onSelect={(e) => handleDropdownSubmit(e, 'degree')} />
+                                <Dropdown selected={selectedSpecialties} options={specialities} title={"*Specialitate"} onSelect={(e) => handleDropdownSubmit(e, 'speciality')} />
+                            </div>
+                            <div className="col">
+                                <Dropdown selected={selectedCompetences} options={competences} title={"*Competente"} onSelect={(e) => handleDropdownSubmit(e, 'competences')} />
                             </div>
                         </div>
                     </div>
-                    <div className="collab-unit-data">
-                        <div className="container-title">Unitate medicală colaboratoare</div>
-                        <div className="fields-wrapper">
-                            {/* <input onChange={handleInput} className="search" value={medic} type="text" placeholder="Cauta medic" name="name" /> */}
+                    {/*<div className="collab-unit-data">*/}
+                    {/*    <div className="container-title">Unitate medicală colaboratoare</div>*/}
+                    {/*    <div className="fields-wrapper">*/}
+                    {/*        /!* <input onChange={handleInput} className="search" value={medic} type="text" placeholder="Cauta medic" name="name" /> *!/*/}
 
-                            {/* dropdown */}
-                            {invitedUnits.map((invited, i) => {
-                                return (
-                                    <InviteCard type="unit" unit={invited} />
-                                )
-                            })}
-                            {!toggleInviteU && <div className={`button border-button round invite-btn`} onClick={() => toggleInviteUnit(true)}>Invitați unitate medicală pe vreaudoctor.ro</div>}
+                    {/*        /!* dropdown *!/*/}
+                    {/*        {invitedUnits.map((invited, i) => {*/}
+                    {/*            return (*/}
+                    {/*                <InviteCard type="unit" unit={invited} />*/}
+                    {/*            )*/}
+                    {/*        })}*/}
+                    {/*        {!toggleInviteU && <div className={`button border-button round invite-btn`} onClick={() => toggleInviteUnit(true)}>Invitați unitate medicală pe vreaudoctor.ro</div>}*/}
 
-                            {toggleInviteU && <div className="invite-container">
-                                <div className="container-subtitle">
-                                    <span className="container-title">Invitați unitate medicala</span>
-                                    <span className="close" onClick={() => toggleInviteUnit(false)}>x</span>
-                                </div>
-                                <div className="col-1">
-                                    <div className="input-wrapper">
-                                        <label>*Nume unitate medicala</label>
-                                        <input className={errorInvite.unit ? 'error' : ''} name="unit" type="text" value={inviteValues.unit}
-                                            onChange={(e) => {
-                                                handleFieldChange(e.target.value, e.target.name);
-                                            }} />
-                                    </div>
-                                </div>
-                                <div className="col-1">
-                                    <div className="input-wrapper">
-                                        <label>*Adresa email</label>
-                                        <input className={errorInvite.unitEmail ? 'error' : ''} name="unitEmail" type="text" value={inviteValues.unitEmail}
-                                            onChange={(e) => {
-                                                handleFieldChange(e.target.value, e.target.name);
-                                            }} />
-                                    </div>
-                                </div>
-                                <div className="textarea-column">
-                                    <label>Personalizeaza mesaj</label>
-                                    <textarea rows="15" className="full-width" type="comment" name="unitMessage" value={inviteValues.unitMessage}
-                                        onChange={(e) => {
-                                            handleFieldChange(e.target.value, e.target.name);
-                                        }} />
-                                </div>
-                                <div className="button round custom-width" onClick={inviteUnit}> Trimiteți invitație </div>
-                            </div>}
-                            {/* medici invitati */}
-                            {/* medici adaugati */}
-                        </div>
-                    </div>
-                    <div className="collab-doctors-data">
-                        <div className="container-title">Medici colaboratoari</div>
-                        <div className="fields-wrapper">
-                            {/* <input onChange={handleInput} className="search" value={medic} type="text" placeholder="Cauta medic" name="name" /> */}
+                    {/*        {toggleInviteU && <div className="invite-container">*/}
+                    {/*            <div className="container-subtitle">*/}
+                    {/*                <span className="container-title">Invitați unitate medicala</span>*/}
+                    {/*                <span className="close" onClick={() => toggleInviteUnit(false)}>x</span>*/}
+                    {/*            </div>*/}
+                    {/*            <div className="col-1">*/}
+                    {/*                <div className="input-wrapper">*/}
+                    {/*                    <label>*Nume unitate medicala</label>*/}
+                    {/*                    <input className={errorInvite.unit ? 'error' : ''} name="unit" type="text" value={inviteValues.unit}*/}
+                    {/*                        onChange={(e) => {*/}
+                    {/*                            handleFieldChange(e.target.value, e.target.name);*/}
+                    {/*                        }} />*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*            <div className="col-1">*/}
+                    {/*                <div className="input-wrapper">*/}
+                    {/*                    <label>*Adresa email</label>*/}
+                    {/*                    <input className={errorInvite.unitEmail ? 'error' : ''} name="unitEmail" type="text" value={inviteValues.unitEmail}*/}
+                    {/*                        onChange={(e) => {*/}
+                    {/*                            handleFieldChange(e.target.value, e.target.name);*/}
+                    {/*                        }} />*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*            <div className="textarea-column">*/}
+                    {/*                <label>Personalizeaza mesaj</label>*/}
+                    {/*                <textarea rows="15" className="full-width" type="comment" name="unitMessage" value={inviteValues.unitMessage}*/}
+                    {/*                    onChange={(e) => {*/}
+                    {/*                        handleFieldChange(e.target.value, e.target.name);*/}
+                    {/*                    }} />*/}
+                    {/*            </div>*/}
+                    {/*            <div className="button round custom-width" onClick={inviteUnit}> Trimiteți invitație </div>*/}
+                    {/*        </div>}*/}
+                    {/*        /!* medici invitati *!/*/}
+                    {/*        /!* medici adaugati *!/*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*<div className="collab-doctors-data">*/}
+                    {/*    <div className="container-title">Medici colaboratoari</div>*/}
+                    {/*    <div className="fields-wrapper">*/}
+                    {/*        /!* <input onChange={handleInput} className="search" value={medic} type="text" placeholder="Cauta medic" name="name" /> *!/*/}
 
-                            {/* dropdown */}
+                    {/*        /!* dropdown *!/*/}
 
-                            {invitedDoctors.map((invited, i) => {
-                                return (
-                                    <InviteCard type="doctor" doctor={invited} />
-                                )
-                            })}
+                    {/*        {invitedDoctors.map((invited, i) => {*/}
+                    {/*            return (*/}
+                    {/*                <InviteCard type="doctor" doctor={invited} />*/}
+                    {/*            )*/}
+                    {/*        })}*/}
 
 
-                            {!toggleInvite && <div className={`button border-button round invite-btn`} onClick={() => toggleInviteDoctor(true)}>Invitați medic pe vreaudoctor.ro</div>}
+                    {/*        {!toggleInvite && <div className={`button border-button round invite-btn`} onClick={() => toggleInviteDoctor(true)}>Invitați medic pe vreaudoctor.ro</div>}*/}
 
-                            {toggleInvite && <div className="invite-container">
-                                <div className="container-subtitle">
-                                    <span className="container-title">Invitați medic</span>
-                                    <span className="close" onClick={() => toggleInviteDoctor(false)}>x</span>
-                                </div>
-                                <div className="col-1">
-                                    <div className="input-wrapper">
-                                        <label>*Nume medic</label>
-                                        <input className={errorInvite.name ? 'error' : ''} name="name" type="text" value={inviteValues.name}
-                                            onChange={(e) => {
-                                                handleFieldChange(e.target.value, e.target.name);
-                                            }} />
-                                    </div>
-                                </div>
-                                <div className="col-1">
-                                    <div className="input-wrapper">
-                                        <label>*Adresa email</label>
-                                        <input className={errorInvite.email ? 'error' : ''} name="email" type="text" value={inviteValues.email}
-                                            onChange={(e) => {
-                                                handleFieldChange(e.target.value, e.target.name);
-                                            }} />
-                                    </div>
-                                </div>
-                                <div className="textarea-column">
-                                    <label>Personalizeaza mesaj</label>
-                                    <textarea rows="15" className="full-width" type="comment" name="message" value={inviteValues.message}
-                                        onChange={(e) => {
-                                            handleFieldChange(e.target.value, e.target.name);
-                                        }} />
-                                </div>
-                                <div className="button round custom-width" onClick={inviteDoctor}> Trimiteți invitație </div>
-                            </div>}
-                            {/* medici invitati */}
-                            {/* medici adaugati */}
-                        </div>
-                    </div>
+                    {/*        {toggleInvite && <div className="invite-container">*/}
+                    {/*            <div className="container-subtitle">*/}
+                    {/*                <span className="container-title">Invitați medic</span>*/}
+                    {/*                <span className="close" onClick={() => toggleInviteDoctor(false)}>x</span>*/}
+                    {/*            </div>*/}
+                    {/*            <div className="col-1">*/}
+                    {/*                <div className="input-wrapper">*/}
+                    {/*                    <label>*Nume medic</label>*/}
+                    {/*                    <input className={errorInvite.name ? 'error' : ''} name="name" type="text" value={inviteValues.name}*/}
+                    {/*                        onChange={(e) => {*/}
+                    {/*                            handleFieldChange(e.target.value, e.target.name);*/}
+                    {/*                        }} />*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*            <div className="col-1">*/}
+                    {/*                <div className="input-wrapper">*/}
+                    {/*                    <label>*Adresa email</label>*/}
+                    {/*                    <input className={errorInvite.email ? 'error' : ''} name="email" type="text" value={inviteValues.email}*/}
+                    {/*                        onChange={(e) => {*/}
+                    {/*                            handleFieldChange(e.target.value, e.target.name);*/}
+                    {/*                        }} />*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*            <div className="textarea-column">*/}
+                    {/*                <label>Personalizeaza mesaj</label>*/}
+                    {/*                <textarea rows="15" className="full-width" type="comment" name="message" value={inviteValues.message}*/}
+                    {/*                    onChange={(e) => {*/}
+                    {/*                        handleFieldChange(e.target.value, e.target.name);*/}
+                    {/*                    }} />*/}
+                    {/*            </div>*/}
+                    {/*            <div className="button round custom-width" onClick={inviteDoctor}> Trimiteți invitație </div>*/}
+                    {/*        </div>}*/}
+                    {/*        /!* medici invitati *!/*/}
+                    {/*        /!* medici adaugati *!/*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                     <div className="file-data-doc">
                         <p className="italic">
                             Pentru a ne asigura că sunteți titularul legitim al datelor medicale înregistrate, vă rugăm să urmați pașii de identificare și confirmare următori:
