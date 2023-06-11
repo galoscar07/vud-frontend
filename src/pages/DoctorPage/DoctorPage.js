@@ -164,7 +164,7 @@ function DoctorPage({ props }) {
                     speciality: doc.speciality || [],
                     rating: doc.average_rating || 0,
                     noOfReviews: doc.review_count || 0,
-                    score: doc.average_rating * 2 || 2,
+                    score: doc.average_rating * 2 || 0,
 
                 }
             }),
