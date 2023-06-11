@@ -2,10 +2,10 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react'
 import _ from "lodash";
 import Dropdown from '../../components/Dropdown/Dropdown';
-import {API_MAP, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
+import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/routes";
 import "./DoctorData.scss";
 import InviteCard from "./InviteCard/InviteCard";
-import {getAuthTokenFromLocal} from "../../utils/localStorage";
+import { getAuthTokenFromLocal } from "../../utils/localStorage";
 
 const DoctorData = (props) => {
     const navigate = useNavigate();
@@ -119,36 +119,36 @@ const DoctorData = (props) => {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-              setAcademicDegreesDropDown(mapped)
-          })
-          .catch((err) => { })
+            .then((resp) => resp.json())
+            .then((response) => {
+                const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                setAcademicDegreesDropDown(mapped)
+            })
+            .catch((err) => { })
         fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-              setSpecialities(mapped)
-          })
-          .catch((err) => { })
+            .then((resp) => resp.json())
+            .then((response) => {
+                const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                setSpecialities(mapped)
+            })
+            .catch((err) => { })
         fetch(getAPILink(API_MAP.GET_COMPETENCES), {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-              setCompetences(mapped)
-          })
-          .catch((err) => { })
+            .then((resp) => resp.json())
+            .then((response) => {
+                const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                setCompetences(mapped)
+            })
+            .catch((err) => { })
     }, [])
     const handleDropdownSubmit = (selected, name) => {
         switch (name) {
@@ -248,9 +248,9 @@ const DoctorData = (props) => {
             // 2nd card
             description: values.description,
             // 3rd card
-            academic_degree: selectedDegrees.map(el => {return el.value}),
-            speciality: selectedSpecialties.map(el => {return el.value}),
-            medical_skill: selectedCompetences.map(el => {return el.value}),
+            academic_degree: selectedDegrees.map(el => { return el.value }),
+            speciality: selectedSpecialties.map(el => { return el.value }),
+            medical_skill: selectedCompetences.map(el => { return el.value }),
         }
     }
 
@@ -284,22 +284,22 @@ const DoctorData = (props) => {
             // formData.append('file2', files[1])
 
             makeRequestLogged(
-              getAPILink(API_MAP.PUT_DOCTOR_PROFILE),
-              'PUT',
-              formData,
-              getAuthTokenFromLocal(),
-              'multipart/form-data'
+                getAPILink(API_MAP.PUT_DOCTOR_PROFILE),
+                'PUT',
+                formData,
+                getAuthTokenFromLocal(),
+                'multipart/form-data'
             ).then((response) => response.json())
-              .then((resp) => {
-                  if (resp.success === 'Success') {
-                      if (resp.success) navigate(routes.THANK_YOU)
-                  } else {
-                      setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
-                  }
-              })
-              .catch((err) => {
-                  setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
-              })
+                .then((resp) => {
+                    if (resp.success === 'Success') {
+                        if (resp.success) navigate(routes.THANK_YOU)
+                    } else {
+                        setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+                    }
+                })
+                .catch((err) => {
+                    setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+                })
         }
         debugger
         console.log('submitted')
@@ -401,10 +401,11 @@ const DoctorData = (props) => {
                     <div className="description-data">
                         <div className="container-title">Descriere Personla</div>
                         <div className="fields-wrapper">
-                            <textarea rows="15" className="full-width" type="comment" name="description" value={values.description}
+                            <textarea maxLength='500' rows="15" className="full-width" type="comment" name="description" value={values.description}
                                 onChange={(e) => {
                                     handleFieldChange(e.target.value, e.target.name);
                                 }} />
+                            <div className="counter"> {values.description.length} / 500 </div>
                             <div className="col-2">
                                 <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"*Grad medical"} onSelect={(e) => handleDropdownSubmit(e, 'degree')} />
                                 <Dropdown selected={selectedSpecialties} options={specialities} title={"*Specialitate"} onSelect={(e) => handleDropdownSubmit(e, 'speciality')} />

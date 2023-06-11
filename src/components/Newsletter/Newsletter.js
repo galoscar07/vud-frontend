@@ -1,6 +1,6 @@
 import React from 'react'
 import "./Newsletter.scss"
-import {API_MAP, getAPILink, routes} from "../../utils/routes";
+import { API_MAP, getAPILink, routes } from "../../utils/routes";
 import { value } from "lodash/seq";
 
 const Newsletter = (props) => {
@@ -19,7 +19,8 @@ const Newsletter = (props) => {
     },
     server: {
       error: null
-    }
+    },
+    isEnabled: false
   })
   const [formValid, setFormValid] = React.useState(false)
 
@@ -73,33 +74,36 @@ const Newsletter = (props) => {
       })
   }
   return (
-    <div className="newsletter-component">
-      <div className="title">Newsletter</div>
-      <img alt={'vreau un doctor'} src="/images/login.svg" />
-      <form onSubmit={handleSubmit} autoComplete="off" className="newsletter-form">
-        <label>Nume</label>
-        <input className="full-width" type="text" name="name" value={state.name.value}
-          onChange={handleChange} onBlur={isFormEmpty} />
-        <label>Email</label>
-        <input className="full-width" type="email" name="email" value={state.email.value}
-          onChange={handleChange} onBlur={isFormEmpty} />
-        <div className="checkbox-container">
+    <React.Fragment>
+      {state.isEnabled && 
+      <div className="newsletter-component">
+        <div className="title">Newsletter</div>
+        <img alt={'vreau un doctor'} src="/images/login.svg" />
+        <form onSubmit={handleSubmit} autoComplete="off" className="newsletter-form">
+          <label>Nume</label>
+          <input className="full-width" type="text" name="name" value={state.name.value}
+            onChange={handleChange} onBlur={isFormEmpty} />
+          <label>Email</label>
+          <input className="full-width" type="email" name="email" value={state.email.value}
+            onChange={handleChange} onBlur={isFormEmpty} />
+          <div className="checkbox-container">
 
-          <label><a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni si conditii de abonare</a></label>
-          <div className="checkbox-wrapper">
-            <input className="checkbox" type="checkbox" value={state.areTermsChecked.value}
-              onChange={handleChange} />
-            <div>Sunt de acord</div>
+            <label><a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni si conditii de abonare</a></label>
+            <div className="checkbox-wrapper">
+              <input className="checkbox" type="checkbox" value={state.areTermsChecked.value}
+                onChange={handleChange} />
+              <div>Sunt de acord</div>
+            </div>
+
           </div>
-
-        </div>
-        <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Abonare</button>
-        {
-          state.server.error &&
-          <div className={'error'}>Ceva a mers rau! Va rugam incercati mai tarziu.</div>
-        }
-      </form>
-    </div>
+          <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Abonare</button>
+          {
+            state.server.error &&
+            <div className={'error'}>Ceva a mers rau! Va rugam incercati mai tarziu.</div>
+          }
+        </form>
+      </div>}
+    </React.Fragment>
   );
 }
 

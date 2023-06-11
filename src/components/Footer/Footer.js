@@ -28,6 +28,10 @@ const navLinks = [
     label: 'Acasa',
     link: routes.HOMEPAGE,
   },
+  {
+    label: 'Informații medicale',
+    link: routes.ARTICLES
+  }
 ]
 
 function Footer() {

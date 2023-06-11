@@ -28,6 +28,12 @@ textarea {
   padding: $spacing-xsmall;
 }
 
+.counter {
+  color: #0E3A41;
+  text-decoration: underline;
+  display: flex;
+}
+
 .checkbox {
   height: 1.25rem;
   width: 1.25rem;

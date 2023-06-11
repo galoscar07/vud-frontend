@@ -121,8 +121,8 @@ const ArticlesPage = () => {
         )
             .then((res) => res.json())
             .then((res) => {
-                setLoading(false)
                 setArticles(res)
+                setLoading(false)
             })
         fetch(
             getAPILink(API_MAP.GET_TAGS), {
@@ -133,12 +133,14 @@ const ArticlesPage = () => {
             }
         ).then((res) => res.json())
         .then((res) => {
-            setLoading(false)
             setTags(res)
+            setLoading(false)
         })
-            .catch((err) => { })
+            .catch((err) => { 
+                setLoading(false)
+            })
     }, [])
-
+console.log(articles, 'articl')
     return (
 
         <div className="articles-page">
@@ -152,10 +154,10 @@ const ArticlesPage = () => {
                             <input value={state} onChange={(ev) => setState(ev.target.value)} className="search" type="text" placeholder="Cauta" name="search" />
                             <button className="button border-button" onClick={handleSearch}>Cauta</button>
                         </form>
-                            <Dropdown selected={Object.values(tags).map(item => item.name)} onSelect={onSelect} options={tags} />
+                            {/* <Dropdown selected={Object.values(tags).map(item => item.name)} onSelect={onSelect} options={tags} /> */}
                         </div>
                         <div className="articles-container">
-                            {articles && articles?.map((article, i) => {
+                            {articles.length && articles?.map((article, i) => {
                                 return (
                                     <div key={i} className="article-preview">
                                         <div className="text">
