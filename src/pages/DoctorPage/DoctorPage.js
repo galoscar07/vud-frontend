@@ -161,6 +161,7 @@ function DoctorPage({ props }) {
                     first_name: doc.first_name,
                     last_name: doc.last_name,
                     photo: doc.profile_picture || null,
+                    // TODO
                     speciality: doc.speciality || [],
                     rating: doc.average_rating || 0,
                     noOfReviews: doc.review_count || 0,
