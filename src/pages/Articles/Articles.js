@@ -64,7 +64,7 @@ const ArticlesPage = () => {
     const label_ads = [
         'homepage_1', 'homepage_2', 'homepage_3', 'homepage_4', 'homepage_5'
     ]
-    const [state, setState] = useState('')
+    const [selected, setSelected] = useState({})
 
     const [tags, setTags] = useState({
         tags: [],
@@ -72,12 +72,21 @@ const ArticlesPage = () => {
 
     const [loading, setLoading] = useState(true)
 
-    const handleSearch = () => {
-        console.log('search')
-    }
-
     const onSelect = (elems) => {
-        setState({ ...state, selected: elems })
+        setSelected(elems)
+        fetch(
+            getAPILink(API_MAP.GET_ARTICLES + '/' + elems.map(item => "?tags=" + item.label).join("&")), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        }
+        )
+            .then((res) => res.json())
+            .then((res) => {
+                setArticles(res)
+                setLoading(false)
+            })
     }
 
     const formatDate = (inputString) => {
@@ -89,6 +98,7 @@ const ArticlesPage = () => {
 
         return formattedDate;
     }
+
     const trimText = (text, maxLength) => {
         if (text.length <= maxLength) {
             return text;
@@ -126,22 +136,24 @@ const ArticlesPage = () => {
             })
         fetch(
             getAPILink(API_MAP.GET_TAGS), {
-                method: 'GET',
-                headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                }
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
             }
+        }
         ).then((res) => res.json())
-        .then((res) => {
-            setTags(res)
-            setLoading(false)
-        })
-            .catch((err) => { 
+            .then((res) => {
+                setTags(res.map(item => ({
+                    value: item.id,
+                    label: item.name
+                })))
+                setLoading(false)
+            })
+            .catch((err) => {
                 setLoading(false)
             })
     }, [])
-    
-console.log(articles, 'articl')
+
     return (
 
         <div className="articles-page">
@@ -150,12 +162,10 @@ console.log(articles, 'articl')
                 <React.Fragment>
                     <div className="main-content">
                         <div className="title">Informatii Medicale</div>
-                        <div className="search-container">                <form onSubmit={(ev) => { ev.preventDefault() }} className="searchbar">
-                            {/* TODO Investigate tags issue & filtering */}
-                            <input value={state} onChange={(ev) => setState(ev.target.value)} className="search" type="text" placeholder="Cauta" name="search" />
-                            <button className="button border-button" onClick={handleSearch}>Cauta</button>
-                        </form>
-                            {/* <Dropdown selected={Object.values(tags).map(item => item.name)} onSelect={onSelect} options={tags} /> */}
+                        <div className="search-container">
+                            <Dropdown
+                                onSelect={onSelect}
+                                options={tags} />
                         </div>
                         <div className="articles-container">
                             {articles.length && articles?.map((article, i) => {
