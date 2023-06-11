@@ -1,12 +1,19 @@
 import React from 'react'
 import "./ClinicCard.scss"
+import { useNavigate } from "react-router-dom";
 
 const ClinicCard = (props) => {
+    const navigate = useNavigate();
+
+    const redirectToClinic = () => {
+        navigate(props.clinic.link)
+    }
+    
     return (
         <div className="clinic-card-component">
             <img className="profile" src={props.clinic.photo} />
             <div className="text-container">
-                <div className="info">
+                <div className="info" onClick={redirectToClinic}>
                     <div className="title">{props.clinic.name}</div>
                     <div className="type">{props.clinic.medical_unit_type}</div>
                     <div className="location">
