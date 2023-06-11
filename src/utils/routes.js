@@ -63,6 +63,8 @@ export const API_MAP = {
   GET_ADDS: 'options/adds',
   POST_NEWSLETTER: 'options/newsletter/',
   POST_REDEEM_CLINIC: 'auth/revendica-clinica/',
+  POST_REDEEM_DOCTOR: 'auth/revendica-doctor/',
+
 }
 
 export const getAPILink = (url) => {
@@ -93,7 +95,8 @@ export const routes = {
   DASHBOARD_PROFILE_DATA:'/dashboard/profile-data',
   DASHBOARD_UNIT_DATA:'/dashboard/unit-data',
   LOG_OUT:'/log-out',
-  HOW_TO_REDEEM:'/how-to-redeem',
+  HOW_TO_REDEEM_CLINIC:'/how-to-redeem-clinic',
+  HOW_TO_REDEEM_DOCTOR:'/how-to-redeem-doctor',
   FILTER_PAGE: '/filter',
   TERMS_AND_CONDITION: '/terms-and-cond',
   EXAMPLE_COMPLETE: '/exemplu-completare',
