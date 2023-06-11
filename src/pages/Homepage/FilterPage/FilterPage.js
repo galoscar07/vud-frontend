@@ -50,6 +50,7 @@ const FilterPage = (props) => {
 
     const [state, setState] = useState({
         name: new URLSearchParams(window.location.search).get('searchTerm') || '',
+        search_type: new URLSearchParams(window.location.search).get('searchType') || '',
         clinic_specialities: new URLSearchParams(window.location.search).get('clinic_specialities') || [],
         unity_facilities: new URLSearchParams(window.location.search).get('unit_facilities') || [],
         unity_types: new URLSearchParams(window.location.search).get('unity_types') || [],
@@ -276,7 +277,7 @@ const FilterPage = (props) => {
                                     <input onChange={handleInput} className="search" value={state.name} type="text" placeholder="Cauta" name="name" />
                                     <select name="searching" id="searching" onChange={(e) => handleChange(e.target.value)}>
                                         <option value="clinica">Clinica</option>
-                                        {/*<option value="doctor">Doctor</option>*/}
+                                        <option value="doctor">Doctor</option>
                                         {/*<option value="specialitate">Specialitate</option>*/}
                                     </select>
                                 </div>

@@ -1,4 +1,4 @@
-// const API_URL_DEV = 'http://127.0.0.1:8000/'
+// const API_URL = 'http://127.0.0.1:8000/'
 // const API_URL = 'http://vud-api.eu-central-1.elasticbeanstalk.com/'
 const API_URL = 'https://server.vreaudoctor.ro/'
 export const API_URL_MEDIA = ''
@@ -22,6 +22,7 @@ export const API_MAP = {
   DELETE_PROFILE: 'auth/delete-profile/',
   //ADD REVIEW
   ADD_REVIEW: 'auth/clinic-review/?clinic_id=',
+  ADD_REVIEW_DOCTOR: 'auth/doctor-review/?doctor_id=',
   // CRUD User Profile
   // GET User Profile
   USER_PROFILE: 'auth/get-user-profile/',
@@ -31,6 +32,8 @@ export const API_MAP = {
   UPDATE_ADMIN_DATA: 'auth/update-admin-data/',
   // PUT Update medical clinic data types
   PUT_MEDICAL_TYPES: 'auth/update-clinic-type-data/',
+  // UPDATE Doctor Profile
+  PUT_DOCTOR_PROFILE: 'auth/update-doctor-profile/',
   PUT_UPDATE_CLINIC_PROFILE: 'auth/update-clinic-profile/',
   GET_ARTICLE: 'options/blogposts/?blog_id=',
   GET_ARTICLES: 'options/blogposts',
@@ -41,6 +44,11 @@ export const API_MAP = {
   GET_TOP_CLINICS: 'auth/get-top-clinics/',
   GET_CLINICS: 'auth/clinics/',
   GET_CLINICS_FILTER: 'auth/get-clinics/',
+
+  // GET Doctor Clinics
+  POST_REVIEW: 'auth/doctor-review/',
+  GET_DOCTOR_BY_ID: 'auth/doctors/',
+  GET_DOCTOR_FILTERED: 'auth/get-doctors/',
 
   // OPTIONS
   // GET Medical Unity Type

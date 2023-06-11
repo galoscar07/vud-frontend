@@ -173,7 +173,7 @@ function Homepage() {
     navigate(`${routes.FILTER_PAGE}`)
   }
   const handleSearch = () => {
-    navigate(`${routes.FILTER_PAGE}?searchTerm=${state}`)
+    navigate(`${routes.FILTER_PAGE}?searchTerm=${state}&searchType=${selectedOption}`)
   }
 
   return (
@@ -182,7 +182,7 @@ function Homepage() {
         Cauti  <div className="dropdown">
           <select name="searching" id="searching" onChange={(e) => handleChange(e.target.value)}>
             <option value="clinica">Clinica</option>
-            {/*<option value="doctor">Doctor</option>*/}
+            <option value="doctor">Doctor</option>
             {/*<option value="specialitate">Specialitate</option>*/}
           </select>
         </div> pentru tine ?

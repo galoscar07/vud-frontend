@@ -12,7 +12,7 @@ const AddProfile = () => {
       icon: 'images/doctor.svg',
       title: 'Medic',
       alt: 'imagine medic',
-      disabled: true,
+      disabled: false,
       isClinic: false,
       isDoctor: true,
     },
@@ -40,7 +40,13 @@ const AddProfile = () => {
       .then((resp) => {
         localStorage.setItem('user', JSON.stringify({ is_visible: false, step: '2' }))
         if (resp.error !== 'Something went wrong') {
-          navigate(routes.ADMIN_DATA)
+          if (resp.is_doctor) {
+            navigate(routes.DOCTOR_DATA)
+          } else if (resp.is_clinic) {
+            navigate(routes.ADMIN_DATA)
+          } else {
+            navigate(routes.LOGIN)
+          }
         } else {
           navigate(routes.LOGIN)
         }
