@@ -4,7 +4,7 @@ import {API_MAP, getAPILink, routes} from "../../utils/routes";
 import _ from "lodash";
 import {useNavigate} from "react-router-dom";
 
-const HowToRedeemPage = () => {
+const RedeemDoctorPage = () => {
 
     const navigate = useNavigate()
 
@@ -16,7 +16,7 @@ const HowToRedeemPage = () => {
         message: '',
         job: '',
         fileList: [],
-        clinic_id: '',
+        doctor_id: '',
         areTermsChecked: false,
         uploadWarning: '',
         error: '',
@@ -27,10 +27,9 @@ const HowToRedeemPage = () => {
         lastName: false,
         phoneNo: false,
         email: false,
-        message: false,
         job: false,
         fileList: false,
-        clinic_id: false,
+        doctor_id: false,
     });
 
     const isFormValid = () => {
@@ -52,7 +51,7 @@ const HowToRedeemPage = () => {
     }
 
     useEffect(() => {
-        setValues({...values, clinic_id: new URLSearchParams(window.location.search).get('id')})
+        setValues({...values, doctor_id: new URLSearchParams(window.location.search).get('id')})
     }, [])
     
     const handleFieldChange = (value, title) => {
@@ -96,7 +95,7 @@ const HowToRedeemPage = () => {
         formData.append('phone', values.phoneNo)
         formData.append('company_role', values.job)
         formData.append('message', values.message)
-        formData.append('clinic_id', values.clinic_id)
+        formData.append('doctor_id', values.doctor_id)
         let files = []
         let input = document.getElementById('file');
         for (let i = 0; i < input.files.length; ++i) {
@@ -106,7 +105,7 @@ const HowToRedeemPage = () => {
         }
         formData.append('file1', files[0])
         formData.append('file2', files[1])
-        fetch(getAPILink(API_MAP.POST_REDEEM_CLINIC), {
+        fetch(getAPILink(API_MAP.POST_REDEEM_DOCTOR), {
             method: "POST",
             body: formData,
         }).then((response) => response.json())
@@ -125,19 +124,19 @@ const HowToRedeemPage = () => {
     return (
         <div className="how-to-redeem-page">
                 <img alt={'User icon'} src="/images/user.svg" />
-            <div className="container-title">Cum sa revendici contul paginii de profil a unitatii medicale pe vreauundoctor.ro:</div>
+            <div className="container-title">Cum sa revendici contul paginii de profil a unui doctor pe vreauundoctor.ro:</div>
             <div className="info-container">
                 <div className="steps">
                     <ol>
-                        <li>Acceseaza pagina de profil a unitatii medicale si apasa pe butonul "Revendica profilul".</li>
+                        <li>Acceseaza pagina de profil a doctorului si apasa pe butonul "Revendica profilul".</li>
                         <li>Completeaza formularul de mai jos cu datele de contact.</li>
-                        <li>Pentru a dovedi ca esti reprezentantul legal al unitatii medicale, va trebui sa furnizezi documente justificative.</li>
-                        <li>Dupa ce documentele justificative au fost verificate si aprobate, vei primi un email de confirmare ca revendicarea profilului a fost facuta cu succes si vei putea sa editezi si sa actualizezi informatiile de pe pagina de profil a unitatii medicale accesand link-ul din continutul email-ului.</li>
+                        <li>Pentru a dovedi ca esti reprezentantul legal, va trebui sa furnizezi documente justificative.</li>
+                        <li>Dupa ce documentele justificative au fost verificate si aprobate, vei primi un email de confirmare ca revendicarea profilului a fost facuta cu succes si vei putea sa editezi si sa actualizezi informatiile de pe pagina de profil a doctorului accesand link-ul din continutul email-ului.</li>
                         <li> Daca revendicarea profilului nu a fost aprobata, vei primi un email informativ ca revendicarea nu a fost acceptata si care va contine si posibile motive pentru aceasta decizie.</li>
                     </ol>
 
-                    <span className="bold">In concluzie, revendicarea contului paginii de profil a unitatii medicale pe vreauundoctor.ro este un proces simplu si rapid, care iti poate aduce multiple beneficii, cum ar fi cresterea vizibilitatii si a numarului de pacienti.
-                        Asadar, nu ezita sa urmezi acesti pasi pentru a-ti revendica contul si pentru a-ti promova cu succes unitatea medicala!</span>
+                    <span className="bold">In concluzie, revendicarea contului paginii de profil a doctorului pe vreauundoctor.ro este un proces simplu si rapid, care iti poate aduce multiple beneficii, cum ar fi cresterea vizibilitatii si a numarului de pacienti.
+                        Asadar, nu ezita sa urmezi acesti pasi pentru a-ti revendica contul!</span>
                 </div>
             </div>
             <form>
@@ -190,7 +189,6 @@ const HowToRedeemPage = () => {
                         <div className="input-wrapper">
                             <label>Mesaj (optional)</label>
                             <input name="message" type="text" value={values.message}
-                                   className={error.message ? 'error' : ''}
                                 onChange={(e) => {
                                     handleFieldChange(e.target.value, e.target.name);
                                 }} />
@@ -249,4 +247,4 @@ const HowToRedeemPage = () => {
 }
 
 
-export default HowToRedeemPage;
+export default RedeemDoctorPage;

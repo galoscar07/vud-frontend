@@ -562,7 +562,7 @@ const DoctorData = (props) => {
                             </div>
                         </div>
                     </div>
-                    <button className="button round custom-width" onClick={handleSubmit}> Salveaza </button>
+                    <button className="button mt round custom-width" onClick={handleSubmit}> Salveaza </button>
                 </form>
             </div>
         </div>

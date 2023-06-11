@@ -235,7 +235,7 @@ function DoctorPage({ props }) {
     const navigate = useNavigate();
     const goToRedeem = () =>
         navigate({
-            pathname: routes.HOW_TO_REDEEM,
+            pathname: routes.HOW_TO_REDEEM_DOCTOR,
             search: `?id=${id}`,
         });
 

@@ -29,7 +29,8 @@ import DashboardProfileData from './pages/Dashboard/ProfileData/DashboardProfile
 import DashboardUnitData from './pages/Dashboard/UnitData/DashboardUnitData';
 import LogOut from './pages/Dashboard/LogOut/LogOut';
 import NotFoundPage from './pages/NotFound/NotFound';
-import HowToRedeemPage from './pages/HowToRedeem/HowToRedeem';
+import RedeemClinicPage from './pages/HowToRedeem/RedeemClinic';
+import RedeemDoctorPage from './pages/HowToRedeem/RedeemDoctor';
 import TermsAndCond from "./pages/TermsAndCond/TermsAndCond";
 import ExempluCompletare from "./pages/ExempluCompletare/ExempluCompletare";
 import CookieBot from 'react-cookiebot'
@@ -82,7 +83,8 @@ function App() {
             <Route path={routes.DASHBOARD_PROFILE_DATA} element={<DashboardProfileData />} />
           </Route>
           <Route path={routes.LOG_OUT} element={<LogOut />} />
-          <Route path={routes.HOW_TO_REDEEM} element={<HowToRedeemPage />} />
+          <Route path={routes.HOW_TO_REDEEM_CLINIC} element={<RedeemClinicPage />} />
+          <Route path={routes.HOW_TO_REDEEM_DOCTOR} element={<RedeemDoctorPage />} />
           <Route path={routes.EXAMPLE_COMPLETE} element={<ExempluCompletare />} />
           <Route path={routes.DOCTOR_DATA} element={<DoctorData/>}/>
           <Route path='*' element={<NotFoundPage />} />
