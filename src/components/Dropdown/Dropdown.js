@@ -26,7 +26,6 @@ const styles = {
 
 
 const Option = (props) => {
-    console.log(props, 'option')
     return (
         <div>
             <components.Option {...props}>
@@ -43,7 +42,6 @@ const Option = (props) => {
 };
 
 const OptionsOutsideSelect = (props) => {
-    console.log(props, 'outisde')
 
     const { onChange } = props;
     const handleRemoveValue = (e) => {
@@ -58,7 +56,6 @@ const OptionsOutsideSelect = (props) => {
     };
 
     const { isMulti, value } = props;
-    console.log(value, 'value')
 
     return (
         <div>
@@ -82,7 +79,6 @@ const OptionsOutsideSelect = (props) => {
 
 function Dropdown(props) {
     const [selected, setSelected] = useState(props.selected || []);
-    console.log(props, 'dropdown')
 
     useEffect(() => {
         setSelected(props.selected || []);
