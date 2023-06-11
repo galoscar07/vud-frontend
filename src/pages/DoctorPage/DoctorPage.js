@@ -206,9 +206,22 @@ function DoctorPage({ props }) {
             }
         }
         setAddsToDisplay(dictAdds)
+
+        const query = window.location.search
+        const queryParams = new URLSearchParams(query)
+        const id = queryParams.get('id')
+        setId(id);
+
         setLoading(false)
-    },[])
-    console.log(doctorState, 'sttatteet')
+
+    }, [])
+
+    const navigate = useNavigate();
+    const goToRedeem = () =>
+        navigate({
+            pathname: routes.HOW_TO_REDEEM,
+            search: `?id=${id}`,
+        });
 
     const handleContactType = (el, i, isMobile) => {
         if (el && el.value && el.type) {
@@ -316,6 +329,11 @@ function DoctorPage({ props }) {
 
                         </div>
                         <div className="social-wrapper">
+                            {!doctor.has_user &&
+                                <div className={'revendica'}>
+                                    <div className={'button'} onClick={goToRedeem} > Revendică profilul  </div>
+                                </div>
+                            }
                             <div className={`links-wrapper small-margin-bottom`}>
                                 {doctor?.links?.map((link, i) =>
                                     <a key={i} href={link.value && link.value.includes('http') ? link.value : `http://${link.value}`} target={"_blank"} rel="noreferrer" className={`link ${!link.value && 'hide'}`}>

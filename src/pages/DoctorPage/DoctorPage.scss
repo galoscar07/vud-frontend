@@ -94,7 +94,13 @@
 
             .social-wrapper {
                 display: flex;
+                flex-direction: column;
                 align-items: end;
+                justify-content: space-between;
+
+                .links-wrapper {
+                    margin-bottom: -10px;
+                }
             }
 
             .flex-wrapper {
