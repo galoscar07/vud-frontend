@@ -157,12 +157,15 @@ function DoctorPage({ props }) {
             degrees: res.academic_degree?.map((el) => { return el.label }) || [],
             collaborator_doctors: res.collaborator_doctor?.map((doc) => {
                 return {
-                    academic_degree: doc.academic_degree || [],
                     link: "/doctor-page/?id=" + doc.id,
-                    name: `${doc.first_name} ${doc.last_name}`,
+                    first_name: doc.first_name,
+                    last_name: doc.last_name,
                     photo: doc.profile_picture || null,
-                    medical_skill: doc.medical_skill || [],
-                    speciality: doc.speciality || []
+                    speciality: doc.speciality || [],
+                    rating: doc.average_rating || 0,
+                    noOfReviews: doc.review_count || 0,
+                    score: doc.average_rating * 2 || 2,
+
                 }
             }),
             collaborator_clinics: res.collaborator_clinic?.map((clinic) => {
@@ -385,7 +388,7 @@ function DoctorPage({ props }) {
                                 <div className="container-title">Clinici unde ofer consultații</div>
                                 {doctor?.collaborator_clinics?.length > 0 &&
                                     <React.Fragment>
-                                        <div style={{ marginBottom: '20px' }} className="col">
+                                        <div style={{ marginBottom: '20px' }} className="col col-clinics">
                                             {doctor?.collaborator_clinics?.length !== 0 &&
                                                 doctor?.collaborator_clinics.map((clinic, i) => {
                                                     return <ClinicCard clinic={clinic} key={i} />
@@ -397,10 +400,10 @@ function DoctorPage({ props }) {
                                 <div className="container-title">Medici colaboratori</div>
                                 {doctor?.collaborator_doctors?.length > 0 &&
                                     <React.Fragment>
-                                        <div style={{ marginBottom: '20px' }} className="col">
+                                        <div style={{ marginBottom: '20px' }} className="col col-doctors">
                                             {doctor?.collaborator_doctors?.length !== 0 &&
                                                 doctor?.collaborator_doctors.map((doc, i) => {
-                                                    return <DoctorCard doctor={doc} key={i} />
+                                                    return <DoctorCard type={2} doctor={doc} key={i} />
                                                 })
                                             }
                                         </div>

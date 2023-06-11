@@ -652,7 +652,7 @@ function ClinicPage({ props }) {
                                         <div style={{ marginBottom: '20px' }} className="col">
                                             {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
                                                 .map((doc, i) => {
-                                                    return <DoctorCard doctor={doc} key={i} />
+                                                    return <DoctorCard type={1} doctor={doc} key={i} />
                                                 })
                                             }
                                             <div className="page-btn">

@@ -13,6 +13,14 @@
         flex-direction: column;
     }
 
+    .info-right-container {
+        .col-doctors {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            column-gap: $spacing-small;
+        }
+    }
+
     .rating {
         color: white;
         background: $color-primary;
