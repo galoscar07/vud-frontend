@@ -1,7 +1,8 @@
 @import '../../styles/base.scss';
 
 .doctor-data-page {
-    margin: $spacing-page;
+  max-width:70%;
+  margin: auto;
 
     .data-container {}
 

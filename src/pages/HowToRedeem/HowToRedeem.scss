@@ -2,7 +2,9 @@
 
 .how-to-redeem-page {
 
-    margin: $spacing-page;
+    margin: auto;
+    max-width:70%;
+    
     .container-title {
         font-size: $font-title;
         font-weight: 500;

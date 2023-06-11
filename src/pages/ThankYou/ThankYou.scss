@@ -1,7 +1,9 @@
 @import 'src/styles/base';
 
 .thank-you-page{
-    margin: $spacing-page;
+   margin:auto;
+   max-width:70%;
+   
     .button{
         width:25%;
         margin: $spacing-big auto auto auto;
