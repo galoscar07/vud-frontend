@@ -1,0 +1,63 @@
+@import 'src/styles/base';
+
+.clinic-card-component {
+    background-color: #F5F9F9;
+    display: flex;
+    flex-direction: row;
+    padding: $spacing-small;
+    column-gap: $spacing-small;
+
+    .profile {
+        width: 4rem;
+        height: 4rem;
+        margin: auto;
+    }
+
+    .text-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            row-gap: $spacing-small;
+
+            .title {
+                font-size: $font-size-xbig;
+                color: $color-dark-blue;
+            }
+
+            .type {
+                color: $color-primary;
+            }
+
+            .location {
+                text-decoration: underline;
+                color: $color-blue;
+                display: flex;
+                flex-direction: row;
+                column-gap: $spacing-xsmall;
+            }
+        }
+
+        .contact {
+            .schedule{
+                color: $color-dark-blue;
+                font-weight: $font-weight-light;
+                margin-bottom: $spacing-small;
+            }
+            .phone {
+                color: $color-primary;
+                display: flex;
+                flex-direction: row;
+                column-gap: $spacing-xsmall;
+                padding: $spacing-small $spacing-medium;
+                border: 2px solid $color-primary;
+            }
+        }
+    }
+}

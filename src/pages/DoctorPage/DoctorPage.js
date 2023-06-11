@@ -5,8 +5,10 @@ import { API_MAP, getAPILink } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import "./DoctorPage.scss";
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
+import ClinicCard from '../../components/ClinicCard/ClinicCard';
 import { NavLink, useNavigate } from "react-router-dom";
 import { routes } from '../../utils/routes';
+
 const label_ads = [
     'doctorpage_1', 'doctorpage_2'
 ]
@@ -141,8 +143,8 @@ function DoctorPage({ props }) {
                 { type: "email", value: res.primary_email, icon: "email" },
                 { type: "website", value: res.website, icon: "website" },
             ],
-            testimonials: res.reviews.map((el) => { return { text: el.comment } }).slice(0, 4) || [],
-            reviews: res.reviews.map((el) => {
+            testimonials: res.reviews?.map((el) => { return { text: el.comment } }).slice(0, 4) || [],
+            reviews: res.reviews?.map((el) => {
                 return {
                     name: el.name,
                     rating: el.rating,
@@ -150,10 +152,10 @@ function DoctorPage({ props }) {
                 }
             }) || [],
             about: res.description,
-            competences: res.medical_skill.map((el) => { return el.label }) || [],
-            specialities: res.speciality.map((el) => { return el.label }) || [],
-            degrees: res.academic_degree.map((el) => { return el.label }) || [],
-            collaborator_doctors: res.collaborator_doctor.map((doc) => {
+            competences: res.medical_skill?.map((el) => { return el.label }) || [],
+            specialities: res.speciality?.map((el) => { return el.label }) || [],
+            degrees: res.academic_degree?.map((el) => { return el.label }) || [],
+            collaborator_doctors: res.collaborator_doctor?.map((doc) => {
                 return {
                     academic_degree: doc.academic_degree || [],
                     link: "/doctor-page/?id=" + doc.id,
@@ -163,13 +165,13 @@ function DoctorPage({ props }) {
                     speciality: doc.speciality || []
                 }
             }),
-            collaborator_clinics: res.collaborator_clinic.map((clinic) => {
+            collaborator_clinics: res.collaborator_clinic?.map((clinic) => {
                 return {
                     link: "/clinic-page/?id=" + clinic.id,
                     name: clinic.clinic_name,
                     photo: clinic.profile_picture,
                     address: clinic.clinic_street + " " + clinic.clinic_number + " " + clinic.clinic_other_details + " " + clinic.clinic_town + " " + clinic.clinic_county,
-                    medical_unit_type: clinic.medical_unit_type,
+                    medical_unit_type: clinic.medical_unit_types?.map((el) => { return el.label }) || [],
                     phone: clinic.primary_phone,
                 }
             })
@@ -381,11 +383,22 @@ function DoctorPage({ props }) {
                             <div className="info-right-container">
                                 <img className="add mobile" src="/images/ads/add2.svg" />
                                 <div className="container-title">Clinici unde ofer consultații</div>
-                                <div className="container-title">Medici colaboratori</div>
-                                {doctor?.collaborator_doctors.length > 0 &&
+                                {doctor?.collaborator_clinics?.length > 0 &&
                                     <React.Fragment>
                                         <div style={{ marginBottom: '20px' }} className="col">
-                                            {doctor?.collaborator_doctors.length !== 0 &&
+                                            {doctor?.collaborator_clinics?.length !== 0 &&
+                                                doctor?.collaborator_clinics.map((clinic, i) => {
+                                                    return <ClinicCard clinic={clinic} key={i} />
+                                                })
+                                            }
+                                        </div>
+                                    </React.Fragment>
+                                }
+                                <div className="container-title">Medici colaboratori</div>
+                                {doctor?.collaborator_doctors?.length > 0 &&
+                                    <React.Fragment>
+                                        <div style={{ marginBottom: '20px' }} className="col">
+                                            {doctor?.collaborator_doctors?.length !== 0 &&
                                                 doctor?.collaborator_doctors.map((doc, i) => {
                                                     return <DoctorCard doctor={doc} key={i} />
                                                 })
@@ -423,7 +436,7 @@ function DoctorPage({ props }) {
                                             <label>Recenzie</label>
                                             <textarea rows='6' maxLength={review.maxLength} className="full-width" type="comment" name="comment" value={review.comment.value}
                                                 onChange={handleChange} onBlur={isFormEmpty} />
-                                            <div className="counter"> {review.comment.value.length} / {review.maxLength}</div>
+                                            <div className="counter"> {review.comment.value?.length} / {review.maxLength}</div>
                                             <label>Rating</label>
                                             <div className="stars-wrapper">
                                                 <div className="stars-container">
