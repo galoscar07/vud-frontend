@@ -94,13 +94,10 @@ const SingleArticle = (props) => {
         })
             .then((res) => res.json())
             .then((res) => {
+                setArticle(res[0]);
                 setLoading(false)
-                setArticle(res);
-                console.log(res, 'res')
-                console.log(article, 'article')
-
             })
-            .catch((err) => { })
+            .catch((err) => { setLoading(false) })
     }, [])
 
     const formatDate = (inputString) => {
@@ -109,10 +106,9 @@ const SingleArticle = (props) => {
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
         const formattedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
-
         return formattedDate;
     }
-
+    console.log(article, 'art')
     return (
         <div className="article">
             {loading ? <LoadingSpinner />
@@ -123,26 +119,26 @@ const SingleArticle = (props) => {
                             <div className="title">{article.title}</div>
                             <span className="date">Date {formatDate(article.date_created)}</span>
                             <div className="tags-container">
-                                {article.tags.map((tag, i) => {
+                                {article?.tags?.map((tag, i) => {
                                     return (
                                         <div key={i} className="tag">
-                                            {tag.title}
+                                            {tag.name}
                                         </div>
                                     )
                                 })}
                             </div>
-                            <img className="banner" alt="articol" src={article.banner} />
+                            <img className="banner" alt="articol" src={article.banner_image} />
                             <div className="content-container">
 
                                 <div className="para">
                                     <div className="headline">{article.headline_1}</div>
                                     <div className="text">{article.content_1}</div>
-                                    <img className="art-img" alt="art-img" src={article.image_1} />
+                                   {article.image_1 && <img className="art-img" alt="art-img" src={article.image_1} />}
                                 </div>
                                 <div className="para">
                                     <div className="headline">{article?.headline_2}</div>
                                     <div className="text">{article?.content_2}</div>
-                                    <img className="art-img" alt="art-img" src={article?.image_2} />
+                                    {article.image_2 && <img className="art-img" alt="art-img" src={article.image_2} />}
                                 </div>
 
                             </div>
