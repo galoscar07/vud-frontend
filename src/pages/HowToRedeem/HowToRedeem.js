@@ -106,15 +106,11 @@ const HowToRedeemPage = () => {
         }
         formData.append('file1', files[0])
         formData.append('file2', files[1])
-        debugger
         fetch(getAPILink(API_MAP.POST_REDEEM_CLINIC), {
             method: "POST",
-            headers: {
-                'Content-type': 'multipart/form-data',
-            }
+            body: formData,
         }).then((response) => response.json())
           .then((resp) => {
-              debugger
               if (resp.success) {
                   navigate(routes.THANK_YOU)
               } else {
