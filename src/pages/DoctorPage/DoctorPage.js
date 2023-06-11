@@ -5,6 +5,9 @@ import { API_MAP, getAPILink } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import "./DoctorPage.scss";
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
+import ClinicCard from '../../components/ClinicCard/ClinicCard';
+import { NavLink, useNavigate } from "react-router-dom";
+import { routes } from '../../utils/routes';
 
 const label_ads = [
     'doctorpage_1', 'doctorpage_2'
@@ -28,7 +31,7 @@ const default_adds = {
 }
 
 function DoctorPage({ props }) {
-    const [doctor, setDoctor] = React.useState({testimonials: [], collaborator_doctors: [], collaborator_clinics: []});
+    const [doctor, setDoctor] = React.useState({ testimonials: [], collaborator_doctors: [], collaborator_clinics: [] });
     const [loading, setLoading] = React.useState(true)
     const [isReviewFormDisplayed, setIsReviewFormDisplayed] = React.useState(false)
     const [id, setId] = React.useState(null)
@@ -56,6 +59,7 @@ function DoctorPage({ props }) {
             error: null
         },
         isReviewSubmitted: false,
+        maxLength: 500,
         server: {
             error: null
         }
@@ -139,33 +143,39 @@ function DoctorPage({ props }) {
                 { type: "email", value: res.primary_email, icon: "email" },
                 { type: "website", value: res.website, icon: "website" },
             ],
-            testimonials: res.reviews.map((el) => {return {text: el.comment}}).slice(0,4) || [],
-            reviews: res.reviews.map((el) => {return {
-                name: el.name,
-                rating: el.rating,
-                text: el.comment
-            }}) || [],
-            about: res.description,
-            competences: res.medical_skill.map((el) => {return el.label}) || [],
-            specialities: res.speciality.map((el) => {return el.label}) || [],
-            degrees: res.academic_degree.map((el) => {return el.label}) || [],
-            collaborator_doctors: res.collaborator_doctor.map((doc) => {
+            testimonials: res.reviews?.map((el) => { return { text: el.comment } }).slice(0, 4) || [],
+            reviews: res.reviews?.map((el) => {
                 return {
-                    academic_degree: doc.academic_degree || [],
+                    name: el.name,
+                    rating: el.rating,
+                    text: el.comment
+                }
+            }) || [],
+            about: res.description,
+            competences: res.medical_skill?.map((el) => { return el.label }) || [],
+            specialities: res.speciality?.map((el) => { return el.label }) || [],
+            degrees: res.academic_degree?.map((el) => { return el.label }) || [],
+            collaborator_doctors: res.collaborator_doctor?.map((doc) => {
+                return {
                     link: "/doctor-page/?id=" + doc.id,
-                    name: `${doc.first_name} ${doc.last_name}`,
+                    first_name: doc.first_name,
+                    last_name: doc.last_name,
                     photo: doc.profile_picture || null,
-                    medical_skill: doc.medical_skill || [],
-                    speciality: doc.speciality || []
+                    // TODO
+                    speciality: doc.speciality || [],
+                    rating: doc.average_rating || 0,
+                    noOfReviews: doc.review_count || 0,
+                    score: doc.average_rating * 2 || 0,
+
                 }
             }),
-            collaborator_clinics: res.collaborator_clinic.map((clinic) => {
+            collaborator_clinics: res.collaborator_clinic?.map((clinic) => {
                 return {
                     link: "/clinic-page/?id=" + clinic.id,
                     name: clinic.clinic_name,
                     photo: clinic.profile_picture,
-                    address: clinic.clinic_street + " " + clinic.clinic_number + " " + clinic.clinic_other_details + " " + clinic.clinic_town + " " + clinic.clinic_county ,
-                    medical_unit_type: clinic.medical_unit_type,
+                    address: clinic.clinic_street + " " + clinic.clinic_number + " " + clinic.clinic_other_details + " " + clinic.clinic_town + " " + clinic.clinic_county,
+                    medical_unit_type: clinic.medical_unit_types?.map((el) => { return el.label }) || [],
                     phone: clinic.primary_phone,
                 }
             })
@@ -208,22 +218,26 @@ function DoctorPage({ props }) {
         const id = queryParams.get('id')
         setId(id);
         fetch(
-          getAPILink(API_MAP.GET_DOCTOR_BY_ID + id + '/'), {
-              method: 'GET',
-              headers: {
-                  'Content-type': 'application/json; charset=UTF-8',
-              }
-          })
-          .then((res) => res.json())
-          .then((res) => {
-              setLoading(false)
-              const mapped = mapServerRespToFront(res)
-              setDoctor(mapped)
-          })
+            getAPILink(API_MAP.GET_DOCTOR_BY_ID + id + '/'), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                setLoading(false)
+                const mapped = mapServerRespToFront(res)
+                setDoctor(mapped)
+            })
+    }, [])
 
-    },[])
-
-
+    const navigate = useNavigate();
+    const goToRedeem = () =>
+        navigate({
+            pathname: routes.HOW_TO_REDEEM,
+            search: `?id=${id}`,
+        });
 
     const handleContactType = (el, i, isMobile) => {
         if (el && el.value && el.type) {
@@ -329,6 +343,11 @@ function DoctorPage({ props }) {
 
                         </div>
                         <div className="social-wrapper">
+                            {!doctor.has_user &&
+                                <div className={'revendica'}>
+                                    <div className={'button'} onClick={goToRedeem} > Revendică profilul  </div>
+                                </div>
+                            }
                             <div className={`links-wrapper small-margin-bottom`}>
                                 {doctor?.links?.map((link, i) =>
                                     <a key={i} href={link.value && link.value.includes('http') ? link.value : `http://${link.value}`} target={"_blank"} rel="noreferrer" className={`link ${!link.value && 'hide'}`}>
@@ -355,10 +374,10 @@ function DoctorPage({ props }) {
                             <div className="info-left-container ">
                                 <div className="desktop">
                                     {doctor?.testimonials?.length > 0 &&
-                                      <React.Fragment>
-                                        <div className="container-title">Testimoniale</div>
-                                        <Carousel onScroll={scrollingTop} content={doctor.testimonials} />
-                                      </React.Fragment>
+                                        <React.Fragment>
+                                            <div className="container-title">Testimoniale</div>
+                                            <Carousel onScroll={scrollingTop} content={doctor.testimonials} />
+                                        </React.Fragment>
                                     }
                                 </div>
                                 <img className="add" src={addsToDisplay['doctorpage_1']?.photo} />
@@ -368,13 +387,24 @@ function DoctorPage({ props }) {
                             <div className="info-right-container">
                                 <img className="add mobile" src="/images/ads/add2.svg" />
                                 <div className="container-title">Clinici unde ofer consultații</div>
-                                <div className="container-title">Medici colaboratori</div>
-                                {doctor?.collaborator_doctors.length > 0 &&
+                                {doctor?.collaborator_clinics?.length > 0 &&
                                     <React.Fragment>
-                                        <div style={{ marginBottom: '20px' }} className="col">
-                                            {doctor?.collaborator_doctors.length !== 0 &&
-                                              doctor?.collaborator_doctors.map((doc, i) => {
-                                                    return <DoctorCard doctor={doc} key={i} />
+                                        <div style={{ marginBottom: '20px' }} className="col col-clinics">
+                                            {doctor?.collaborator_clinics?.length !== 0 &&
+                                                doctor?.collaborator_clinics.map((clinic, i) => {
+                                                    return <ClinicCard clinic={clinic} key={i} />
+                                                })
+                                            }
+                                        </div>
+                                    </React.Fragment>
+                                }
+                                <div className="container-title">Medici colaboratori</div>
+                                {doctor?.collaborator_doctors?.length > 0 &&
+                                    <React.Fragment>
+                                        <div style={{ marginBottom: '20px' }} className="col col-doctors">
+                                            {doctor?.collaborator_doctors?.length !== 0 &&
+                                                doctor?.collaborator_doctors.map((doc, i) => {
+                                                    return <DoctorCard type={2} doctor={doc} key={i} />
                                                 })
                                             }
                                         </div>
@@ -408,8 +438,9 @@ function DoctorPage({ props }) {
                                             <input className="full-width" type="email" name="email" value={review.email.value}
                                                 onChange={handleChange} onBlur={isFormEmpty} />
                                             <label>Recenzie</label>
-                                            <textarea rows="6" className="full-width" type="comment" name="comment" value={review.comment.value}
+                                            <textarea rows='6' maxLength={review.maxLength} className="full-width" type="comment" name="comment" value={review.comment.value}
                                                 onChange={handleChange} onBlur={isFormEmpty} />
+                                            <div className="counter"> {review.comment.value?.length} / {review.maxLength}</div>
                                             <label>Rating</label>
                                             <div className="stars-wrapper">
                                                 <div className="stars-container">

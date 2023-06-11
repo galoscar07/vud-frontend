@@ -67,7 +67,7 @@ const ClinicProfile = (props) => {
   })
 
   useEffect(() => {
-    setMapState({complete: !!state.clinic_street && !!state.clinic_number && !!state.clinic_town, address: `Str. ${state.clinic_street}, nr. ${state.clinic_number}, ${state.clinic_town}`})
+    setMapState({ complete: !!state.clinic_street && !!state.clinic_number && !!state.clinic_town, address: `Str. ${state.clinic_street}, nr. ${state.clinic_number}, ${state.clinic_town}` })
   }, [state.clinic_street, state.clinic_number, state.clinic_town])
 
   const isFormValid = () => {
@@ -75,13 +75,15 @@ const ClinicProfile = (props) => {
     let ok = true
     Object.keys(errorState).forEach((key) => {
       errorCopy[key] = !state[key]
-      if (!state[key] && key !== 'multiple_phones' && key!=='multiple_emails') {
+      if (!state[key] && key !== 'multiple_phones' && key !== 'multiple_emails') {
         ok = false
       }
     })
     setErrorState(errorCopy)
-    if (!ok) {console.log("INTRA")
-      setState({...state, error: "Va rugam sa completati campurile obligatorii"})}
+    if (!ok) {
+      console.log("INTRA")
+      setState({ ...state, error: "Va rugam sa completati campurile obligatorii" })
+    }
     return ok
   }
 
@@ -267,8 +269,8 @@ const ClinicProfile = (props) => {
   }
 
   const handleSubmit = (event) => {
-    console.log('STATE:',state)
-    console.log('MAP:',mapStateToObject())
+    console.log('STATE:', state)
+    console.log('MAP:', mapStateToObject())
     event.preventDefault();
     if (!isFormValid()) return
     if (props.onSubmit) {
@@ -336,7 +338,7 @@ const ClinicProfile = (props) => {
         const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setUnitTypeDropdown(mapped)
       })
-      .catch((err) => {})
+      .catch((err) => { })
     fetch(getAPILink(API_MAP.GET_ACADEMIC_DEGREES), {
       method: 'GET',
       headers: {
@@ -348,7 +350,7 @@ const ClinicProfile = (props) => {
         const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setAcademicDegreesDropDown(mapped)
       })
-      .catch((err) => {})
+      .catch((err) => { })
     fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
       method: 'GET',
       headers: {
@@ -360,7 +362,7 @@ const ClinicProfile = (props) => {
         const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setSpecialities(mapped)
       })
-      .catch((err) => {})
+      .catch((err) => { })
     fetch(getAPILink(API_MAP.GET_COMPETENCES), {
       method: 'GET',
       headers: {
@@ -372,7 +374,7 @@ const ClinicProfile = (props) => {
         const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setCompetences(mapped)
       })
-      .catch((err) => {})
+      .catch((err) => { })
     fetch(getAPILink(API_MAP.GET_CLINIC_SPECIALITIES), {
       method: 'GET',
       headers: {
@@ -384,7 +386,7 @@ const ClinicProfile = (props) => {
         const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setClinicSpecialities(mapped)
       })
-      .catch((err) => {})
+      .catch((err) => { })
     fetch(getAPILink(API_MAP.GET_MEDICAL_FACILITIES), {
       method: 'GET',
       headers: {
@@ -397,7 +399,7 @@ const ClinicProfile = (props) => {
         setMedicalFacilities(mapped)
         setLoading(false)
       })
-      .catch((err) => {})
+      .catch((err) => { })
   }, [])
 
   // Renders
@@ -464,7 +466,7 @@ const ClinicProfile = (props) => {
         </div>
         <MapWrapper
           classes={'map-clinic-page'}
-          location={mapState.complete ? [{address: mapState.address, name: state.clinic_name, description: state.clinic_other_details}] : []}
+          location={mapState.complete ? [{ address: mapState.address, name: state.clinic_name, description: state.clinic_other_details }] : []}
         ></MapWrapper>
         <div className="fields-wrapper flex">
           <div className="field-container">
@@ -582,8 +584,9 @@ const ClinicProfile = (props) => {
         </div>
         <div className="fields-wrapper">
           <textarea placeholder={'Scrieti o descriere a unitatii dumneavoastra.'} className={'textarea-description'}
-            value={state.description} name="description" onChange={handleFieldChange}
+            value={state.description} name="description" onChange={handleFieldChange} maxLength='500'
           />
+          <div className="counter"> {state.description.length} / 500 </div>
         </div>
       </div>
     )
@@ -748,7 +751,7 @@ const ClinicProfile = (props) => {
                 {renderFacilities()}
                 {renderSchedule()}
                 {
-                  state.error && <div style={{marginBottom: '15px'}} className={'error'}>{state.error}</div>
+                  state.error && <div style={{ marginBottom: '15px' }} className={'error'}>{state.error}</div>
                 }
                 <button className="button round " onClick={handleSubmit} >Salveaza</button>
               </form>

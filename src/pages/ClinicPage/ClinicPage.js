@@ -63,6 +63,7 @@ function ClinicPage({ props }) {
             error: null
         },
         isReviewSubmitted: false,
+        maxLength: 500,
         server: {
             error: null
         }
@@ -651,7 +652,7 @@ function ClinicPage({ props }) {
                                         <div style={{ marginBottom: '20px' }} className="col">
                                             {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
                                                 .map((doc, i) => {
-                                                    return <DoctorCard doctor={doc} key={i} />
+                                                    return <DoctorCard type={1} doctor={doc} key={i} />
                                                 })
                                             }
                                             <div className="page-btn">
@@ -702,8 +703,9 @@ function ClinicPage({ props }) {
                                         <input className="full-width" type="email" name="email" value={review.email.value}
                                             onChange={handleChange} onBlur={isFormEmpty} />
                                         <label>Recenzie</label>
-                                        <textarea rows="6" className="full-width" type="comment" name="comment" value={review.comment.value}
+                                        <textarea  maxLength={review.maxLength} rows="6" className="full-width" type="comment" name="comment" value={review.comment.value}
                                             onChange={handleChange} onBlur={isFormEmpty} />
+                                        <div className="counter"> {review.comment.value.length} / {review.maxLength}</div>
                                         <label>Rating</label>
                                         <div className="stars-wrapper">
                                             <div className="stars-container">

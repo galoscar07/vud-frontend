@@ -13,6 +13,14 @@
         flex-direction: column;
     }
 
+    .info-right-container {
+        .col-doctors {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            column-gap: $spacing-small;
+        }
+    }
+
     .rating {
         color: white;
         background: $color-primary;
@@ -32,8 +40,9 @@
     }
 
     .doctor-img {
-        height: 12rem;
-        max-width: 14.5rem;
+        height: 14.5rem;
+        ;
+        width: 14.5rem;
         object-fit: cover;
         border-radius: 40px 40px 0 0;
         background-color: $color-background;
@@ -91,10 +100,21 @@
             padding: $spacing-huge $spacing-small;
             height: fit-content;
             border-radius: 4px;
+            width: 100%;
 
             .social-wrapper {
                 display: flex;
+                flex-direction: column;
                 align-items: end;
+                justify-content: space-between;
+
+                .revendica {
+                    margin-top: 10px;
+                }
+
+                .links-wrapper {
+                    margin-bottom: -10px;
+                }
             }
 
             .flex-wrapper {

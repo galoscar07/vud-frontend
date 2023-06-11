@@ -123,13 +123,13 @@ const SingleArticle = (props) => {
                             <div className="title">{article.title}</div>
                             <span className="date">Date {formatDate(article.date_created)}</span>
                             <div className="tags-container">
-                                {/* {article.tags.map((tag, i) => {
+                                {article.tags.map((tag, i) => {
                                     return (
                                         <div key={i} className="tag">
                                             {tag.title}
                                         </div>
                                     )
-                                })} */}
+                                })}
                             </div>
                             <img className="banner" alt="articol" src={article.banner} />
                             <div className="content-container">
