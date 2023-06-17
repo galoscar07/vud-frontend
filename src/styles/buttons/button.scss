@@ -47,9 +47,7 @@
   }
 
   &:hover {
-    //border: 2px solid $color-primary-hover !important;
     box-shadow: 0 3px 8px 0 rgba(black, 0.2);
-    //background-color: $color-primary-hover !important;
   }
 
   &:focus {
@@ -86,16 +84,6 @@
       box-shadow: none;
       background-color: unset;
     }
-
-    //&:hover, &:focus, &:active {
-    //  background-color: $color-disabled;
-    //  box-shadow: none;
-    //  transform: none;
-    //}
-
-    //&:focus {
-    //  background-color: darken($color-disabled, 10%);
-    //}
   }
 
   &.border-button {

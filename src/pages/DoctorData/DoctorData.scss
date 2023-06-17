@@ -1,8 +1,8 @@
 @import '../../styles/base.scss';
 
 .doctor-data-page {
-  max-width:70%;
-  margin: auto;
+    max-width: 70%;
+    margin: auto;
 
     .data-container {}
 
@@ -16,7 +16,14 @@
     }
 
     .invite-btn {
-        width: 40%;
+        border: none !important;
+        background-color: transparent;
+        width: fit-content !important;
+        text-decoration: underline;
+
+        &:active {
+            background-color: transparent !important;
+        }
     }
 
     .container-subtitle {
@@ -49,5 +56,9 @@
 
     .mt {
         margin-top: $spacing-big;
+    }
+
+    .contact-phone {
+        width: 20rem;
     }
 }

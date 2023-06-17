@@ -1,9 +1,13 @@
-import React, {useCallback, useEffect} from 'react'
+import React, { useCallback, useEffect } from 'react'
 import "./Register.scss"
 import _ from 'lodash';
-import {API_MAP, getAPILink, routes} from "../../../utils/routes";
+import { API_MAP, getAPILink, routes } from "../../../utils/routes";
+import ResendEmail from '../../EmailVerification/ResendEmail/ResendEmail';
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [state, setState] = React.useState({
     email: {
       value: '',
@@ -134,8 +138,10 @@ const Register = () => {
         }
         return response.json()
       })
-      .then((data) => {})
-      .catch((err) => {})
+      .then((data) => {
+        navigate(routes.RESEND_EMAIL)
+      })
+      .catch((err) => { })
   }
 
   return (

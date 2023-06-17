@@ -23,7 +23,6 @@ const ResendEmail = () => {
         if (!isFormValid()) {
             return
         }
-
         fetch(
             getAPILink(API_MAP.RESEND_REGISTER), {
             method: 'POST',
@@ -37,7 +36,7 @@ const ResendEmail = () => {
             .then((response) => {
                 if (response.status !== 201) {
                     throw Error
-                } else setState({...state, isEmailSent: true})
+                } else setState({ ...state, isEmailSent: !state.isEmailSent })
                 return response.json()
             })
             .then((data) => { })

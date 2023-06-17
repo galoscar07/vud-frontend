@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import './Header.scss'
-import {NavLink, useNavigate} from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { routes } from "../../utils/routes";
-import {getUserFromLocal} from "../../utils/localStorage";
+import { getUserFromLocal } from "../../utils/localStorage";
 
 
 function Header() {
@@ -41,7 +41,7 @@ function Header() {
             to={routes.DASHBOARD}
           >Cont {user.firstName} {user.lastName}</NavLink>
           <img alt={'imagine profile user'} className={'profile_pic'}
-               src={user.profilePicture ? window.URL.createObjectURL(user.profilePicture) : '/images/user.svg' } />
+            src={user.profilePicture ? window.URL.createObjectURL(user.profilePicture) : '/images/user.svg'} />
         </div>
       )
     } else {
@@ -61,10 +61,16 @@ function Header() {
       <div onClick={() => toggleMenu(!isMenuOpen)} className={'hamburger_icon'}><img src={isMenuOpen ? '/images/menu_open.svg' : '/images/menu_closed.svg'}></img></div>
       <div className={`hamburger_menu ${isMenuOpen ? 'open' : 'closed'}`}>
         <div className={'menu_items'}>
-          <NavLink
-            to={routes.HOMEPAGE}
-            onClick={() => toggleMenu(false)}
-          >Acasă</NavLink>
+          <div className="info-links">
+            <NavLink
+              to={routes.HOMEPAGE}
+              onClick={() => toggleMenu(false)}
+            >Acasă</NavLink>
+            <NavLink
+              to={routes.ARTICLES}
+              onClick={() => toggleMenu(false)}
+            >Informații medicale</NavLink>
+          </div>
         </div>
         {renderUserProfile()}
         <span className={'close_btn'} onClick={() => toggleMenu(false)}><img src={'/images/close_btn.svg'} /></span>

@@ -39,6 +39,8 @@
         flex-direction: column;
         text-align: left;
         margin: $spacing-medium 0;
+        background: transparent;
+        padding: 0;
 
         .fields-wrapper {
             display: grid;

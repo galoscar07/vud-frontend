@@ -67,6 +67,8 @@ const ClinicProfile = (props) => {
     multiple_phones: '',
     multiple_emails: '',
     website: false,
+    clinic_specialities: false,
+    clinic_facilities: false
   })
 
   const [mapState, setMapState] = useState({
@@ -89,7 +91,6 @@ const ClinicProfile = (props) => {
     })
     setErrorState(errorCopy)
     if (!ok) {
-      console.log("INTRA")
       setState({ ...state, error: "Va rugam sa completati campurile obligatorii" })
     }
     return ok
@@ -136,7 +137,6 @@ const ClinicProfile = (props) => {
   }
 
   const handlePhoneEmailChange = (value, index, list, fct) => {
-    console.log(value, 'VALOARE')
     const copy = _.cloneDeep(list)
     copy[index] = value || 'phone'
     fct(copy)
@@ -385,6 +385,7 @@ const ClinicProfile = (props) => {
             email: false,
             error: false,
           })
+          setToggleInviteUnit(false)
         } else {
           setInviteError({
             name: false,
@@ -454,6 +455,7 @@ const ClinicProfile = (props) => {
             email: false,
             error: false,
           })
+          setToggleInvite(false)
         } else {
           setInviteError({
             name: false,
@@ -910,7 +912,7 @@ const ClinicProfile = (props) => {
         <div className="fields-wrapper">
           <input onChange={handleInputDoctor} className="search" type="text" placeholder="Cauta medic" name="name" />
           {!toggleInvite
-            ? <div className={`button border-button round invite-btn`} onClick={() => toggleInviteDoctor(true)}>>Nu ai gasit ce cautai? Invita un doctor!</div>
+            ? <div className={`button border-button round invite-btn`} onClick={() => toggleInviteDoctor(true)}>Nu ai gasit ce cautai? Invita un doctor!</div>
             : renderSendInvite(inviteDoctor, 'medic')
           }
           {
@@ -949,16 +951,16 @@ const ClinicProfile = (props) => {
   const renderSpecialities = () => {
     return (
       <div className="specialities-container">
-        <Dropdown selected={state.clinic_specialities} options={clinicSpecialities}
-          title="Specialitati unitate" onSelect={(values) => { onSelectDropdown('clinic_specialities', values) }} />
+        <Dropdown hasError={errorState.clinic_specialities} selected={state.clinic_specialities} options={clinicSpecialities}
+          title="Specialitati unitate*" onSelect={(values) => { onSelectDropdown('clinic_specialities', values) }} />
       </div>
     )
   }
   const renderFacilities = () => {
     return (
       <div className="facilities-container">
-        <Dropdown selected={state.clinic_facilities} options={medicalFacilities}
-          title="Facilitati unitate" onSelect={(values) => { onSelectDropdown('clinic_facilities', values) }} />
+        <Dropdown hasError={errorState.clinic_facilities} selected={state.clinic_facilities} options={medicalFacilities}
+          title="Facilitati unitate*" onSelect={(values) => { onSelectDropdown('clinic_facilities', values) }} />
       </div>
     )
   }

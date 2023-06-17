@@ -177,6 +177,17 @@
       width: 12% !important;
       margin: $spacing-default auto;
     }
+
+    &.invite-btn {
+      border: none !important;
+      background-color: transparent;
+      width: fit-content !important;
+      text-decoration: underline;
+
+      &:active {
+        background-color: transparent !important;
+      }
+    }
   }
 
 
