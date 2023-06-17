@@ -1,19 +1,19 @@
 import "./InviteCard.scss";
 
-const renderBtn = (status) => {
+const renderBtn = (status, onClick) => {
     switch (status) {
         case "uninvited":
-            return <div className={`button border-button round uninvited`}>Adaugă</div>
+            return <div onClick={onClick} className={`button border-button round uninvited`}>Adaugă</div>
         case "waiting":
-            return <div className={`button border-button round waiting`}>Invitație în așteptare</div>
+            return <div onClick={onClick}  className={`button border-button round waiting disabled`}>Invitație în așteptare</div>
         case "added":
-            return <div className={`button border-button round added`}>Șterge</div>
+            return <div onClick={onClick}  className={`button border-button round added`}>Șterge</div>
     }
 }
 
 const InviteDoctorCard = (props) => {
     return (
-        <div className="invited-doc-container">
+        <div className="invited-doc-container" style={{ opacity: props.doctor.disabled ? '0.5' : '1', pointerEvents: props.doctor.disabled ? 'none' : 'auto'}}>
             <div className="inv-doc">
                 <img className="round-img" src={props.doctor.img || "/images/user.svg"} />
                 <div className="info-container">
@@ -36,13 +36,13 @@ const InviteDoctorCard = (props) => {
                     <div className="email">{props.doctor.email}</div>
                 </div>
             </div>
-            {renderBtn(props.doctor.status)}
+            {renderBtn(props.doctor.status, () => {props.onClick(props.doctor)})}
         </div>)
 }
 
 const InviteUnitCard = (props) => {
     return (
-        <div className="invited-doc-container">
+        <div className="invited-doc-container" style={{ opacity: props.unit.disabled ? '0.5' : '1', pointerEvents: props.unit.disabled ? 'none' : 'auto'}}>
             <div className="inv-doc">
                 <img className="round-img" src={props.unit.img || "/images/user.svg"} />
                 <div className="info-container">
@@ -50,7 +50,7 @@ const InviteUnitCard = (props) => {
                     <div className="type">{props.unit.type}</div>
                 </div>
             </div>
-            {renderBtn(props.unit.status)}
+            {renderBtn(props.unit.status, () => {props.onClick(props.unit)})}
         </div>)
 }
 

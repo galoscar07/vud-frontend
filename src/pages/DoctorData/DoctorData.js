@@ -7,6 +7,14 @@ import "./DoctorData.scss";
 import InviteCard from "./InviteCard/InviteCard";
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
 
+const initialPaginated = {
+    count: 0,
+    next: null,
+    previous: null,
+    results: []
+}
+
+
 const DoctorData = (props) => {
     const navigate = useNavigate();
 
@@ -15,6 +23,7 @@ const DoctorData = (props) => {
         firstName: props?.selected?.firstName || '',
         lastName: props?.selected?.lastName || '',
         phoneNo: props?.selected?.phoneNo || '',
+        phoneNoVud: props?.selected?.phoneNo || '',
         email: props?.selected?.email || '',
         website: props?.selected?.website || '',
         facebook: props?.selected?.facebook || '',
@@ -36,74 +45,370 @@ const DoctorData = (props) => {
         lastName: false,
         phoneNo: false,
         email: false,
+        phoneNoVud: false,
     })
     const handleFieldChange = (value, title) => {
         setValues((prevState) => ({ ...prevState, [title]: value }));
     };
 
 
-    // Invited Doctors & Clinics
+    // Collaborator Clinics and Doctors
+    const [toggleInviteU, setToggleInviteUnit] = React.useState(false);
+    const [toggleInvite, setToggleInvite] = React.useState(false);
+
+    const [selectedInvitedUnits, setSelectedInvitedUnits] = useState([])
+    const [selectedInvitedDoctors, setSelectedInvitedDoctors] = useState([])
+
+    const [invitedUnits, setInvitedUnits] = useState([])
+    const [invitedDoctors, setInvitedDoctors] = useState([])
+
+    const [clinics, setClinics] = useState({
+        count: 0,
+        next: null,
+        previous: null,
+        results: []
+    })
+    const [doctors, setDoctors] = useState({
+        count: 0,
+        next: null,
+        previous: null,
+        results: []
+    })
+
     const [errorInvite, setInviteError] = useState({
-        // TODO handle properly
         name: false,
         email: false,
-        unit: false,
-        unitEmail: false,
+        error: false,
     })
     const [inviteValues, setInviteValues] = useState({
         name: '',
         email: '',
         message: '',
-        unit: '',
-        unitEmail: '',
-        unitMessage: ''
     })
-    const invitedDoctors = [
-        {
-            name: "Mihai Dumitrescu",
-            specialities: ["Spec1", "Spec2"],
-            competences: ["Comp1", "Comp2"],
-            unit: 'Unitate medicala',
-            email: "test@emailc.com",
-            img: "/images/user.svg",
-            status: "uninvited"
-        },
-        {
-            name: "Dorin Dumitrescu",
-            specialities: ["Spec1", "Spec2"],
-            competences: ["Comp1", "Comp2"],
-            unit: 'Unitate medicala',
-            email: "test@emailc.com",
-            img: "/images/user.svg",
-            status: "waiting"
-        },
-        {
-            name: "Ana Dumitrescu",
-            specialities: ["Spec1", "Spec2"],
-            competences: ["Comp1", "Comp2"],
-            unit: 'Unitate medicala',
-            email: "test@emailc.com",
-            img: "/images/user.svg",
-            status: "added"
-        }
-    ]
-    const invitedUnits = [{
-        img: "/images/user.svg",
-        name: "Clinica de pediatrie",
-        type: "Clinica privata",
-        status: "added"
-    }]
-    const [toggleInvite, setToggleInvite] = React.useState(false);
-    const [toggleInviteU, setToggleInviteUnit] = React.useState(false);
 
+    const mapResponseFromServerClinic = (resp) => {
+        return {
+            ...resp,
+            results: resp.results.map((el) => {
+                return {
+                    id: el.id,
+                    img: el.profile_picture,
+                    name: el.clinic_name,
+                    type: el.medical_unit_types.map((e) => {
+                        return e.label
+                    }).join(" | "),
+                    status: selectedInvitedUnits.filter((s) => s.id === el.id).length === 1 ? "added" : "uninvited",
+                    disabled: false
+                }
+            })
+        }
+    }
+    const mapResponseFromServerDoctor = (resp) => {
+        return {
+            ...resp,
+            results: resp.results.map((el) => {
+                return {
+                    id: el.id,
+                    img: el.profile_picture,
+                    name: el.first_name + el.last_name,
+                    specialities: el.speciality.map((e) => {
+                        return e.label
+                    }),
+                    competences: el.medical_skill.map((e) => {
+                        return e.label
+                    }),
+                    unit: el.collaborator_clinic.map((e) => {
+                        return e.clinic_name
+                    }).join(' | '),
+                    email: el.primary_email,
+                    status: selectedInvitedDoctors.filter((s) => s.id === el.id).length === 1 ? "added" : "uninvited",
+                    disabled: false
+                }
+            })
+        }
+    }
+
+    const remapResponseFromServerClinic = (resp) => {
+        return {
+            ...resp,
+            results: resp.results.map((el) => {
+                return {
+                    ...el,
+                    disabled: selectedInvitedUnits.filter((s) => s.id === el.id).length === 1
+                }
+            })
+        }
+    }
+    const remapResponseFromServerDoctor = (resp) => {
+        return {
+            ...resp,
+            results: resp.results.map((el) => {
+                return {
+                    ...el,
+                    disabled: selectedInvitedDoctors.filter((s) => s.id === el.id).length === 1
+                }
+            })
+        }
+    }
+
+    const handleInputClinic = (event) => {
+        event.preventDefault();
+        const searchTerm = event.target.value
+        if (searchTerm === "") {
+            setClinics(initialPaginated)
+            return
+        }
+        const link = '?page=1&page_size=4&name=' + event.target.value
+        fetch(getAPILink(API_MAP.GET_CLINICS_FILTER + link), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              setClinics(mapResponseFromServerClinic(response))
+          })
+          .catch((err) => { })
+    }
+    const handleInputDoctor = (event) => {
+        event.preventDefault();
+        const searchTerm = event.target.value
+        if (searchTerm === "") {
+            setDoctors(initialPaginated)
+            return
+        }
+        const link = '?page=1&page_size=4&name=' + event.target.value
+        fetch(getAPILink(API_MAP.GET_DOCTOR_FILTERED + link), {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+          .then((resp) => resp.json())
+          .then((response) => {
+              setDoctors(mapResponseFromServerDoctor(response))
+          })
+          .catch((err) => { })
+    }
+    const handleClickUnit = (selectedElem) => {
+        let copyElem = {...selectedElem, status: "added"}
+        let copy = [...selectedInvitedUnits]
+        let index = copy.findIndex(obj => obj.id === selectedElem.id);
+        if (index !== -1) {
+            copy.splice(index, 1);
+        } else {
+            copy.push(copyElem);
+        }
+        setSelectedInvitedUnits(copy)
+        setClinics(remapResponseFromServerClinic(clinics))
+    }
+    useEffect(() => {
+        setClinics(remapResponseFromServerClinic(clinics))
+    }, [selectedInvitedUnits])
+
+    const handleClickDoctor = (selectedElem) => {
+        let copyElem = {...selectedElem, status: "added"}
+        let copy = [...selectedInvitedDoctors]
+        let index = copy.findIndex(obj => obj.id === selectedElem.id);
+        if (index !== -1) {
+            copy.splice(index, 1);
+        } else {
+            copy.push(copyElem);
+        }
+        setSelectedInvitedDoctors(copy)
+        setDoctors(remapResponseFromServerDoctor(doctors))
+    }
+    useEffect(() => {
+        setDoctors(remapResponseFromServerDoctor(doctors))
+    }, [selectedInvitedDoctors])
+
+    const handleFieldChangeInvite = (value, title) => {
+        setInviteValues((prevState) => ({ ...prevState, [title]: value }));
+    };
+
+    const inviteUnit = () => {
+        let ok = false
+        let errorCopy = _.cloneDeep(errorInvite)
+        if (!inviteValues.name) {
+            errorCopy.name = true
+            ok = true
+        }
+        if (!inviteValues.email) {
+            errorCopy.email = true
+            ok = true
+        }
+        if (ok) {
+            setInviteError(errorCopy)
+            return
+        }
+
+        const body = JSON.stringify({
+            'to_sent': inviteValues.name,
+            'email': inviteValues.email,
+            'message': inviteValues.message,
+            'from_sent': values.firstName + ' ' + values.lastName,
+            'from_type': 'doctor'
+        })
+
+        makeRequestLogged(
+          getAPILink(API_MAP.POST_INVITE_CLINIC),
+          'POST',
+          body,
+          getAuthTokenFromLocal(),
+        ).then((response) => response.json())
+          .then((resp) => {
+              if (resp.success) {
+                  setInvitedUnits([...invitedUnits, {
+                      id: -1,
+                      img: "/images/user.svg",
+                      status: "waiting",
+                      type: '',
+                      name: inviteValues.name,
+                  }])
+                  setInviteValues({
+                      name: '',
+                      email: '',
+                      message: '',
+                  })
+                  setInviteError({
+                      name: false,
+                      email: false,
+                      error: false,
+                  })
+              } else {
+                  setInviteError({
+                      name: false,
+                      email: false,
+                      error: 'A aparut o eroare',
+                  })
+              }
+          })
+          .catch((err) => {
+              setInviteError({
+                  name: false,
+                  email: false,
+                  error: 'A aparut o eroare',
+              })
+          })
+    }
+    const inviteDoctor = () => {
+        let ok = false
+        let errorCopy = _.cloneDeep(errorInvite)
+        if (!inviteValues.name) {
+            errorCopy.name = true
+            ok = true
+        }
+        if (!inviteValues.email) {
+            errorCopy.email = true
+            ok = true
+        }
+        if (ok) {
+            setInviteError(errorCopy)
+            return
+        }
+
+        const body = JSON.stringify({
+            'to_sent': inviteValues.name,
+            'email': inviteValues.email,
+            'message': inviteValues.message,
+            'from_sent': values.firstName + ' ' + values.lastName,
+            'from_type': 'doctor'
+        })
+
+        makeRequestLogged(
+          getAPILink(API_MAP.POST_INVITE_DOCTOR),
+          'POST',
+          body,
+          getAuthTokenFromLocal(),
+        ).then((response) => response.json())
+          .then((resp) => {
+              if (resp.success) {
+                  setInvitedDoctors([...invitedDoctors, {
+                      id: -1,
+                      img: "/images/user.svg",
+                      specialities: [],
+                      competences: [],
+                      unit: '',
+                      status: "waiting",
+                      type: '',
+                      name: inviteValues.name,
+                      email: inviteValues.email,
+                  }])
+                  setInviteValues({
+                      name: '',
+                      email: '',
+                      message: '',
+                  })
+                  setInviteError({
+                      name: false,
+                      email: false,
+                      error: false,
+                  })
+              } else {
+                  setInviteError({
+                      name: false,
+                      email: false,
+                      error: 'A aparut o eroare',
+                  })
+              }
+          })
+          .catch((err) => {
+              setInviteError({
+                  name: false,
+                  email: false,
+                  error: 'A aparut o eroare',
+              })
+          })
+    }
     const toggleInviteDoctor = (toggleInvite) => {
         setToggleInvite(toggleInvite);
     }
-
     const toggleInviteUnit = (toggleInviteU) => {
         setToggleInviteUnit(toggleInviteU);
     }
-
+    const renderSendInvite = (ftc, word) => {
+        return (
+            <div className="invite-container">
+                <div className="container-subtitle">
+                  <span className="container-title">Invitați {word}</span>
+                    <span className="close" onClick={() => {
+                        if (word === 'medic') toggleInviteDoctor(false)
+                        else toggleInviteUnit(false)
+                    }}>x</span>
+                </div>
+                <div className="col-1">
+                    <div className="input-wrapper">
+                        <label>*Nume {word}</label>
+                        <input className={errorInvite.name ? 'error' : ''} name="name" type="text" value={inviteValues.name}
+                             onChange={(e) => {
+                                 handleFieldChangeInvite(e.target.value, e.target.name);
+                             }} />
+                    </div>
+                </div>
+                <div className="col-1">
+                    <div className="input-wrapper">
+                        <label>*Adresa email</label>
+                        <input className={errorInvite.email ? 'error' : ''} name="email" type="text" value={inviteValues.email}
+                             onChange={(e) => {
+                                 handleFieldChangeInvite(e.target.value, e.target.name);
+                             }} />
+                    </div>
+                </div>
+                <div className="textarea-column">
+                    <label>Personalizeaza mesaj</label>
+                    <textarea rows="15" className="full-width" name="message" value={inviteValues.message}
+                            onChange={(e) => {
+                                handleFieldChangeInvite(e.target.value, e.target.name);
+                    }} />
+                </div>
+                {
+                    errorInvite.error && <p className={'error'}>{errorInvite.errors}</p>
+                }
+                <div className="button round custom-width" onClick={ftc}> Trimiteți invitație </div>
+            </div>
+        )
+    }
 
     // Dropdowns
     const [selectedSpecialties, setSelectedSpecialties] = React.useState([]);
@@ -167,13 +472,6 @@ const DoctorData = (props) => {
         }
     }
 
-    const [pagination, setPagination] = React.useState({
-        perPage: 4,
-        currentPage: 1,
-        maxPage: null,
-    })
-
-    const [medics, setMedic] = useState('')
 
     const isFormValid = () => {
         let errorCopy = _.cloneDeep(error)
@@ -238,6 +536,7 @@ const DoctorData = (props) => {
             first_name: values.firstName,
             last_name: values.lastName,
             primary_phone: values.phoneNo,
+            primary_phone_vud: values.phoneNoVud,
             primary_email: values.email,
             website: values.website,
             website_facebook: values.facebook,
@@ -251,6 +550,9 @@ const DoctorData = (props) => {
             academic_degree: selectedDegrees.map(el => { return el.value }),
             speciality: selectedSpecialties.map(el => { return el.value }),
             medical_skill: selectedCompetences.map(el => { return el.value }),
+            // 4th card
+            doctor: selectedInvitedDoctors.map((d) => {return d.id}).join("|"),
+            clinic: selectedInvitedUnits.map((d) => {return d.id}).join("|")
         }
     }
 
@@ -278,6 +580,10 @@ const DoctorData = (props) => {
             formData.append('academic_degree', JSON.stringify(mapped.academic_degree))
             formData.append('speciality', JSON.stringify(mapped.speciality))
             formData.append('medical_skill', JSON.stringify(mapped.medical_skill))
+            formData.append('clinic', mapped.clinic)
+            formData.append('doctor', mapped.doctor)
+
+            debugger
 
             // TODO Finish file sending
             // formData.append('file1', files[0])
@@ -301,14 +607,7 @@ const DoctorData = (props) => {
                     setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
                 })
         }
-        debugger
         console.log('submitted')
-    }
-    const inviteDoctor = () => {
-        console.log('invite')
-    }
-    const inviteUnit = () => {
-        console.log('invite')
     }
 
     return (
@@ -415,107 +714,83 @@ const DoctorData = (props) => {
                             </div>
                         </div>
                     </div>
-                    {/*<div className="collab-unit-data">*/}
-                    {/*    <div className="container-title">Unitate medicală colaboratoare</div>*/}
-                    {/*    <div className="fields-wrapper">*/}
-                    {/*        /!* <input onChange={handleInput} className="search" value={medic} type="text" placeholder="Cauta medic" name="name" /> *!/*/}
+                    <div className="collab-unit-data">
+                        <div className="container-title">Unitate medicală colaboratoare</div>
+                        <div className="fields-wrapper">
+                            <input onChange={handleInputClinic} className="search" type="text" placeholder="Cautați unitate medicală" name="name" />
+                            {!toggleInviteU
+                              ? <div className={`button border-button round invite-btn`} onClick={() => toggleInviteUnit(true)}>Nu ai gasit ce cautai? Invita o unitate medicala!</div>
+                              : renderSendInvite(inviteUnit, 'unitate medicala')
+                            }
+                            {
+                                clinics.count !== 0 &&
+                                    clinics.results.map((cl) => {
+                                        return <InviteCard disable type="unit" unit={cl} onClick={handleClickUnit}/>
+                                    })
+                            }
+                            {
+                                selectedInvitedUnits.length > 0 &&
+                                    <React.Fragment>
+                                        <p>Unități medicale adăugate</p>
+                                        {selectedInvitedUnits.map((invited, i) => {
+                                            return (
+                                              <InviteCard type="unit" unit={invited} onClick={handleClickUnit}/>
+                                            )
+                                        })}
+                                    </React.Fragment>
+                            }
+                            {
+                              invitedUnits.length > 0 &&
+                                <React.Fragment>
+                                    <p>Unități medicale adăugate</p>
+                                    {invitedUnits.map((invited, i) => {
+                                        return (
+                                            <InviteCard type="unit" unit={invited} />
+                                        )
+                                    })}
+                                </React.Fragment>
+                            }
 
-                    {/*        /!* dropdown *!/*/}
-                    {/*        {invitedUnits.map((invited, i) => {*/}
-                    {/*            return (*/}
-                    {/*                <InviteCard type="unit" unit={invited} />*/}
-                    {/*            )*/}
-                    {/*        })}*/}
-                    {/*        {!toggleInviteU && <div className={`button border-button round invite-btn`} onClick={() => toggleInviteUnit(true)}>Invitați unitate medicală pe vreaudoctor.ro</div>}*/}
-
-                    {/*        {toggleInviteU && <div className="invite-container">*/}
-                    {/*            <div className="container-subtitle">*/}
-                    {/*                <span className="container-title">Invitați unitate medicala</span>*/}
-                    {/*                <span className="close" onClick={() => toggleInviteUnit(false)}>x</span>*/}
-                    {/*            </div>*/}
-                    {/*            <div className="col-1">*/}
-                    {/*                <div className="input-wrapper">*/}
-                    {/*                    <label>*Nume unitate medicala</label>*/}
-                    {/*                    <input className={errorInvite.unit ? 'error' : ''} name="unit" type="text" value={inviteValues.unit}*/}
-                    {/*                        onChange={(e) => {*/}
-                    {/*                            handleFieldChange(e.target.value, e.target.name);*/}
-                    {/*                        }} />*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*            <div className="col-1">*/}
-                    {/*                <div className="input-wrapper">*/}
-                    {/*                    <label>*Adresa email</label>*/}
-                    {/*                    <input className={errorInvite.unitEmail ? 'error' : ''} name="unitEmail" type="text" value={inviteValues.unitEmail}*/}
-                    {/*                        onChange={(e) => {*/}
-                    {/*                            handleFieldChange(e.target.value, e.target.name);*/}
-                    {/*                        }} />*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*            <div className="textarea-column">*/}
-                    {/*                <label>Personalizeaza mesaj</label>*/}
-                    {/*                <textarea rows="15" className="full-width" type="comment" name="unitMessage" value={inviteValues.unitMessage}*/}
-                    {/*                    onChange={(e) => {*/}
-                    {/*                        handleFieldChange(e.target.value, e.target.name);*/}
-                    {/*                    }} />*/}
-                    {/*            </div>*/}
-                    {/*            <div className="button round custom-width" onClick={inviteUnit}> Trimiteți invitație </div>*/}
-                    {/*        </div>}*/}
-                    {/*        /!* medici invitati *!/*/}
-                    {/*        /!* medici adaugati *!/*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*<div className="collab-doctors-data">*/}
-                    {/*    <div className="container-title">Medici colaboratoari</div>*/}
-                    {/*    <div className="fields-wrapper">*/}
-                    {/*        /!* <input onChange={handleInput} className="search" value={medic} type="text" placeholder="Cauta medic" name="name" /> *!/*/}
-
-                    {/*        /!* dropdown *!/*/}
-
-                    {/*        {invitedDoctors.map((invited, i) => {*/}
-                    {/*            return (*/}
-                    {/*                <InviteCard type="doctor" doctor={invited} />*/}
-                    {/*            )*/}
-                    {/*        })}*/}
-
-
-                    {/*        {!toggleInvite && <div className={`button border-button round invite-btn`} onClick={() => toggleInviteDoctor(true)}>Invitați medic pe vreaudoctor.ro</div>}*/}
-
-                    {/*        {toggleInvite && <div className="invite-container">*/}
-                    {/*            <div className="container-subtitle">*/}
-                    {/*                <span className="container-title">Invitați medic</span>*/}
-                    {/*                <span className="close" onClick={() => toggleInviteDoctor(false)}>x</span>*/}
-                    {/*            </div>*/}
-                    {/*            <div className="col-1">*/}
-                    {/*                <div className="input-wrapper">*/}
-                    {/*                    <label>*Nume medic</label>*/}
-                    {/*                    <input className={errorInvite.name ? 'error' : ''} name="name" type="text" value={inviteValues.name}*/}
-                    {/*                        onChange={(e) => {*/}
-                    {/*                            handleFieldChange(e.target.value, e.target.name);*/}
-                    {/*                        }} />*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*            <div className="col-1">*/}
-                    {/*                <div className="input-wrapper">*/}
-                    {/*                    <label>*Adresa email</label>*/}
-                    {/*                    <input className={errorInvite.email ? 'error' : ''} name="email" type="text" value={inviteValues.email}*/}
-                    {/*                        onChange={(e) => {*/}
-                    {/*                            handleFieldChange(e.target.value, e.target.name);*/}
-                    {/*                        }} />*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*            <div className="textarea-column">*/}
-                    {/*                <label>Personalizeaza mesaj</label>*/}
-                    {/*                <textarea rows="15" className="full-width" type="comment" name="message" value={inviteValues.message}*/}
-                    {/*                    onChange={(e) => {*/}
-                    {/*                        handleFieldChange(e.target.value, e.target.name);*/}
-                    {/*                    }} />*/}
-                    {/*            </div>*/}
-                    {/*            <div className="button round custom-width" onClick={inviteDoctor}> Trimiteți invitație </div>*/}
-                    {/*        </div>}*/}
-                    {/*        /!* medici invitati *!/*/}
-                    {/*        /!* medici adaugati *!/*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+                        </div>
+                    </div>
+                    <div className="collab-doctors-data">
+                        <div className="container-title">Medici colaboratoari</div>
+                        <div className="fields-wrapper">
+                            <input onChange={handleInputDoctor} className="search" type="text" placeholder="Cauta medic" name="name" />
+                            {!toggleInvite
+                              ? <div className={`button border-button round invite-btn`} onClick={() => toggleInviteDoctor(true)}>>Nu ai gasit ce cautai? Invita un doctor!</div>
+                              : renderSendInvite(inviteDoctor, 'medic')
+                            }
+                            {
+                              doctors.count !== 0 &&
+                              doctors.results.map((cl) => {
+                                  return <InviteCard disable type="doctor" doctor={cl} onClick={handleClickDoctor}/>
+                              })
+                            }
+                            {
+                              selectedInvitedDoctors.length > 0 &&
+                              <React.Fragment>
+                                  <p>Doctori colaboratori adăugati</p>
+                                  {selectedInvitedDoctors.map((invited, i) => {
+                                      return (
+                                        <InviteCard type="doctor" doctor={invited} onClick={handleClickDoctor}/>
+                                      )
+                                  })}
+                              </React.Fragment>
+                            }
+                            {
+                              invitedDoctors.length > 0 &&
+                              <React.Fragment>
+                                  <p>Doctori colaboratori invitati</p>
+                                  {invitedDoctors.map((invited, i) => {
+                                      return (
+                                        <InviteCard type="doctor" doctor={invited} />
+                                      )
+                                  })}
+                              </React.Fragment>
+                            }
+                        </div>
+                    </div>
                     <div className="file-data-doc">
                         <p className="italic">
                             Pentru a ne asigura că sunteți titularul legitim al datelor medicale înregistrate, vă rugăm să urmați pașii de identificare și confirmare următori:
@@ -523,6 +798,15 @@ const DoctorData = (props) => {
                             - Încărcați o copie a buletinului de identitate sau a altui document de identificare oficial.
                             Acești pași sunt necesari pentru a ne asigura că datele medicale înregistrate sunt autentice și că vă puteți gestiona cu succes pagina personală pe care ați înregistrat datele medicale.
                         </p>
+                        <div className="input-wrapper" style={{ marginBottom: '20px' }}>
+                            <label>*Telefon contact</label>
+                            <input className={error.phoneNoVud ? 'error' : ''} name="phoneNoVud" type="text"
+                                   value={values.phoneNoVud} placeholder={'Număr de telefon'}
+                                   onChange={(e) => {
+                                       handleFieldChange(e.target.value, e.target.name);
+                                   }} />
+                            <labe style={{ marginBottom: '20px', color: '#667284', marginTop: '5px'}}>Numărul de telefon va fi vizibil doar reprezentanților VUD </labe>
+                        </div>
                         <div className="image-upload">
                             <label htmlFor="file">
                                 <img className="upload-photo"
