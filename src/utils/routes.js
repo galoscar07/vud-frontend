@@ -60,6 +60,7 @@ export const API_MAP = {
   GET_ACADEMIC_DEGREES: 'options/academic-degrees/',
   GET_SPECIALITIES: 'options/specialities/',
   GET_COMPETENCES: 'options/competences/',
+  GET_CLINICS_NAMES: 'options/clinics-list/',
   GET_CLINIC_SPECIALITIES: 'options/clinic-specialities/',
   GET_MEDICAL_FACILITIES: 'options/medical-facilities/',
   GET_FOOTER_LABELS: 'options/footer/',
