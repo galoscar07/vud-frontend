@@ -9,6 +9,7 @@
     .inv-doc {
         display: flex;
         flex-direction: row;
+        column-gap: $spacing-small;
 
         .round-img {
             border-radius: 100%;

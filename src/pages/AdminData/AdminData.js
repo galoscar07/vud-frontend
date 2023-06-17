@@ -3,7 +3,7 @@ import "./AdminData.scss"
 import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/routes";
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
-import _ from "lodash";
+import _, { update } from "lodash";
 
 const AdminData = (props) => {
     const navigate = useNavigate();

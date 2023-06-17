@@ -62,7 +62,7 @@ const OptionsOutsideSelect = (props) => {
             <Select {...props} controlShouldRenderValue={!isMulti} styles={styles} classNamePrefix='filter' />
             <div className="selected-container">
                 <div className="selected-wrapper">
-                    {isMulti && value?.length !==0 ? value?.map((val) =>
+                    {isMulti && value?.length !== 0 ? value?.map((val) =>
                         <div className="selected-option" key={val.value}><span>{val.label}</span>
                             <button name={val.value} onClick={handleRemoveValue}>
                                 X
@@ -93,7 +93,7 @@ function Dropdown(props) {
 
     return (
         <div className="dropdown">
-            <div className="dropdown-title">{props.title}</div>
+            <div className={`dropdown-title ${props.hasError ? 'err':''}`}>{props.title}</div>
             <OptionsOutsideSelect
                 noNumber={props?.noNumber}
                 options={options}

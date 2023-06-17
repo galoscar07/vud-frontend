@@ -495,7 +495,7 @@ function ClinicPage({ props }) {
                 </div>
                 {clinic.schedule &&
                     <div className="schedule-container">
-                        <div className="fields-wrapper">
+                        {/* <div className="fields-wrapper"> */}
                             <div className="weekdays-container">
                                 {Object.entries(clinic.schedule).map(([weekday, inter], i) => {
                                     return (
@@ -509,12 +509,11 @@ function ClinicPage({ props }) {
                                                     : <span className={'interval'}>Inchis</span>
 
                                             }
-                                            { }
                                         </div>
                                     )
                                 })}
                             </div>
-                        </div>
+                        {/* </div> */}
                     </div>
                 }
             </div>

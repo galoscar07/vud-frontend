@@ -61,28 +61,19 @@
         margin: $spacing-xsmall 0;
       }
 
-      .code-label {
-        color: $color-green;
-        font-size: $font-normal;
-        text-align: center;
-        margin: $spacing-medium 0 $spacing-xsmall 0;
-        &.click {
-          cursor: pointer;
-        }
-      }
-
     }
   }
 }
 
 @media screen and (max-width: $mobile-big-width) {
-    .register-page{
-      flex-direction: column;
-      width:90%;
-      img{
-        max-height: 5.5rem;
-        width: inherit;
-        margin-top:$spacing-medium;
-      }
+  .register-page {
+    flex-direction: column;
+    width: 90%;
+
+    img {
+      max-height: 5.5rem;
+      width: inherit;
+      margin-top: $spacing-medium;
     }
+  }
 }

@@ -73,7 +73,7 @@ const ForgetPassword = (props) => {
               {state.server.error &&
                 <div className={'error'}>{state.server.error}</div>
               }
-              <button className="button border-button margin-top" >Schimbare parola </button>
+              <button className="button margin-top" >Schimbare parola </button>
             </form>
           </React.Fragment>
         )
@@ -82,7 +82,11 @@ const ForgetPassword = (props) => {
         return (
           <form className={"bigger"}>
             <span className="info-text bigger-text"> Ti-am trimis un cod link pentru recuperarea parolei pe email, te rugam sa urmaresti intructiunile de conectare din email.</span>
-            <Link to={routes.LOGIN}>{"< "}Inapoi la pagina de autentificare</Link>
+            <Link to={routes.LOGIN}>
+              <div className="button">
+                Inapoi la pagina de autentificare
+              </div>
+            </Link>
           </form>
         )
       default:

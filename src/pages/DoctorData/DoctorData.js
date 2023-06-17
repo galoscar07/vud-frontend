@@ -6,6 +6,7 @@ import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/rout
 import "./DoctorData.scss";
 import InviteCard from "./InviteCard/InviteCard";
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
+import { value } from "lodash/seq";
 
 const initialPaginated = {
     count: 0,
@@ -13,7 +14,6 @@ const initialPaginated = {
     previous: null,
     results: []
 }
-
 
 const DoctorData = (props) => {
     const navigate = useNavigate();
@@ -46,10 +46,19 @@ const DoctorData = (props) => {
         phoneNo: false,
         email: false,
         phoneNoVud: false,
+        medical_degree: false,
+        speciality: false,
+        competences: false,
+        areTermsChecked: false
     })
+
     const handleFieldChange = (value, title) => {
         setValues((prevState) => ({ ...prevState, [title]: value }));
-    };
+    }
+
+    const handleTermsToggle = () => {
+        setValues((prevState) => ({ ...prevState, areTermsChecked: !values.areTermsChecked }));
+    }
 
 
     // Collaborator Clinics and Doctors
@@ -165,11 +174,11 @@ const DoctorData = (props) => {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              setClinics(mapResponseFromServerClinic(response))
-          })
-          .catch((err) => { })
+            .then((resp) => resp.json())
+            .then((response) => {
+                setClinics(mapResponseFromServerClinic(response))
+            })
+            .catch((err) => { })
     }
     const handleInputDoctor = (event) => {
         event.preventDefault();
@@ -185,14 +194,14 @@ const DoctorData = (props) => {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-          .then((resp) => resp.json())
-          .then((response) => {
-              setDoctors(mapResponseFromServerDoctor(response))
-          })
-          .catch((err) => { })
+            .then((resp) => resp.json())
+            .then((response) => {
+                setDoctors(mapResponseFromServerDoctor(response))
+            })
+            .catch((err) => { })
     }
     const handleClickUnit = (selectedElem) => {
-        let copyElem = {...selectedElem, status: "added"}
+        let copyElem = { ...selectedElem, status: "added" }
         let copy = [...selectedInvitedUnits]
         let index = copy.findIndex(obj => obj.id === selectedElem.id);
         if (index !== -1) {
@@ -208,7 +217,7 @@ const DoctorData = (props) => {
     }, [selectedInvitedUnits])
 
     const handleClickDoctor = (selectedElem) => {
-        let copyElem = {...selectedElem, status: "added"}
+        let copyElem = { ...selectedElem, status: "added" }
         let copy = [...selectedInvitedDoctors]
         let index = copy.findIndex(obj => obj.id === selectedElem.id);
         if (index !== -1) {
@@ -252,45 +261,46 @@ const DoctorData = (props) => {
         })
 
         makeRequestLogged(
-          getAPILink(API_MAP.POST_INVITE_CLINIC),
-          'POST',
-          body,
-          getAuthTokenFromLocal(),
+            getAPILink(API_MAP.POST_INVITE_CLINIC),
+            'POST',
+            body,
+            getAuthTokenFromLocal(),
         ).then((response) => response.json())
-          .then((resp) => {
-              if (resp.success) {
-                  setInvitedUnits([...invitedUnits, {
-                      id: -1,
-                      img: "/images/user.svg",
-                      status: "waiting",
-                      type: '',
-                      name: inviteValues.name,
-                  }])
-                  setInviteValues({
-                      name: '',
-                      email: '',
-                      message: '',
-                  })
-                  setInviteError({
-                      name: false,
-                      email: false,
-                      error: false,
-                  })
-              } else {
-                  setInviteError({
-                      name: false,
-                      email: false,
-                      error: 'A aparut o eroare',
-                  })
-              }
-          })
-          .catch((err) => {
-              setInviteError({
-                  name: false,
-                  email: false,
-                  error: 'A aparut o eroare',
-              })
-          })
+            .then((resp) => {
+                if (resp.success) {
+                    setInvitedUnits([...invitedUnits, {
+                        id: -1,
+                        img: "/images/user.svg",
+                        status: "waiting",
+                        type: '',
+                        name: inviteValues.name,
+                    }])
+                    setInviteValues({
+                        name: '',
+                        email: '',
+                        message: '',
+                    })
+                    setInviteError({
+                        name: false,
+                        email: false,
+                        error: false,
+                    })
+                    setToggleInviteUnit(false)
+                } else {
+                    setInviteError({
+                        name: false,
+                        email: false,
+                        error: 'A aparut o eroare',
+                    })
+                }
+            })
+            .catch((err) => {
+                setInviteError({
+                    name: false,
+                    email: false,
+                    error: 'A aparut o eroare',
+                })
+            })
     }
     const inviteDoctor = () => {
         let ok = false
@@ -317,49 +327,50 @@ const DoctorData = (props) => {
         })
 
         makeRequestLogged(
-          getAPILink(API_MAP.POST_INVITE_DOCTOR),
-          'POST',
-          body,
-          getAuthTokenFromLocal(),
+            getAPILink(API_MAP.POST_INVITE_DOCTOR),
+            'POST',
+            body,
+            getAuthTokenFromLocal(),
         ).then((response) => response.json())
-          .then((resp) => {
-              if (resp.success) {
-                  setInvitedDoctors([...invitedDoctors, {
-                      id: -1,
-                      img: "/images/user.svg",
-                      specialities: [],
-                      competences: [],
-                      unit: '',
-                      status: "waiting",
-                      type: '',
-                      name: inviteValues.name,
-                      email: inviteValues.email,
-                  }])
-                  setInviteValues({
-                      name: '',
-                      email: '',
-                      message: '',
-                  })
-                  setInviteError({
-                      name: false,
-                      email: false,
-                      error: false,
-                  })
-              } else {
-                  setInviteError({
-                      name: false,
-                      email: false,
-                      error: 'A aparut o eroare',
-                  })
-              }
-          })
-          .catch((err) => {
-              setInviteError({
-                  name: false,
-                  email: false,
-                  error: 'A aparut o eroare',
-              })
-          })
+            .then((resp) => {
+                if (resp.success) {
+                    setInvitedDoctors([...invitedDoctors, {
+                        id: -1,
+                        img: "/images/user.svg",
+                        specialities: [],
+                        competences: [],
+                        unit: '',
+                        status: "waiting",
+                        type: '',
+                        name: inviteValues.name,
+                        email: inviteValues.email,
+                    }])
+                    setInviteValues({
+                        name: '',
+                        email: '',
+                        message: '',
+                    })
+                    setInviteError({
+                        name: false,
+                        email: false,
+                        error: false,
+                    })
+                    setToggleInvite(false)
+                } else {
+                    setInviteError({
+                        name: false,
+                        email: false,
+                        error: 'A aparut o eroare',
+                    })
+                }
+            })
+            .catch((err) => {
+                setInviteError({
+                    name: false,
+                    email: false,
+                    error: 'A aparut o eroare',
+                })
+            })
     }
     const toggleInviteDoctor = (toggleInvite) => {
         setToggleInvite(toggleInvite);
@@ -371,7 +382,7 @@ const DoctorData = (props) => {
         return (
             <div className="invite-container">
                 <div className="container-subtitle">
-                  <span className="container-title">Invitați {word}</span>
+                    <span className="container-title">Invitați {word}</span>
                     <span className="close" onClick={() => {
                         if (word === 'medic') toggleInviteDoctor(false)
                         else toggleInviteUnit(false)
@@ -381,29 +392,29 @@ const DoctorData = (props) => {
                     <div className="input-wrapper">
                         <label>*Nume {word}</label>
                         <input className={errorInvite.name ? 'error' : ''} name="name" type="text" value={inviteValues.name}
-                             onChange={(e) => {
-                                 handleFieldChangeInvite(e.target.value, e.target.name);
-                             }} />
+                            onChange={(e) => {
+                                handleFieldChangeInvite(e.target.value, e.target.name);
+                            }} />
                     </div>
                 </div>
                 <div className="col-1">
                     <div className="input-wrapper">
                         <label>*Adresa email</label>
                         <input className={errorInvite.email ? 'error' : ''} name="email" type="text" value={inviteValues.email}
-                             onChange={(e) => {
-                                 handleFieldChangeInvite(e.target.value, e.target.name);
-                             }} />
+                            onChange={(e) => {
+                                handleFieldChangeInvite(e.target.value, e.target.name);
+                            }} />
                     </div>
                 </div>
                 <div className="textarea-column">
                     <label>Personalizeaza mesaj</label>
                     <textarea rows="15" className="full-width" name="message" value={inviteValues.message}
-                            onChange={(e) => {
-                                handleFieldChangeInvite(e.target.value, e.target.name);
-                    }} />
+                        onChange={(e) => {
+                            handleFieldChangeInvite(e.target.value, e.target.name);
+                        }} />
                 </div>
                 {
-                    errorInvite.error && <p className={'error'}>{errorInvite.errors}</p>
+                    errorInvite.error && <div className={'error'}>{errorInvite.error}</div>
                 }
                 <div className="button round custom-width" onClick={ftc}> Trimiteți invitație </div>
             </div>
@@ -455,6 +466,7 @@ const DoctorData = (props) => {
             })
             .catch((err) => { })
     }, [])
+
     const handleDropdownSubmit = (selected, name) => {
         switch (name) {
             case 'degree': {
@@ -486,12 +498,13 @@ const DoctorData = (props) => {
                 ok = false
             }
         })
+        //TODO check here why competences, degrees & specialities have error true even if they don't go inside if
         if (selectedCompetences.length === 0 || selectedDegrees.length === 0 || selectedSpecialties.length === 0) {
             ok = false
         }
         setError(errorCopy)
         if (!ok) setValues({ ...values, error: "Va rugam sa completati campurile obligatorii" })
-        if (!values.areTermsChecked) {
+        if (error.areTermsChecked) {
             setValues({ ...values, error: "Va rugam sa acceptati termenii si conditiile" })
         }
         return ok
@@ -551,8 +564,10 @@ const DoctorData = (props) => {
             speciality: selectedSpecialties.map(el => { return el.value }),
             medical_skill: selectedCompetences.map(el => { return el.value }),
             // 4th card
-            doctor: selectedInvitedDoctors.map((d) => {return d.id}).join("|"),
-            clinic: selectedInvitedUnits.map((d) => {return d.id}).join("|")
+            doctor: selectedInvitedDoctors.map((d) => { return d.id }).join("|"),
+            clinic: selectedInvitedUnits.map((d) => { return d.id }).join("|"),
+            contact_phone: values.phoneNoVud,
+            areTermsChecked: values.areTermsChecked
         }
     }
 
@@ -583,6 +598,8 @@ const DoctorData = (props) => {
             formData.append('medical_skill', JSON.stringify(mapped.medical_skill))
             formData.append('clinic', mapped.clinic)
             formData.append('doctor', mapped.doctor)
+            formData.append('contact_phone', mapped.contact_phone)
+            formData.append('areTermsChecked', mapped.contact_phone)
 
             let files = document.getElementById('file').files;
             formData.append('file1', files[0])
@@ -705,11 +722,11 @@ const DoctorData = (props) => {
                                 }} />
                             <div className="counter"> {values.description.length} / 500 </div>
                             <div className="col-2">
-                                <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"*Grad medical"} onSelect={(e) => handleDropdownSubmit(e, 'degree')} />
-                                <Dropdown selected={selectedSpecialties} options={specialities} title={"*Specialitate"} onSelect={(e) => handleDropdownSubmit(e, 'speciality')} />
+                                <Dropdown hasError={error.medical_degree} selected={selectedDegrees} options={academicDegreesDropDown} title={"*Grad medical"} onSelect={(e) => handleDropdownSubmit(e, 'degree')} />
+                                <Dropdown hasError={error.speciality} selected={selectedSpecialties} options={specialities} title={"*Specialitate"} onSelect={(e) => handleDropdownSubmit(e, 'speciality')} />
                             </div>
                             <div className="col">
-                                <Dropdown selected={selectedCompetences} options={competences} title={"*Competente"} onSelect={(e) => handleDropdownSubmit(e, 'competences')} />
+                                <Dropdown hasError={error.competences} selected={selectedCompetences} options={competences} title={"*Competente"} onSelect={(e) => handleDropdownSubmit(e, 'competences')} />
                             </div>
                         </div>
                     </div>
@@ -718,28 +735,28 @@ const DoctorData = (props) => {
                         <div className="fields-wrapper">
                             <input onChange={handleInputClinic} className="search" type="text" placeholder="Cautați unitate medicală" name="name" />
                             {!toggleInviteU
-                              ? <div className={`button border-button round invite-btn`} onClick={() => toggleInviteUnit(true)}>Nu ai gasit ce cautai? Invita o unitate medicala!</div>
-                              : renderSendInvite(inviteUnit, 'unitate medicala')
+                                ? <div className={`button border-button round invite-btn`} onClick={() => toggleInviteUnit(true)}>Nu ai gasit ce cautai? Invita o unitate medicala!</div>
+                                : renderSendInvite(inviteUnit, 'unitate medicala')
                             }
                             {
                                 clinics.count !== 0 &&
-                                    clinics.results.map((cl) => {
-                                        return <InviteCard disable type="unit" unit={cl} onClick={handleClickUnit}/>
-                                    })
+                                clinics.results.map((cl) => {
+                                    return <InviteCard disable type="unit" unit={cl} onClick={handleClickUnit} />
+                                })
                             }
                             {
                                 selectedInvitedUnits.length > 0 &&
-                                    <React.Fragment>
-                                        <p>Unități medicale adăugate</p>
-                                        {selectedInvitedUnits.map((invited, i) => {
-                                            return (
-                                              <InviteCard type="unit" unit={invited} onClick={handleClickUnit}/>
-                                            )
-                                        })}
-                                    </React.Fragment>
+                                <React.Fragment>
+                                    <p>Unități medicale adăugate</p>
+                                    {selectedInvitedUnits.map((invited, i) => {
+                                        return (
+                                            <InviteCard type="unit" unit={invited} onClick={handleClickUnit} />
+                                        )
+                                    })}
+                                </React.Fragment>
                             }
                             {
-                              invitedUnits.length > 0 &&
+                                invitedUnits.length > 0 &&
                                 <React.Fragment>
                                     <p>Unități medicale adăugate</p>
                                     {invitedUnits.map((invited, i) => {
@@ -757,91 +774,95 @@ const DoctorData = (props) => {
                         <div className="fields-wrapper">
                             <input onChange={handleInputDoctor} className="search" type="text" placeholder="Cauta medic" name="name" />
                             {!toggleInvite
-                              ? <div className={`button border-button round invite-btn`} onClick={() => toggleInviteDoctor(true)}>>Nu ai gasit ce cautai? Invita un doctor!</div>
-                              : renderSendInvite(inviteDoctor, 'medic')
+                                ? <div className={`button border-button round invite-btn`} onClick={() => toggleInviteDoctor(true)}>Nu ai gasit ce cautai? Invita un doctor!</div>
+                                : renderSendInvite(inviteDoctor, 'medic')
                             }
                             {
-                              doctors.count !== 0 &&
-                              doctors.results.map((cl) => {
-                                  return <InviteCard disable type="doctor" doctor={cl} onClick={handleClickDoctor}/>
-                              })
+                                doctors.count !== 0 &&
+                                doctors.results.map((cl) => {
+                                    return <InviteCard disable type="doctor" doctor={cl} onClick={handleClickDoctor} />
+                                })
                             }
                             {
-                              selectedInvitedDoctors.length > 0 &&
-                              <React.Fragment>
-                                  <p>Doctori colaboratori adăugati</p>
-                                  {selectedInvitedDoctors.map((invited, i) => {
-                                      return (
-                                        <InviteCard type="doctor" doctor={invited} onClick={handleClickDoctor}/>
-                                      )
-                                  })}
-                              </React.Fragment>
+                                selectedInvitedDoctors.length > 0 &&
+                                <React.Fragment>
+                                    <p>Doctori colaboratori adăugati</p>
+                                    {selectedInvitedDoctors.map((invited, i) => {
+                                        return (
+                                            <InviteCard type="doctor" doctor={invited} onClick={handleClickDoctor} />
+                                        )
+                                    })}
+                                </React.Fragment>
                             }
                             {
-                              invitedDoctors.length > 0 &&
-                              <React.Fragment>
-                                  <p>Doctori colaboratori invitati</p>
-                                  {invitedDoctors.map((invited, i) => {
-                                      return (
-                                        <InviteCard type="doctor" doctor={invited} />
-                                      )
-                                  })}
-                              </React.Fragment>
+                                invitedDoctors.length > 0 &&
+                                <React.Fragment>
+                                    <p>Doctori colaboratori invitati</p>
+                                    {invitedDoctors.map((invited, i) => {
+                                        return (
+                                            <InviteCard type="doctor" doctor={invited} />
+                                        )
+                                    })}
+                                </React.Fragment>
                             }
                         </div>
                     </div>
                     <div className="file-data-doc">
-                        <p className="italic">
-                            Pentru a ne asigura că sunteți titularul legitim al datelor medicale înregistrate, vă rugăm să urmați pașii de identificare și confirmare următori:
-                            - Încărcați o copie a diplomei de medic sau a certificatului de înregistrare la Colegiul Medicilor.
-                            - Încărcați o copie a buletinului de identitate sau a altui document de identificare oficial.
-                            Acești pași sunt necesari pentru a ne asigura că datele medicale înregistrate sunt autentice și că vă puteți gestiona cu succes pagina personală pe care ați înregistrat datele medicale.
-                        </p>
-                        <div className="input-wrapper" style={{ marginBottom: '20px' }}>
-                            <label>*Telefon contact</label>
-                            <input className={error.phoneNoVud ? 'error' : ''} name="phoneNoVud" type="text"
-                                   value={values.phoneNoVud} placeholder={'Număr de telefon'}
-                                   onChange={(e) => {
-                                       handleFieldChange(e.target.value, e.target.name);
-                                   }} />
-                            <labe style={{ marginBottom: '20px', color: '#667284', marginTop: '5px'}}>Numărul de telefon va fi vizibil doar reprezentanților VUD </labe>
-                        </div>
-                        <div className="image-upload">
-                            <label htmlFor="file">
-                                <img className="upload-photo"
-                                    src="/images/upload_icon.svg" />
-                            </label>
-                            <input style={{ display: "none" }} name="files" id="file" type="file" multiple
-                                onChange={(e) => updateList(e.target.value, e.target.name)} />
-                            <div id="file-list">
-                                {values.fileList.length ? (<div className="selected-file-wrapper">
-                                    {values.fileList.map((file, i) =>
-                                        <div className="selected-file" key={i}>
-                                            {file}
-                                            <span onClick={() => deleteFile(file)}>
-                                                <img src="/images/delete.svg" />
-                                            </span>
-                                        </div>
-                                    )}
-                                </div>) : (<div className={`selected-file ${error.fileList ? 'error' : ''}`}>
-                                    No selected file
-                                </div>)}
-                                {
-                                    (values.uploadWarning || error.fileList) && <div className={'error'}>{values.uploadWarning}</div>
-                                }
-                            </div>
-
-                        </div>
-                        {
-                            values.error && <div style={{ marginBottom: '15px' }} className={'error'}>{values.error}</div>
-                        }
-                        <div className="checkbox-container">
-                            <label><a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni si conditii de abonare</a></label>
-                            <div className="checkbox-wrapper">
-                                <input className="checkbox" type="checkbox" value={values.areTermsChecked}
+                        <div className="fields-wrapper">
+                            <p className="italic">
+                                Pentru a ne asigura că sunteți titularul legitim al datelor medicale înregistrate, vă rugăm să urmați pașii de identificare și confirmare următori:
+                                <ul>
+                                    <li>Încărcați o copie a diplomei de medic sau a certificatului de înregistrare la Colegiul Medicilor.</li>
+                                    <li> Încărcați o copie a buletinului de identitate sau a altui document de identificare oficial.</li>
+                                </ul>
+                                Acești pași sunt necesari pentru a ne asigura că datele medicale înregistrate sunt autentice și că vă puteți gestiona cu succes pagina personală pe care ați înregistrat datele medicale.
+                            </p>
+                            <div className="input-wrapper contact-phone" style={{ marginBottom: '20px' }}>
+                                <label>*Telefon contact</label>
+                                <input className={error.phoneNoVud ? 'error' : ''} name="phoneNoVud" type="text"
+                                    value={values.phoneNoVud} placeholder={'Număr de telefon'}
                                     onChange={(e) => {
                                         handleFieldChange(e.target.value, e.target.name);
                                     }} />
+                                <div style={{ marginBottom: '20px', color: '#667284', marginTop: '5px', width: 'max-content' }}>Numărul de telefon va fi vizibil doar reprezentanților VUD </div>
+                            </div>
+                            <div className="image-upload">
+                                <label htmlFor="file">
+                                    <img className="upload-photo"
+                                        src="/images/upload_icon.svg" />
+                                </label>
+                                <input style={{ display: "none" }} name="files" id="file" type="file" multiple
+                                    onChange={(e) => updateList(e.target.value, e.target.name)} />
+                                <div id="file-list">
+                                    {values.fileList.length ? (<div className="selected-file-wrapper">
+                                        {values.fileList.map((file, i) =>
+                                            <div className="selected-file" key={i}>
+                                                {file}
+                                                <span onClick={() => deleteFile(file)}>
+                                                    <img src="/images/delete.svg" />
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>) : (<div className={`selected-file ${error.fileList ? 'error' : ''}`}>
+                                        No selected file
+                                    </div>)}
+                                    {
+                                        (values.uploadWarning || error.fileList) && <div className={'error'}>{values.uploadWarning}</div>
+                                    }
+                                </div>
+
+                            </div>
+                            {
+                                values.error && <div style={{ marginBottom: '15px' }} className={'error'}>{values.error}</div>
+                            }
+                            <div className="checkbox-container">
+                                <label><a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni si conditii de abonare</a></label>
+                                <div className="checkbox-wrapper">
+                                    <input className="checkbox" name="areTermsChecked" type="checkbox" value={values.areTermsChecked}
+                                        onChange={
+                                            handleTermsToggle
+                                        } />
+                                </div>
                             </div>
                         </div>
                     </div>

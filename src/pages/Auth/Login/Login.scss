@@ -21,6 +21,7 @@
       .links {
         display: flex;
         width: 100%;
+        justify-content: space-between;
 
         a {
           margin-left: 0;
@@ -32,6 +33,12 @@
         color: $color-grey-disabled;
         cursor: pointer;
         margin: $spacing-small 0 $spacing-medium auto;
+
+        &.green {
+          color: $color-primary;
+          text-decoration: underline;
+          font-weight: $font-weight-bold;
+        }
       }
 
       input {
@@ -65,19 +72,19 @@
       .margin-top {
         margin-top: $spacing-default;
       }
-
     }
   }
 }
 
 @media screen and (max-width: $mobile-big-width) {
-    .login-page{
-      flex-direction: column;
-      width:90%;
-      img{
-        max-height: 5.5rem;
-        width: inherit;
-        margin-top:$spacing-medium;
-      }
+  .login-page {
+    flex-direction: column;
+    width: 90%;
+
+    img {
+      max-height: 5.5rem;
+      width: inherit;
+      margin-top: $spacing-medium;
     }
+  }
 }

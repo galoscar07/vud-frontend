@@ -84,12 +84,29 @@ label {
   margin: $spacing-xsmall 0;
 }
 
+.err {
+  color: $color-secondary!important;
+}
+
 .error {
   color: $color-secondary;
-  //margin: $spacing-small 0;
+  margin: $spacing-small 0;
+  text-align: center;
+  width: 100%;
 
   &.small-margin-top {
     margin-top: $spacing-small;
+  }
+}
+
+.code-label {
+  color: $color-green;
+  font-size: $font-normal;
+  text-align: center;
+  margin: $spacing-medium 0 $spacing-xsmall 0;
+
+  &.click {
+    cursor: pointer;
   }
 }
 
@@ -234,6 +251,7 @@ label {
     margin: 0;
   }
 }
+
 
 @media screen and (max-width: $mobile-big-width) {
   h1 {

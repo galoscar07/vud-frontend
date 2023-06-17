@@ -127,8 +127,8 @@ const Login = () => {
           <input className="full-width" type="password" name="password" value={state.password.value}
             onChange={handleChange} onBlur={isFormEmpty} autoComplete="nope" />
           <div className={'links'}>
-            <Link to={routes.REGISTER} className="forgot-password">nu ai cont?</Link>
-            <Link to={routes.FORGET_PASSWORD} className="forgot-password">ai uitat parola?</Link>
+            <Link to={routes.REGISTER} className="forgot-password green">Cont nou</Link>
+            <Link to={routes.FORGET_PASSWORD} className="forgot-password">Ai uitat parola?</Link>
           </div>
           {state.server.error &&
             <div className={'error'}>{state.server.error}</div>

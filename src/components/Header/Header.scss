@@ -61,7 +61,8 @@
     }
   }
 
-  .hamburger_icon , .close_btn{
+  .hamburger_icon,
+  .close_btn {
     display: none;
   }
 
@@ -78,7 +79,7 @@
     justify-content: space-between;
 
     a {
-      margin: 0!important;
+      margin: 0 !important;
     }
 
     .logo {
@@ -86,7 +87,8 @@
       cursor: pointer;
     }
 
-    .hamburger_icon , .close_btn{
+    .hamburger_icon,
+    .close_btn {
       display: block !important;
     }
 
