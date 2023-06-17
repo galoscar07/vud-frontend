@@ -96,13 +96,7 @@ const RedeemDoctorPage = () => {
         formData.append('company_role', values.job)
         formData.append('message', values.message)
         formData.append('doctor_id', values.doctor_id)
-        let files = []
-        let input = document.getElementById('file');
-        for (let i = 0; i < input.files.length; ++i) {
-            if (i < 3) {
-                files.push(input.files.item(i))
-            }
-        }
+        let files = document.getElementById('file').files;
         formData.append('file1', files[0])
         formData.append('file2', files[1])
         fetch(getAPILink(API_MAP.POST_REDEEM_DOCTOR), {

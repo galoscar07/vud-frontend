@@ -1,7 +1,11 @@
 import React from 'react'
 import "./DoctorCard.scss"
+import {useNavigate} from "react-router-dom";
+import {routes} from "../../utils/routes";
 
 const DoctorCard = (props) => {
+  const navigate = useNavigate();
+
 
   const handleDoctorCardType = (type, doctor) => {
 
@@ -60,6 +64,43 @@ const DoctorCard = (props) => {
                 </div>
               </div>
 
+            </div>
+          </div>
+        )
+
+      case 3:
+        return (
+          <div onClick={() => navigate(routes.DOCTOR_PAGE + '/?id=' + doctor.id)} className="doctor-card-component">
+            <div>
+              <img className="profile" src={doctor.profile_picture} />
+              <div className="rating-container">
+                {doctor.score > 0 && <div className="rating">
+                  {Math.floor(doctor.average_rating || 0)}
+                </div>}
+                <div className="reviews">
+                  {doctor.review_count || 0} recenzii
+                </div>
+                <div className="stars-wrapper ">
+                  <div className="stars-container">
+                    {Array(5).fill(1).map((el, i) =>
+                      <img key={i} src={i >= doctor.rating ? "/images/star_empty.svg" : "/images/star_full.svg"} />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-container2">
+              <div className="info" >
+                <div className="title">{doctor.first_name} {doctor.last_name}</div>
+                <div className="title caps">{doctor.speciality.map((el) => {return el.label}).join(" | ")}</div>
+                <div className="specialties-wrapper">
+                  <div className="spec">{doctor.medical_skill.map((el) => el.label).join(', ')}</div>
+                </div>
+                <div className="specialties-wrapper">
+                  <div className="spec">{doctor.collaborator_clinic.map((el) => el.clinic_name).join(' | ')}</div>
+                </div>
+              </div>
             </div>
           </div>
         )
