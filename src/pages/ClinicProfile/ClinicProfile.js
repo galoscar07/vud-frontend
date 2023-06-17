@@ -7,6 +7,7 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
 import MapWrapper from "../../components/Map/Map";
+import InviteCard from "../DoctorData/InviteCard/InviteCard";
 
 const days = {
   'Luni': [],
@@ -16,6 +17,13 @@ const days = {
   'Vineri': [],
   'Sambata': [],
   'Duminica': []
+}
+
+const initialPaginated = {
+  count: 0,
+  next: null,
+  previous: null,
+  results: []
 }
 
 
@@ -153,60 +161,367 @@ const ClinicProfile = (props) => {
     }
   }
 
-  // State and Functions for doctor
-  const [doctor, setDoctor] = useState([{
+  // Collaborator Clinics and Doctors
+  const [toggleInviteU, setToggleInviteUnit] = React.useState(false);
+  const [toggleInvite, setToggleInvite] = React.useState(false);
+
+  const [selectedInvitedUnits, setSelectedInvitedUnits] = useState([])
+  const [selectedInvitedDoctors, setSelectedInvitedDoctors] = useState([])
+
+  const [invitedUnits, setInvitedUnits] = useState([])
+  const [invitedDoctors, setInvitedDoctors] = useState([])
+
+  const [clinics, setClinics] = useState({
+    count: 0,
+    next: null,
+    previous: null,
+    results: []
+  })
+  const [doctors, setDoctors] = useState({
+    count: 0,
+    next: null,
+    previous: null,
+    results: []
+  })
+
+  const [errorInvite, setInviteError] = useState({
+    name: false,
+    email: false,
+    error: false,
+  })
+  const [inviteValues, setInviteValues] = useState({
     name: '',
-    academic_degree: [],
-    speciality: [],
-    competences: [],
-    link: '',
-    profile_photo: null,
-    profile_picture_preview: null,
-  }])
-  const [docHighlighted, setDocHighlighted] = useState(0)
-  const inputRefDoctor = useRef();
-  const addDoctor = () => {
-    setDoctor([...doctor, { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null }])
-  }
-  const handleDoctorPhotoUploadClickDoctor = () => {
-    inputRefDoctor.current.click();
-  };
-  const handleFileChangeDoctor = (event) => {
-    const copy = _.cloneDeep(doctor)
-    copy[docHighlighted].profile_photo = event.target.files[0]
-    copy[docHighlighted].profile_picture_preview = window.URL.createObjectURL(event.target.files[0])
-    setDoctor(copy)
-  }
-  const deleteHighlightDoctor = (index) => {
-    if (index === 0) {
-      setDoctor([{ name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null }])
-    } else {
-      const copy = _.cloneDeep(doctor)
-      copy.splice(index, 1)
-      setDoctor(copy)
-      setDocHighlighted(docHighlighted - 1)
+    email: '',
+    message: '',
+  })
+
+  const mapResponseFromServerClinic = (resp) => {
+    return {
+      ...resp,
+      results: resp.results.map((el) => {
+        return {
+          id: el.id,
+          img: el.profile_picture,
+          name: el.clinic_name,
+          type: el.medical_unit_types.map((e) => {
+            return e.label
+          }).join(" | "),
+          status: selectedInvitedUnits.filter((s) => s.id === el.id).length === 1 ? "added" : "uninvited",
+          disabled: false
+        }
+      })
     }
   }
-  const handleChangeInputDoctor = (event, index) => {
-    const copy = _.cloneDeep(doctor)
-    copy[index][event.target.name] = event.target.value
-    setDoctor(copy)
+  const mapResponseFromServerDoctor = (resp) => {
+    return {
+      ...resp,
+      results: resp.results.map((el) => {
+        return {
+          id: el.id,
+          img: el.profile_picture,
+          name: el.first_name + el.last_name,
+          specialities: el.speciality.map((e) => {
+            return e.label
+          }),
+          competences: el.medical_skill.map((e) => {
+            return e.label
+          }),
+          unit: el.collaborator_clinic.map((e) => {
+            return e.clinic_name
+          }).join(' | '),
+          email: el.primary_email,
+          status: selectedInvitedDoctors.filter((s) => s.id === el.id).length === 1 ? "added" : "uninvited",
+          disabled: false
+        }
+      })
+    }
   }
-  const handleDropdownDoctor = (event, index, label) => {
-    const copy = _.cloneDeep(doctor)
-    copy[index][label] = event
-    setDoctor(copy)
 
+  const remapResponseFromServerClinic = (resp) => {
+    return {
+      ...resp,
+      results: resp.results.map((el) => {
+        return {
+          ...el,
+          disabled: selectedInvitedUnits.filter((s) => s.id === el.id).length === 1
+        }
+      })
+    }
   }
-  const saveCurrentDoctor = () => {
-    setDoctor([...doctor, { name: '', academic_degree: [], speciality: [], competences: [], link: '', profile_photo: null, profile_picture_preview: null }])
-    setDocHighlighted(docHighlighted + 1)
+  const remapResponseFromServerDoctor = (resp) => {
+    return {
+      ...resp,
+      results: resp.results.map((el) => {
+        return {
+          ...el,
+          disabled: selectedInvitedDoctors.filter((s) => s.id === el.id).length === 1
+        }
+      })
+    }
   }
+
+  const handleInputClinic = (event) => {
+    event.preventDefault();
+    const searchTerm = event.target.value
+    if (searchTerm === "") {
+      setClinics(initialPaginated)
+      return
+    }
+    const link = '?page=1&page_size=4&name=' + event.target.value
+    fetch(getAPILink(API_MAP.GET_CLINICS_FILTER + link), {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then((resp) => resp.json())
+      .then((response) => {
+        setClinics(mapResponseFromServerClinic(response))
+      })
+      .catch((err) => { })
+  }
+  const handleInputDoctor = (event) => {
+    event.preventDefault();
+    const searchTerm = event.target.value
+    if (searchTerm === "") {
+      setDoctors(initialPaginated)
+      return
+    }
+    const link = '?page=1&page_size=4&name=' + event.target.value
+    fetch(getAPILink(API_MAP.GET_DOCTOR_FILTERED + link), {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then((resp) => resp.json())
+      .then((response) => {
+        setDoctors(mapResponseFromServerDoctor(response))
+      })
+      .catch((err) => { })
+  }
+  const handleClickUnit = (selectedElem) => {
+    let copyElem = {...selectedElem, status: "added"}
+    let copy = [...selectedInvitedUnits]
+    let index = copy.findIndex(obj => obj.id === selectedElem.id);
+    if (index !== -1) {
+      copy.splice(index, 1);
+    } else {
+      copy.push(copyElem);
+    }
+    setSelectedInvitedUnits(copy)
+    setClinics(remapResponseFromServerClinic(clinics))
+  }
+  useEffect(() => {
+    setClinics(remapResponseFromServerClinic(clinics))
+  }, [selectedInvitedUnits])
+
+  const handleClickDoctor = (selectedElem) => {
+    let copyElem = {...selectedElem, status: "added"}
+    let copy = [...selectedInvitedDoctors]
+    let index = copy.findIndex(obj => obj.id === selectedElem.id);
+    if (index !== -1) {
+      copy.splice(index, 1);
+    } else {
+      copy.push(copyElem);
+    }
+    setSelectedInvitedDoctors(copy)
+    setDoctors(remapResponseFromServerDoctor(doctors))
+  }
+  useEffect(() => {
+    setDoctors(remapResponseFromServerDoctor(doctors))
+  }, [selectedInvitedDoctors])
+
+  const handleFieldChangeInvite = (value, title) => {
+    setInviteValues((prevState) => ({ ...prevState, [title]: value }));
+  };
+
+  const inviteUnit = () => {
+    let ok = false
+    let errorCopy = _.cloneDeep(errorInvite)
+    if (!inviteValues.name) {
+      errorCopy.name = true
+      ok = true
+    }
+    if (!inviteValues.email) {
+      errorCopy.email = true
+      ok = true
+    }
+    if (ok) {
+      setInviteError(errorCopy)
+      return
+    }
+
+    const body = JSON.stringify({
+      'to_sent': inviteValues.name,
+      'email': inviteValues.email,
+      'message': inviteValues.message,
+      'from_sent': state.firstName + ' ' + state.lastName,
+      'from_type': 'doctor'
+    })
+
+    makeRequestLogged(
+      getAPILink(API_MAP.POST_INVITE_CLINIC),
+      'POST',
+      body,
+      getAuthTokenFromLocal(),
+    ).then((response) => response.json())
+      .then((resp) => {
+        if (resp.success) {
+          setInvitedUnits([...invitedUnits, {
+            id: -1,
+            img: "/images/user.svg",
+            status: "waiting",
+            type: '',
+            name: inviteValues.name,
+          }])
+          setInviteValues({
+            name: '',
+            email: '',
+            message: '',
+          })
+          setInviteError({
+            name: false,
+            email: false,
+            error: false,
+          })
+        } else {
+          setInviteError({
+            name: false,
+            email: false,
+            error: 'A aparut o eroare',
+          })
+        }
+      })
+      .catch((err) => {
+        setInviteError({
+          name: false,
+          email: false,
+          error: 'A aparut o eroare',
+        })
+      })
+  }
+  const inviteDoctor = () => {
+    let ok = false
+    let errorCopy = _.cloneDeep(errorInvite)
+    if (!inviteValues.name) {
+      errorCopy.name = true
+      ok = true
+    }
+    if (!inviteValues.email) {
+      errorCopy.email = true
+      ok = true
+    }
+    if (ok) {
+      setInviteError(errorCopy)
+      return
+    }
+
+    const body = JSON.stringify({
+      'to_sent': inviteValues.name,
+      'email': inviteValues.email,
+      'message': inviteValues.message,
+      'from_sent': state.firstName + ' ' + state.lastName,
+      'from_type': 'doctor'
+    })
+
+    makeRequestLogged(
+      getAPILink(API_MAP.POST_INVITE_DOCTOR),
+      'POST',
+      body,
+      getAuthTokenFromLocal(),
+    ).then((response) => response.json())
+      .then((resp) => {
+        if (resp.success) {
+          setInvitedDoctors([...invitedDoctors, {
+            id: -1,
+            img: "/images/user.svg",
+            specialities: [],
+            competences: [],
+            unit: '',
+            status: "waiting",
+            type: '',
+            name: inviteValues.name,
+            email: inviteValues.email,
+          }])
+          setInviteValues({
+            name: '',
+            email: '',
+            message: '',
+          })
+          setInviteError({
+            name: false,
+            email: false,
+            error: false,
+          })
+        } else {
+          setInviteError({
+            name: false,
+            email: false,
+            error: 'A aparut o eroare',
+          })
+        }
+      })
+      .catch((err) => {
+        setInviteError({
+          name: false,
+          email: false,
+          error: 'A aparut o eroare',
+        })
+      })
+  }
+  const toggleInviteDoctor = (toggleInvite) => {
+    setToggleInvite(toggleInvite);
+  }
+  const toggleInviteUnit = (toggleInviteU) => {
+    setToggleInviteUnit(toggleInviteU);
+  }
+  const renderSendInvite = (ftc, word) => {
+    return (
+      <div className="invite-container">
+        <div className="container-subtitle">
+          <span className="container-title">Invitați {word}</span>
+          <span className="close" onClick={() => {
+            if (word === 'medic') toggleInviteDoctor(false)
+            else toggleInviteUnit(false)
+          }}>x</span>
+        </div>
+        <div className="col-1">
+          <div className="input-wrapper">
+            <label>*Nume {word}</label>
+            <input className={errorInvite.name ? 'error' : ''} name="name" type="text" value={inviteValues.name}
+                   onChange={(e) => {
+                     handleFieldChangeInvite(e.target.value, e.target.name);
+                   }} />
+          </div>
+        </div>
+        <div className="col-1">
+          <div className="input-wrapper">
+            <label>*Adresa email</label>
+            <input className={errorInvite.email ? 'error' : ''} name="email" type="text" value={inviteValues.email}
+                   onChange={(e) => {
+                     handleFieldChangeInvite(e.target.value, e.target.name);
+                   }} />
+          </div>
+        </div>
+        <div className="textarea-column">
+          <label>Personalizeaza mesaj</label>
+          <textarea rows="15" className="full-width" name="message" value={inviteValues.message}
+                    onChange={(e) => {
+                      handleFieldChangeInvite(e.target.value, e.target.name);
+                    }} />
+        </div>
+        {
+          errorInvite.error && <p className={'error'}>{errorInvite.errors}</p>
+        }
+        <div className="button round custom-width" onClick={ftc}> Trimiteți invitație </div>
+      </div>
+    )
+  }
+
+
   // Dropdown States
   const [unitTypeDropdown, setUnitTypeDropdown] = useState([])
-  const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState([])
-  const [specialities, setSpecialities] = useState([])
-  const [competences, setCompetences] = useState([])
   const [clinicSpecialities, setClinicSpecialities] = useState([])
   const [medicalFacilities, setMedicalFacilities] = useState([])
 
@@ -248,17 +563,9 @@ const ClinicProfile = (props) => {
       // 2nd card
       description: state.description,
       // 4th card
-      doctors: doctor.filter((el) => el.name)
-        .map((doc) => {
-          return {
-            name: doc.name,
-            profile_photo: doc.profile_photo || '/images/user.svg',
-            link: doc.link,
-            academic_degree: doc.academic_degree.map((md) => { return md.value }),
-            speciality: doc.speciality.map((md) => { return md.value }),
-            competences: doc.competences.map((md) => { return md.value }),
-          }
-        }),
+      doctor: selectedInvitedDoctors.map((d) => {return d.id}).join("|"),
+      clinic: selectedInvitedUnits.map((d) => {return d.id}).join("|"),
+
       // 5th
       clinic_specialities: state.clinic_specialities.map(el => { return el.value }),
       // 6th
@@ -274,7 +581,6 @@ const ClinicProfile = (props) => {
     event.preventDefault();
     if (!isFormValid()) return
     if (props.onSubmit) {
-      //TODO PLS CHECK THIS;
       props.onSubmit(mapStateToObject())
     } else {
       const secondary_phones_sorted = multiplePhoneLabels.map(function (value, index) {
@@ -302,12 +608,9 @@ const ClinicProfile = (props) => {
       formData.append('clinic_specialities', JSON.stringify(mapped.clinic_specialities))
       formData.append('clinic_facilities', JSON.stringify(mapped.clinic_facilities))
       formData.append('clinic_schedule', mapped.clinic_schedule)
+      formData.append('clinic', mapped.clinic)
+      formData.append('doctor', mapped.doctor)
 
-      formData.append('doctor', JSON.stringify(mapped.doctors))
-      doctor.forEach((el, index) => {
-        const key = el.name.split(' ').join('|') + '_doc_' + index
-        formData.append(key, el.profile_photo)
-      })
       makeRequestLogged(
         getAPILink(API_MAP.PUT_UPDATE_CLINIC_PROFILE),
         'PUT',
@@ -337,42 +640,6 @@ const ClinicProfile = (props) => {
       .then((response) => {
         const mapped = response.map((el) => { return { value: el.id, label: el.label } })
         setUnitTypeDropdown(mapped)
-      })
-      .catch((err) => { })
-    fetch(getAPILink(API_MAP.GET_ACADEMIC_DEGREES), {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    })
-      .then((resp) => resp.json())
-      .then((response) => {
-        const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-        setAcademicDegreesDropDown(mapped)
-      })
-      .catch((err) => { })
-    fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    })
-      .then((resp) => resp.json())
-      .then((response) => {
-        const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-        setSpecialities(mapped)
-      })
-      .catch((err) => { })
-    fetch(getAPILink(API_MAP.GET_COMPETENCES), {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    })
-      .then((resp) => resp.json())
-      .then((response) => {
-        const mapped = response.map((el) => { return { value: el.id, label: el.label } })
-        setCompetences(mapped)
       })
       .catch((err) => { })
     fetch(getAPILink(API_MAP.GET_CLINIC_SPECIALITIES), {
@@ -591,82 +858,94 @@ const ClinicProfile = (props) => {
       </div>
     )
   }
-  const renderDoctors = () => {
+
+  const renderCollaboratorsClinic = () => {
     return (
-      <div className="hq-container">
-        <div className="container-title-small">
-          Medici colaboratori
-        </div>
+      <div className="collab-unit-data">
+        <div className="container-title">Unitate medicală colaboratoare</div>
         <div className="fields-wrapper">
-          <div className="col-4">
-            {
-              doctor.map((doc, index) => {
+          <input onChange={handleInputClinic} className="search" type="text" placeholder="Cautați unitate medicală" name="name" />
+          {!toggleInviteU
+            ? <div className={`button border-button round invite-btn`} onClick={() => toggleInviteUnit(true)}>Nu ai gasit ce cautai? Invita o unitate medicala!</div>
+            : renderSendInvite(inviteUnit, 'unitate medicala')
+          }
+          {
+            clinics.count !== 0 &&
+            clinics.results.map((cl) => {
+              return <InviteCard disable type="unit" unit={cl} onClick={handleClickUnit}/>
+            })
+          }
+          {
+            selectedInvitedUnits.length > 0 &&
+            <React.Fragment>
+              <p>Unități medicale adăugate</p>
+              {selectedInvitedUnits.map((invited, i) => {
                 return (
-                  <div key={index} onClick={() => setDocHighlighted(index)} className={`card-HQ ${docHighlighted === index && 'highlight'}`}>
-                    <img alt="Imagine profile doctor" src={doc.profile_picture_preview ? doc.profile_picture_preview : '/images/user.svg'} />
-                    <div className={'hq-data'}>
-                      <div>{doc.name}</div>
-                    </div>
-                  </div>
+                  <InviteCard type="unit" unit={invited} onClick={handleClickUnit}/>
                 )
-              })
-            }
-          </div>
+              })}
+            </React.Fragment>
+          }
+          {
+            invitedUnits.length > 0 &&
+            <React.Fragment>
+              <p>Unități medicale adăugate</p>
+              {invitedUnits.map((invited, i) => {
+                return (
+                  <InviteCard type="unit" unit={invited} />
+                )
+              })}
+            </React.Fragment>
+          }
 
-          <div className="add-another" onClick={addDoctor}>
-            <img alt="adauga inca un doctor/medic" src="/images/add.svg" />
-            <span>Adauga medic</span>
-          </div>
-
-          <div className="col">
-            <span onClick={handleDoctorPhotoUploadClickDoctor} className={'add-photo'}>Incarca poza profil</span>
-            <input type="file" accept="image/*" onChange={handleFileChangeDoctor} ref={inputRefDoctor} style={{ display: 'none' }} />
-          </div>
-          <div className="col">
-            <div className="input-wrapper">
-              <label>Medic</label>
-              <input placeholder="nume" name='name' type="text" value={doctor[docHighlighted].name}
-                onChange={(e) => { handleChangeInputDoctor(e, docHighlighted); }} />
-            </div>
-          </div>
-          <Dropdown noNumber selected={doctor[docHighlighted].academic_degree}
-            onSelect={(values) => {
-              handleDropdownDoctor(values, docHighlighted, 'academic_degree')
-            }}
-            options={academicDegreesDropDown}
-            title="Grad Academic" />
-          <Dropdown noNumber selected={doctor[docHighlighted].speciality}
-            onSelect={(values) => {
-              handleDropdownDoctor(values, docHighlighted, 'speciality')
-            }}
-            options={specialities}
-            title="Specializare" />
-          <Dropdown noNumber selected={doctor[docHighlighted].competences}
-            onSelect={(values) => {
-              handleDropdownDoctor(values, docHighlighted, 'competences')
-            }}
-            options={competences}
-            title="Competente" />
-
-          <div className="col">
-            <div className="input-wrapper">
-              <label>Link pagina </label>
-              <input name="link" type="text" value={doctor[docHighlighted].link}
-                onChange={(e) => { handleChangeInputDoctor(e, docHighlighted); }} />
-            </div>
-          </div>
-          <div className="delete-button" onClick={() => deleteHighlightDoctor(docHighlighted)}>
-            <div>
-              sterge unitate
-            </div>
-          </div>
-          <div className="button border-button" onClick={saveCurrentDoctor}>
-            Salveaza
-          </div>
         </div>
       </div>
     )
   }
+
+  const renderCollaboratorsDoctor = () => {
+    return (
+      <div className="collab-doctors-data">
+        <div className="container-title">Medici colaboratoari</div>
+        <div className="fields-wrapper">
+          <input onChange={handleInputDoctor} className="search" type="text" placeholder="Cauta medic" name="name" />
+          {!toggleInvite
+            ? <div className={`button border-button round invite-btn`} onClick={() => toggleInviteDoctor(true)}>>Nu ai gasit ce cautai? Invita un doctor!</div>
+            : renderSendInvite(inviteDoctor, 'medic')
+          }
+          {
+            doctors.count !== 0 &&
+            doctors.results.map((cl) => {
+              return <InviteCard disable type="doctor" doctor={cl} onClick={handleClickDoctor}/>
+            })
+          }
+          {
+            selectedInvitedDoctors.length > 0 &&
+            <React.Fragment>
+              <p>Doctori colaboratori adăugati</p>
+              {selectedInvitedDoctors.map((invited, i) => {
+                return (
+                  <InviteCard type="doctor" doctor={invited} onClick={handleClickDoctor}/>
+                )
+              })}
+            </React.Fragment>
+          }
+          {
+            invitedDoctors.length > 0 &&
+            <React.Fragment>
+              <p>Doctori colaboratori invitati</p>
+              {invitedDoctors.map((invited, i) => {
+                return (
+                  <InviteCard type="doctor" doctor={invited} />
+                )
+              })}
+            </React.Fragment>
+          }
+        </div>
+      </div>
+    )
+  }
+
   const renderSpecialities = () => {
     return (
       <div className="specialities-container">
@@ -746,7 +1025,8 @@ const ClinicProfile = (props) => {
               <form onSubmit={handleSubmit}>
                 {renderContactData()}
                 {renderDescription()}
-                {renderDoctors()}
+                {renderCollaboratorsClinic()}
+                {renderCollaboratorsDoctor()}
                 {renderSpecialities()}
                 {renderFacilities()}
                 {renderSchedule()}

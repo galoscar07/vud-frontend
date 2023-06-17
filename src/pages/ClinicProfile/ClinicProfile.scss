@@ -23,6 +23,40 @@
     }
   }
 
+  .textarea-column {
+    display: flex;
+    flex-direction: column;
+
+    textarea {
+      margin-bottom: $spacing-medium;
+    }
+  }
+
+  .invite-btn {
+    width: 40%;
+  }
+
+  .container-subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .close {
+      color: $color-primary;
+      border-radius: 100%;
+      border: 2px solid $color-primary;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.25rem;
+      height: 1.25rem;
+      font-weight: 600;
+      padding-bottom: 3px;
+      cursor: pointer;
+    }
+  }
+
+
   .add-photo {
     color: #667284;
     text-decoration: underline;

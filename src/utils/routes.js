@@ -50,6 +50,10 @@ export const API_MAP = {
   GET_DOCTOR_BY_ID: 'auth/doctors/',
   GET_DOCTOR_FILTERED: 'auth/get-doctors/',
 
+  // INVITE
+  POST_INVITE_DOCTOR: 'auth/invite-doctor/',
+  POST_INVITE_CLINIC: 'auth/invite-clinic/',
+
   // OPTIONS
   // GET Medical Unity Type
   GET_MEDICAL_UNITY_TYPE: 'options/medical-unity-types/',
