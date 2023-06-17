@@ -569,6 +569,7 @@ const DoctorData = (props) => {
             formData.append('first_name', mapped.first_name)
             formData.append('last_name', mapped.last_name)
             formData.append('primary_phone', mapped.primary_phone)
+            formData.append('primary_phone_vud', mapped.primary_phone_vud)
             formData.append('primary_email', mapped.primary_email)
             formData.append('website', mapped.website)
             formData.append('website_facebook', mapped.website_facebook)
@@ -583,11 +584,9 @@ const DoctorData = (props) => {
             formData.append('clinic', mapped.clinic)
             formData.append('doctor', mapped.doctor)
 
-            debugger
-
-            // TODO Finish file sending
-            // formData.append('file1', files[0])
-            // formData.append('file2', files[1])
+            let files = document.getElementById('file').files;
+            formData.append('file1', files[0])
+            formData.append('file2', files[1])
 
             makeRequestLogged(
                 getAPILink(API_MAP.PUT_DOCTOR_PROFILE),
