@@ -11,6 +11,7 @@ import DoctorCard from '../../components/DoctorCard/DoctorCard';
 import _ from "lodash";
 import { NavLink, useNavigate } from "react-router-dom";
 import { MapTouchEvent } from 'mapbox-gl';
+import ClinicCard from '../../components/ClinicCard/ClinicCard';
 
 const dayMapping = {
     0: 6,
@@ -243,9 +244,19 @@ function ClinicPage({ props }) {
                     link: doc.link,
                 }
             }),
+            collab_clinics: serverClinic?.collaborator_clinic?.map((clinic) => {
+                return {
+                    photo: '/images/user.svg',
+                    name: clinic.clinic_name,
+                    medical_unit_type: clinic.medical_unit_types.label,
+                    address: `${clinic?.clinic_street} ${clinic?.clinic_number ? clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}`,
+                    phone: clinic.primary_phone
+                }
+            }),
             schedule: JSON.parse(serverClinic.clinic_schedule || "{}"),
             has_user: !!serverClinic.user,
         }
+        
     }
 
     const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState([])
@@ -495,25 +506,23 @@ function ClinicPage({ props }) {
                 </div>
                 {clinic.schedule &&
                     <div className="schedule-container">
-                        {/* <div className="fields-wrapper"> */}
-                            <div className="weekdays-container">
-                                {Object.entries(clinic.schedule).map(([weekday, inter], i) => {
-                                    return (
-                                        <div className={`day ${day === i ? 'active' : ''}`} key={i}>
-                                            <span>{weekday}</span>
-                                            {
-                                                inter.length > 0
-                                                    ? inter.map((interval, index) => {
-                                                        return <span key={index} className={'interval'}>{interval.startTime} - {interval.endTime}</span>
-                                                    })
-                                                    : <span className={'interval'}>Inchis</span>
+                        <div className="weekdays-container">
+                            {Object.entries(clinic.schedule).map(([weekday, inter], i) => {
+                                return (
+                                    <div className={`day ${day === i ? 'active' : ''}`} key={i}>
+                                        <span>{weekday}</span>
+                                        {
+                                            inter.length > 0
+                                                ? inter.map((interval, index) => {
+                                                    return <span key={index} className={'interval'}>{interval.startTime} - {interval.endTime}</span>
+                                                })
+                                                : <span className={'interval'}>Inchis</span>
 
-                                            }
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        {/* </div> */}
+                                        }
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                 }
             </div>
@@ -645,6 +654,18 @@ function ClinicPage({ props }) {
                                     <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"Grade medicale"} onSelect={handleSubmitDegrees} />
                                     <Dropdown selected={selectedCompetences} options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} />
                                 </div>
+                                {clinic.collab_clinics.length > 0 &&
+                                    <React.Fragment>
+                                        <div className="result-title">Clinici colaboratoare:</div>
+                                        <div style={{ marginBottom: '20px' }} className="col">
+                                            {clinic.collab_clinics.map((clinic)=>{
+                                                    return <ClinicCard clinic={clinic} />
+                                                }
+                                            )}
+                                        </div>
+                                    </React.Fragment>
+                                }
+
                                 {doctorState.doctors.length > 0 &&
                                     <React.Fragment>
                                         <div className="result-title">Rezultate filtrare:</div>
@@ -702,7 +723,7 @@ function ClinicPage({ props }) {
                                         <input className="full-width" type="email" name="email" value={review.email.value}
                                             onChange={handleChange} onBlur={isFormEmpty} />
                                         <label>Recenzie</label>
-                                        <textarea  maxLength={review.maxLength} rows="6" className="full-width" type="comment" name="comment" value={review.comment.value}
+                                        <textarea maxLength={review.maxLength} rows="6" className="full-width" type="comment" name="comment" value={review.comment.value}
                                             onChange={handleChange} onBlur={isFormEmpty} />
                                         <div className="counter"> {review.comment.value.length} / {review.maxLength}</div>
                                         <label>Rating</label>

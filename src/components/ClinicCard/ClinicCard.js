@@ -7,6 +7,7 @@ const ClinicCard = (props) => {
     const redirectToClinic = () => {
         navigate(props.clinic.link)
     }
+   
     return (
         <div className="clinic-card-component">
             <img className="profile" src={props.clinic.photo} />
