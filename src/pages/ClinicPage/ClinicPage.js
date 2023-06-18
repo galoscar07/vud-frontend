@@ -143,7 +143,6 @@ function ClinicPage({ props }) {
     }, [clinic.doctors])
 
 
-
     const isFormEmpty = () => {
         if (review.email.value && review.name.value && review.comment.value) {
             setFormValid(true)
@@ -256,7 +255,7 @@ function ClinicPage({ props }) {
             schedule: JSON.parse(serverClinic.clinic_schedule || "{}"),
             has_user: !!serverClinic.user,
         }
-        
+
     }
 
     const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState([])
@@ -301,10 +300,13 @@ function ClinicPage({ props }) {
         })
             .then((resp) => resp.json())
             .then((response) => {
-                const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                const mapped = response.map((el) => {
+                    return { value: el.id, label: el.label }
+                })
                 setAcademicDegreesDropDown(mapped)
             })
-            .catch((err) => { })
+            .catch((err) => {
+            })
         fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
             method: 'GET',
             headers: {
@@ -313,10 +315,13 @@ function ClinicPage({ props }) {
         })
             .then((resp) => resp.json())
             .then((response) => {
-                const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                const mapped = response.map((el) => {
+                    return { value: el.id, label: el.label }
+                })
                 setSpecialities(mapped)
             })
-            .catch((err) => { })
+            .catch((err) => {
+            })
         fetch(getAPILink(API_MAP.GET_COMPETENCES), {
             method: 'GET',
             headers: {
@@ -325,10 +330,13 @@ function ClinicPage({ props }) {
         })
             .then((resp) => resp.json())
             .then((response) => {
-                const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                const mapped = response.map((el) => {
+                    return { value: el.id, label: el.label }
+                })
                 setCompetences(mapped)
             })
-            .catch((err) => { })
+            .catch((err) => {
+            })
     }, [])
 
     const flattenedResponse = (el) =>
@@ -379,7 +387,8 @@ function ClinicPage({ props }) {
             switch (el.type) {
                 case "email":
                     return (
-                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`}
+                            key={i}>
                             {el?.icon && <img alt={"contact-icon"} src={`/images/icons/email.svg`} />}
                             <div>
                                 <span className="type">{el?.type}</span>
@@ -389,7 +398,8 @@ function ClinicPage({ props }) {
                     )
                 case "website":
                     return (
-                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`}
+                            key={i}>
                             {el?.icon && <img alt={"contact-icon"} src={`/images/icons/website.svg`} />}
                             <div>
                                 <span className="type">{el?.type}</span>
@@ -400,7 +410,9 @@ function ClinicPage({ props }) {
                 case "emergency":
                 case "ambulance":
                     return (
-                        <div className={`contact-card emergency ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                        <div
+                            className={`contact-card emergency ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`}
+                            key={i}>
                             {el?.icon && <img alt={"contact-icon"} src={`/images/icons/emergency.svg`} />}
                             <div>
                                 <span className="type">{el?.type}</span>
@@ -410,7 +422,8 @@ function ClinicPage({ props }) {
                     )
                 case "fax":
                     return (
-                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`}
+                            key={i}>
                             {el?.icon && <img alt={"contact-icon"} src={`/images/icons/fax.svg`} />}
                             <div>
                                 <span className="type">{el?.type}</span>
@@ -419,7 +432,8 @@ function ClinicPage({ props }) {
                         </div>
                     )
                     return (
-                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`} key={i}>
+                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`}
+                            key={i}>
                             {el?.icon && <img alt={"contact-icon"} src={`/images/icons/phone.svg`} />}
                             <div>
                                 <span className="type">{el?.type}</span>
@@ -460,7 +474,8 @@ function ClinicPage({ props }) {
 
                                 <div className={`links-wrapper ${!clinic.has_user && 'small-margin-bottom'}`}>
                                     {clinic?.links?.map((link, i) =>
-                                        <a key={i} href={link.value && link.value.includes('http') ? link.value : `http://${link.value}`} target={"_blank"} rel="noreferrer" className={`link ${!link.value && 'hide'}`}>
+                                        <a key={i} href={link.value && link.value.includes('http') ? link.value : `http://${link.value}`}
+                                            target={"_blank"} rel="noreferrer" className={`link ${!link.value && 'hide'}`}>
                                             <img alt={link.type} src={`/images/icons/${link.type}.svg`} />
                                         </a>
                                     )}
@@ -468,7 +483,7 @@ function ClinicPage({ props }) {
                                 {!clinic.has_user &&
                                     <div className={'revendica'}>
                                         <div>Reprezinti {clinic.name}?</div>
-                                        <div className={'button'} onClick={goToRedeem} > Revendică profilul  </div>
+                                        <div className={'button'} onClick={goToRedeem}> Revendică profilul</div>
                                     </div>
                                 }
 
@@ -568,7 +583,8 @@ function ClinicPage({ props }) {
                                                         {
                                                             inter.length > 0
                                                                 ? inter.map((interval, index) => {
-                                                                    return <span key={index} className={'interval'}>{interval.startTime} - {interval.endTime}</span>
+                                                                    return <span key={index}
+                                                                        className={'interval'}>{interval.startTime} - {interval.endTime}</span>
                                                                 })
                                                                 : <span className={'interval'}>Inchis</span>
 
@@ -594,7 +610,8 @@ function ClinicPage({ props }) {
                         </div>
                         <div className={`additional mobile links-wrapper ${!clinic.has_user && 'small-margin-bottom'}`}>
                             {clinic?.links?.map((link, i) =>
-                                <a key={i} href={link.value && link.value.includes('http') ? link.value : `http://${link.value}`} target={"_blank"} rel="noreferrer" className={`link ${!link.value && 'hide'}`}>
+                                <a key={i} href={link.value && link.value.includes('http') ? link.value : `http://${link.value}`}
+                                    target={"_blank"} rel="noreferrer" className={`link ${!link.value && 'hide'}`}>
                                     <img key={i} alt={link.type} src={`/images/icons/${link.type}.svg`} />
                                 </a>
                             )}
@@ -614,7 +631,8 @@ function ClinicPage({ props }) {
                             )}
                         </div>
                     </div>
-                    {clinic?.reviews?.length > 0 && <div onClick={scrollingTop} className="view-reviews">Vezi toate recenziile</div>}
+                    {clinic?.reviews?.length > 0 &&
+                        <div onClick={scrollingTop} className="view-reviews">Vezi toate recenziile</div>}
                 </div>
             </div>
         )
@@ -658,14 +676,13 @@ function ClinicPage({ props }) {
                                     <React.Fragment>
                                         <div className="result-title">Clinici colaboratoare:</div>
                                         <div style={{ marginBottom: '20px' }} className="col">
-                                            {clinic.collab_clinics.map((clinic)=>{
-                                                    return <ClinicCard clinic={clinic} />
-                                                }
+                                            {clinic.collab_clinics.map((clinic) => {
+                                                return <ClinicCard clinic={clinic} />
+                                            }
                                             )}
                                         </div>
                                     </React.Fragment>
                                 }
-
                                 {doctorState.doctors.length > 0 &&
                                     <React.Fragment>
                                         <div className="result-title">Rezultate filtrare:</div>
@@ -736,7 +753,8 @@ function ClinicPage({ props }) {
                                             </div>
                                         </div>
 
-                                        <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Adauga recenzie</button>
+                                        <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Adauga recenzie
+                                        </button>
                                         {
                                             review.server.error &&
                                             <div className={'error'}>Ceva a mers rau! Va rugam incercati mai tarziu.</div>
