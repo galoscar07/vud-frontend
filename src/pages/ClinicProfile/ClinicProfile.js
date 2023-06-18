@@ -26,7 +26,6 @@ const initialPaginated = {
   results: []
 }
 
-
 const ClinicProfile = (props) => {
   // Loading var
   const [loading, setLoading] = useState(true)
@@ -67,8 +66,13 @@ const ClinicProfile = (props) => {
     multiple_phones: '',
     multiple_emails: '',
     website: false,
+  })
+  const [errorStateDD, setErrorStateDD] = useState({
     clinic_specialities: false,
-    clinic_facilities: false
+    clinic_facilities: false,
+    clinic_schedule: false,
+    clinic_town: false,
+    clinic_county: false,
   })
 
   const [mapState, setMapState] = useState({
@@ -76,20 +80,76 @@ const ClinicProfile = (props) => {
     address: '',
   })
 
+  // Handle dropdown selection
+  const onSelectDropdown = (key, value) => {
+    switch (key) {
+      case 'clinic_facilities': {
+        setState((prevState) => ({ ...prevState, clinic_facilities: value }));
+        break;
+      }
+      case 'clinic_specialities': {
+        setState((prevState) => ({ ...prevState, clinic_specialities: value }));
+        break;
+      }
+    }
+  }
+
   useEffect(() => {
     setMapState({ complete: !!state.clinic_street && !!state.clinic_number && !!state.clinic_town, address: `Str. ${state.clinic_street}, nr. ${state.clinic_number}, ${state.clinic_town}` })
   }, [state.clinic_street, state.clinic_number, state.clinic_town])
 
   const isFormValid = () => {
     let errorCopy = _.cloneDeep(errorState)
+    let errorCopyDD = _.cloneDeep(errorStateDD)
+
+    Object.keys(errorState).forEach((key) => {
+      errorCopy[key] = false;
+    })
+
     let ok = true
     Object.keys(errorState).forEach((key) => {
+      if (key === 'multiple_phones' || key === 'multiple_emails') {
+        return
+      }
       errorCopy[key] = !state[key]
       if (!state[key] && key !== 'multiple_phones' && key !== 'multiple_emails') {
         ok = false
       }
     })
+    if (state.clinic_specialities.length === 0) {
+      ok = false
+      errorCopyDD.clinic_specialities = true;
+    } else errorCopyDD.clinic_specialities = false;
+
+    if (state.clinic_facilities.length === 0) {
+      ok = false
+      errorCopyDD.clinic_facilities = true;
+    } else errorCopyDD.clinic_facilities = false;
+
+    if (state.clinic_town.length === 0) {
+      ok = false
+      errorCopyDD.clinic_town = true;
+    } else errorCopyDD.clinic_town = false;
+
+    if (state.clinic_county.length === 0) {
+      ok = false
+      errorCopyDD.clinic_county = true;
+    } else errorCopyDD.clinic_county = false;
+
+    let isScheduleSet = false;
+    for (const prop in schedule) {
+      if (Array.isArray(schedule[prop]) && schedule[prop].length > 0) {
+        isScheduleSet = true;
+        break;
+      }
+    }
+    if (!isScheduleSet) {
+      ok = false
+      errorCopyDD.clinic_schedule = true;
+    } else errorCopyDD.clinic_schedule = false;
+
     setErrorState(errorCopy)
+    setErrorStateDD(errorCopyDD)
     if (!ok) {
       setState({ ...state, error: "Va rugam sa completati campurile obligatorii" })
     }
@@ -102,10 +162,7 @@ const ClinicProfile = (props) => {
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
   };
 
-  // Handle dropdown selection
-  const onSelectDropdown = (key, value) => {
-    setState((prevState) => ({ ...prevState, [key]: value }));
-  }
+
 
   // Profile photo user
   const profileImgRef = useRef()
@@ -301,7 +358,7 @@ const ClinicProfile = (props) => {
       .catch((err) => { })
   }
   const handleClickUnit = (selectedElem) => {
-    let copyElem = {...selectedElem, status: "added"}
+    let copyElem = { ...selectedElem, status: "added" }
     let copy = [...selectedInvitedUnits]
     let index = copy.findIndex(obj => obj.id === selectedElem.id);
     if (index !== -1) {
@@ -317,7 +374,7 @@ const ClinicProfile = (props) => {
   }, [selectedInvitedUnits])
 
   const handleClickDoctor = (selectedElem) => {
-    let copyElem = {...selectedElem, status: "added"}
+    let copyElem = { ...selectedElem, status: "added" }
     let copy = [...selectedInvitedDoctors]
     let index = copy.findIndex(obj => obj.id === selectedElem.id);
     if (index !== -1) {
@@ -474,9 +531,11 @@ const ClinicProfile = (props) => {
   }
   const toggleInviteDoctor = (toggleInvite) => {
     setToggleInvite(toggleInvite);
+    setToggleInviteUnit(false)
   }
   const toggleInviteUnit = (toggleInviteU) => {
     setToggleInviteUnit(toggleInviteU);
+    setToggleInvite(false)
   }
   const renderSendInvite = (ftc, word) => {
     return (
@@ -492,26 +551,26 @@ const ClinicProfile = (props) => {
           <div className="input-wrapper">
             <label>*Nume {word}</label>
             <input className={errorInvite.name ? 'error' : ''} name="name" type="text" value={inviteValues.name}
-                   onChange={(e) => {
-                     handleFieldChangeInvite(e.target.value, e.target.name);
-                   }} />
+              onChange={(e) => {
+                handleFieldChangeInvite(e.target.value, e.target.name);
+              }} />
           </div>
         </div>
         <div className="col-1">
           <div className="input-wrapper">
             <label>*Adresa email</label>
             <input className={errorInvite.email ? 'error' : ''} name="email" type="text" value={inviteValues.email}
-                   onChange={(e) => {
-                     handleFieldChangeInvite(e.target.value, e.target.name);
-                   }} />
+              onChange={(e) => {
+                handleFieldChangeInvite(e.target.value, e.target.name);
+              }} />
           </div>
         </div>
         <div className="textarea-column">
           <label>Personalizeaza mesaj</label>
           <textarea rows="15" className="full-width" name="message" value={inviteValues.message}
-                    onChange={(e) => {
-                      handleFieldChangeInvite(e.target.value, e.target.name);
-                    }} />
+            onChange={(e) => {
+              handleFieldChangeInvite(e.target.value, e.target.name);
+            }} />
         </div>
         {
           errorInvite.error && <p className={'error'}>{errorInvite.errors}</p>
@@ -565,8 +624,8 @@ const ClinicProfile = (props) => {
       // 2nd card
       description: state.description,
       // 4th card
-      doctor: selectedInvitedDoctors.map((d) => {return d.id}).join("|"),
-      clinic: selectedInvitedUnits.map((d) => {return d.id}).join("|"),
+      doctor: selectedInvitedDoctors.map((d) => { return d.id }).join("|"),
+      clinic: selectedInvitedUnits.map((d) => { return d.id }).join("|"),
 
       // 5th
       clinic_specialities: state.clinic_specialities.map(el => { return el.value }),
@@ -706,7 +765,8 @@ const ClinicProfile = (props) => {
           <div className="col-3">
             <div className="input-wrapper">
               <label>*Oras</label>
-              <select id="clinic_town" name="clinic_town" onChange={handleFieldChange}>
+              <select id="clinic_town" className={errorStateDD.clinic_town ? 'error' : ''} name="clinic_town" onChange={handleFieldChange}>
+                <option value="init">-</option>
                 <option value="Alba-Iulia">Alba-Iulia</option>
                 <option value="Cluj-Napoca">Cluj-Napoca</option>
                 <option value="Bucuresti">Bucuresti</option>
@@ -715,7 +775,8 @@ const ClinicProfile = (props) => {
             </div>
             <div className="input-wrapper">
               <label>*Judet</label>
-              <select id="county" name="county" onChange={handleFieldChange}>
+              <select id="clinic_county" className={errorStateDD.clinic_county ? 'error' : ''} name="clinic_county" onChange={handleFieldChange}>
+                <option value="init">-</option>
                 <option value="Alba">Alba</option>
                 <option value="Cluj">Cluj</option>
                 <option value="Bucuresti">Bucuresti</option>
@@ -874,7 +935,7 @@ const ClinicProfile = (props) => {
           {
             clinics.count !== 0 &&
             clinics.results.map((cl) => {
-              return <InviteCard disable type="unit" unit={cl} onClick={handleClickUnit}/>
+              return <InviteCard disable type="unit" unit={cl} onClick={handleClickUnit} />
             })
           }
           {
@@ -883,7 +944,7 @@ const ClinicProfile = (props) => {
               <p>Unități medicale adăugate</p>
               {selectedInvitedUnits.map((invited, i) => {
                 return (
-                  <InviteCard type="unit" unit={invited} onClick={handleClickUnit}/>
+                  <InviteCard type="unit" unit={invited} onClick={handleClickUnit} />
                 )
               })}
             </React.Fragment>
@@ -918,7 +979,7 @@ const ClinicProfile = (props) => {
           {
             doctors.count !== 0 &&
             doctors.results.map((cl) => {
-              return <InviteCard disable type="doctor" doctor={cl} onClick={handleClickDoctor}/>
+              return <InviteCard disable type="doctor" doctor={cl} onClick={handleClickDoctor} />
             })
           }
           {
@@ -927,7 +988,7 @@ const ClinicProfile = (props) => {
               <p>Doctori colaboratori adăugati</p>
               {selectedInvitedDoctors.map((invited, i) => {
                 return (
-                  <InviteCard type="doctor" doctor={invited} onClick={handleClickDoctor}/>
+                  <InviteCard type="doctor" doctor={invited} onClick={handleClickDoctor} />
                 )
               })}
             </React.Fragment>
@@ -951,7 +1012,7 @@ const ClinicProfile = (props) => {
   const renderSpecialities = () => {
     return (
       <div className="specialities-container">
-        <Dropdown hasError={errorState.clinic_specialities} selected={state.clinic_specialities} options={clinicSpecialities}
+        <Dropdown hasError={errorStateDD.clinic_specialities} selected={state.clinic_specialities} options={clinicSpecialities}
           title="Specialitati unitate*" onSelect={(values) => { onSelectDropdown('clinic_specialities', values) }} />
       </div>
     )
@@ -959,15 +1020,15 @@ const ClinicProfile = (props) => {
   const renderFacilities = () => {
     return (
       <div className="facilities-container">
-        <Dropdown hasError={errorState.clinic_facilities} selected={state.clinic_facilities} options={medicalFacilities}
+        <Dropdown hasError={errorStateDD.clinic_facilities} selected={state.clinic_facilities} options={medicalFacilities}
           title="Facilitati unitate*" onSelect={(values) => { onSelectDropdown('clinic_facilities', values) }} />
       </div>
     )
   }
   const renderSchedule = () => {
     return (
-      <div className="schedule-container">
-        <div className="container-title-small"> Program </div>
+      <div className={`schedule-container ${errorStateDD.clinic_schedule ? 'err' : ''}`}>
+        <div className="container-title-small"> Program* </div>
         <div className="fields-wrapper">
           <div className="weekdays-container">
             {Object.entries(schedule).map(([weekday, inter], i) => {

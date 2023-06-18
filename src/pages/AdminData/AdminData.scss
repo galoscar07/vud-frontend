@@ -3,8 +3,8 @@
 
 .admin-data-page,
 .clinic-profile-page {
- margin:auto;
- max-width:70%;
+  margin:$spacing-section auto;
+  max-width:70%;
 }
 
 @media screen and (max-width: $mobile-big-width) {

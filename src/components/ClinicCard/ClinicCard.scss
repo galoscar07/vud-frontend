@@ -10,7 +10,8 @@
     .profile {
         width: 4rem;
         height: 4rem;
-        margin: auto;
+        margin: auto 0;
+        object-fit: cover;
     }
 
     .text-container {

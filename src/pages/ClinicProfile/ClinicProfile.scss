@@ -56,21 +56,6 @@
     }
   }
 
-
-  .add-photo {
-    color: #667284;
-    text-decoration: underline;
-    margin-left: $spacing-small;
-    cursor: pointer;
-    font-size: $font-normal;
-
-    img {
-      width: 4rem;
-      height: 4rem;
-      object-fit: cover;
-    }
-  }
-
   .delete-button {
     color: $color-secondary;
     text-decoration: underline;

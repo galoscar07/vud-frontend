@@ -12,7 +12,7 @@
         height: 4rem;
         border-radius: 100%;
         object-fit: cover;
-        margin: auto;
+        margin: auto 0;
     }
 
     .title {
@@ -69,12 +69,14 @@
             font-size: $font-size-xbig;
             color: $color-dark-blue;
         }
-        .spec{
+
+        .spec {
             color: $color-primary
         }
 
         .rating-container {
             text-align: center;
+            width: max-content;
 
             .rating {
                 color: white;

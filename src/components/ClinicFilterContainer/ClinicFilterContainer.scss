@@ -13,6 +13,7 @@
 
         .rating-container {
             row-gap: $spacing-xsmall;
+            width: max-content;
 
             .stars-container {
                 min-width: 6rem;
@@ -22,6 +23,7 @@
                 width: 4rem;
                 height: 4rem;
                 border-radius: 100%;
+                object-fit: cover;
             }
 
             .score-wrapper {
