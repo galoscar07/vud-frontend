@@ -335,7 +335,7 @@ const FilterPage = (props) => {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    if (e) e.preventDefault()
     let query = '?'
     query += 'search_term=' + state.search_term + '&'
     query += 'search_type=' + state.search_type + '&'
@@ -350,14 +350,13 @@ const FilterPage = (props) => {
     getData()
   }
 
-  const nextPage = () => {
-    if (state.search_type === 'doctor') getDoctors()
-    if (state.search_type === 'clinic') getClinics()
-  }
-
   useEffect(() => {
     getData()
   }, [])
+
+  useEffect(() => {
+    handleSubmit()
+  }, [pagination])
 
 
   const renderClinic = () => {
