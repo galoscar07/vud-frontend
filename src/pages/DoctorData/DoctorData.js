@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import _ from "lodash";
 import Dropdown from '../../components/Dropdown/Dropdown';
 import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/routes";
@@ -37,6 +37,8 @@ const DoctorData = (props) => {
         fileList: props?.selected?.fileList || [],
         files: props?.selected?.files || [],
         error: '',
+        profile_picture: props?.selected?.profile_picture || null,
+        profile_picture_preview: props?.selected?.profile_picture_preview || null,
         uploadWarning: '',
         areTermsChecked: false,
     })
@@ -46,10 +48,12 @@ const DoctorData = (props) => {
         phoneNo: false,
         email: false,
         phoneNoVud: false,
+        areTermsChecked: false
+    })
+    const [ddError, setDdError] = useState({
         medical_degree: false,
         speciality: false,
         competences: false,
-        areTermsChecked: false
     })
 
     const handleFieldChange = (value, title) => {
@@ -59,6 +63,16 @@ const DoctorData = (props) => {
     const handleTermsToggle = () => {
         setValues((prevState) => ({ ...prevState, areTermsChecked: !values.areTermsChecked }));
     }
+
+    // Profile photo user
+    const profileImgRef = useRef()
+    const handleProfilePictureUser = () => {
+        profileImgRef.current.click();
+    }
+    const handleFileChangeProfilePicUser = (event) => {
+        setValues({ ...values, profile_picture: event.target.files[0], profile_picture_preview: window.URL.createObjectURL(event.target.files[0]) })
+    }
+
 
 
     // Collaborator Clinics and Doctors
@@ -374,9 +388,11 @@ const DoctorData = (props) => {
     }
     const toggleInviteDoctor = (toggleInvite) => {
         setToggleInvite(toggleInvite);
+        setToggleInviteUnit(false)
     }
     const toggleInviteUnit = (toggleInviteU) => {
         setToggleInviteUnit(toggleInviteU);
+        setToggleInvite(false)
     }
     const renderSendInvite = (ftc, word) => {
         return (
@@ -487,6 +503,16 @@ const DoctorData = (props) => {
 
     const isFormValid = () => {
         let errorCopy = _.cloneDeep(error)
+        let errorCopyDD = _.cloneDeep(ddError)
+       
+        Object.keys(error).forEach((key) => {
+            errorCopy[key] = false;
+        })
+
+        Object.keys(ddError).forEach((key) => {
+            errorCopyDD[key] = false;
+        })
+        
         let ok = true
         Object.keys(error).forEach((key) => {
             if (key === 'fileList') {
@@ -498,15 +524,28 @@ const DoctorData = (props) => {
                 ok = false
             }
         })
-        //TODO check here why competences, degrees & specialities have error true even if they don't go inside if
-        if (selectedCompetences.length === 0 || selectedDegrees.length === 0 || selectedSpecialties.length === 0) {
+
+        if (selectedCompetences.length === 0) {
             ok = false
+            errorCopyDD.competences = true;
         }
+        if (selectedDegrees.length === 0) {
+            ok = false
+            errorCopyDD.medical_degree = true;
+        }
+        if (selectedSpecialties.length === 0) {
+            ok = false
+            errorCopyDD.speciality = true;
+        }
+       
         setError(errorCopy)
+        setDdError(errorCopyDD)
+
         if (!ok) setValues({ ...values, error: "Va rugam sa completati campurile obligatorii" })
         if (error.areTermsChecked) {
             setValues({ ...values, error: "Va rugam sa acceptati termenii si conditiile" })
         }
+        
         return ok
     }
 
@@ -557,6 +596,7 @@ const DoctorData = (props) => {
             website_linkedin: values.linkedin,
             website_youtube: values.youtube,
             whatsapp: values.whatsapp,
+            profile_picture: values.profile_picture,
             // 2nd card
             description: values.description,
             // 3rd card
@@ -581,6 +621,7 @@ const DoctorData = (props) => {
         } else {
             const mapped = mapStateToObject()
             const formData = new FormData()
+            formData.append('profile_picture', mapped.clinic_name)
             formData.append('first_name', mapped.first_name)
             formData.append('last_name', mapped.last_name)
             formData.append('primary_phone', mapped.primary_phone)
@@ -633,7 +674,13 @@ const DoctorData = (props) => {
             <div className="data-container">
                 <form>
                     <div className="contact-data">
-                        <div className="container-title">Date de contact</div>
+                        <div className="container-title-small profile-photo">
+                            Date de contact                         <div className="col desktop pp">
+                                <span onClick={handleProfilePictureUser} className={'add-photo'}>Adaugă poză de profil</span>
+                                <input type="file" accept="image/*" onChange={handleFileChangeProfilePicUser} ref={profileImgRef} style={{ display: 'none' }} />
+                                <img alt='profile uploaded user' src={values.profile_picture_preview ? values.profile_picture_preview : '/images/user.svg'} />
+                            </div>
+                        </div>
                         <div className="fields-wrapper">
                             <div className="col-2">
                                 <div className="input-wrapper">
@@ -726,7 +773,7 @@ const DoctorData = (props) => {
                                 <Dropdown hasError={error.speciality} selected={selectedSpecialties} options={specialities} title={"*Specialitate"} onSelect={(e) => handleDropdownSubmit(e, 'speciality')} />
                             </div>
                             <div className="col">
-                                <Dropdown hasError={error.competences} selected={selectedCompetences} options={competences} title={"*Competente"} onSelect={(e) => handleDropdownSubmit(e, 'competences')} />
+                                <Dropdown hasError={ddError.competences} selected={selectedCompetences} options={competences} title={"*Competente"} onSelect={(e) => handleDropdownSubmit(e, 'competences')} />
                             </div>
                         </div>
                     </div>
@@ -809,14 +856,14 @@ const DoctorData = (props) => {
                     </div>
                     <div className="file-data-doc">
                         <div className="fields-wrapper">
-                            <p className="italic">
+                            <div className="italic">
                                 Pentru a ne asigura că sunteți titularul legitim al datelor medicale înregistrate, vă rugăm să urmați pașii de identificare și confirmare următori:
                                 <ul>
                                     <li>Încărcați o copie a diplomei de medic sau a certificatului de înregistrare la Colegiul Medicilor.</li>
                                     <li> Încărcați o copie a buletinului de identitate sau a altui document de identificare oficial.</li>
                                 </ul>
                                 Acești pași sunt necesari pentru a ne asigura că datele medicale înregistrate sunt autentice și că vă puteți gestiona cu succes pagina personală pe care ați înregistrat datele medicale.
-                            </p>
+                            </div>
                             <div className="input-wrapper contact-phone" style={{ marginBottom: '20px' }}>
                                 <label>*Telefon contact</label>
                                 <input className={error.phoneNoVud ? 'error' : ''} name="phoneNoVud" type="text"

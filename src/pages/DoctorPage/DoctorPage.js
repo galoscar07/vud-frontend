@@ -174,7 +174,12 @@ function DoctorPage({ props }) {
                     link: "/clinic-page/?id=" + clinic.id,
                     name: clinic.clinic_name,
                     photo: clinic.profile_picture,
-                    address: clinic.clinic_street + " " + clinic.clinic_number + " " + clinic.clinic_other_details + " " + clinic.clinic_town + " " + clinic.clinic_county,
+                    address:
+                        (clinic?.clinic_street ? clinic.clinic_street + " " : "") +
+                        (clinic?.clinic_number ? clinic.clinic_number + " " : "") +
+                        (clinic?.clinic_other_details ? clinic.clinic_other_details + " " : "") +
+                        (clinic?.clinic_town ? clinic.clinic_town + " " : "") +
+                        (clinic?.clinic_county ? clinic.clinic_county : ""),
                     medical_unit_type: clinic.medical_unit_types?.map((el) => { return el.label }) || [],
                     phone: clinic.primary_phone,
                 }
@@ -386,9 +391,9 @@ function DoctorPage({ props }) {
                             </div>
                             <div className="info-right-container">
                                 <img className="add mobile" src="/images/ads/add2.svg" />
-                                <div className="container-title">Clinici unde ofer consultații</div>
                                 {doctor?.collaborator_clinics?.length > 0 &&
                                     <React.Fragment>
+                                        <div className="container-title">Clinici unde ofer consultații</div>
                                         <div style={{ marginBottom: '20px' }} className="col col-clinics">
                                             {doctor?.collaborator_clinics?.length !== 0 &&
                                                 doctor?.collaborator_clinics.map((clinic, i) => {
@@ -398,9 +403,9 @@ function DoctorPage({ props }) {
                                         </div>
                                     </React.Fragment>
                                 }
-                                <div className="container-title">Medici colaboratori</div>
                                 {doctor?.collaborator_doctors?.length > 0 &&
                                     <React.Fragment>
+                                        <div className="container-title">Medici colaboratori</div>
                                         <div style={{ marginBottom: '20px' }} className="col col-doctors">
                                             {doctor?.collaborator_doctors?.length !== 0 &&
                                                 doctor?.collaborator_doctors.map((doc, i) => {

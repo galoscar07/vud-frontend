@@ -43,6 +43,24 @@ textarea {
   margin-right: 0.5rem;
 }
 
+.rating-container {
+  width: max-content;
+}
+
+.add-photo {
+  color: #667284;
+  text-decoration: underline;
+  margin-left: $spacing-small;
+  cursor: pointer;
+  font-size: $font-normal;
+
+  img {
+    width: 4rem;
+    height: 4rem;
+    object-fit: cover;
+  }
+}
+
 input,
 select,
 option {
@@ -85,13 +103,13 @@ label {
 }
 
 .err {
-  color: $color-secondary!important;
+  color: $color-secondary !important;
 }
 
 .error {
   color: $color-secondary;
-  margin: $spacing-small 0;
-  text-align: center;
+  // margin: $spacing-small 0;
+  // text-align: center;
   width: 100%;
 
   &.small-margin-top {

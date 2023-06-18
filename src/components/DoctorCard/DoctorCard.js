@@ -1,7 +1,7 @@
 import React from 'react'
 import "./DoctorCard.scss"
-import {useNavigate} from "react-router-dom";
-import {routes} from "../../utils/routes";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../../utils/routes";
 
 const DoctorCard = (props) => {
   const navigate = useNavigate();
@@ -70,10 +70,10 @@ const DoctorCard = (props) => {
 
       case 3:
         return (
-          <div onClick={() => navigate(routes.DOCTOR_PAGE + '/?id=' + doctor.id)} className="doctor-card-component">
+          <div onClick={() => navigate(routes.DOCTOR_PAGE + '/?id=' + doctor.id)} className="doctor-card-component" style={{ padding: '20px' }}>
             <div>
               <img className="profile" src={doctor.profile_picture} />
-              <div className="rating-container">
+              <div className="rating-container" style={{ marginTop: '16px' }}>
                 {doctor.score > 0 && <div className="rating">
                   {Math.floor(doctor.average_rating || 0)}
                 </div>}
@@ -93,16 +93,16 @@ const DoctorCard = (props) => {
             <div className="text-container2">
               <div className="info" >
                 <div className="title">{doctor.first_name} {doctor.last_name}</div>
-                <div className="title caps">{doctor.speciality.map((el) => {return el.label}).join(" | ")}</div>
+                <div className="title" style={{ fontSize: '20px', color: '#33435B', fontWeight: 400 }}>{doctor.speciality.map((el) => { return el.label }).join(" | ")}</div>
                 <div className="specialties-wrapper">
-                  <div className="spec">{doctor.medical_skill.map((el) => el.label).join(', ')}</div>
+                  <div className="spec" style={{ marginTop: "20px" }}>{doctor.medical_skill.map((el) => el.label).join(', ')}</div>
                 </div>
                 <div className="specialties-wrapper">
                   <div className="spec">{doctor.collaborator_clinic.map((el) => el.clinic_name).join(' | ')}</div>
                 </div>
               </div>
             </div>
-          </div>
+          </div >
         )
     }
   }
