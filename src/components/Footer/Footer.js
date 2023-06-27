@@ -12,7 +12,7 @@ const socials = [
     href: 'https://facebook.com',
   },
   {
-    iconPath: '/images/icons/LinkedIn.svg',
+    iconPath: '/images/icons/Linkedin.svg',
     imageAlt: 'Link catre pagina de LinkedIn a Vreau un Doctor',
     href: 'https://linkedin.com',
   },
