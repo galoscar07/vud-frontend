@@ -82,9 +82,8 @@ const SingleArticle = (props) => {
 
         const query = window.location.search
         const queryParams = new URLSearchParams(query)
-        const id = queryParams.get('id')
+        const id = queryParams.get('article_id')
         setId(id);
-
         fetch(
             getAPILink(API_MAP.GET_ARTICLE + id + '/'), {
             method: 'GET',
@@ -94,7 +93,7 @@ const SingleArticle = (props) => {
         })
             .then((res) => res.json())
             .then((res) => {
-                setArticle(res[0]);
+                setArticle(res[id-1]);
                 setLoading(false)
             })
             .catch((err) => { setLoading(false) })
@@ -108,7 +107,6 @@ const SingleArticle = (props) => {
         const formattedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
         return formattedDate;
     }
-    console.log(article, 'art')
     return (
         <div className="article">
             {loading ? <LoadingSpinner />
