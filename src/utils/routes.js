@@ -1,6 +1,7 @@
 // const API_URL = 'http://127.0.0.1:8000/'
 // const API_URL = 'http://vud-api.eu-central-1.elasticbeanstalk.com/'
-const API_URL = 'https://server.vreaudoctor.ro/'
+const API_URL = 'https://vud-be.active.ro'
+
 export const API_URL_MEDIA = ''
 
 export const API_MAP = {
