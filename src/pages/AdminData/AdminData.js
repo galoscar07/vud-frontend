@@ -4,7 +4,7 @@ import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/rout
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
 import _, { update } from "lodash";
-
+import CountyDropdown from "../../components/CountyDropddown/CountyDropdown"
 const AdminData = (props) => {
     const navigate = useNavigate();
 
@@ -169,6 +169,10 @@ const AdminData = (props) => {
         setValues({ ...values, fileList: updatedList, files: updatedListFi })
     }
 
+    const getCities=(val)=>{
+        console.log(val, 'valoare')
+    }
+
     return (
         <div className="admin-data-page">
             <div className="data-container">
@@ -261,6 +265,8 @@ const AdminData = (props) => {
                                 </div>
                                 <div className="input-wrapper">
                                     <label>*Judet</label>
+                                
+                                    <CountyDropdown sendData={getCities}/>
                                     <select id="county" name="county" className={errorStateDD.county ? 'error' : ''}
                                         onChange={(e) => handleFieldChange(e.target.value, e.target.name)}>
                                         <option value="init">-</option>
