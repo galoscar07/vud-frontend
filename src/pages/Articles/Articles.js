@@ -78,6 +78,7 @@ const ArticlesPage = () => {
             getAPILink(API_MAP.GET_ARTICLES + '/' + elems.map(item => "?tags=" + item.label).join("&")), {
             method: 'GET',
             headers: {
+                'Access-Control-Allow-Origin':'*',
                 'Content-type': 'application/json; charset=UTF-8',
             }
         }
