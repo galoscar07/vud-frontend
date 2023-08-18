@@ -5,6 +5,8 @@ import { getAuthTokenFromLocal } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
 import _, { update } from "lodash";
 import CountyDropdown from "../../components/CountyDropddown/CountyDropdown"
+import {JUD_ORA} from "../../utils/judete";
+
 const AdminData = (props) => {
     const navigate = useNavigate();
 
@@ -40,6 +42,8 @@ const AdminData = (props) => {
         error: '',
         uploadWarning: ''
     });
+
+    const [cities, setCities] = React.useState([])
 
     const [errorStateDD, setErrorStateDD] = useState({
         town: false,
@@ -169,9 +173,18 @@ const AdminData = (props) => {
         setValues({ ...values, fileList: updatedList, files: updatedListFi })
     }
 
-    const getCities=(val)=>{
-        console.log(val, 'valoare')
+    const getCitiesForCounty = (val)=>{
+        handleFieldChange(val, 'county')
+        debugger
+        const found = JUD_ORA.judete.filter((sd) => sd.auto === val)
+        if (found.length > 0) {
+            const mapped = found[0].localitati.map((loc) => {return {value: loc.nume, label: loc.nume}})
+            setCities(mapped)
+        }
+        console.log(JUD_ORA.judete[0].nume)
     }
+
+    console.log(cities, 'citiy')
 
     return (
         <div className="admin-data-page">
@@ -253,27 +266,15 @@ const AdminData = (props) => {
                             </div>
                             <div className="col-3">
                                 <div className="input-wrapper">
+                                    <label>*Judet</label>
+                                    <CountyDropdown getCitiesForCounty={getCitiesForCounty}/>
+                                </div>
+                                <div className="input-wrapper">
                                     <label>*Oras</label>
                                     <select id="town" name="town" className={errorStateDD.town ? 'error' : ''}
                                         onChange={(e) => handleFieldChange(e.target.value, e.target.name)}>
                                         <option value="init">-</option>
-                                        <option value="Bucuresti">Bucuresti</option>
-                                        <option value="Alba-Iulia">Alba-Iulia</option>
-                                        <option value="Cluj-Napoca">Cluj-Napoca</option>
-                                        <option value="Sibiu">Sibiu</option>
-                                    </select>
-                                </div>
-                                <div className="input-wrapper">
-                                    <label>*Judet</label>
-                                
-                                    <CountyDropdown sendData={getCities}/>
-                                    <select id="county" name="county" className={errorStateDD.county ? 'error' : ''}
-                                        onChange={(e) => handleFieldChange(e.target.value, e.target.name)}>
-                                        <option value="init">-</option>
-                                        <option value="Bucuresti">Bucuresti</option>
-                                        <option value="Alba">Alba</option>
-                                        <option value="Cluj">Cluj</option>
-                                        <option value="Sibiu">Sibiu</option>
+                                        {cities && cities.map((s, i) => {return <option key={i} value={s.value}>{s.label}</option>})}
                                     </select>
                                 </div>
                             </div>

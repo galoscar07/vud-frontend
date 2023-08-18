@@ -9,8 +9,7 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import MapWrapper from "../../components/Map/Map";
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
 import _ from "lodash";
-import { NavLink, useNavigate } from "react-router-dom";
-import { MapTouchEvent } from 'mapbox-gl';
+import { useNavigate } from "react-router-dom";
 import ClinicCard from '../../components/ClinicCard/ClinicCard';
 
 const dayMapping = {
@@ -214,7 +213,7 @@ function ClinicPage({ props }) {
                 { type: "Whatsapp", value: serverClinic.whatsapp || null },
             ],
             contact: [
-                { type: JSON.parse(serverClinic.primary_phone).label || 'Telefon', value: JSON.parse(serverClinic.primary_phone).value, icon: "phone" },
+                { type: JSON.parse(serverClinic.primary_phone || "{}")?.label || 'Telefon', value: JSON.parse(serverClinic.primary_phone || "{}")?.value, icon: "phone" },
                 serverClinic.secondary_phone && JSON.parse(serverClinic.secondary_phone).map((el) => { return { type: el[0], value: el[1], icon: "phone" } }),
                 serverClinic.secondary_email && { ...serverClinic?.secondary_email?.split('|').map((sc) => { return { type: "email", value: sc, icon: "email" } }) },
                 { type: "email", value: serverClinic?.primary_email, icon: "email" },
@@ -431,6 +430,7 @@ function ClinicPage({ props }) {
                             </div>
                         </div>
                     )
+                default:
                     return (
                         <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`}
                             key={i}>

@@ -1,30 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-const CountyDropdown = ({sendData}) =>{
-    const [cities, setCities] = useState([{"nume":"Abrud"},{"nume":"Aiud"},{"nume":"Alba Iulia"},{"nume":"Albac"},{"nume":"Almaşu Mare","simplu":"Almasu Mare"}])
+const CountyDropdown = ({getCitiesForCounty}) =>{
 
-    const passCities =() =>{
-        sendData(cities)
-    }
     const getCities=(val)=>{
-        console.log(val, 'child')
-        fetch('https://cors-anywhere.herokuapp.com/https://roloca.coldfuse.io/orase/'+val, {
-              method: 'GET',
-              mode: 'cors',
-
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            }})
-            .then((resp) => resp.json())
-            .then((response) => {
-               console.log(response)
-    
-            })
-            .catch((err) => { })
-        
-        passCities();
+        getCitiesForCounty(val)
     }
-     return(
+
+        return(
 <select name="judet" id="judet"  onChange={(e) => getCities(e.target.value)}>
          <option value="AB">Alba</option>
          <option value="AG">Arges</option>

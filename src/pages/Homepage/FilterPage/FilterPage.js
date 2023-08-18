@@ -8,6 +8,11 @@ import MapWrapper from "../../../components/Map/Map";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import DoctorCard from "../../../components/DoctorCard/DoctorCard";
 
+const initialPagination = {
+  perPage: 4,
+  currentPage: 1,
+  maxPage: null,
+}
 const label_ads = [
   'searchpage_1', 'searchpage_2'
 ]
@@ -64,11 +69,7 @@ const FilterPage = (props) => {
     doctor_competences: new URLSearchParams(window.location.search).get('doctor_competences') || '',
     doctor_clinics: new URLSearchParams(window.location.search).get('doctor_clinics') || '',
   })
-  const [pagination, setPagination] = React.useState({
-    perPage: 4,
-    currentPage: 1,
-    maxPage: null,
-  })
+  const [pagination, setPagination] = React.useState(initialPagination)
 
   // Input
   const handleInput = (ev) => {
@@ -258,7 +259,7 @@ const FilterPage = (props) => {
           return mut.label
         }).join(", "),
         contact: [
-          {type: 'phoneNo', value: JSON.parse(clinic.primary_phone).value},
+          {type: 'phoneNo', value: JSON.parse(clinic.primary_phone || "{}")?.value},
           {
             type: "location",
             value: `${clinic?.clinic_street} ${clinic?.clinic_number ? clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}`,
@@ -351,12 +352,8 @@ const FilterPage = (props) => {
   }
 
   useEffect(() => {
-    getData()
-  }, [])
-
-  useEffect(() => {
     handleSubmit()
-  }, [pagination])
+  }, [])
 
 
   const renderClinic = () => {
@@ -378,19 +375,54 @@ const FilterPage = (props) => {
         </div>
         <div className={'pagination'}>
           {pagination.maxPage !== 1 && (pagination.currentPage !== 1 || clinics.length === 4) &&
-            Array(pagination.maxPage).fill(1).map((e, index) => {
-              return <span key={index}
-                           onClick={() => {
-                             setPagination((prev) => ({...prev, currentPage: index + 1}))
-                           }}
-                           className={pagination.currentPage === index + 1 ? 'active' : ''}>{index + 1}
-                                              </span>
-            })
+              getArrayPageNumbers()
           }
         </div>
       </React.Fragment>
     }
   }
+
+  function getArrayPageNumbers() {
+
+    let currentPage = pagination.currentPage
+    let visiblePageCount = 8
+    let maxPage = pagination.maxPage
+
+    const halfVisibleCount = Math.floor(visiblePageCount / 2);
+    let startPage = Math.max(currentPage - halfVisibleCount, 1);
+    let endPage = Math.min(startPage + visiblePageCount - 1, maxPage);
+
+    if (endPage - startPage + 1 < visiblePageCount) {
+      startPage = Math.max(endPage - visiblePageCount + 1, 1);
+    }
+
+    const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+
+    return (
+        <React.Fragment>
+          <span onClick={() => {
+            debugger
+            setPagination((prev) => ({...prev, currentPage: pagination.currentPage - 1}))
+            getData()
+          }}>Prev</span>
+          {pageNumbers.map((page) => {
+            return <span key={page}
+                  onClick={() => {
+                    setPagination((prev) => ({...prev, currentPage: page}))
+                    getData()
+                  }}
+                  className={pagination.currentPage === page? 'active' : ''}>
+              {page}
+            </span>
+          })}
+          <span onClick={() => {
+            setPagination((prev) => ({...prev, currentPage: pagination.currentPage + 1}))
+            getData()
+          }}>Next</span>
+      </React.Fragment>
+    );
+  }
+
 
   const renderDoctor = () => {
     if (doctors.length === 0) {
@@ -411,14 +443,7 @@ const FilterPage = (props) => {
         </div>
         <div className={'pagination'}>
           {pagination.maxPage !== 1 && (pagination.currentPage !== 1 || doctors.length === 4) &&
-            Array(pagination.maxPage).fill(1).map((e, index) => {
-              return <span key={index}
-                           onClick={() => {
-                             setPagination((prev) => ({...prev, currentPage: index + 1}))
-                           }}
-                           className={pagination.currentPage === index + 1 ? 'active' : ''}>{index + 1}
-                                              </span>
-            })
+              getArrayPageNumbers()
           }
         </div>
       </React.Fragment>
