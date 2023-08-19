@@ -7,6 +7,7 @@ import {useLocation, useNavigate, useSearchParams} from "react-router-dom"
 import MapWrapper from "../../../components/Map/Map";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import DoctorCard from "../../../components/DoctorCard/DoctorCard";
+import {JUD_ORA} from "../../../utils/judete";
 
 const initialPagination = {
   perPage: 4,
@@ -31,6 +32,18 @@ const default_adds = {
     photo: "/images/ads/add8.svg",
     size: '437x437',
   },
+}
+
+function getAllCities() {
+  const citiesList = [];
+
+  for (const entry of JUD_ORA.judete) {
+    const cities = entry.localitati;
+    for (const city of cities) {
+      citiesList.push({ value: city.nume, label: city.nume });
+    }
+  }
+  return citiesList;
 }
 
 const FilterPage = (props) => {
@@ -85,7 +98,9 @@ const FilterPage = (props) => {
   const [doctorCompetences, setDoctorCompetences] = useState([])
   const [doctorClinics, setDoctorClinics] = useState([])
   useEffect(() => {
-    // clinicTowns
+    setClinicTowns(getAllCities());
+  
+    console.log(clinicTowns, 'clinic towns', getAllCities())
     fetch(getAPILink(API_MAP.GET_CLINIC_SPECIALITIES), {
       method: 'GET',
       headers: {
