@@ -166,7 +166,8 @@ const ArticlesPage = () => {
                         <div className="search-container">
                             <Dropdown
                                 onSelect={onSelect}
-                                options={tags} />
+                                options={tags}
+                                isMulti />
                         </div>
                         <div className="articles-container">
                             {articles.length && articles?.map((article, i) => {

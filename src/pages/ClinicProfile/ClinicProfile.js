@@ -8,6 +8,7 @@ import { getAuthTokenFromLocal } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
 import MapWrapper from "../../components/Map/Map";
 import InviteCard from "../DoctorData/InviteCard/InviteCard";
+import { JUD_ORA } from "../../utils/judete";
 
 const days = {
   'Luni': [],
@@ -162,7 +163,9 @@ const ClinicProfile = (props) => {
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
   };
 
-
+  const handleDDChange = (value, title) => {
+    setState((prevState) => ({ ...prevState, [title]: value }));
+  };
 
   // Profile photo user
   const profileImgRef = useRef()
@@ -628,17 +631,15 @@ const ClinicProfile = (props) => {
       clinic: selectedInvitedUnits.map((d) => { return d.id }).join("|"),
 
       // 5th
-      clinic_specialities: state.clinic_specialities.map(el => { return el.value }),
+      clinic_specialities: state.clinic_specialities.length< 1 ? state.clinic_specialities.value : state.clinic_specialities.map(el => { return el.value }),
       // 6th
-      clinic_facilities: state.clinic_facilities.map(el => { return el.value }),
+      clinic_facilities: state.clinic_facilities.length< 1 ? state.clinic_facilities.value : state.clinic_facilities.map(el => { return el.value }),
       // 7th
       clinic_schedule: JSON.stringify(schedule),
     }
   }
 
   const handleSubmit = (event) => {
-    console.log('STATE:', state)
-    console.log('MAP:', mapStateToObject())
     event.preventDefault();
     if (!isFormValid()) return
     if (props.onSubmit) {
@@ -671,7 +672,6 @@ const ClinicProfile = (props) => {
       formData.append('clinic_schedule', mapped.clinic_schedule)
       formData.append('clinic', mapped.clinic)
       formData.append('doctor', mapped.doctor)
-
       makeRequestLogged(
         getAPILink(API_MAP.PUT_UPDATE_CLINIC_PROFILE),
         'PUT',
@@ -730,6 +730,24 @@ const ClinicProfile = (props) => {
       .catch((err) => { })
   }, [])
 
+
+  const [cities, setCities] = React.useState([])
+  const judete = JUD_ORA.judete.map((el) => { return { value: el.auto, label: el.nume } })
+
+  const getCitiesForCounty = (val) => {
+    handleDDChange(val, 'county')
+    const found = JUD_ORA.judete.filter((sd) => sd.auto === val.value)
+    if (found.length > 0) {
+      const mapped = found[0].localitati.map((loc) => { return { value: loc.nume, label: loc.nume } })
+      setCities(mapped)
+    }
+    handleDDChange(val.label, 'clinic_county');
+  }
+
+  const setCity = (val) => {
+    handleDDChange(val.value, 'clinic_town');
+  }
+
   // Renders
   const renderContactData = () => {
     return (
@@ -764,24 +782,10 @@ const ClinicProfile = (props) => {
           </div>
           <div className="col-3">
             <div className="input-wrapper">
-              <label>*Oras</label>
-              <select id="clinic_town" className={errorStateDD.clinic_town ? 'error' : ''} name="clinic_town" onChange={handleFieldChange}>
-                <option value="init">-</option>
-                <option value="Alba-Iulia">Alba-Iulia</option>
-                <option value="Cluj-Napoca">Cluj-Napoca</option>
-                <option value="Bucuresti">Bucuresti</option>
-                <option value="Sibiu">Sibiu</option>
-              </select>
+              <Dropdown hasError={errorStateDD.clinic_county} noNumber title={"Judet*"} onSelect={getCitiesForCounty} options={judete} isMulti={false} />
             </div>
             <div className="input-wrapper">
-              <label>*Judet</label>
-              <select id="clinic_county" className={errorStateDD.clinic_county ? 'error' : ''} name="clinic_county" onChange={handleFieldChange}>
-                <option value="init">-</option>
-                <option value="Alba">Alba</option>
-                <option value="Cluj">Cluj</option>
-                <option value="Bucuresti">Bucuresti</option>
-                <option value="Sibiu">Sibiu</option>
-              </select>
+            <Dropdown hasError={errorStateDD.clinic_town} noNumber title={"Oras*"} onSelect={setCity} options={cities} isMulti={false} />
             </div>
           </div>
           <div className="col">
@@ -1013,7 +1017,7 @@ const ClinicProfile = (props) => {
     return (
       <div className="specialities-container">
         <Dropdown hasError={errorStateDD.clinic_specialities} selected={state.clinic_specialities} options={clinicSpecialities}
-          title="Specialitati unitate*" onSelect={(values) => { onSelectDropdown('clinic_specialities', values) }} />
+          isMulti title="Specialitati unitate*" onSelect={(values) => { onSelectDropdown('clinic_specialities', values) }} />
       </div>
     )
   }
@@ -1021,7 +1025,7 @@ const ClinicProfile = (props) => {
     return (
       <div className="facilities-container">
         <Dropdown hasError={errorStateDD.clinic_facilities} selected={state.clinic_facilities} options={medicalFacilities}
-          title="Facilitati unitate*" onSelect={(values) => { onSelectDropdown('clinic_facilities', values) }} />
+          isMulti title="Facilitati unitate*" onSelect={(values) => { onSelectDropdown('clinic_facilities', values) }} />
       </div>
     )
   }

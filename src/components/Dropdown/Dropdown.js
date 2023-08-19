@@ -15,13 +15,6 @@ const styles = {
     multiValueLabel: ({
         color: "white",
     }),
-    singleValue: ({
-        color: "red",
-        backgroundColor: "#F5F9F9",
-        padding: ".5rem 3rem .5rem .5rem",
-        cursor: "pointer",
-        textAlign: "start"
-    }),
 };
 
 
@@ -98,7 +91,7 @@ function Dropdown(props) {
                 noNumber={props?.noNumber}
                 options={options}
                 value={selected}
-                isMulti
+                isMulti={props?.isMulti}
                 onChange={handleSelectChange}
                 components={{ Option }}
                 allowSelectAll={true}

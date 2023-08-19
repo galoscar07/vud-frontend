@@ -477,10 +477,10 @@ const FilterPage = (props) => {
                         options={clinicTowns}/>
               <Dropdown title={"Specilitati Clinica"} selected={selectedValuesDropdown.clinicSpecialities}
                         onSelect={(values) => handleChangeDropdowns('clinicSpecialities', values)}
-                        options={clinicSpecialities}/>
+                        options={clinicSpecialities} isMulti/>
               <Dropdown title={"Facilitati Clinica"} selected={selectedValuesDropdown.clinicFacilities}
                         onSelect={(values) => handleChangeDropdowns('clinicFacilities', values)}
-                        options={clinicFacilities}/>
+                        options={clinicFacilities} isMulti/>
               <Dropdown title={"Tip unitate medicala"} selected={selectedValuesDropdown.clinicTypes}
                         onSelect={(values) => handleChangeDropdowns('clinicTypes', values)}
                         options={clinicTypes}/>
@@ -491,13 +491,13 @@ const FilterPage = (props) => {
             <React.Fragment>
               <Dropdown title={"Specialitate"} selected={selectedValuesDropdown.doctorSpecialities}
                         onSelect={(values) => handleChangeDropdowns('doctorSpecialities', values)}
-                        options={doctorSpecialities}/>
+                        options={doctorSpecialities} isMulti/>
               <Dropdown title={"Competente"} selected={selectedValuesDropdown.doctorCompetences}
                         onSelect={(values) => handleChangeDropdowns('doctorCompetences', values)}
-                        options={doctorCompetences}/>
+                        options={doctorCompetences} isMulti/>
               <Dropdown title={"Unitate Medicala"} selected={selectedValuesDropdown.doctorClinics}
                         onSelect={(values) => handleChangeDropdowns('doctorClinics', values)}
-                        options={doctorClinics} />
+                        options={doctorClinics} isMulti/>
             </React.Fragment>
           }
         </div>

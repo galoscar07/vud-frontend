@@ -17,11 +17,7 @@ const AddUnit = (props) => {
   const navigate = useNavigate();
 
   const onSelect = (elems) => {
-    if (elems.length < 2) {
       setState({ ...state, selected: elems })
-    } else {
-      setState({...state, selected: elems.filter((el) => el.value !== state.selected[0].value) })
-    }
   }
 
   useEffect(() => {
@@ -45,9 +41,9 @@ const AddUnit = (props) => {
     }
     else {
       if (state.selected.length === 0) {
-        setState({ ...state, error: "Trebuie selectata minim o optiune" })
+        setState({ ...state, error: "Trebuie selectata o optiune" })
       } else {
-        const listOfIds = state.selected.map((el) => { return el.value })
+        const listOfIds = [state.selected.value]
         makeRequestLogged(
           getAPILink(API_MAP.PUT_MEDICAL_TYPES),
           'PUT',
@@ -76,7 +72,7 @@ const AddUnit = (props) => {
         <form>
           <img alt={'imagine unitate medicala'} src="/images/unit.svg" />
           <h1>Adaugă Unitate medicală</h1>
-          <Dropdown noNumber selected={props?.selected || state.selected} onSelect={onSelect} options={state.dropdownValues} title={"Cauta tip unitate"}></Dropdown>
+          <Dropdown noNumber selected={props?.selected || state.selected} onSelect={onSelect} options={state.dropdownValues} title={"Cauta tip unitate"} ></Dropdown>
           {
             state.error && <div className={'error'}>{state.error}</div>
           }

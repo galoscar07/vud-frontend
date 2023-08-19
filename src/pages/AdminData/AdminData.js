@@ -4,11 +4,12 @@ import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/rout
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
 import _, { update } from "lodash";
-import CountyDropdown from "../../components/CountyDropddown/CountyDropdown"
 import {JUD_ORA} from "../../utils/judete";
+import Dropdown from '../../components/Dropdown/Dropdown';
 
 const AdminData = (props) => {
     const navigate = useNavigate();
+    const judete = JUD_ORA.judete.map((el)=> {return {value: el.auto, label: el.nume}})
 
     const [formValid, setFormValid] = React.useState(false)
 
@@ -78,7 +79,6 @@ const AdminData = (props) => {
             ok = false
             errorCopyDD.town = true;
         } else errorCopyDD.town = false;
-
         if (values.county.length === 0) {
             ok = false
             errorCopyDD.county = true;
@@ -118,7 +118,6 @@ const AdminData = (props) => {
             }
             formData.append('file1', files[0])
             formData.append('file2', files[1])
-
             makeRequestLogged(
                 getAPILink(API_MAP.UPDATE_ADMIN_DATA),
                 'PUT',
@@ -175,16 +174,16 @@ const AdminData = (props) => {
 
     const getCitiesForCounty = (val)=>{
         handleFieldChange(val, 'county')
-        debugger
-        const found = JUD_ORA.judete.filter((sd) => sd.auto === val)
+        const found = JUD_ORA.judete.filter((sd) => sd.auto === val.value)
         if (found.length > 0) {
             const mapped = found[0].localitati.map((loc) => {return {value: loc.nume, label: loc.nume}})
             setCities(mapped)
         }
-        console.log(JUD_ORA.judete[0].nume)
+        handleFieldChange(val.label,'county');
     }
-
-    console.log(cities, 'citiy')
+    const setCity = (val) =>{
+        handleFieldChange(val.value, 'town');
+    }
 
     return (
         <div className="admin-data-page">
@@ -266,16 +265,10 @@ const AdminData = (props) => {
                             </div>
                             <div className="col-3">
                                 <div className="input-wrapper">
-                                    <label>*Judet</label>
-                                    <CountyDropdown getCitiesForCounty={getCitiesForCounty}/>
+                                    <Dropdown hasError={errorStateDD.county} noNumber title={"Judet*"} onSelect={getCitiesForCounty} options={judete} isMulti={false}/>
                                 </div>
                                 <div className="input-wrapper">
-                                    <label>*Oras</label>
-                                    <select id="town" name="town" className={errorStateDD.town ? 'error' : ''}
-                                        onChange={(e) => handleFieldChange(e.target.value, e.target.name)}>
-                                        <option value="init">-</option>
-                                        {cities && cities.map((s, i) => {return <option key={i} value={s.value}>{s.label}</option>})}
-                                    </select>
+                                    <Dropdown hasError={errorStateDD.town} noNumber title={"Oras*"} onSelect={setCity} options={cities} isMulti={false}/>
                                 </div>
                             </div>
                             <div className="col-2">

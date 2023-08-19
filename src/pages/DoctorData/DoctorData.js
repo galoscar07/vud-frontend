@@ -768,11 +768,11 @@ const DoctorData = (props) => {
                                 }} />
                             <div className="counter"> {values.description.length} / 500 </div>
                             <div className="col-2">
-                                <Dropdown hasError={ddError.medical_degree} selected={selectedDegrees} options={academicDegreesDropDown} title={"*Grad medical"} onSelect={(e) => handleDropdownSubmit(e, 'degree')} />
-                                <Dropdown hasError={ddError.speciality} selected={selectedSpecialties} options={specialities} title={"*Specialitate"} onSelect={(e) => handleDropdownSubmit(e, 'speciality')} />
+                                <Dropdown hasError={ddError.medical_degree} selected={selectedDegrees} options={academicDegreesDropDown} title={"*Grad medical"} onSelect={(e) => handleDropdownSubmit(e, 'degree')}  isMulti/>
+                                <Dropdown hasError={ddError.speciality} selected={selectedSpecialties} options={specialities} title={"*Specialitate"} onSelect={(e) => handleDropdownSubmit(e, 'speciality')} isMulti />
                             </div>
                             <div className="col">
-                                <Dropdown hasError={ddError.competences} selected={selectedCompetences} options={competences} title={"*Competente"} onSelect={(e) => handleDropdownSubmit(e, 'competences')} />
+                                <Dropdown hasError={ddError.competences} selected={selectedCompetences} options={competences} title={"*Competente"} onSelect={(e) => handleDropdownSubmit(e, 'competences')} isMulti />
                             </div>
                         </div>
                     </div>

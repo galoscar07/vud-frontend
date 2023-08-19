@@ -666,11 +666,11 @@ function ClinicPage({ props }) {
                                 <img className="add mobile" src="/images/ads/add2.svg" />
                                 <div className="container-title">Cautare</div>
                                 <div className="col">
-                                    <Dropdown selected={selectedSpecialties} options={specialities} title={"Specialitati"} onSelect={handleSubmitSpecialties} />
+                                    <Dropdown selected={selectedSpecialties} options={specialities} title={"Specialitati"} onSelect={handleSubmitSpecialties} isMulti/>
                                 </div>
                                 <div className="col-2">
-                                    <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"Grade medicale"} onSelect={handleSubmitDegrees} />
-                                    <Dropdown selected={selectedCompetences} options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} />
+                                    <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"Grade medicale"} onSelect={handleSubmitDegrees} isMulti/>
+                                    <Dropdown selected={selectedCompetences} options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} isMulti/>
                                 </div>
                                 {clinic.collab_clinics.length > 0 &&
                                     <React.Fragment>
