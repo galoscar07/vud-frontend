@@ -501,14 +501,14 @@ function ClinicPage({ props }) {
                                 </div>
                                 {clinic?.reviews?.length > 0 && <div onClick={scrollingTop} className="see-reviews">Vezi toate recenziile</div>}
                             </div>
-                            <div className="facilities">
+                            {clinic?.facilities?.length > 0 && <div className="facilities">
                                 <span>Facilitati clinica</span>
                                 <div>
                                     {clinic?.facilities?.map((facility, i) =>
                                         <img key={i} title={facility.label} src={facility.icon} />
                                     )}
                                 </div>
-                            </div>
+                            </div>}
                         </div>
                     </div>
                 </div>
@@ -601,8 +601,8 @@ function ClinicPage({ props }) {
                         <div className="facilities additional mobile">
                             <div>
                                 {clinic?.facilities?.map((facility, i) =>
-                                    <div className="facilities-wrapper">
-                                        <img key={i} title={facility.label} src={facility.icon} />
+                                    <div className="facilities-wrapper" key={i}>
+                                        <img title={facility.label} src={facility.icon} />
                                         <span>{facility.label}</span>
                                     </div>
                                 )}
@@ -676,8 +676,8 @@ function ClinicPage({ props }) {
                                     <React.Fragment>
                                         <div className="result-title">Clinici colaboratoare:</div>
                                         <div style={{ marginBottom: '20px' }} className="col">
-                                            {clinic.collab_clinics.map((clinic) => {
-                                                return <ClinicCard clinic={clinic} />
+                                            {clinic.collab_clinics.map((clinic,i) => {
+                                                return <ClinicCard key={i} clinic={clinic} />
                                             }
                                             )}
                                         </div>
