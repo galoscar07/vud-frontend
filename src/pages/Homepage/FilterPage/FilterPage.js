@@ -98,8 +98,8 @@ const FilterPage = (props) => {
   const [doctorCompetences, setDoctorCompetences] = useState([])
   const [doctorClinics, setDoctorClinics] = useState([])
   useEffect(() => {
-    setClinicTowns(getAllCities());
-  
+    // setClinicTowns(getAllCities());
+  setClinicTowns([])
     console.log(clinicTowns, 'clinic towns', getAllCities())
     fetch(getAPILink(API_MAP.GET_CLINIC_SPECIALITIES), {
       method: 'GET',

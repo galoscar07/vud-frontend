@@ -46,7 +46,7 @@ const RedeemClinicPage = () => {
             }
         })
         setError(errorCopy)
-        if (!ok) setValues({...values, error: "Va rugam sa completati campurile obligatorii"})
+        if (!ok) setValues({...values, error: "Va rugăm să completați câmpurile obligatorii"})
         return ok
     }
 
@@ -67,7 +67,7 @@ const RedeemClinicPage = () => {
             if (i < 3) {
                 files.push(input.files.item(i).name)
             } else {
-                setValues({ ...values, uploadWarning: "Va rugam adaugati maxim 2 fisiere." })
+                setValues({ ...values, uploadWarning: "Va rugăm adăugați maxim 2 fișiere" })
             }
         }
         setValues({ ...values, fileList: files })
@@ -107,30 +107,30 @@ const RedeemClinicPage = () => {
               if (resp.success) {
                   navigate(routes.THANK_YOU)
               } else {
-                  setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+                  setValues({ ...values, error: "A apărut o eraore. Va rugăm încercați din nou" })
               }
           })
           .catch((err) => {
               debugger
-              setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+              setValues({ ...values, error: "A apărut o eraore. Va rugăm încercați din nou" })
           })
     }
     return (
         <div className="how-to-redeem-page">
                 <img alt={'User icon'} src="/images/user.svg" />
-            <div className="container-title">Cum sa revendici contul paginii de profil a unitatii medicale pe vreauundoctor.ro:</div>
+            <div className="container-title">Cum să revendici contul paginii de profil a unității medicale pe vreauundoctor.ro:</div>
             <div className="info-container">
-                <div className="steps">
+            <div className="steps">
                     <ol>
-                        <li>Acceseaza pagina de profil a unitatii medicale si apasa pe butonul "Revendica profilul".</li>
-                        <li>Completeaza formularul de mai jos cu datele de contact.</li>
-                        <li>Pentru a dovedi ca esti reprezentantul legal al unitatii medicale, va trebui sa furnizezi documente justificative.</li>
-                        <li>Dupa ce documentele justificative au fost verificate si aprobate, vei primi un email de confirmare ca revendicarea profilului a fost facuta cu succes si vei putea sa editezi si sa actualizezi informatiile de pe pagina de profil a unitatii medicale accesand link-ul din continutul email-ului.</li>
-                        <li> Daca revendicarea profilului nu a fost aprobata, vei primi un email informativ ca revendicarea nu a fost acceptata si care va contine si posibile motive pentru aceasta decizie.</li>
+                        <li>Accesează pagină de profil a unității medicale și apasă pe butonul "Revendică profilul".</li>
+                        <li>Completează formularul de mai jos cu datele de contact.</li>
+                        <li>Pentru a dovedi că eșți reprezentantul legal al unității medicale, va trebui să furnizezi documente justificative.</li>
+                        <li>După ce documentele justificative au fost verificate și aprobate, vei primi un email de confirmare că revendicarea profilului a fost făcută cu succes și vei putea să editezi și să actualizezi informațiile de pe pagină de profil a unității medicale accesând link-ul din conținutul email-ului.</li>
+                        <li> Dacă revendicarea profilului nu a fost aprobată, vei primi un email informativ că revendicarea nu a fost acceptată și care va conține și posibile motive pentru această decizie.</li>
                     </ol>
 
-                    <span className="bold">In concluzie, revendicarea contului paginii de profil a unitatii medicale pe vreauundoctor.ro este un proces simplu si rapid, care iti poate aduce multiple beneficii, cum ar fi cresterea vizibilitatii si a numarului de pacienti.
-                        Asadar, nu ezita sa urmezi acesti pasi pentru a-ti revendica contul si pentru a-ti promova cu succes unitatea medicala!</span>
+                    <span className="bold">În concluzie, revendicarea contului paginii de profil a unității medicale pe vreauundoctor.ro este un proces simplu și rapid, care îți poate aduce multiple beneficii, cum ar fi creșterea vizibilității și a numărului de pacienți.
+                        Așadar, nu ezită să urmezi aceșți pași pentru a-ți revendică contul și pentru a-ti promova cu succes unitatea medicală!</span>
                 </div>
             </div>
             <form>
@@ -173,7 +173,7 @@ const RedeemClinicPage = () => {
                             </div>
                         </div>
                         <div className="input-wrapper">
-                            <label>*Functie</label>
+                            <label>*Funcție</label>
                             <input name="job" type="text" value={values.job}
                                    className={error.job ? 'error' : ''}
                                 onChange={(e) => {
@@ -181,7 +181,7 @@ const RedeemClinicPage = () => {
                                 }} />
                         </div>
                         <div className="input-wrapper">
-                            <label>Mesaj (optional)</label>
+                            <label>Mesaj (opțional)</label>
                             <input name="message" type="text" value={values.message}
                                 onChange={(e) => {
                                     handleFieldChange(e.target.value, e.target.name);
@@ -190,12 +190,12 @@ const RedeemClinicPage = () => {
                     </div>
                 </div>
                 <p className="italic">
-                    Pentru a ne asigura ca actionati in numele entitatii a carei pagina o completati/recuperati,
-                    va rugam sa parcurgeti pasii de identificare si confirmare:Incarcati o copie a CUI Incarcati
-                    un document care sa ateste ca actionati in numele societatii al carui CUI l-ati incarcat
-                    (certificat constatator din care sa reiasa ca sunteti administrator sau un document de
-                    imputernicire din partea administratorului societatii – puteti folosi
-                    <a href={routes.EXAMPLE_COMPLETE} target={"_blank"} rel="noreferrer">urmatorul model</a>
+                    Pentru a ne asigura că acționați în numele entității a cărei pagină o completați/recuperați,
+                    va rugăm să parcurgeți pașii de identificare și confirmare:Încărcați o copie a CUI Încărcați
+                    un document care să ateste că acționați în numele societății al cărui CUI l-ați încărcat
+                    (certificat constatator din care să reiasă că sunteți administrator sau un document de
+                    împuternicire din partea administratorului societății – puteți folosi
+                    <a href={routes.EXAMPLE_COMPLETE} target={"_blank"} rel="noreferrer">următorul model</a>
                 </p>
                 <div className="image-upload">
                     <label htmlFor="file">
@@ -215,8 +215,8 @@ const RedeemClinicPage = () => {
                                 </div>
                             )}
                         </div>) : (<div className={`selected-file  ${error.fileList ? 'error' : ''}`}>
-                            No selected file
-                        </div>)}
+                        Niciun fișier selectat                
+                                </div>)}
                         {
                             values.uploadWarning && <div className={'error'}>{values.uploadWarning}</div>
                         }
@@ -227,7 +227,7 @@ const RedeemClinicPage = () => {
                         <input className="checkbox" type="checkbox" value={values.areTermsChecked}
                             onChange={(e) => handleFieldChange(e.target.value, e.target.name)} />
                     </div>
-                    <label><a href={routes.TERMS_AND_CONDITION} rel="noreferrer" target={'_blank'}>Termeni si conditii</a></label>
+                    <label><a href={routes.TERMS_AND_CONDITION} rel="noreferrer" target={'_blank'}>Termeni și condiții</a></label>
                 </div>
                 {
                     values.error && <div style={{marginBottom: '15px'}} className={'error'}>{values.error}</div>

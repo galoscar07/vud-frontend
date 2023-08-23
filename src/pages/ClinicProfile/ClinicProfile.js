@@ -12,12 +12,12 @@ import { JUD_ORA } from "../../utils/judete";
 
 const days = {
   'Luni': [],
-  'Marti': [],
+  'Marți': [],
   'Miercuri': [],
   'Joi': [],
   'Vineri': [],
-  'Sambata': [],
-  'Duminica': []
+  'Sâmbătă': [],
+  'Duminică': []
 }
 
 const initialPaginated = {
@@ -152,7 +152,7 @@ const ClinicProfile = (props) => {
     setErrorState(errorCopy)
     setErrorStateDD(errorCopyDD)
     if (!ok) {
-      setState({ ...state, error: "Va rugam sa completati campurile obligatorii" })
+      setState({ ...state, error: "Va rugăm să completați câmpurile obligatorii" })
     }
     return ok
   }
@@ -183,13 +183,13 @@ const ClinicProfile = (props) => {
   const addAnotherInput = (name) => {
     if (name === 'phone') {
       if (multiplePhones.length === 5) {
-        setErrorState({ ...errorState, multiple_phones: 'Nu poti adauga mai mult de 6 numere' })
+        setErrorState({ ...errorState, multiple_phones: 'Nu puteți adauga mai mult de 6 numere' })
       } else {
         setMultiplePhones([...multiplePhones, ''])
       }
     } else if (name === 'email') {
       if (multipleEmails.length === 5) {
-        setErrorState({ ...errorState, multiple_emails: 'Nu poti adauga mai mult de 6 numere' })
+        setErrorState({ ...errorState, multiple_emails: 'Nu puteți adauga mai mult de 6 emailuri' })
       } else {
         setMultipleEmails([...multipleEmails, ''])
       }
@@ -450,7 +450,7 @@ const ClinicProfile = (props) => {
           setInviteError({
             name: false,
             email: false,
-            error: 'A aparut o eroare',
+            error: 'A apărut o eroare',
           })
         }
       })
@@ -458,7 +458,7 @@ const ClinicProfile = (props) => {
         setInviteError({
           name: false,
           email: false,
-          error: 'A aparut o eroare',
+          error: 'A apărut o eroare',
         })
       })
   }
@@ -520,7 +520,7 @@ const ClinicProfile = (props) => {
           setInviteError({
             name: false,
             email: false,
-            error: 'A aparut o eroare',
+            error: 'A apărut o eroare',
           })
         }
       })
@@ -528,7 +528,7 @@ const ClinicProfile = (props) => {
         setInviteError({
           name: false,
           email: false,
-          error: 'A aparut o eroare',
+          error: 'A apărut o eroare',
         })
       })
   }
@@ -561,7 +561,7 @@ const ClinicProfile = (props) => {
         </div>
         <div className="col-1">
           <div className="input-wrapper">
-            <label>*Adresa email</label>
+            <label>*Adresă email</label>
             <input className={errorInvite.email ? 'error' : ''} name="email" type="text" value={inviteValues.email}
               onChange={(e) => {
                 handleFieldChangeInvite(e.target.value, e.target.name);
@@ -569,7 +569,7 @@ const ClinicProfile = (props) => {
           </div>
         </div>
         <div className="textarea-column">
-          <label>Personalizeaza mesaj</label>
+          <label>Personalizează mesaj</label>
           <textarea rows="15" className="full-width" name="message" value={inviteValues.message}
             onChange={(e) => {
               handleFieldChangeInvite(e.target.value, e.target.name);
@@ -775,7 +775,7 @@ const ClinicProfile = (props) => {
                 value={state.clinic_street} onChange={handleFieldChange} placeholder={'Numele strazii'} />
             </div>
             <div className="input-wrapper">
-              <label>*Numarul strazii</label>
+              <label>*Numărul strazii</label>
               <input className={errorState.clinic_number ? 'error' : ''} name="clinic_number" type="text"
                 value={state.clinic_number} onChange={handleFieldChange} placeholder={'Numarul'} />
             </div>
@@ -807,11 +807,11 @@ const ClinicProfile = (props) => {
             <label>*Denumire telefon</label>
             <select name="primary_phone_label" id="searching" onChange={handleFieldChange} required>
               <option value="phone">Telefon</option>
-              <option value="emergency">Urgente</option>
-              <option value="ambulance">Ambulanta</option>
+              <option value="emergency">Urgențe</option>
+              <option value="ambulance">Ambulanță</option>
               <option value="contact">Contact</option>
               <option value="call-center">Call center</option>
-              <option value="reception">Receptie</option>
+              <option value="reception">Recepție</option>
               <option value="fax">Fax</option>
             </select>
             <label>*Telefon</label>
@@ -824,11 +824,11 @@ const ClinicProfile = (props) => {
                     <label>*Denumire telefon</label>
                     <select name={index.toString()} id="searching" onChange={(e) => handlePhoneEmailChange(e.target.value, index, multiplePhoneLabels, setMultiplePhoneLabels)}>
                       <option value="phone">Telefon</option>
-                      <option value="emergency">Urgente</option>
-                      <option value="ambulance">Ambulanta</option>
+                      <option value="emergency">Urgențe</option>
+                      <option value="ambulance">Ambulanță</option>
                       <option value="contact">Contact</option>
                       <option value="call-center">Call center</option>
-                      <option value="reception">Receptie</option>
+                      <option value="reception">Recepție</option>
                       <option value="fax">Fax</option>
                     </select>
                     <label>*Telefon</label>
@@ -844,7 +844,7 @@ const ClinicProfile = (props) => {
             }
             <div className="add-another" onClick={() => addAnotherInput('phone')}>
               <img alt={'adauga inca un numar'} src="/images/add.svg" />
-              <span>Adauga inca un numar</span>
+              <span>Adaugă încă un număr</span>
             </div>
           </div>
           <div className="field-container">
@@ -867,14 +867,14 @@ const ClinicProfile = (props) => {
             }
             <div className="add-another" onClick={() => addAnotherInput('email')}>
               <img alt={'adauga inca un email'} src="/images/add.svg" />
-              <span>Adauga inca un email</span>
+              <span>Adaugă încă un email</span>
             </div>
           </div>
         </div>
         <div className="fields-wrapper">
           <div className="col-85">
             <div className="input-wrapper">
-              <label>*Adresa website</label>
+              <label>*Adresă website</label>
               <input className={errorState.website ? 'error' : ''} name="website" type="text" value={state.website}
                 onChange={handleFieldChange} placeholder={'ex. www.sofarfarm.ro'} />
             </div>
@@ -1060,7 +1060,7 @@ const ClinicProfile = (props) => {
                 />
               </div>
               <div className="end-time">
-                <span>Pana la ora: </span>
+                <span>Până la ora: </span>
                 <input type="time" name="endTime" value={interval.endTime} min="00:00" max="23:59" required
                   onChange={(e) => { setInterval({ ...interval, endTime: e.target.value }) }}
                 />
@@ -1072,7 +1072,7 @@ const ClinicProfile = (props) => {
                 setInterval({ startTime: '00:00', endTime: '23:59' })
               }}
             >
-              Adauga
+              Adaugă
             </div>
           </div>
         </div>
@@ -1100,7 +1100,7 @@ const ClinicProfile = (props) => {
                 {
                   state.error && <div style={{ marginBottom: '15px' }} className={'error'}>{state.error}</div>
                 }
-                <button className="button round " onClick={handleSubmit} >Salveaza</button>
+                <button className="button round " onClick={handleSubmit} >Salvează</button>
               </form>
             )
         }

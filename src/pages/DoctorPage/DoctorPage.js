@@ -424,7 +424,7 @@ function DoctorPage({ props }) {
                         </div>
                         <div className="reviews-wrapper">
                             <div className="reviews-container " ref={targetElement}>
-                                {doctor?.reviews?.length > 0 && <div className="container-title">Ce spun pacientii</div>}
+                                {doctor?.reviews?.length > 0 && <div className="container-title">Ce spun pacienții</div>}
                                 {doctor?.reviews?.map((review, i) =>
                                     <Review key={i} review={review} />)}
                             </div>
@@ -434,7 +434,7 @@ function DoctorPage({ props }) {
                                     <button onClick={() => setIsReviewFormDisplayed(true)} className={`button border-button round`}>Adauga recenzie</button>
                                     :
                                     <React.Fragment>
-                                        <div className="container-title">Adauga o recenzie</div>
+                                        <div className="container-title">Adaugă o recenzie</div>
                                         <form onSubmit={handleAddReview} autoComplete="off" className="add-review-form">
                                             <label>Nume</label>
                                             <input className="full-width" type="text" name="name" value={review.name.value}
@@ -456,10 +456,10 @@ function DoctorPage({ props }) {
                                                 </div>
                                             </div>
 
-                                            <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Adauga recenzie</button>
+                                            <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Adaugă o recenzie</button>
                                             {
                                                 review.server.error &&
-                                                <div className={'error'}>Ceva a mers rau! Va rugam incercati mai tarziu.</div>
+                                                <div className={'error'}>Ceva a mers rău! Va rugăm încercați mai târziu</div>
                                             }
                                         </form>
                                     </React.Fragment>

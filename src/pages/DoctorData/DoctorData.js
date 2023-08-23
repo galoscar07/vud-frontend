@@ -6,7 +6,6 @@ import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/rout
 import "./DoctorData.scss";
 import InviteCard from "./InviteCard/InviteCard";
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
-import { value } from "lodash/seq";
 
 const initialPaginated = {
     count: 0,
@@ -304,7 +303,7 @@ const DoctorData = (props) => {
                     setInviteError({
                         name: false,
                         email: false,
-                        error: 'A aparut o eroare',
+                        error: 'A apărut o eroare',
                     })
                 }
             })
@@ -312,7 +311,7 @@ const DoctorData = (props) => {
                 setInviteError({
                     name: false,
                     email: false,
-                    error: 'A aparut o eroare',
+                    error: 'A apărut o eroare',
                 })
             })
     }
@@ -374,7 +373,7 @@ const DoctorData = (props) => {
                     setInviteError({
                         name: false,
                         email: false,
-                        error: 'A aparut o eroare',
+                        error: 'A apărut o eroare',
                     })
                 }
             })
@@ -382,7 +381,7 @@ const DoctorData = (props) => {
                 setInviteError({
                     name: false,
                     email: false,
-                    error: 'A aparut o eroare',
+                    error: 'A apărut o eroare',
                 })
             })
     }
@@ -415,7 +414,7 @@ const DoctorData = (props) => {
                 </div>
                 <div className="col-1">
                     <div className="input-wrapper">
-                        <label>*Adresa email</label>
+                        <label>*Adresă email</label>
                         <input className={errorInvite.email ? 'error' : ''} name="email" type="text" value={inviteValues.email}
                             onChange={(e) => {
                                 handleFieldChangeInvite(e.target.value, e.target.name);
@@ -423,7 +422,7 @@ const DoctorData = (props) => {
                     </div>
                 </div>
                 <div className="textarea-column">
-                    <label>Personalizeaza mesaj</label>
+                    <label>Personalizează mesaj</label>
                     <textarea rows="15" className="full-width" name="message" value={inviteValues.message}
                         onChange={(e) => {
                             handleFieldChangeInvite(e.target.value, e.target.name);
@@ -541,9 +540,9 @@ const DoctorData = (props) => {
         setError(errorCopy)
         setDdError(errorCopyDD)
 
-        if (!ok) setValues({ ...values, error: "Va rugam sa completati campurile obligatorii" })
+        if (!ok) setValues({ ...values, error: "Va rugăm să completați câmpurile obligatorii" })
         if (error.areTermsChecked) {
-            setValues({ ...values, error: "Va rugam sa acceptati termenii si conditiile" })
+            setValues({ ...values, error: "Va rugăm să acceptați termenii și condițiile" })
         }
         return ok
     }
@@ -558,7 +557,7 @@ const DoctorData = (props) => {
             if (i < 3) {
                 files.push(input.files.item(i).name)
             } else {
-                setValues({ ...values, uploadWarning: "Va rugam adaugati maxim 2 fisiere." })
+                setValues({ ...values, uploadWarning: "Va rugăm adăugați maxim 2 fișiere." })
             }
         }
         setValues({ ...values, fileList: files })
@@ -656,11 +655,11 @@ const DoctorData = (props) => {
                     if (resp.success === 'Success') {
                         if (resp.success) navigate(routes.THANK_YOU)
                     } else {
-                        setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+                        setValues({ ...values, error: "A apărut o eraore. Va rugăm încercați din nou" })
                     }
                 })
                 .catch((err) => {
-                    setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+                    setValues({ ...values, error: "A apărut o eraore. Va rugăm încercați din nou" })
                 })
         }
         console.log('submitted')
@@ -674,7 +673,8 @@ const DoctorData = (props) => {
                 <form>
                     <div className="contact-data">
                         <div className="container-title-small profile-photo">
-                            Date de contact                         <div className="col desktop pp">
+                            Date de contact                 
+                            <div className="col desktop pp">
                                 <span onClick={handleProfilePictureUser} className={'add-photo'}>Adaugă poză de profil</span>
                                 <input type="file" accept="image/*" onChange={handleFileChangeProfilePicUser} ref={profileImgRef} style={{ display: 'none' }} />
                                 <img alt='profile uploaded user' src={values.profile_picture_preview ? values.profile_picture_preview : '/images/user.svg'} />
@@ -760,7 +760,7 @@ const DoctorData = (props) => {
                         </div>
                     </div>
                     <div className="description-data">
-                        <div className="container-title">Descriere Personla</div>
+                        <div className="container-title">Descriere personală</div>
                         <div className="fields-wrapper">
                             <textarea maxLength='500' rows="15" className="full-width" type="comment" name="description" value={values.description}
                                 onChange={(e) => {
@@ -890,7 +890,7 @@ const DoctorData = (props) => {
                                             </div>
                                         )}
                                     </div>) : (<div className={`selected-file ${error.fileList ? 'error' : ''}`}>
-                                        No selected file
+                                    Niciun fișier selectat
                                     </div>)}
                                     {
                                         (values.uploadWarning || error.fileList) && <div className={'error'}>{values.uploadWarning}</div>
@@ -902,7 +902,7 @@ const DoctorData = (props) => {
                                 values.error && <div style={{ marginBottom: '15px' }} className={'error'}>{values.error}</div>
                             }
                             <div className="checkbox-container">
-                                <label><a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni si conditii de abonare</a></label>
+                                <label><a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni și condiții de abonare</a></label>
                                 <div className="checkbox-wrapper">
                                     <input className="checkbox" name="areTermsChecked" type="checkbox" value={values.areTermsChecked}
                                         onChange={
@@ -912,7 +912,7 @@ const DoctorData = (props) => {
                             </div>
                         </div>
                     </div>
-                    <button className="button mt round custom-width" onClick={handleSubmit}> Salveaza </button>
+                    <button className="button mt round custom-width" onClick={handleSubmit}> Salvează </button>
                 </form>
             </div>
         </div>

@@ -52,7 +52,7 @@ const OptionsOutsideSelect = (props) => {
 
     return (
         <div>
-            <Select {...props} controlShouldRenderValue={!isMulti} styles={styles} classNamePrefix='filter' />
+            <Select {...props} controlShouldRenderValue={!isMulti} styles={styles} classNamePrefix='filter'  noOptionsMessage={() => "Nu există opțiuni"}/>
             <div className="selected-container">
                 <div className="selected-wrapper">
                     {isMulti && value?.length !== 0 ? value?.map((val) =>

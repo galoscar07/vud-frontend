@@ -86,7 +86,7 @@ const AdminData = (props) => {
 
         setError(errorCopy)
         setErrorStateDD(errorCopyDD)
-        if (!ok) setValues({ ...values, error: "Va rugam sa completati campurile obligatorii" })
+        if (!ok) setValues({ ...values, error: "Va rugăm să completați câmpurile obligatorii" })
         return ok
     }
 
@@ -130,11 +130,11 @@ const AdminData = (props) => {
                         localStorage.setItem('user', JSON.stringify({ is_visible: false, step: '3' }))
                         navigate(routes.ADD_UNIT)
                     } else {
-                        setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+                        setValues({ ...values, error: "A apărut o eraore. Va rugăm încercați din nou" })
                     }
                 })
                 .catch((err) => {
-                    setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
+                    setValues({ ...values, error: "A apărut o eraore. Va rugăm încercați din nou" })
                 })
         }
     };
@@ -149,7 +149,7 @@ const AdminData = (props) => {
             if (i < 3) {
                 files.push(input.files.item(i).name)
             } else {
-                setValues({ ...values, uploadWarning: "Va rugam adaugati maxim 2 fisiere." })
+                setValues({ ...values, uploadWarning: "Va rugăm adăugați maxim 2 fișiere." })
             }
         }
         setValues({ ...values, fileList: files })
@@ -249,7 +249,7 @@ const AdminData = (props) => {
                         <div className="fields-wrapper">
                             <div className="col-2">
                                 <div className="input-wrapper">
-                                    <label>*Functia</label>
+                                    <label>*Funcția</label>
                                     <input className={error.position ? 'error' : ''} name="position" type="text" value={values.position}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
@@ -280,7 +280,7 @@ const AdminData = (props) => {
                                         }} />
                                 </div>
                                 <div className="input-wrapper">
-                                    <label>*Numarul</label>
+                                    <label>*Numărul</label>
                                     <input className={error.streetNo ? 'error' : ''} name='streetNo' type="text" value={values.streetNo}
                                         onChange={(e) => {
                                             handleFieldChange(e.target.value, e.target.name);
@@ -290,12 +290,12 @@ const AdminData = (props) => {
                         </div>
                     </div>
                     <p className="italic">
-                        Pentru a ne asigura ca actionati in numele entitatii a carei pagina o completati/recuperati,
-                        va rugam sa parcurgeti pasii de identificare si confirmare:Incarcati o copie a CUI Incarcati
-                        un document care sa ateste ca actionati in numele societatii al carui CUI l-ati incarcat
-                        (certificat constatator din care sa reiasa ca sunteti administrator sau un document de
-                        imputernicire din partea administratorului societatii – puteti folosi
-                        <a href={routes.EXAMPLE_COMPLETE} target={"_blank"}>urmatorul model</a>
+                    Pentru a ne asigura că acționați în numele entității a cărei pagină o completați/recuperați,
+                        va rugăm să parcurgeți pașii de identificare și confirmare:Încărcați o copie a CUI Încărcați
+                        un document care să ateste că acționați în numele societății al cărui CUI l-ați încărcat
+                        (certificat constatator din care să reiasă că sunteți administrator sau un document de
+                        împuternicire din partea administratorului societății – puteți folosi
+                        <a href={routes.EXAMPLE_COMPLETE} target={"_blank"}>următorul model</a>
                     </p>
                     <div className="image-upload">
                         <label htmlFor="file">
@@ -315,7 +315,7 @@ const AdminData = (props) => {
                                     </div>
                                 )}
                             </div>) : (<div className={`selected-file ${error.fileList ? 'error' : ''}`}>
-                                No selected file
+                               Niciun fișier selectat
                             </div>)}
                             {
                                 (values.uploadWarning || error.fileList) && <div className={'error'}>{values.uploadWarning}</div>
@@ -325,7 +325,7 @@ const AdminData = (props) => {
                     {
                         values.error && <div style={{ marginBottom: '15px' }} className={'error'}>{values.error}</div>
                     }
-                    <button className="button round custom-width" onClick={handleSubmit}> Salveaza </button>
+                    <button className="button round custom-width" onClick={handleSubmit}> Salvează </button>
                 </form>
             </div>
         </div>
