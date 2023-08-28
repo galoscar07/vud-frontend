@@ -56,10 +56,11 @@ function Header() {
   }
 
   return (
-    <div className={'header'}>
+    <div className={`header ${isMenuOpen ? 'fix' : ''}`}>
       <img onClick={() => navigate(routes.HOMEPAGE)} className={'logo'} alt={'imagine logo vreau un doctor'} src={'/logo.svg'} />
       <div onClick={() => toggleMenu(!isMenuOpen)} className={'hamburger_icon'}><img src={isMenuOpen ? '/images/menu_open.svg' : '/images/menu_closed.svg'}></img></div>
       <div className={`hamburger_menu ${isMenuOpen ? 'open' : 'closed'}`}>
+      {renderUserProfile()}
         <div className={'menu_items'}>
           <div className="info-links">
             <NavLink
@@ -72,7 +73,6 @@ function Header() {
             >Informații medicale</NavLink>
           </div>
         </div>
-        {renderUserProfile()}
         <span className={'close_btn'} onClick={() => toggleMenu(false)}><img src={'/images/close_btn.svg'} /></span>
       </div>
     </div>

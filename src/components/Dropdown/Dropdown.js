@@ -36,7 +36,7 @@ const Option = (props) => {
 
 const OptionsOutsideSelect = (props) => {
 
-    const { onChange } = props;
+    const { onChange, isLess3Condition, callbackLess3Condition } = props;
     const handleRemoveValue = (e) => {
         if (!onChange) return;
         const { name: buttonName } = e.currentTarget;
@@ -48,11 +48,19 @@ const OptionsOutsideSelect = (props) => {
         );
     };
 
+    const onInputChange = (e) => {
+        setInput(e)
+        if (isLess3Condition) {
+            callbackLess3Condition(e)
+        }
+    }
+
     const { isMulti, value } = props;
+    const [input, setInput] = useState("")
 
     return (
         <div>
-            <Select {...props} controlShouldRenderValue={!isMulti} styles={styles} classNamePrefix='filter'  noOptionsMessage={() => "Nu există opțiuni"}/>
+            <Select inputValue={input} onInputChange={onInputChange} {...props} controlShouldRenderValue={!isMulti} styles={styles} classNamePrefix='filter'  noOptionsMessage={() => "Nu există opțiuni"}/>
             <div className="selected-container">
                 <div className="selected-wrapper">
                     {isMulti && value?.length !== 0 ? value?.map((val) =>
@@ -96,6 +104,8 @@ function Dropdown(props) {
                 components={{ Option }}
                 allowSelectAll={true}
                 hideSelectedOptions={false}
+                isLess3Condition={props?.isLess3Condition}
+                callbackLess3Condition={props?.callbackLess3Condition}
             ></OptionsOutsideSelect>
         </div>
     )

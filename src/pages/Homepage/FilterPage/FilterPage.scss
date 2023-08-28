@@ -71,8 +71,20 @@
 }
 
 @media screen and (max-width: $mobile-big-width) {
+   .filter-page{
     .filter-main-content {
         grid-template-columns: 1fr !important;
     }
-
+    .left-side, .center-side, .right-side{
+        max-width: 80vw;
+    }
+    .pagination{
+        display: flex;
+        max-width: 80vw!important;
+        overflow: scroll;
+    }
+    .right-side{
+        margin-top:$spacing-medium;
+    }
+   }
 }

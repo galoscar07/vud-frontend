@@ -87,7 +87,7 @@ function Footer() {
               </React.Fragment>)
           })}
         </div>
-        <div className="view-more-btn mobile" onClick={() => setDisplayMoreCards(!displayMoreCards)}>
+        <div className={`view-more-btn mobile ${footerOptions.length < 10 ? 'hide' : ''}`} onClick={() => setDisplayMoreCards(!displayMoreCards)}>
           {displayMoreCards ? 'Vezi mai multe' : 'Vezi mai putine'}
         </div>
       </div>

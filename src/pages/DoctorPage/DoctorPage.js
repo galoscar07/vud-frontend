@@ -325,6 +325,7 @@ function DoctorPage({ props }) {
                                     })}
                                 </div>
                             </div>
+                            {doctor.competences && 
                             <div className="comp-wrapper">
                                 <span>Competente</span>
                                 <div className="competences-container">
@@ -338,6 +339,7 @@ function DoctorPage({ props }) {
                                     })}
                                 </div>
                             </div>
+                            }
                             <div className="contact-container">
                                 {doctor.contact && flattenedResponse(doctor.contact).map((el, i) =>
                                     <React.Fragment key={i}>
@@ -366,6 +368,50 @@ function DoctorPage({ props }) {
             </div>
         )
     }
+//WIP
+    const renderDoctorHeaderMobile=()=>{
+        return (
+            <div className="doctor-header-mobi">
+                   <div className="header-container">
+                    <div className="container">
+                        <div className="image-container">
+                            <img src={doctor.imgUrl} alt="doctor-pic" />
+                        </div>
+                        <div className="text-container">
+                            <div className="title-wrapper">
+                                <span className="name">{doctor.name}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="reviews-container">
+                    <div className="stars-wrapper">
+                        {doctor.score > 0 && <div className="rating">{Math.floor(doctor.score)}</div>}
+                        <span>{doctor.noOfReviews} recenzii</span>
+                        <div className="stars-container">
+                            {Array(5).fill(1).map((el, i) =>
+                                <img key={i} src={i >= doctor.rating ? "/images/star_empty.svg" : "/images/star_full.svg"} />
+                            )}
+                        </div>
+                    </div>
+                    {doctor?.reviews?.length > 0 &&
+                        <div onClick={scrollingTop} className="view-reviews">Vezi toate recenziile</div>}
+                    {doctor?.collaborator_clinics?.length > 0 &&
+                                    <React.Fragment>
+                                        <div className="container-title">Clinici unde ofer consultații</div>
+                                        <div style={{ marginBottom: '20px' }} className="col col-clinics">
+                                            {doctor?.collaborator_clinics?.length !== 0 &&
+                                                doctor?.collaborator_clinics.map((clinic, i) => {
+                                                    return <ClinicCard clinic={clinic} key={i} />
+                                                })
+                                            }
+                                        </div>
+                                    </React.Fragment>
+                                }
+                </div>
+                </div>
+            </div>
+        )
+    }
 
 
     return (
@@ -375,6 +421,8 @@ function DoctorPage({ props }) {
                     ? <LoadingSpinner />
                     : <React.Fragment>
                         <div className="desktop">{renderDoctorHeaderDesktop()}</div>
+                        <div className="mobile">{renderDoctorHeaderMobile()}</div>
+
                         <div className="grid">
                             <div className="info-left-container ">
                                 <div className="desktop">
@@ -415,10 +463,14 @@ function DoctorPage({ props }) {
                                         </div>
                                     </React.Fragment>
                                 }
+                                {doctor.about && 
+                                <React.Fragment>
                                 <div className="container-title">Despre mine</div>
                                 <div className="about-me">
                                     {doctor.about}
                                 </div>
+                                </React.Fragment>
+                                }
                                 <img className="add mobile" src="/images/ads/add2.svg" />
                             </div>
                         </div>

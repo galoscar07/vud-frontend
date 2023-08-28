@@ -34,7 +34,7 @@ const default_adds = {
   },
 }
 
-function getAllCities() {
+function getAllCities(e = null) {
   const citiesList = [];
 
   for (const entry of JUD_ORA.judete) {
@@ -43,7 +43,8 @@ function getAllCities() {
       citiesList.push({ value: city.nume, label: city.nume });
     }
   }
-  return citiesList;
+  const lowerVal = e.toLowerCase()
+  return citiesList.filter(el => el.value.toLowerCase().includes(lowerVal));
 }
 
 const FilterPage = (props) => {
@@ -98,9 +99,6 @@ const FilterPage = (props) => {
   const [doctorCompetences, setDoctorCompetences] = useState([])
   const [doctorClinics, setDoctorClinics] = useState([])
   useEffect(() => {
-    // setClinicTowns(getAllCities());
-  setClinicTowns([])
-    console.log(clinicTowns, 'clinic towns', getAllCities())
     fetch(getAPILink(API_MAP.GET_CLINIC_SPECIALITIES), {
       method: 'GET',
       headers: {
@@ -416,7 +414,6 @@ const FilterPage = (props) => {
     return (
         <React.Fragment>
           <span onClick={() => {
-            debugger
             setPagination((prev) => ({...prev, currentPage: pagination.currentPage - 1}))
             getData()
           }}>Prev</span>
@@ -436,6 +433,14 @@ const FilterPage = (props) => {
           }}>Next</span>
       </React.Fragment>
     );
+  }
+
+  const changeDropdownValue = (e) => {
+    if (e.length >= 3) {
+      setClinicTowns(getAllCities(e));
+    } else {
+      setClinicTowns([])
+    }
   }
 
 
@@ -489,7 +494,7 @@ const FilterPage = (props) => {
             <React.Fragment>
               <Dropdown title={"Oras"} selected={selectedValuesDropdown.clinicTown}
                         onSelect={(values) => handleChangeDropdowns('clinicTown', values)}
-                        options={clinicTowns}/>
+                        options={clinicTowns} isLess3Condition isMulti callbackLess3Condition={changeDropdownValue}/>
               <Dropdown title={"Specilitati Clinica"} selected={selectedValuesDropdown.clinicSpecialities}
                         onSelect={(values) => handleChangeDropdowns('clinicSpecialities', values)}
                         options={clinicSpecialities} isMulti/>
@@ -497,7 +502,7 @@ const FilterPage = (props) => {
                         onSelect={(values) => handleChangeDropdowns('clinicFacilities', values)}
                         options={clinicFacilities} isMulti/>
               <Dropdown title={"Tip unitate medicala"} selected={selectedValuesDropdown.clinicTypes}
-                        onSelect={(values) => handleChangeDropdowns('clinicTypes', values)}
+                        onSelect={(values) => handleChangeDropdowns('clinicTypes', values)} isMulti
                         options={clinicTypes}/>
             </React.Fragment>
           }
