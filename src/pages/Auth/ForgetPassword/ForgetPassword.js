@@ -16,7 +16,6 @@ const ForgetPassword = (props) => {
   })
   const [email, setEmail] = React.useState('');
   const [step, setStep] = React.useState(0)
-  const [link, setLink] = React.useState("");
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
@@ -32,9 +31,9 @@ const ForgetPassword = (props) => {
       body: JSON.stringify({
         email: email,
       }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        }
     })
       .then((response) => {
         if (response.status !== 200) {
@@ -43,7 +42,6 @@ const ForgetPassword = (props) => {
         return response.json()
       })
       .then((data) => {
-        setLink(data.link);
         setStep(1)
       })
       .catch((err) => {

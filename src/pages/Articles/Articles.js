@@ -170,7 +170,7 @@ const ArticlesPage = () => {
                                 isMulti />
                         </div>
                         <div className="articles-container">
-                            {articles.length && articles?.map((article, i) => {
+                            {articles.length >= 0 && articles?.map((article, i) => {
                                 return (
                                     <div key={i} className="article-preview">
                                         <div className="text">
