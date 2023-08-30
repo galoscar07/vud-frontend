@@ -4,7 +4,7 @@
     padding: $spacing-xbig;
 
     .add {
-        width: 100%ß;
+        width: 100%;
     }
 
     .pagination {
@@ -85,6 +85,10 @@
     }
     .right-side{
         margin-top:$spacing-medium;
+    }
+    .button{
+        width: 100%!important;
+        margin-top: $spacing-small;
     }
    }
 }
