@@ -165,10 +165,10 @@ function Homepage() {
   return (
     <div className="home-page">
       <div className="main-title">
-        Cauti
+        Cauți
           <div className="dropdown">
             <select value={selectedOption} name="searching" id="searching" onChange={(e) => handleChange(e.target.value)}>
-              <option value="clinic">Clinica</option>
+              <option value="clinic">Clinică</option>
               <option value="doctor">Doctor</option>
             </select>
           </div>
@@ -178,8 +178,8 @@ function Homepage() {
         onSubmit={(ev) => { ev.preventDefault() }} className="searchbar"
       >
         <input value={state} onChange={(ev) => setState(ev.target.value)} className="search" type="text"
-               placeholder="Cauta" name="search" />
-        <button className="button border-button" onClick={handleSearch}>Cauta</button>
+               placeholder="Caută" name="search" />
+        <button className="button border-button" onClick={handleSearch}>Caută</button>
       </form>
       <div className="tags-wrapper">
         {banners.map((tag, i) =>

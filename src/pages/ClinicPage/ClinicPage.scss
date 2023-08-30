@@ -168,7 +168,7 @@
                 background-color: white;
                 justify-content: space-between;
                 align-items: center;
-                width: max-content;
+                width: 100%;
 
                 .upper-flex {
                     display: flex;
@@ -505,6 +505,7 @@
 
                 .text-container {
                     margin-left: 0;
+                    text-align: left;
                 }
 
                 .carousel-text {
@@ -518,6 +519,7 @@
                 .text-container {
                     align-items: center;
                     margin-left: 0;
+                    text-align: left;
                 }
 
                 .contact-wrapper {

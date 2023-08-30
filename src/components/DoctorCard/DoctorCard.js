@@ -13,7 +13,7 @@ const DoctorCard = (props) => {
       case 1:
         return (
           <div className="doctor-card-component">
-            <img className="profile" src={doctor.photo} />
+            <img className="profile" src={doctor.photo || "/images/user.svg"} />
             <a href={doctor.link}>
               <div className="text-container">
                 <div className="title">{doctor.name}</div>
@@ -37,7 +37,7 @@ const DoctorCard = (props) => {
       case 2:
         return (
           <div className="doctor-card-component">
-            <img className="profile" src={doctor.photo} />
+            <img className="profile" src={doctor.photo || "/images/user.svg"} />
             <div className="text-container2">
               <a href={doctor.link}>
                 <div className="info" >
@@ -72,7 +72,7 @@ const DoctorCard = (props) => {
         return (
           <div onClick={() => navigate(routes.DOCTOR_PAGE + '/?id=' + doctor.id)} className="doctor-card-component" style={{ padding: '20px' }}>
             <div>
-              <img className="profile" src={doctor.profile_picture} />
+              <img className="profile" src={doctor.profile_picture || "/images/user.svg"} />
               <div className="rating-container" style={{ marginTop: '16px' }}>
                 {doctor.score > 0 && <div className="rating">
                   {Math.floor(doctor.average_rating || 0)}

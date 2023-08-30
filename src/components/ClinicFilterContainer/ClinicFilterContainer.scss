@@ -44,6 +44,7 @@
             justify-content: center;
             font-weight: 600;
             margin-left: $spacing-medium;
+            text-align: left;
 
             .title {
                 font-size: $font-size-xbig;
@@ -94,6 +95,7 @@
             width: 100%;
 
             .text-container {
+                text-align: left;
                 div {
                     width: 100%;
                 }

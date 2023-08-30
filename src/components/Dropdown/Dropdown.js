@@ -60,7 +60,13 @@ const OptionsOutsideSelect = (props) => {
 
     return (
         <div>
-            <Select inputValue={input} onInputChange={onInputChange} {...props} controlShouldRenderValue={!isMulti} styles={styles} classNamePrefix='filter'  noOptionsMessage={() => "Nu există opțiuni"}/>
+            <Select
+                inputValue={input} onInputChange={onInputChange}
+                {...props}
+                controlShouldRenderValue={!isMulti} styles={styles} classNamePrefix='filter'
+                placeholder={props.placeholder || "Selectează"}
+                noOptionsMessage={() => "Nu există opțiuni"}
+            />
             <div className="selected-container">
                 <div className="selected-wrapper">
                     {isMulti && value?.length !== 0 ? value?.map((val) =>
@@ -71,7 +77,7 @@ const OptionsOutsideSelect = (props) => {
                         </div>)
                         : null}
                 </div>
-                {!props.noNumber && value.length > 0 && <div className="counter">+{value.length}</div>}
+                {/*{!props.noNumber && value.length > 0 && <div className="counter">+{value.length}</div>}*/}
             </div>
         </div>
     );
@@ -106,6 +112,7 @@ function Dropdown(props) {
                 hideSelectedOptions={false}
                 isLess3Condition={props?.isLess3Condition}
                 callbackLess3Condition={props?.callbackLess3Condition}
+                placeholder={props.placeholder}
             ></OptionsOutsideSelect>
         </div>
     )

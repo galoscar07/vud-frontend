@@ -325,7 +325,7 @@ function DoctorPage({ props }) {
                                     })}
                                 </div>
                             </div>
-                            {doctor.competences && 
+                            {doctor.competences &&
                             <div className="comp-wrapper">
                                 <span>Competente</span>
                                 <div className="competences-container">
@@ -463,13 +463,14 @@ function DoctorPage({ props }) {
                                         </div>
                                     </React.Fragment>
                                 }
-                                {doctor.about && 
-                                <React.Fragment>
-                                <div className="container-title">Despre mine</div>
-                                <div className="about-me">
-                                    {doctor.about}
-                                </div>
-                                </React.Fragment>
+                                {
+                                    !!doctor.about &&
+                                    <React.Fragment>
+                                        <div className="container-title">Despre mine</div>
+                                        <div className="about-me">
+                                            {doctor.about}
+                                        </div>
+                                    </React.Fragment>
                                 }
                                 <img className="add mobile" src="/images/ads/add2.svg" />
                             </div>

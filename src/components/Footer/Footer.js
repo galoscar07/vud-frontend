@@ -11,16 +11,16 @@ const socials = [
     imageAlt: 'Link catre pagina de Facebook a Vreau un Doctor',
     href: 'https://facebook.com',
   },
-  {
-    iconPath: '/images/icons/Linkedin.svg',
-    imageAlt: 'Link catre pagina de LinkedIn a Vreau un Doctor',
-    href: 'https://linkedin.com',
-  },
-  {
-    iconPath: '/images/icons/Youtube.svg',
-    imageAlt: 'Link catre pagina de Youtube a Vreau un Doctor',
-    href: 'https://youtube.com',
-  }
+  // {
+  //   iconPath: '/images/icons/Linkedin.svg',
+  //   imageAlt: 'Link catre pagina de LinkedIn a Vreau un Doctor',
+  //   href: 'https://linkedin.com',
+  // },
+  // {
+  //   iconPath: '/images/icons/Youtube.svg',
+  //   imageAlt: 'Link catre pagina de Youtube a Vreau un Doctor',
+  //   href: 'https://youtube.com',
+  // }
 ]
 
 const navLinks = [
