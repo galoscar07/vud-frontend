@@ -482,7 +482,7 @@ function ClinicPage({ props }) {
                                 </div>
                                 {!clinic.has_user &&
                                     <div className={'revendica'}>
-                                        <div>Reprezinti {clinic.name}?</div>
+                                        <div>Reprezinți {clinic.name}?</div>
                                         <div className={'button'} onClick={goToRedeem}> Revendică profilul</div>
                                     </div>
                                 }
@@ -502,7 +502,7 @@ function ClinicPage({ props }) {
                                 {clinic?.reviews?.length > 0 && <div onClick={scrollingTop} className="see-reviews">Vezi toate recenziile</div>}
                             </div>
                             {clinic?.facilities?.length > 0 && <div className="facilities">
-                                <span>Facilitati clinica</span>
+                                <span>Facilitați clinică</span>
                                 <div>
                                     {clinic?.facilities?.map((facility, i) =>
                                         <img key={i} title={facility.label} src={facility.icon} />
