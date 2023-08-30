@@ -638,6 +638,13 @@ function ClinicPage({ props }) {
         )
     }
 
+    const renderMessage = () => {
+
+        if (doctorState.doctors.length === 0 && (selectedDegrees.length > 0 || selectedCompetences.length > 0 || selectedSpecialties.length > 0)) {
+            return <div style={{marginTop: "10px", marginBottom: "10px"}}>Nu există înregistrări conform criteriilor selectate</div>
+        }
+    }
+
     return (
         <div className="clinic-page">
             {
@@ -708,6 +715,7 @@ function ClinicPage({ props }) {
                                         </div>
                                     </React.Fragment>
                                 }
+                                {renderMessage()}
                                 {clinic.description && <div className="description-container">
                                     <p>
                                         {clinic.description}

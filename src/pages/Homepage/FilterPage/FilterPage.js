@@ -34,8 +34,23 @@ const default_adds = {
   },
 }
 
-function getAllCities(e = null) {
+function getAllCities(e = null, just10 = false) {
   const citiesList = [];
+
+  if (just10) {
+    return [
+      {value: "Sector 1", label: "Sector 1"},
+      {value: "Sector 2", label: "Sector 2"},
+      {value: "Sector 3", label: "Sector 3"},
+      {value: "Sector 4", label: "Sector 4"},
+      {value: "Sector 5", label: "Sector 5"},
+      {value: "Sector 6", label: "Sector 6"},
+      {value: "Cluj Napoca", label: "Cluj Napoca"},
+      {value: "Iasi", label: "Iasi"},
+      {value: "Timisoara", label: "Timisoara"},
+      {value: "Targu Mures", label: "Targu Mures"},
+    ]
+  }
 
   for (const entry of JUD_ORA.judete) {
     const cities = entry.localitati;
@@ -94,7 +109,7 @@ const FilterPage = (props) => {
   const [clinicSpecialities, setClinicSpecialities] = useState([])
   const [clinicFacilities, setClinicFacilities] = useState([])
   const [clinicTypes, setClinicTypes] = useState([])
-  const [clinicTowns, setClinicTowns] = useState([])
+  const [clinicTowns, setClinicTowns] = useState(getAllCities('', true))
   const [doctorSpecialities, setDoctorSpecialities] = useState([])
   const [doctorCompetences, setDoctorCompetences] = useState([])
   const [doctorClinics, setDoctorClinics] = useState([])
@@ -436,10 +451,10 @@ const FilterPage = (props) => {
   }
 
   const changeDropdownValue = (e) => {
-    if (e.length >= 3) {
+    if (e.length >= 2) {
       setClinicTowns(getAllCities(e));
     } else {
-      setClinicTowns([])
+      setClinicTowns(getAllCities(e, true))
     }
   }
 
@@ -478,10 +493,10 @@ const FilterPage = (props) => {
             <div className="dropdown">
               <form className="searchbar">
                 <div className="upper-container">
-                  <input onChange={handleInput} className="search" value={state.search_term} type="text" placeholder="Cauta"
+                  <input onChange={handleInput} className="search" value={state.search_term} type="text" placeholder="Caută"
                          name="search_term"/>
                   <select value={state.search_type} name="search_type" id="searching" onChange={handleInput}>
-                    <option value="clinic">Clinica</option>
+                    <option value="clinic">Clinică</option>
                     <option value="doctor">Doctor</option>
                   </select>
                 </div>
@@ -492,18 +507,18 @@ const FilterPage = (props) => {
           {
             state.search_type === 'clinic' &&
             <React.Fragment>
-              <Dropdown title={"Oras"} selected={selectedValuesDropdown.clinicTown}
+              <Dropdown title={"Oraș"} selected={selectedValuesDropdown.clinicTown} placeholder={"Selectează oraș"}
                         onSelect={(values) => handleChangeDropdowns('clinicTown', values)}
                         options={clinicTowns} isLess3Condition isMulti callbackLess3Condition={changeDropdownValue}/>
-              <Dropdown title={"Specilitati Clinica"} selected={selectedValuesDropdown.clinicSpecialities}
+              <Dropdown title={"Specilități Clinică"} selected={selectedValuesDropdown.clinicSpecialities}
                         onSelect={(values) => handleChangeDropdowns('clinicSpecialities', values)}
-                        options={clinicSpecialities} isMulti/>
-              <Dropdown title={"Facilitati Clinica"} selected={selectedValuesDropdown.clinicFacilities}
+                        options={clinicSpecialities} isMulti placeholder={"Selectează specilităte"} />
+              <Dropdown title={"Facilitați Clinică"} selected={selectedValuesDropdown.clinicFacilities}
                         onSelect={(values) => handleChangeDropdowns('clinicFacilities', values)}
-                        options={clinicFacilities} isMulti/>
-              <Dropdown title={"Tip unitate medicala"} selected={selectedValuesDropdown.clinicTypes}
+                        options={clinicFacilities} isMulti placeholder={"Selectează facilitați"} />
+              <Dropdown title={"Tip unitate medicală"} selected={selectedValuesDropdown.clinicTypes}
                         onSelect={(values) => handleChangeDropdowns('clinicTypes', values)} isMulti
-                        options={clinicTypes}/>
+                        options={clinicTypes} placeholder={"Selectează tip unitate "} />
             </React.Fragment>
           }
           {
@@ -511,13 +526,13 @@ const FilterPage = (props) => {
             <React.Fragment>
               <Dropdown title={"Specialitate"} selected={selectedValuesDropdown.doctorSpecialities}
                         onSelect={(values) => handleChangeDropdowns('doctorSpecialities', values)}
-                        options={doctorSpecialities} isMulti/>
-              <Dropdown title={"Competente"} selected={selectedValuesDropdown.doctorCompetences}
+                        options={doctorSpecialities} isMulti placeholder={"Selectează specialitate"}/>
+              <Dropdown title={"Competențe"} selected={selectedValuesDropdown.doctorCompetences}
                         onSelect={(values) => handleChangeDropdowns('doctorCompetences', values)}
-                        options={doctorCompetences} isMulti/>
-              <Dropdown title={"Unitate Medicala"} selected={selectedValuesDropdown.doctorClinics}
+                        options={doctorCompetences} isMulti placeholder={"Selectează competențe"}/>
+              <Dropdown title={"Unitate Medicală"} selected={selectedValuesDropdown.doctorClinics}
                         onSelect={(values) => handleChangeDropdowns('doctorClinics', values)}
-                        options={doctorClinics} isMulti/>
+                        options={doctorClinics} isMulti placeholder={"Selectează unitate"}/>
             </React.Fragment>
           }
         </div>
