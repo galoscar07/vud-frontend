@@ -41,7 +41,7 @@
 
             .content-container {
                 text-align: start;
-                padding: 0 $spacing-big;
+                padding: 0 $spacing-default;
 
                 .headline {
                     font-size: $font-subtitle;
@@ -54,7 +54,7 @@
 
                 .art-img {
                     width: 100%;
-                    margin: $spacing-big 0;
+                    margin: $spacing-huge 0;
                 }
             }
         }
@@ -75,5 +75,25 @@
     .add {
         width: 100%;
         height: auto;
+    }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+    .article-content {
+        padding: $spacing-default 0!important;
+    }
+
+    .article{
+        display: flex;
+        flex-direction: column;
+
+        .add{
+            margin-left: 0!important;
+            margin-top: $spacing-medium;
+        }
+    }
+
+    .side-content{
+        margin-top: 0!important;
     }
 }
