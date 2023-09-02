@@ -125,18 +125,18 @@ const SingleArticle = (props) => {
                                     )
                                 })}
                             </div>
-                            <img className="banner" alt="articol" src={article.banner_image} />
+                            <img className="banner" alt="articol" src={article.banner_image} onError={(event) => event.target.style.display = 'none'}/>
                             <div className="content-container">
 
                                 <div className="para">
                                     <div className="headline">{article.headline_1}</div>
                                     <div className="text" dangerouslySetInnerHTML={{__html: article?.content_1}}></div>
-                                   {article.image_1 && <img className="art-img" alt="art-img" src={article.image_1} />}
+                                   {article.image_1 && <img className="art-img" alt="art-img" src={article.image_1}  onError={(event) => event.target.style.display = 'none'}/>}
                                 </div>
                                 <div className="para">
                                     <div className="headline">{article?.headline_2}</div>
                                     <div className="text" dangerouslySetInnerHTML={{__html: article?.content_2}}></div>
-                                    {article.image_2 && <img className="art-img" alt="art-img" src={article.image_2} />}
+                                    {article.image_2 && <img className="art-img" alt="art-img" src={article.image_2} onError={(event) => event.target.style.display = 'none'}/>}
                                 </div>
 
                             </div>

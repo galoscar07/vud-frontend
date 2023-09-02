@@ -179,7 +179,7 @@ const ArticlesPage = () => {
                                             <div className="content">{trimText(article.content_1, 300)}</div>
                                             <div className="read" onClick={() => navigate((routes.SINGLE_ARTICLE) + '/?article_id=' + `${article.id}`)}>Citeste articolul</div>
                                         </div>
-                                        <img className="art-banner" src={article.banner_image} />
+                                        <img className="art-banner" src={article.banner_image} onError={(event) => event.target.style.display = 'none'}/>
                                     </div>
                                 )
                             })}
