@@ -105,3 +105,22 @@
         height: auto;
     }
 }
+
+@media screen and (max-width: $mobile-big-width) {
+    .articles-page{
+        display: flex;
+        flex-direction: column;
+        
+        .article-preview{
+            flex-direction: column!important;
+        }
+
+        .search-container{
+            width: auto!important;
+        }
+    }
+
+    .side-content{
+        margin-top: $spacing-default!important;
+    }
+}
