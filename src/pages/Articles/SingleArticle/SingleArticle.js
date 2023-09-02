@@ -130,12 +130,12 @@ const SingleArticle = (props) => {
 
                                 <div className="para">
                                     <div className="headline">{article.headline_1}</div>
-                                    <div className="text">{article.content_1}</div>
+                                    <div className="text" dangerouslySetInnerHTML={{__html: article?.content_1}}></div>
                                    {article.image_1 && <img className="art-img" alt="art-img" src={article.image_1} />}
                                 </div>
                                 <div className="para">
                                     <div className="headline">{article?.headline_2}</div>
-                                    <div className="text">{article?.content_2}</div>
+                                    <div className="text" dangerouslySetInnerHTML={{__html: article?.content_2}}></div>
                                     {article.image_2 && <img className="art-img" alt="art-img" src={article.image_2} />}
                                 </div>
 
