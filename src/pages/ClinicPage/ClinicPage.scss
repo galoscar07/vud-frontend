@@ -4,6 +4,16 @@
     padding: $spacing-big;
     color: $color-blue;
 
+    .no-results{
+        margin: $spacing-default auto;
+        font-weight: $font-weight-bold;
+        color: black;
+        background-color: white;
+        width: fit-content;
+        font-size: $font-medium;
+        padding: $spacing-xsmall $spacing-default;
+    }
+
     .next {
         background-color: $color-primary;
     }
