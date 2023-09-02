@@ -500,7 +500,6 @@ const FilterPage = (props) => {
                     <option value="doctor">Doctor</option>
                   </select>
                 </div>
-                <button onClick={handleSubmit} className="button desktop">Cauta</button>
               </form>
             </div>
           </div>
@@ -535,7 +534,7 @@ const FilterPage = (props) => {
                         options={doctorClinics} isMulti placeholder={"Selectează unitate"}/>
             </React.Fragment>
           }
-                          <button onClick={handleSubmit} className="button mobis">Cauta</button>
+                          <button onClick={handleSubmit} className="button search">Cauta</button>
 
         </div>
         <div className="center-side">

@@ -68,6 +68,10 @@
             }
         }
     }
+    .button{
+        width: 100%!important;
+        margin-top: $spacing-small;
+    }
 }
 
 @media screen and (max-width: $mobile-big-width) {
@@ -85,10 +89,6 @@
     }
     .right-side{
         margin-top:$spacing-medium;
-    }
-    .button{
-        width: 100%!important;
-        margin-top: $spacing-small;
     }
    }
 }
