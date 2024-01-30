@@ -5,10 +5,7 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { API_MAP, getAPILink, routes } from "../../utils/routes";
 
 const EmailVerification = () => {
-  // const search = useLocation().search
-  // const searchParams = new URLSearchParams(search)
   let { token } = useParams();
-  console.log("1" + window.location.href + ' ' + window.location.search)
 
   const [state, setState] = useState({
     loading: true,
@@ -19,8 +16,6 @@ const EmailVerification = () => {
 
 
   useEffect(() => {
-    console.log(token)
-    console.log("2" + window.location.href + ' ' + window.location.search)
     fetch(
       getAPILink(API_MAP.VERIFY_EMAIL) + `?token=${token}`, {
       method: 'GET',
@@ -40,7 +35,6 @@ const EmailVerification = () => {
       .catch((err) => {
         setState({ ...state, loading: false, error: true })
       })
-      console.log(state, 'STATE')
   }, [])
 
   const renderThankYouPage = () => {
