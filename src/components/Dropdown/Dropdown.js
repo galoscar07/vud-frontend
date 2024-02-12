@@ -22,13 +22,17 @@ const Option = (props) => {
     return (
         <div>
             <components.Option {...props}>
-                <input
-                    type="checkbox"
-                    className="checkbox"
-                    checked={props.isSelected}
-                    onChange={() => null}
-                />{" "}
-                <label>{props.label}</label>
+                <div className={'grid-checkbox'} >
+                    <input
+                        type="checkbox"
+                        className="checkbox fixed-heiwi"
+                        checked={props.isSelected}
+                        onChange={() => null}
+                    />
+                    <div>
+                        {props.label}
+                    </div>
+                </div>
             </components.Option>
         </div>
     );

@@ -3,7 +3,7 @@ import "./FilterPage.scss"
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import ClinicFilterContainer from '../../../components/ClinicFilterContainer/ClinicFilterContainer';
 import {API_MAP, getAPILink, routes} from "../../../utils/routes";
-import {useLocation, useNavigate, useSearchParams} from "react-router-dom"
+import {useNavigate} from "react-router-dom"
 import MapWrapper from "../../../components/Map/Map";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import DoctorCard from "../../../components/DoctorCard/DoctorCard";
@@ -39,12 +39,13 @@ function getAllCities(e = null, just10 = false) {
 
   if (just10) {
     return [
-      {value: "Sector 1", label: "Sector 1"},
-      {value: "Sector 2", label: "Sector 2"},
-      {value: "Sector 3", label: "Sector 3"},
-      {value: "Sector 4", label: "Sector 4"},
-      {value: "Sector 5", label: "Sector 5"},
-      {value: "Sector 6", label: "Sector 6"},
+      {value: "Sector 1", label: "Bucuresti S1"},
+      {value: "Sector 2", label: "Bucuresti S2"},
+      {value: "Sector 3", label: "Bucuresti S3"},
+      {value: "Sector 4", label: "Bucuresti S4"},
+      {value: "Sector 5", label: "Bucuresti S5"},
+      {value: "Sector 6", label: "Bucuresti S6"},
+      {value: "Bucuresti", label: "Bucuresti"},
       {value: "Cluj Napoca", label: "Cluj Napoca"},
       {value: "Iasi", label: "Iasi"},
       {value: "Timisoara", label: "Timisoara"},
@@ -316,6 +317,12 @@ const FilterPage = (props) => {
     })
       .then((resp) => resp.json())
       .then((response) => {
+        if (response.detail === 'Invalid page.') {
+          setClinics([])
+          setPagination(initialPagination)
+          setLoading(false)
+          return
+        }
         setClinics(mapServerRespToFront(response.results))
         setPagination((prev) => ({
           ...prev,
@@ -324,6 +331,8 @@ const FilterPage = (props) => {
         setLoading(false)
       })
       .catch((err) => {
+        setClinics([])
+        setPagination(initialPagination)
       })
   }
   const getDoctors = (link) => {
@@ -335,6 +344,12 @@ const FilterPage = (props) => {
     })
       .then((resp) => resp.json())
       .then((response) => {
+        if (response.detail === 'Invalid page.') {
+          setDoctors([])
+          setPagination(initialPagination)
+          setLoading(false)
+          return
+        }
         setDoctors(mapServerRespToFrontDoctor(response.results))
         setPagination((prev) => ({
           ...prev,
@@ -349,6 +364,7 @@ const FilterPage = (props) => {
     let link = '?page=' + pagination.currentPage + '&page_size=' + pagination.perPage
     if (state.search_type === 'clinic') {
       link += `&name=${state.search_term}`
+      link += `&town=${selectedValuesDropdown.clinicTown.map(el => {return el.value}).join("|") || ''}`
       link += `&clinic_specialities=${selectedValuesDropdown.clinicSpecialities.map((el) => {return el.value}).join("|") || ''}`
       link += `&unit_facilities=${selectedValuesDropdown.clinicFacilities.map((el) => {return el.value}).join("|") || ''}`
       link += `&unity_types=${selectedValuesDropdown.clinicTypes.map((el) => {return el.value}).join("|") || ''}`
@@ -366,6 +382,7 @@ const FilterPage = (props) => {
   const handleSubmit = (e) => {
     if (e) e.preventDefault()
     let query = '?'
+    debugger
     query += 'search_term=' + state.search_term + '&'
     query += 'search_type=' + state.search_type + '&'
     query += 'clinic_specialities=' + selectedValuesDropdown.clinicSpecialities.map(el => {return el.value}).join("|") + '&'
@@ -378,6 +395,10 @@ const FilterPage = (props) => {
     navigate(routes.FILTER_PAGE + query)
     getData()
   }
+
+  useEffect(() => {
+    handleSubmit()
+  }, [state])
 
   useEffect(() => {
     handleSubmit()
