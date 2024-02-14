@@ -43,6 +43,7 @@ export const API_MAP = {
 
   // GET TOP Clinics
   GET_TOP_CLINICS: 'auth/get-top-clinics/',
+  GET_TOP_DOCTORS: 'auth/get-top-doctors/',
   GET_CLINICS: 'auth/clinics/',
   GET_CLINICS_FILTER: 'auth/get-clinics/',
 

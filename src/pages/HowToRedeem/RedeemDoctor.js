@@ -111,7 +111,6 @@ const RedeemDoctorPage = () => {
               }
           })
           .catch((err) => {
-              debugger
               setValues({ ...values, error: "A aparut o eraore. Va rugam incercati din nou" })
           })
     }

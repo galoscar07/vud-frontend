@@ -1,0 +1,131 @@
+@import 'src/styles/base';
+
+.clinic-filter-container {
+    background-color: white;
+    padding: $spacing-xbig $spacing-default;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+    .info-container {
+        column-gap: $spacing-small;
+        display: flex;
+
+        .rating-container {
+            row-gap: $spacing-xsmall;
+            width: max-content;
+
+            .stars-container {
+                min-width: 6rem;
+            }
+
+            .clinic-img {
+                width: 4rem;
+                height: 4rem;
+                border-radius: 100%;
+                object-fit: cover;
+            }
+
+            .score-wrapper {
+                background-color: $color-primary;
+                color: white;
+                padding: $spacing-xsmall;
+                border-radius: 2px 8px 2px 2px;
+                font-weight: 600;
+
+            }
+        }
+
+        .text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: baseline;
+            justify-content: center;
+            font-weight: 600;
+            margin-left: $spacing-medium;
+            text-align: left;
+
+            .title {
+                font-size: $font-size-xbig;
+                margin-bottom: $spacing-default;
+            }
+
+            .specialties {
+                color: $color-primary;
+            }
+
+            .type {
+                color: $color-blue;
+                font-size: $font-medium;
+                text-align: start;
+            }
+        }
+
+        .contact-wrapper {
+            display: flex;
+            column-gap: $spacing-small;
+            margin-top: $spacing-small;
+            font-weight: 300;
+
+            .contact {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                column-gap: $spacing-xsmall;
+
+                span {
+                    min-width: 6.5rem;
+                }
+
+                img {
+                    width: 0.75rem;
+                    height: 0.75rem;
+                }
+            }
+
+        }
+    }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+    .clinic-filter-container {
+        .info-container {
+            flex-direction: row;
+            width: 100%;
+
+            .text-container {
+                text-align: left;
+                div {
+                    width: 100%;
+                }
+
+                .title {
+                    font-size: $font-size-17;
+                    text-align: start;
+                    margin-bottom: $spacing-xsmall;
+
+                }
+
+                .type {
+                    font-size: $font-small;
+                }
+            }
+        }
+
+        .contact-wrapper {
+            display: flex !important;
+            flex-direction: column;
+            align-items: start;
+            font-size: $font-small;
+            font-weight: 300;
+            margin-top: $spacing-xsmall;
+            ;
+
+            .contact {
+                justify-content: start !important;
+                text-align: start;
+            }
+        }
+    }
+}

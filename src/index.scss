@@ -43,6 +43,12 @@ textarea {
   margin-right: 0.5rem;
 }
 
+.flex-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
 .grid-checkbox {
   display: grid;
   grid-template-columns: 40px auto;

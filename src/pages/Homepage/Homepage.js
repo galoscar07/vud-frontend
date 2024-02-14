@@ -6,6 +6,8 @@ import {API_MAP, API_URL_MEDIA, getAPILink, routes} from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import {useNavigate} from "react-router-dom";
 import {Adsense} from '@ctrl/react-adsense';
+import DoctorCard from "../../components/DoctorCard/DoctorCard";
+import DoctorFilterContainer from "../../components/DoctorFilterContainer/DoctorFilterContainer";
 
 const label_ads = [
   'homepage_1', 'homepage_2', 'homepage_3', 'homepage_4'
@@ -66,12 +68,82 @@ function Homepage() {
   const showAll = () => {
     navigate(`${routes.FILTER_PAGE}?search_type=${selectedOption}&search_term=`)
   }
+  const showAllDoctors = () => {
+    navigate(`${routes.FILTER_PAGE}?search_type=doctor&search_term=`)
+  }
   const handleSearch = () => {
     navigate(`${routes.FILTER_PAGE}?search_term=${state}&search_type=${selectedOption}`)
   }
 
   // Top clinics
   const [topClinics, setTopClinics] = useState([])
+  const [topDoctors, setTopDoctors] = useState([])
+  const mapServerRespToFrontDoctors = (doctors) => {
+    // return doctors.map( res => {
+    //   return {
+    //     id: res.id,
+    //     name: res.first_name + " " + res.last_name,
+    //     imageUrl: res.profile_picture || "/images/user.svg",
+    //     score: res.average_rating * 2 || 0,
+    //     noOfReviews: res.review_count || 0,
+    //     rating: res.average_rating || 0,
+    //     links: [
+    //       { type: "Facebook", value: res.website_facebook },
+    //       { type: "Linkedin", value: res.website_linkedin },
+    //       { type: "Youtube", value: res.website_youtube },
+    //       { type: "Google", value: res.website_google },
+    //       { type: "Whatsapp", value: res.whatsapp },
+    //     ],
+    //     contact: [
+    //       { type: 'Telefon', value: res.primary_phone, icon: "phone" },
+    //       { type: "email", value: res.primary_email, icon: "email" },
+    //       { type: "website", value: res.website, icon: "website" },
+    //     ],
+    //     testimonials: res.reviews?.map((el) => { return { text: el.comment } }).slice(0, 4) || [],
+    //     reviews: res.reviews?.map((el) => {
+    //       return {
+    //         name: el.name,
+    //         rating: el.rating,
+    //         text: el.comment
+    //       }
+    //     }) || [],
+    //     about: res.description,
+    //     competences: res.medical_skill?.map((el) => { return el.label }) || [],
+    //     specialities: res.speciality?.map((el) => { return el.label }) || [],
+    //     degrees: res.academic_degree?.map((el) => { return el.label }) || [],
+    //     collaborator_doctors: res.collaborator_doctor?.map((doc) => {
+    //       return {
+    //         link: "/doctor-page/?id=" + doc.id,
+    //         first_name: doc.first_name,
+    //         last_name: doc.last_name,
+    //         photo: doc.profile_picture || null,
+    //         speciality: doc.speciality || [],
+    //         rating: doc.average_rating || 0,
+    //         noOfReviews: doc.review_count || 0,
+    //         score: doc.average_rating * 2 || 0,
+    //
+    //       }
+    //     }),
+    //     collaborator_clinics: res.collaborator_clinic?.map((clinic) => {
+    //       return {
+    //         link: "/clinic-page/?id=" + clinic.id,
+    //         name: clinic.clinic_name,
+    //         photo: clinic.profile_picture,
+    //         address:
+    //             (clinic?.clinic_street ? clinic.clinic_street + " " : "") +
+    //             (clinic?.clinic_number ? clinic.clinic_number + " " : "") +
+    //             (clinic?.clinic_other_details ? clinic.clinic_other_details + " " : "") +
+    //             (clinic?.clinic_town ? clinic.clinic_town + " " : "") +
+    //             (clinic?.clinic_county ? clinic.clinic_county : ""),
+    //         medical_unit_type: clinic.medical_unit_types?.map((el) => { return el.label }) || [],
+    //         phone: clinic.primary_phone,
+    //       }
+    //     })
+    //   }
+    // })
+    return doctors
+  }
+
   const mapServerRespToFront = (listOfClinics) => {
     return listOfClinics.map((clinic) => {
       return {
@@ -147,8 +219,7 @@ function Homepage() {
         })
 
       // Get top clinics
-      fetch(
-        getAPILink(API_MAP.GET_TOP_CLINICS), {
+      fetch(getAPILink(API_MAP.GET_TOP_CLINICS), {
           method: 'GET',
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
@@ -156,8 +227,18 @@ function Homepage() {
         })
         .then((res) => res.json())
         .then((res) => {
-          setLoading(false)
           setTopClinics(mapServerRespToFront(res))
+        })
+      fetch(getAPILink(API_MAP.GET_TOP_DOCTORS), {
+              method: 'GET',
+              headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+              }
+            })
+        .then((res) => res.json())
+        .then((res) => {
+          setLoading(false)
+          setTopDoctors(mapServerRespToFrontDoctors(res))
         })
     }
     , [])
@@ -195,6 +276,25 @@ function Homepage() {
 
       <div className="content">
         <div className="main-content">
+          <div className="container-title desktop">
+            <div className="title">
+              <img src="/images/star_full.svg" alt={"stea"}/>
+              Top medici
+            </div>
+            <div className="subtitle" onClick={showAllDoctors}>
+              Toati medicii
+            </div>
+          </div>
+          <div className="results-container">
+            {
+              loading
+                  ? <LoadingSpinner/>
+                  : topDoctors.map((doctor, i) =>
+                      <DoctorFilterContainer displayReviews key={i} doctor={doctor} type={1}/>
+                  )
+            }
+          </div>
+
           <div className="container-title desktop">
             <div className="title">
               <img src="/images/star_full.svg" alt={"stea"}/>

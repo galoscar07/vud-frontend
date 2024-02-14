@@ -382,7 +382,6 @@ const FilterPage = (props) => {
   const handleSubmit = (e) => {
     if (e) e.preventDefault()
     let query = '?'
-    debugger
     query += 'search_term=' + state.search_term + '&'
     query += 'search_type=' + state.search_type + '&'
     query += 'clinic_specialities=' + selectedValuesDropdown.clinicSpecialities.map(el => {return el.value}).join("|") + '&'

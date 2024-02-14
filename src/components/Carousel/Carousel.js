@@ -42,7 +42,7 @@ return (
             {props.content.map((card, index) => (
                 <div key={index}>
                     <div className={`info-container ${props.fullReview && 'full'}`}>
-                        <div className="text-container">
+                        <div className="text-container flex-row">
                             <span onClick={previous}>
                                 <img src="/images/icons/arrow_left.svg" />
                             </span>
@@ -57,7 +57,7 @@ return (
                                         </div>
                                     </div>}
 
-                                <div className={`text ${!props.fullReview && 'italic'}`}>{limitText(card.text, 140)} </div>
+                                <div className={`text ${!props.fullReview && 'italic'}`}>{limitText(card.text || card.comment , 140)} </div>
                             </div>
                             <span onClick={next}>
                                 <img src="/images/icons/arrow_right.svg" />
