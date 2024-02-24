@@ -16,19 +16,18 @@ const initialPaginated = {
 
 const DoctorData = (props) => {
     const navigate = useNavigate();
-
     // Form values
     const [values, setValues] = useState({
-        firstName: props?.selected?.firstName || '',
-        lastName: props?.selected?.lastName || '',
-        phoneNo: props?.selected?.phoneNo || '',
-        phoneNoVud: props?.selected?.phoneNo || '',
-        email: props?.selected?.email || '',
+        firstName: props?.selected?.first_name || '',
+        lastName: props?.selected?.last_name || '',
+        phoneNo: props?.selected?.primary_phone || '',
+        phoneNoVud: props?.selected?.phone_vud || '',
+        email: props?.selected?.primary_email || '',
         website: props?.selected?.website || '',
-        facebook: props?.selected?.facebook || '',
-        google: props?.selected?.google || '',
-        linkedin: props?.selected?.linkedin || '',
-        youtube: props?.selected?.youtube || '',
+        facebook: props?.selected?.website_facebook || '',
+        google: props?.selected?.website_google || '',
+        linkedin: props?.selected?.website_linkedin || '',
+        youtube: props?.selected?.website_youtube || '',
         whatsapp: props?.selected?.whatsapp || '',
         description: props?.selected?.description || '',
         medical_degree: props?.selected?.medical_degree || '',
@@ -55,6 +54,10 @@ const DoctorData = (props) => {
         competences: false,
     })
 
+    const [selectedSpecialties, setSelectedSpecialties] = React.useState([]);
+    const [selectedDegrees, setSelectedDegrees] = React.useState([]);
+    const [selectedCompetences, setSelectedCompetences] = React.useState([]);
+
     const handleFieldChange = (value, title) => {
         setValues((prevState) => ({ ...prevState, [title]: value }));
     }
@@ -72,14 +75,9 @@ const DoctorData = (props) => {
         setValues({ ...values, profile_picture: event.target.files[0], profile_picture_preview: window.URL.createObjectURL(event.target.files[0]) })
     }
 
-
-
     // Collaborator Clinics and Doctors
     const [toggleInviteU, setToggleInviteUnit] = React.useState(false);
     const [toggleInvite, setToggleInvite] = React.useState(false);
-
-    const [selectedInvitedUnits, setSelectedInvitedUnits] = useState([])
-    const [selectedInvitedDoctors, setSelectedInvitedDoctors] = useState([])
 
     const [invitedUnits, setInvitedUnits] = useState([])
     const [invitedDoctors, setInvitedDoctors] = useState([])
@@ -108,24 +106,25 @@ const DoctorData = (props) => {
         message: '',
     })
 
-    const mapResponseFromServerClinic = (resp) => {
+    const mapResponseFromServerClinic = (resp, status = null) => {
         return {
             ...resp,
             results: resp.results.map((el) => {
                 return {
-                    id: el.id,
-                    img: el.profile_picture,
-                    name: el.clinic_name,
-                    type: el.medical_unit_types.map((e) => {
-                        return e.label
+                    id: el?.id,
+                    img: el?.profile_picture,
+                    name: el?.clinic_name,
+                    type: el?.medical_unit_types?.map((e) => {
+                        return e?.label
                     }).join(" | "),
-                    status: selectedInvitedUnits.filter((s) => s.id === el.id).length === 1 ? "added" : "uninvited",
+                    status: status || selectedInvitedUnits.filter((s) => s.id === el.id).length === 1 ? "added" : "uninvited",
                     disabled: false
                 }
             })
         }
     }
-    const mapResponseFromServerDoctor = (resp) => {
+    const mapResponseFromServerDoctor = (resp, status = null) => {
+        debugger
         return {
             ...resp,
             results: resp.results.map((el) => {
@@ -143,12 +142,25 @@ const DoctorData = (props) => {
                         return e.clinic_name
                     }).join(' | '),
                     email: el.primary_email,
-                    status: selectedInvitedDoctors.filter((s) => s.id === el.id).length === 1 ? "added" : "uninvited",
+                    status: status || selectedInvitedDoctors.filter((s) => s.id === el.id).length === 1 ? "added" : "uninvited",
                     disabled: false
                 }
             })
         }
     }
+    let mockResp = null
+    if (props.isDashboard) {
+        mockResp = mapResponseFromServerDoctor({results: props?.selected?.collaborator_doctor}, "added").results
+    }
+
+    const [selectedInvitedDoctors, setSelectedInvitedDoctors] = useState(mockResp || [])
+
+    let mockRespClinic = null
+    if (props.isDashboard) {
+        mockRespClinic = mapResponseFromServerClinic({results: props?.selected?.collaborator_clinic}, "added").results
+    }
+    const [selectedInvitedUnits, setSelectedInvitedUnits] = useState(mockRespClinic || [])
+
 
     const remapResponseFromServerClinic = (resp) => {
         return {
@@ -435,11 +447,8 @@ const DoctorData = (props) => {
             </div>
         )
     }
-
+    console.log(selectedInvitedDoctors)
     // Dropdowns
-    const [selectedSpecialties, setSelectedSpecialties] = React.useState([]);
-    const [selectedDegrees, setSelectedDegrees] = React.useState([]);
-    const [selectedCompetences, setSelectedCompetences] = React.useState([]);
     const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState([])
     const [specialities, setSpecialities] = useState([])
     const [competences, setCompetences] = useState([])
@@ -453,6 +462,9 @@ const DoctorData = (props) => {
             .then((resp) => resp.json())
             .then((response) => {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                if (props.isDashboard) {
+                    setSelectedDegrees(mapped.filter(item => props.selected.academic_degree.includes(item.value)))
+                }
                 setAcademicDegreesDropDown(mapped)
             })
             .catch((err) => { })
@@ -465,6 +477,9 @@ const DoctorData = (props) => {
             .then((resp) => resp.json())
             .then((response) => {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                if (props.isDashboard) {
+                    setSelectedSpecialties(mapped.filter(item => props.selected.speciality.includes(item.value)))
+                }
                 setSpecialities(mapped)
             })
             .catch((err) => { })
@@ -477,6 +492,9 @@ const DoctorData = (props) => {
             .then((resp) => resp.json())
             .then((response) => {
                 const mapped = response.map((el) => { return { value: el.id, label: el.label } })
+                if (props.isDashboard) {
+                    setSelectedCompetences(mapped.filter(item => props.selected.medical_skill.includes(item.value)))
+                }
                 setCompetences(mapped)
             })
             .catch((err) => { })
@@ -766,7 +784,7 @@ const DoctorData = (props) => {
                                 onChange={(e) => {
                                     handleFieldChange(e.target.value, e.target.name);
                                 }} />
-                            <div className="counter"> {values.description.length} / 500 </div>
+                            <div className="counter"> {values?.description?.length} / 500 </div>
                             <div className="col-2">
                                 <Dropdown hasError={ddError.medical_degree} selected={selectedDegrees} options={academicDegreesDropDown} title={"*Grad medical"} onSelect={(e) => handleDropdownSubmit(e, 'degree')}  isMulti/>
                                 <Dropdown hasError={ddError.speciality} selected={selectedSpecialties} options={specialities} title={"*Specialitate"} onSelect={(e) => handleDropdownSubmit(e, 'speciality')} isMulti />
@@ -825,8 +843,8 @@ const DoctorData = (props) => {
                             }
                             {
                                 doctors.count !== 0 &&
-                                doctors.results.map((cl) => {
-                                    return <InviteCard disable type="doctor" doctor={cl} onClick={handleClickDoctor} />
+                                doctors.results.map((cl, i) => {
+                                    return <InviteCard disable key={i}  type="doctor" doctor={cl} onClick={handleClickDoctor} />
                                 })
                             }
                             {
@@ -834,8 +852,9 @@ const DoctorData = (props) => {
                                 <React.Fragment>
                                     <p>Doctori colaboratori adăugati</p>
                                     {selectedInvitedDoctors.map((invited, i) => {
+                                        debugger
                                         return (
-                                            <InviteCard type="doctor" doctor={invited} onClick={handleClickDoctor} />
+                                            <InviteCard key={i} type="doctor" doctor={invited} onClick={handleClickDoctor} />
                                         )
                                     })}
                                 </React.Fragment>
@@ -853,65 +872,71 @@ const DoctorData = (props) => {
                             }
                         </div>
                     </div>
-                    <div className="file-data-doc">
-                        <div className="fields-wrapper">
-                            <div className="italic">
-                                Pentru a ne asigura că sunteți titularul legitim al datelor medicale înregistrate, vă rugăm să urmați pașii de identificare și confirmare următori:
-                                <ul>
-                                    <li>Încărcați o copie a diplomei de medic sau a certificatului de înregistrare la Colegiul Medicilor.</li>
-                                    <li> Încărcați o copie a buletinului de identitate sau a altui document de identificare oficial.</li>
-                                </ul>
-                                Acești pași sunt necesari pentru a ne asigura că datele medicale înregistrate sunt autentice și că vă puteți gestiona cu succes pagina personală pe care ați înregistrat datele medicale.
-                            </div>
-                            <div className="input-wrapper contact-phone" style={{ marginBottom: '20px' }}>
-                                <label>*Telefon contact</label>
-                                <input className={error.phoneNoVud ? 'error' : ''} name="phoneNoVud" type="text"
-                                    value={values.phoneNoVud} placeholder={'Număr de telefon'}
-                                    onChange={(e) => {
-                                        handleFieldChange(e.target.value, e.target.name);
-                                    }} />
-                                <div style={{ marginBottom: '20px', color: '#667284', marginTop: '5px', width: 'max-content' }}>Numărul de telefon va fi vizibil doar reprezentanților VUD </div>
-                            </div>
-                            <div className="image-upload">
-                                <label htmlFor="file">
-                                    <img className="upload-photo"
-                                        src="/images/upload_icon.svg" />
-                                </label>
-                                <input style={{ display: "none" }} name="files" id="file" type="file" multiple
-                                    onChange={(e) => updateList(e.target.value, e.target.name)} />
-                                <div id="file-list">
-                                    {values.fileList.length ? (<div className="selected-file-wrapper">
-                                        {values.fileList.map((file, i) =>
-                                            <div className="selected-file" key={i}>
-                                                {file}
-                                                <span onClick={() => deleteFile(file)}>
+                    {
+                        props.isDashboard
+                            ? null
+                            : (
+                                <div className="file-data-doc">
+                                    <div className="fields-wrapper">
+                                        <div className="italic">
+                                            Pentru a ne asigura că sunteți titularul legitim al datelor medicale înregistrate, vă rugăm să urmați pașii de identificare și confirmare următori:
+                                            <ul>
+                                                <li>Încărcați o copie a diplomei de medic sau a certificatului de înregistrare la Colegiul Medicilor.</li>
+                                                <li> Încărcați o copie a buletinului de identitate sau a altui document de identificare oficial.</li>
+                                            </ul>
+                                            Acești pași sunt necesari pentru a ne asigura că datele medicale înregistrate sunt autentice și că vă puteți gestiona cu succes pagina personală pe care ați înregistrat datele medicale.
+                                        </div>
+                                        <div className="input-wrapper contact-phone" style={{ marginBottom: '20px' }}>
+                                            <label>*Telefon contact</label>
+                                            <input className={error.phoneNoVud ? 'error' : ''} name="phoneNoVud" type="text"
+                                                   value={values.phoneNoVud} placeholder={'Număr de telefon'}
+                                                   onChange={(e) => {
+                                                       handleFieldChange(e.target.value, e.target.name);
+                                                   }} />
+                                            <div style={{ marginBottom: '20px', color: '#667284', marginTop: '5px', width: 'max-content' }}>Numărul de telefon va fi vizibil doar reprezentanților VUD </div>
+                                        </div>
+                                        <div className="image-upload">
+                                            <label htmlFor="file">
+                                                <img className="upload-photo"
+                                                     src="/images/upload_icon.svg" />
+                                            </label>
+                                            <input style={{ display: "none" }} name="files" id="file" type="file" multiple
+                                                   onChange={(e) => updateList(e.target.value, e.target.name)} />
+                                            <div id="file-list">
+                                                {values.fileList.length ? (<div className="selected-file-wrapper">
+                                                    {values.fileList.map((file, i) =>
+                                                            <div className="selected-file" key={i}>
+                                                                {file}
+                                                                <span onClick={() => deleteFile(file)}>
                                                     <img src="/images/delete.svg" />
                                                 </span>
+                                                            </div>
+                                                    )}
+                                                </div>) : (<div className={`selected-file ${error.fileList ? 'error' : ''}`}>
+                                                    Niciun fișier selectat
+                                                </div>)}
+                                                {
+                                                    (values.uploadWarning || error.fileList) && <div className={'error'}>{values.uploadWarning}</div>
+                                                }
                                             </div>
-                                        )}
-                                    </div>) : (<div className={`selected-file ${error.fileList ? 'error' : ''}`}>
-                                    Niciun fișier selectat
-                                    </div>)}
-                                    {
-                                        (values.uploadWarning || error.fileList) && <div className={'error'}>{values.uploadWarning}</div>
-                                    }
-                                </div>
 
-                            </div>
-                            {
-                                values.error && <div style={{ marginBottom: '15px' }} className={'error'}>{values.error}</div>
-                            }
-                            <div className="checkbox-container">
-                                <label><a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni și condiții de abonare</a></label>
-                                <div className="checkbox-wrapper">
-                                    <input className="checkbox" name="areTermsChecked" type="checkbox" value={values.areTermsChecked}
-                                        onChange={
-                                            handleTermsToggle
-                                        } />
+                                        </div>
+                                        {
+                                            values.error && <div style={{ marginBottom: '15px' }} className={'error'}>{values.error}</div>
+                                        }
+                                        <div className="checkbox-container">
+                                            <label><a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'} rel="noreferrer">Termeni și condiții de abonare</a></label>
+                                            <div className="checkbox-wrapper">
+                                                <input className="checkbox" name="areTermsChecked" type="checkbox" value={values.areTermsChecked}
+                                                       onChange={
+                                                           handleTermsToggle
+                                                       } />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                            )
+                    }
                     <button className="button mt round custom-width" onClick={handleSubmit}> Salvează </button>
                 </form>
             </div>

@@ -8,14 +8,12 @@ import _ from "lodash";
 
 const Dashboard = () => {
     const navigate = useNavigate();
-    const [userProfile, setUserProfile] = React.useState({});
-    const [unitTypes, setUnitTypes] = React.useState({});
-    
+
     useEffect(() => {
-      const user = JSON.parse(localStorage.getItem('user') || null)
-      if (user === null) navigate(routes.LOGIN)
-      if (!user.is_visible) {
-          navigate(AUTH_CLINIC_MAP_STEP[user.step.toString()])
+        const user = JSON.parse(localStorage.getItem('user') || null)
+        if (user === null) navigate(routes.LOGIN)
+        if (!user.is_visible) {
+            navigate(AUTH_CLINIC_MAP_STEP[user.step.toString()])
         }
     },[])
     
@@ -28,30 +26,19 @@ const Dashboard = () => {
         )
             .then((res) => res.json())
             .then((res) => {
-                setUnitTypes(res.medical_unit_types.map((re)=>{
-                    return { 
-                        label: re.label,
-                        value:re.id,
-                    }
-                }))
+                if (res.is_doctor) {
+                    navigate(routes.DASHBOARD_DOCTOR_DATA)
+                }
+                if (res.is_clinic) {
+                    navigate(routes.DASHBOARD_UNIT_DATA)
+                }
             })
-            .catch((err) => {})
+            .catch((err) => {
+                navigate(routes.HOMEPAGE)
+            })
     }, [])
 
-    const renderDashbaord = () => {
-        return (
-            <React.Fragment>
-                <Toolbar />
-                <Outlet context={unitTypes} />
-            </React.Fragment>
-        )
-    }
-
-    return (
-        <div className="dashboard-page">
-            {renderDashbaord()}
-        </div>
-    )
+    return null
 }
 
 export default Dashboard;

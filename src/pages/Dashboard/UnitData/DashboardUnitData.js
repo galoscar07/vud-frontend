@@ -1,15 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import AddUnit from '../../AddUnit/AddUnit';
 import { useOutletContext } from "react-router-dom";
 import { getAuthTokenFromLocal } from "../../../utils/localStorage";
 import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../../utils/routes";
 
 
-const DashboardUnitData = (props) => {
+const DashboardUnitData = () => {
+    const userProfile = useOutletContext()
 
-    const type = useOutletContext()
+    const [values, setValues] = React.useState([]);
 
-    const [values, setValues] = React.useState(type || []);
+    useEffect(() => {
+        setValues(userProfile?.medical_unit_types?.map((el) => { return { value: el.id, label: el.label } }))
+    }, [userProfile])
 
     const handleSubmit = (selected) => {
         setValues(selected)
@@ -27,7 +30,7 @@ const DashboardUnitData = (props) => {
     return (
         <div className="dashboard-unit">
             <AddUnit
-                selected={type.length ? type : []}
+                selected={values}
                 onSubmit={handleSubmit} />
         </div>
     )

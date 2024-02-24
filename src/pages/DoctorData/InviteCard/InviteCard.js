@@ -12,6 +12,7 @@ const renderBtn = (status, onClick) => {
 }
 
 const InviteDoctorCard = (props) => {
+    debugger
     return (
         <div className="invited-doc-container" style={{ opacity: props.doctor.disabled ? '0.5' : '1', pointerEvents: props.doctor.disabled ? 'none' : 'auto'}}>
             <div className="inv-doc">
@@ -19,24 +20,24 @@ const InviteDoctorCard = (props) => {
                 <div className="info-container">
                     <div className="name">{props.doctor.name}</div>
                     <div className="specialities">
-                        {props.doctor.specialities.map((spec, j) => {
+                        {props.doctor?.specialities?.map((spec, j) => {
                             return (
                                 <span key={j}>{spec}</span>
                             )
                         })}
                     </div>
                     <div className="competences">
-                        {props.doctor.competences.map((comp, k) => {
+                        {props.doctor?.competences?.map((comp, k) => {
                             return (
                                 <span key={k}>{comp}</span>
                             )
                         })}
                     </div>
-                    <div className="unit">{props.doctor.unit}</div>
-                    <div className="email">{props.doctor.email}</div>
+                    <div className="unit">{props.doctor?.unit}</div>
+                    <div className="email">{props.doctor?.email}</div>
                 </div>
             </div>
-            {renderBtn(props.doctor.status, () => {props.onClick(props.doctor)})}
+            {renderBtn(props.doctor?.status, () => {props.onClick(props.doctor)})}
         </div>)
 }
 
@@ -55,6 +56,9 @@ const InviteUnitCard = (props) => {
 }
 
 const InviteCard = (props) => {
+    if (props === null || props === undefined) {
+        return null
+    }
 
     switch (props.type) {
         case "doctor":

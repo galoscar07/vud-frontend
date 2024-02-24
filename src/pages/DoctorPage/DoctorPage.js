@@ -161,7 +161,6 @@ function DoctorPage({ props }) {
                     first_name: doc.first_name,
                     last_name: doc.last_name,
                     photo: doc.profile_picture || null,
-                    // TODO
                     speciality: doc.speciality || [],
                     rating: doc.average_rating || 0,
                     noOfReviews: doc.review_count || 0,
@@ -229,7 +228,12 @@ function DoctorPage({ props }) {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-            .then((res) => res.json())
+            .then((res) => {
+                if (res.status === 404) {
+                    // navigate(routes.NOT_FOUND)
+                }
+                return res.json()
+            })
             .then((res) => {
                 setLoading(false)
                 const mapped = mapServerRespToFront(res)

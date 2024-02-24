@@ -11,6 +11,7 @@ import DoctorCard from '../../components/DoctorCard/DoctorCard';
 import _ from "lodash";
 import { useNavigate } from "react-router-dom";
 import ClinicCard from '../../components/ClinicCard/ClinicCard';
+import ReCAPTCHA from "react-google-recaptcha"
 
 const dayMapping = {
     0: 6,
@@ -286,7 +287,12 @@ function ClinicPage({ props }) {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         })
-            .then((res) => res.json())
+            .then((res) => {
+                if (res.status === 404) {
+                    navigate(routes.NOT_FOUND)
+                }
+                return res.json()
+            })
             .then((res) => {
                 setLoading(false)
                 setClinic(mapServerRespToFront(res))
@@ -645,6 +651,8 @@ function ClinicPage({ props }) {
         }
     }
 
+    const [capVal,setCapVal] = useState(null)
+
     return (
         <div className="clinic-page">
             {
@@ -760,7 +768,13 @@ function ClinicPage({ props }) {
                                                     </span>)}
                                             </div>
                                         </div>
-
+                                        <div style={{margin: "auto"}}>
+                                            {/*<ReCAPTCHA*/}
+                                            {/*    sitekey={"6LfnAXopAAAAAEp9S_pQ9dDVw_PZlpdXVFPlQqTA"}*/}
+                                            {/*    ref={captchaRef}*/}
+                                            {/*    onChange={handleCaptcha}*/}
+                                            {/*/>*/}
+                                        </div>
                                         <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Adauga recenzie
                                         </button>
                                         {

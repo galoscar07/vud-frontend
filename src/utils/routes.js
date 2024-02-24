@@ -97,10 +97,17 @@ export const routes = {
   RESEND_EMAIL: '/resend-email',
   DELETE_PROFILE: '/delete-profile',
   PROFILE: '/clinic-profile',
+
   DASHBOARD: '/dashboard',
-  DASHBOARD_ADMIN_DATA:'/dashboard/admin-data',
-  DASHBOARD_PROFILE_DATA:'/dashboard/profile-data',
-  DASHBOARD_UNIT_DATA:'/dashboard/unit-data',
+
+  DASHBOARD_CLINIC: '/dashboard-clinic',
+  DASHBOARD_ADMIN_DATA:'/dashboard-clinic/admin-data-dashboard',
+  DASHBOARD_PROFILE_DATA:'/dashboard-clinic/profile-data-dashboard',
+  DASHBOARD_UNIT_DATA:'/dashboard-clinic/unit-data-dashboard',
+
+  DASHBOARD_DOCTOR: '/dashboard-doctor',
+  DASHBOARD_DOCTOR_DATA:'/dashboard-doctor/doctor-data-dashboard',
+
   LOG_OUT:'/log-out',
   HOW_TO_REDEEM_CLINIC:'/how-to-redeem-clinic',
   HOW_TO_REDEEM_DOCTOR:'/how-to-redeem-doctor',
@@ -110,7 +117,8 @@ export const routes = {
   SINGLE_ARTICLE: '/article',
   ARTICLES:'/articles',
   DOCTOR_DATA: '/doctor-data',
-  DOCTOR_PAGE: '/doctor-page'
+  DOCTOR_PAGE: '/doctor-page',
+  NOT_FOUND: '/not-found'
 }
 
 export const AUTH_CLINIC_MAP_STEP = {

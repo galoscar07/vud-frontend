@@ -26,6 +26,7 @@ import ClinicPage from './pages/ClinicPage/ClinicPage';
 import FilterPage from './pages/Homepage/FilterPage/FilterPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import DashboardProfileData from './pages/Dashboard/ProfileData/DashboardProfileData';
+import DashboardProfileDataDoctor from './pages/Dashboard/ProfileDataDoctor/DashboardProfileData';
 import DashboardUnitData from './pages/Dashboard/UnitData/DashboardUnitData';
 import LogOut from './pages/Dashboard/LogOut/LogOut';
 import NotFoundPage from './pages/NotFound/NotFound';
@@ -39,6 +40,7 @@ import ArticlesPage from './pages/Articles/Articles';
 import DoctorData from './pages/DoctorData/DoctorData';
 import DoctorPage from './pages/DoctorPage/DoctorPage';
 import ResendEmail from './pages/EmailVerification/ResendEmail/ResendEmail';
+import DashboardWrapper from "./pages/Dashboard/DashboardWrapper";
 const domainGroupId = '4ca262e1-9e52-410b-81d0-dc997ad6f624';
 
 function App() {
@@ -77,8 +79,14 @@ function App() {
           <Route path={routes.EMAIL_VERIFICATION}>
             <Route path=":token" element={<EmailVerification />}/>
           </Route>
-          <Route path={routes.DASHBOARD} element={<Dashboard />} >
-            <Route path={routes.DASHBOARD} element={<Navigate to={routes.DASHBOARD_UNIT_DATA} replace />} />
+
+          <Route path={routes.DASHBOARD} element={<Dashboard />} />
+
+          <Route path={routes.DASHBOARD_DOCTOR} element={<DashboardWrapper />}>
+            <Route path={routes.DASHBOARD_DOCTOR_DATA} element={<DashboardProfileDataDoctor />} />
+          </Route>
+
+          <Route path={routes.DASHBOARD_CLINIC} element={<DashboardWrapper />} >
             <Route path={routes.DASHBOARD_UNIT_DATA} element={<DashboardUnitData />} />
             <Route path={routes.DASHBOARD_PROFILE_DATA} element={<DashboardProfileData />} />
           </Route>

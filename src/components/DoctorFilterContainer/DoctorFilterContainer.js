@@ -7,7 +7,6 @@ import { API_URL_MEDIA, routes } from "../../utils/routes";
 const DoctorFilterContainer = (props) => {
     const navigate = useNavigate();
     const { doctor, displayReviews = false } = props
-    debugger
     return (
         <div className="clinic-filter-container">
             <div className="info-container" onClick={() => { navigate(routes.DOCTOR_PAGE + `/?id=${doctor.id}`) }}>
