@@ -276,25 +276,29 @@ function Homepage() {
 
       <div className="content">
         <div className="main-content">
-          <div className="container-title desktop">
-            <div className="title">
-              <img src="/images/star_full.svg" alt={"stea"}/>
-              Top medici
-            </div>
-            <div className="subtitle" onClick={showAllDoctors}>
-              Toati medicii
-            </div>
-          </div>
-          <div className="results-container">
-            {
-              loading
-                  ? <LoadingSpinner/>
-                  : topDoctors.map((doctor, i) =>
-                      <DoctorFilterContainer displayReviews key={i} doctor={doctor} type={1}/>
-                  )
-            }
-          </div>
-
+          {
+            topDoctors.length > 0 &&
+              <React.Fragment>
+                <div className="container-title desktop">
+                  <div className="title">
+                    <img src="/images/star_full.svg" alt={"stea"}/>
+                    Top medici
+                  </div>
+                  <div className="subtitle" onClick={showAllDoctors}>
+                    Toati medicii
+                  </div>
+                </div>
+                <div className="results-container">
+                  {
+                    loading
+                        ? <LoadingSpinner/>
+                        : topDoctors.map((doctor, i) =>
+                            <DoctorFilterContainer displayReviews key={i} doctor={doctor} type={1}/>
+                        )
+                  }
+                </div>
+              </React.Fragment>
+          }
           <div className="container-title desktop">
             <div className="title">
               <img src="/images/star_full.svg" alt={"stea"}/>

@@ -3,7 +3,7 @@ import "./Dashboard.scss";
 import Toolbar from "../../components/Header/Toolbar/Toolbar"
 import { Outlet, useNavigate } from 'react-router-dom';
 import { API_MAP, getAPILink, makeRequestLogged, AUTH_CLINIC_MAP_STEP, routes } from "../../utils/routes";
-import { getAuthTokenFromLocal } from "../../utils/localStorage";
+import {getAuthTokenFromLocal, logOutFromStorage} from "../../utils/localStorage";
 import _ from "lodash";
 
 const Dashboard = () => {
@@ -26,11 +26,16 @@ const Dashboard = () => {
         )
             .then((res) => res.json())
             .then((res) => {
+                if (res.code === "token_not_valid") {
+                    logOutFromStorage()
+                    window.location.reload()
+                    navigate(routes.HOMEPAGE)
+                }
                 if (res.is_doctor) {
                     navigate(routes.DASHBOARD_DOCTOR_DATA)
                 }
                 if (res.is_clinic) {
-                    navigate(routes.DASHBOARD_UNIT_DATA)
+                    navigate(routes.DASHBOARD_PROFILE_DATA)
                 }
             })
             .catch((err) => {

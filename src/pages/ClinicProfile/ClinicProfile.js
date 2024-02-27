@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
-import { useNavigate } from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import MapWrapper from "../../components/Map/Map";
 import InviteCard from "../DoctorData/InviteCard/InviteCard";
 import { JUD_ORA } from "../../utils/judete";
@@ -34,6 +34,8 @@ const ClinicProfile = (props) => {
   // Navigate
   const navigate = useNavigate();
 
+  const [values, setValues] = useState(null)
+
   // Inputs state
   const [state, setState] = useState({
     clinic_name: props?.selected?.clinic_name || '',
@@ -42,8 +44,8 @@ const ClinicProfile = (props) => {
     clinic_town: props?.selected?.clinic_town || '',
     clinic_county: props?.selected?.clinic_county || '',
     clinic_other_details: props?.selected?.clinic_other_details || '',
-    primary_phone: props?.selected?.primary_phone || '',
-    primary_phone_label: props.selected?.primary_phone_label || 'phone',
+    primary_phone: JSON.parse(props?.selected?.primary_phone || "{}")?.value || '',
+    primary_phone_label: JSON.parse(props?.selected?.primary_phone || "{}")?.label || 'phone',
     primary_email: props?.selected?.primary_email || '',
     website: props?.selected?.website || '',
     website_facebook: props?.selected?.website_facebook || '',
@@ -52,8 +54,12 @@ const ClinicProfile = (props) => {
     website_youtube: props?.selected?.website_youtube || '',
     whatsapp: props?.selected?.whatsapp || '',
     description: props?.selected?.description || '',
-    clinic_specialities: props?.selected?.clinic_specialities || [],
-    clinic_facilities: props?.selected?.clinic_facilities || [],
+    clinic_specialities: props?.selected?.clinic_specialities.map((el) => {
+      return { value: el.id, label: el.label }
+    }) || [],
+    clinic_facilities: props?.selected?.unity_facilities.map((el) => {
+      return { value: el.id, label: el.label }
+    }) || [],
     profile_picture: props?.selected?.profile_picture || null,
     profile_picture_preview: props?.selected?.profile_picture_preview || null,
     error: '',
@@ -176,10 +182,71 @@ const ClinicProfile = (props) => {
     setState({ ...state, profile_picture: event.target.files[0], profile_picture_preview: window.URL.createObjectURL(event.target.files[0]) })
   }
 
+  const mapResponseFromServerClinic = (resp, status = null) => {
+    return {
+      ...resp,
+      results: resp.results.map((el) => {
+        return {
+          id: el.id,
+          img: el.profile_picture,
+          name: el.clinic_name,
+          type: el?.medical_unit_types.map((e) => {
+            return e.label
+          }).join(" | "),
+          status: status || selectedInvitedUnits.filter((s) => s.id === el.id).length === 1 ? "added" : "uninvited",
+          disabled: false
+        }
+      })
+    }
+  }
+  const mapResponseFromServerDoctor = (resp, status = null) => {
+    return {
+      ...resp,
+      results: resp.results.map((el) => {
+        return {
+          id: el.id,
+          img: el.profile_picture,
+          name: el.first_name + " " + el.last_name,
+          specialities: el?.speciality.map((e) => {
+            return e.label
+          }),
+          competences: el?.medical_skill.map((e) => {
+            return e.label
+          }),
+          unit: el?.collaborator_clinic.map((e) => {
+            return e.clinic_name
+          }).join(' | '),
+          email: el.primary_email,
+          status: status || selectedInvitedDoctors.filter((s) => s.id === el.id).length === 1 ? "added" : "uninvited",
+          disabled: false
+        }
+      })
+    }
+  }
+
   // States and Functions for extra phone number and emails
-  const [multiplePhones, setMultiplePhones] = useState([])
-  const [multiplePhoneLabels, setMultiplePhoneLabels] = useState([])
-  const [multipleEmails, setMultipleEmails] = useState([])
+  let mp, mpl, me, mockResp, mockRespClinic, daysNew = null
+  if (props.isDashboard) {
+    if (props.selected.secondary_phone) {
+      const asd = JSON.parse(props.selected.secondary_phone)
+      mp = asd.map((e) => {return e[1]})
+      mpl = asd.map((e) => {return e[0]})
+    }
+    if (props.selected.secondary_email) {
+      me = props.selected.secondary_email.split("|")
+    }
+    mockRespClinic = mapResponseFromServerClinic({results: props?.selected?.collaborator_clinic}, "added").results
+    mockResp = mapResponseFromServerDoctor({results: props?.selected?.collaborator_doctor}, "added").results
+    daysNew = JSON.parse(props?.selected?.clinic_schedule)
+  }
+
+  const [multiplePhones, setMultiplePhones] = useState(mp || [])
+  const [multiplePhoneLabels, setMultiplePhoneLabels] = useState(mpl || [])
+  const [multipleEmails, setMultipleEmails] = useState(me || [])
+  const [selectedInvitedUnits, setSelectedInvitedUnits] = useState(mockRespClinic || [])
+  const [selectedInvitedDoctors, setSelectedInvitedDoctors] = useState(mockResp || [])
+  const [schedule, setSchedule] = React.useState(daysNew || days);
+
   const addAnotherInput = (name) => {
     if (name === 'phone') {
       if (multiplePhones.length === 5) {
@@ -225,8 +292,6 @@ const ClinicProfile = (props) => {
   const [toggleInviteU, setToggleInviteUnit] = React.useState(false);
   const [toggleInvite, setToggleInvite] = React.useState(false);
 
-  const [selectedInvitedUnits, setSelectedInvitedUnits] = useState([])
-  const [selectedInvitedDoctors, setSelectedInvitedDoctors] = useState([])
 
   const [invitedUnits, setInvitedUnits] = useState([])
   const [invitedDoctors, setInvitedDoctors] = useState([])
@@ -254,48 +319,6 @@ const ClinicProfile = (props) => {
     email: '',
     message: '',
   })
-
-  const mapResponseFromServerClinic = (resp) => {
-    return {
-      ...resp,
-      results: resp.results.map((el) => {
-        return {
-          id: el.id,
-          img: el.profile_picture,
-          name: el.clinic_name,
-          type: el.medical_unit_types.map((e) => {
-            return e.label
-          }).join(" | "),
-          status: selectedInvitedUnits.filter((s) => s.id === el.id).length === 1 ? "added" : "uninvited",
-          disabled: false
-        }
-      })
-    }
-  }
-  const mapResponseFromServerDoctor = (resp) => {
-    return {
-      ...resp,
-      results: resp.results.map((el) => {
-        return {
-          id: el.id,
-          img: el.profile_picture,
-          name: el.first_name + el.last_name,
-          specialities: el.speciality.map((e) => {
-            return e.label
-          }),
-          competences: el.medical_skill.map((e) => {
-            return e.label
-          }),
-          unit: el.collaborator_clinic.map((e) => {
-            return e.clinic_name
-          }).join(' | '),
-          email: el.primary_email,
-          status: selectedInvitedDoctors.filter((s) => s.id === el.id).length === 1 ? "added" : "uninvited",
-          disabled: false
-        }
-      })
-    }
-  }
 
   const remapResponseFromServerClinic = (resp) => {
     return {
@@ -590,7 +613,6 @@ const ClinicProfile = (props) => {
   const [medicalFacilities, setMedicalFacilities] = useState([])
 
   // Schedule
-  const [schedule, setSchedule] = React.useState(days);
   const [activeDay, setActiveDay] = React.useState("Luni");
   const [interval, setInterval] = React.useState({
     startTime: '00:00',
@@ -642,12 +664,13 @@ const ClinicProfile = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!isFormValid()) return
+    const secondary_phones_sorted = multiplePhoneLabels.map(function (value, index) {
+      return [value, multiplePhones[index]]
+    });
+    setValues("Loading")
     if (props.onSubmit) {
-      props.onSubmit(mapStateToObject())
+      props.onSubmit({...mapStateToObject(), secondary_phones_sorted}, setValues)
     } else {
-      const secondary_phones_sorted = multiplePhoneLabels.map(function (value, index) {
-        return [value, multiplePhones[index]]
-      });
       const mapped = mapStateToObject()
       const formData = new FormData()
       formData.append('clinic_name', mapped.clinic_name)
@@ -685,6 +708,7 @@ const ClinicProfile = (props) => {
         })
         .catch((err) => { })
     }
+    window.scrollTo(0,0)
   };
 
   // useEffect
@@ -782,10 +806,10 @@ const ClinicProfile = (props) => {
           </div>
           <div className="col-3">
             <div className="input-wrapper">
-              <Dropdown hasError={errorStateDD.clinic_county} noNumber title={"Judet*"} onSelect={getCitiesForCounty} options={judete} isMulti={false} />
+              <Dropdown hasError={errorStateDD.clinic_county} selected={state.clinic_county} noNumber title={"Judet*"} onSelect={getCitiesForCounty} options={judete} isMulti={false} />
             </div>
             <div className="input-wrapper">
-            <Dropdown hasError={errorStateDD.clinic_town} noNumber title={"Oras*"} onSelect={setCity} options={cities} isMulti={false} />
+            <Dropdown hasError={errorStateDD.clinic_town} selected={state.clinic_town} noNumber title={"Oras*"} onSelect={setCity} options={cities} isMulti={false} />
             </div>
           </div>
           <div className="col">
@@ -822,7 +846,7 @@ const ClinicProfile = (props) => {
                 return (
                   <div className={'extra_data_row'} key={index}>
                     <label>*Denumire telefon</label>
-                    <select name={index.toString()} id="searching" onChange={(e) => handlePhoneEmailChange(e.target.value, index, multiplePhoneLabels, setMultiplePhoneLabels)}>
+                    <select value={multiplePhoneLabels[index]} name={index.toString()} id="searching" onChange={(e) => handlePhoneEmailChange(e.target.value, index, multiplePhoneLabels, setMultiplePhoneLabels)}>
                       <option value="phone">Telefon</option>
                       <option value="emergency">Urgențe</option>
                       <option value="ambulance">Ambulanță</option>
@@ -938,8 +962,8 @@ const ClinicProfile = (props) => {
           }
           {
             clinics.count !== 0 &&
-            clinics.results.map((cl) => {
-              return <InviteCard disable type="unit" unit={cl} onClick={handleClickUnit} />
+            clinics.results.map((cl, i) => {
+              return <InviteCard key={i} disable type="unit" unit={cl} onClick={handleClickUnit} />
             })
           }
           {
@@ -948,7 +972,7 @@ const ClinicProfile = (props) => {
               <p>Unități medicale adăugate</p>
               {selectedInvitedUnits.map((invited, i) => {
                 return (
-                  <InviteCard type="unit" unit={invited} onClick={handleClickUnit} />
+                  <InviteCard key={i} type="unit" unit={invited} onClick={handleClickUnit} />
                 )
               })}
             </React.Fragment>
@@ -959,7 +983,7 @@ const ClinicProfile = (props) => {
               <p>Unități medicale adăugate</p>
               {invitedUnits.map((invited, i) => {
                 return (
-                  <InviteCard type="unit" unit={invited} />
+                  <InviteCard  key={i}  type="unit" unit={invited} />
                 )
               })}
             </React.Fragment>
@@ -982,8 +1006,8 @@ const ClinicProfile = (props) => {
           }
           {
             doctors.count !== 0 &&
-            doctors.results.map((cl) => {
-              return <InviteCard disable type="doctor" doctor={cl} onClick={handleClickDoctor} />
+            doctors.results.map((cl, i) => {
+              return <InviteCard disable key={i} type="doctor" doctor={cl} onClick={handleClickDoctor} />
             })
           }
           {
@@ -992,7 +1016,7 @@ const ClinicProfile = (props) => {
               <p>Doctori colaboratori adăugati</p>
               {selectedInvitedDoctors.map((invited, i) => {
                 return (
-                  <InviteCard type="doctor" doctor={invited} onClick={handleClickDoctor} />
+                  <InviteCard type="doctor"  key={i}  doctor={invited} onClick={handleClickDoctor} />
                 )
               })}
             </React.Fragment>
@@ -1003,7 +1027,7 @@ const ClinicProfile = (props) => {
               <p>Doctori colaboratori invitati</p>
               {invitedDoctors.map((invited, i) => {
                 return (
-                  <InviteCard type="doctor" doctor={invited} />
+                  <InviteCard type="doctor" key={i} doctor={invited} />
                 )
               })}
             </React.Fragment>
@@ -1086,6 +1110,15 @@ const ClinicProfile = (props) => {
         <img alt={'Unitate medicala'} src="/images/unit.svg" />
         <h1>Profil</h1>
         {
+          values === "Success"
+            ? <h2 className={'alert'}>Profilul a fost actualizat cu success</h2>
+            : values === "Error"
+                  ? <h2 className={'alert error'} >A aparut o eroare!</h2>
+                  : values === "Loading"
+                      ? <LoadingSpinner />
+                      : null
+        }
+        {
           loading
             ? <LoadingSpinner />
             : (
@@ -1100,7 +1133,14 @@ const ClinicProfile = (props) => {
                 {
                   state.error && <div style={{ marginBottom: '15px' }} className={'error'}>{state.error}</div>
                 }
-                <button className="button round " onClick={handleSubmit} >Salvează</button>
+                <div className={"flex-row"}>
+                  <button className="button round " onClick={handleSubmit} >Salvează</button>
+                  {props.isDashboard &&
+                      <NavLink
+                          to={routes.DELETE_PROFILE}
+                      >Sterge cont</NavLink>
+                  }
+                </div>
               </form>
             )
         }

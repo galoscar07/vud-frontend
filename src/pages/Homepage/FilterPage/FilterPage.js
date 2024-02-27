@@ -455,6 +455,7 @@ const FilterPage = (props) => {
           {pageNumbers.map((page) => {
             return <span key={page}
                   onClick={() => {
+                    window.scrollTo(0,0)
                     setPagination((prev) => ({...prev, currentPage: page}))
                     getData()
                   }}
@@ -566,15 +567,19 @@ const FilterPage = (props) => {
                 : renderDoctor()
           }
         </div>
-        <div className="right-side">
-          <MapWrapper
-            classes={'map-filter-page'}
-            locations={clinics.map((cli) => {
-              return {address: cli.address, name: cli.name, description: cli.description}
-            })}
-          ></MapWrapper>
-          <img className="add" src={addsToDisplay['searchpage_2']?.photo}/>
-        </div>
+        {
+            state.search_type === 'clinic' && (
+                <div className="right-side">
+                  <MapWrapper
+                      classes={'map-filter-page'}
+                      locations={clinics.map((cli) => {
+                        return {address: cli.address, name: cli.name, description: cli.description}
+                      })}
+                  ></MapWrapper>
+                  <img className="add" src={addsToDisplay['searchpage_2']?.photo}/>
+                </div>
+            )
+        }
       </div>
     </div>
   );

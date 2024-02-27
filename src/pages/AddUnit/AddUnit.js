@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 
 const AddUnit = (props) => {
-  console.log("asd", props.selected)
   useEffect(() => {
     if (props.selected !== state.selected) {
       setState({...state, selected: props.selected})

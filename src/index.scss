@@ -316,3 +316,16 @@ label {
     display: none !important;
   }
 }
+
+.alert {
+  padding: 20px 10px;
+  background-color: $color-primary-hover;
+  border-radius: 10px;
+  width: 50%;
+  margin: auto;
+  color: $color-blue;
+  &.error {
+    color: $color-blue;
+    background-color: rgba($color-secondary, 0.1);
+  }
+}

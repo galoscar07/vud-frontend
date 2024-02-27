@@ -1,8 +1,7 @@
 import './App.scss';
-import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
-import { Navigate } from 'react-router-dom';
-import { routes, API_MAP, GET_ADDS, getAPILink } from "./utils/routes";
-import React, { useState, useEffect } from 'react'
+import { Route, Routes } from "react-router-dom";
+import { routes, API_MAP, getAPILink } from "./utils/routes";
+import React, { useEffect } from 'react'
 
 // Footer
 import Header from "./components/Header/Header";

@@ -6,6 +6,7 @@ import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/rout
 import "./DoctorData.scss";
 import InviteCard from "./InviteCard/InviteCard";
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const initialPaginated = {
     count: 0,
@@ -17,6 +18,8 @@ const initialPaginated = {
 const DoctorData = (props) => {
     const navigate = useNavigate();
     // Form values
+    const [status, setStatus] = useState(null)
+
     const [values, setValues] = useState({
         firstName: props?.selected?.first_name || '',
         lastName: props?.selected?.last_name || '',
@@ -124,14 +127,13 @@ const DoctorData = (props) => {
         }
     }
     const mapResponseFromServerDoctor = (resp, status = null) => {
-        debugger
         return {
             ...resp,
             results: resp.results.map((el) => {
                 return {
                     id: el.id,
                     img: el.profile_picture,
-                    name: el.first_name + el.last_name,
+                    name: el.first_name + " " + el.last_name,
                     specialities: el.speciality.map((e) => {
                         return e.label
                     }),
@@ -447,7 +449,6 @@ const DoctorData = (props) => {
             </div>
         )
     }
-    console.log(selectedInvitedDoctors)
     // Dropdowns
     const [academicDegreesDropDown, setAcademicDegreesDropDown] = useState([])
     const [specialities, setSpecialities] = useState([])
@@ -498,7 +499,7 @@ const DoctorData = (props) => {
                 setCompetences(mapped)
             })
             .catch((err) => { })
-    }, [])
+    }, [props.isDashboard, props?.selected?.academic_degree, props?.selected?.medical_skill, props?.selected?.speciality])
 
     const handleDropdownSubmit = (selected, name) => {
         switch (name) {
@@ -513,6 +514,9 @@ const DoctorData = (props) => {
             case 'competences': {
                 setSelectedCompetences(selected)
                 break;
+            }
+            default: {
+                break
             }
         }
     }
@@ -531,16 +535,18 @@ const DoctorData = (props) => {
         })
         
         let ok = true
-        Object.keys(error).forEach((key) => {
-            if (key === 'fileList') {
-                errorCopy[key] = values[key].length === 0
-            } else {
-                errorCopy[key] = !values[key]
-            }
-            if (!values[key]) {
-                ok = false
-            }
-        })
+        if (!props.isDashboard) {
+            Object.keys(error).forEach((key) => {
+                if (key === 'fileList') {
+                    errorCopy[key] = values[key].length === 0
+                } else {
+                    errorCopy[key] = !values[key]
+                }
+                if (!values[key]) {
+                    ok = false
+                }
+            })
+        }
 
         if (selectedCompetences.length === 0) {
             ok = false
@@ -629,11 +635,10 @@ const DoctorData = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        // TODO check form
         if (!isFormValid()) return
+        setStatus("Loading")
         if (props.onSubmit) {
-            // TODO Finish this for the dashboard
-            props.onSubmit(mapStateToObject())
+            props.onSubmit(mapStateToObject(), setStatus)
         } else {
             const mapped = mapStateToObject()
             const formData = new FormData()
@@ -680,13 +685,22 @@ const DoctorData = (props) => {
                     setValues({ ...values, error: "A apărut o eraore. Va rugăm încercați din nou" })
                 })
         }
-        console.log('submitted')
+        window.scrollTo(0,0)
     }
 
     return (
         <div className="doctor-data-page">
-            <img src="/images/user.svg" />
+            <img src="/images/user.svg" alt={"user icon"}/>
             <h1>Profil medic</h1>
+            {
+                status === "Success"
+                    ? <h2 className={'alert'}>Profilul a fost actualizat cu success</h2>
+                    : status === "Error"
+                        ? <h2 className={'alert error'} >A aparut o eroare!</h2>
+                        : status === "Loading"
+                            ? <LoadingSpinner />
+                            : null
+            }
             <div className="data-container">
                 <form>
                     <div className="contact-data">
@@ -852,7 +866,6 @@ const DoctorData = (props) => {
                                 <React.Fragment>
                                     <p>Doctori colaboratori adăugati</p>
                                     {selectedInvitedDoctors.map((invited, i) => {
-                                        debugger
                                         return (
                                             <InviteCard key={i} type="doctor" doctor={invited} onClick={handleClickDoctor} />
                                         )
@@ -898,7 +911,7 @@ const DoctorData = (props) => {
                                         <div className="image-upload">
                                             <label htmlFor="file">
                                                 <img className="upload-photo"
-                                                     src="/images/upload_icon.svg" />
+                                                     src="/images/upload_icon.svg"  alt={"upload"}/>
                                             </label>
                                             <input style={{ display: "none" }} name="files" id="file" type="file" multiple
                                                    onChange={(e) => updateList(e.target.value, e.target.name)} />
@@ -908,7 +921,7 @@ const DoctorData = (props) => {
                                                             <div className="selected-file" key={i}>
                                                                 {file}
                                                                 <span onClick={() => deleteFile(file)}>
-                                                    <img src="/images/delete.svg" />
+                                                    <img src="/images/delete.svg" alt="delete buton"/>
                                                 </span>
                                                             </div>
                                                     )}

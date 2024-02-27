@@ -17,9 +17,6 @@ function Toolbar({user}) {
             <NavLink
                 to={routes.LOG_OUT}
             >Delogheaza-te</NavLink>
-            <NavLink
-                to={routes.DELETE_PROFILE}
-            >Sterge cont</NavLink>
           </div>
         </div>
     )
@@ -33,9 +30,6 @@ function Toolbar({user}) {
             <NavLink
                 to={routes.LOG_OUT}
             >Delogheaza-te</NavLink>
-            <NavLink
-                to={routes.DELETE_PROFILE}
-            >Sterge cont</NavLink>
           </div>
         </div>
     )
