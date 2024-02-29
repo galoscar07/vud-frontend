@@ -24,16 +24,30 @@ const dayMapping = {
 }
 
 const label_ads = [
-    'clinicpage_1'
+    'clinicpage_1', 'clinicpage_2', 'clinicpage_3'
 ]
 
 const default_adds = {
     'clinicpage_1': {
         id: 1,
-        href: 'www.google.com',
+        href: 'https://www.google.com',
         alt: 'add-1',
         photo: "/images/ads/ad1.svg",
-        size: '437x437',
+        size: '250x300',
+    },
+    'clinicpage_2': {
+        id: 2,
+        href: 'https://www.google.com',
+        alt: 'add-1',
+        photo: "/images/ads/add2.svg",
+        size: '90x728',
+    },
+    'clinicpage_3': {
+        id: 3,
+        href: 'https://www.google.com',
+        alt: 'add-1',
+        photo: "/images/ads/ad1.svg",
+        size: '250x300',
     }
 }
 
@@ -526,25 +540,32 @@ function ClinicPage({ props }) {
                     )}
                 </div>
                 {clinic.schedule &&
-                    <div className="schedule-container">
-                        <div className="weekdays-container">
-                            {Object.entries(clinic.schedule).map(([weekday, inter], i) => {
-                                return (
-                                    <div className={`day ${day === i ? 'active' : ''}`} key={i}>
-                                        <span>{weekday}</span>
-                                        {
-                                            inter.length > 0
-                                                ? inter.map((interval, index) => {
-                                                    return <span key={index} className={'interval'}>{interval.startTime} - {interval.endTime}</span>
-                                                })
-                                                : <span className={'interval'}>Inchis</span>
+                    <React.Fragment>
+                        <div className="schedule-container">
+                            <div className="weekdays-container">
+                                {Object.entries(clinic.schedule).map(([weekday, inter], i) => {
+                                    return (
+                                        <div className={`day ${day === i ? 'active' : ''}`} key={i}>
+                                            <span>{weekday}</span>
+                                            {
+                                                inter.length > 0
+                                                    ? inter.map((interval, index) => {
+                                                        return <span key={index} className={'interval'}>{interval.startTime} - {interval.endTime}</span>
+                                                    })
+                                                    : <span className={'interval'}>Inchis</span>
 
-                                        }
-                                    </div>
-                                )
-                            })}
+                                            }
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
-                    </div>
+                        <a style={{marginRight: 0}} target="_blank" href={addsToDisplay['clinicpage_2']?.href}>
+                            <img className="add"
+                                 style={{height: addsToDisplay['clinicpage_2']?.size.split("x")[0]+'px', width: addsToDisplay['clinicpage_2']?.size.split("x")[1]+'px'}}
+                                 src={addsToDisplay['clinicpage_2']?.photo}/>
+                        </a>
+                    </React.Fragment>
                 }
             </div>
         )
@@ -674,7 +695,16 @@ function ClinicPage({ props }) {
                                         location={[{ address: clinic.address, name: clinic.name, description: clinic.description }]}
                                     ></MapWrapper>
                                 </div>
-                                <img className="add" src={addsToDisplay['clinicpage_1']?.photo} />
+                                <a style={{marginRight: 0}} target="_blank" href={addsToDisplay['clinicpage_1']?.href}>
+                                    <img className="add"
+                                         style={{height: addsToDisplay['clinicpage_1']?.size.split("x")[0]+'px', width: addsToDisplay['clinicpage_1']?.size.split("x")[1]+'px'}}
+                                         src={addsToDisplay['clinicpage_1']?.photo}/>
+                                </a>
+                                <a target="_blank" href={addsToDisplay['clinicpage_3']?.href}>
+                                    <img className="add"
+                                         style={{ height: addsToDisplay['clinicpage_3']?.size.split("x")[0]+'px', width: addsToDisplay['clinicpage_3']?.size.split("x")[1]+'px'}}
+                                         src={addsToDisplay['clinicpage_3']?.photo}/>
+                                </a>
                             </div>
 
                             <div className="info-right-container">

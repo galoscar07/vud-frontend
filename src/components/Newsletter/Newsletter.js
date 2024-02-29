@@ -20,7 +20,7 @@ const Newsletter = (props) => {
     server: {
       error: null
     },
-    isEnabled: false
+    isEnabled: true
   })
   const [formValid, setFormValid] = React.useState(false)
 

@@ -10,24 +10,31 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { routes } from '../../utils/routes';
 
 const label_ads = [
-    'doctorpage_1', 'doctorpage_2'
+    'doctorpage_1', 'doctorpage_2', 'doctorpage_3'
 ]
 
 const default_adds = {
     'doctorpage_1': {
         id: 1,
-        href: 'www.google.com',
+        href: 'https://www.google.com',
         alt: 'add-1',
         photo: "/images/ads/ad1.svg",
         size: '437x437',
     },
     'doctorpage_2': {
-        id: 1,
-        href: 'www.google.com',
+        id: 2,
+        href: 'https://www.google.com',
         alt: 'add-1',
         photo: "/images/ads/add5.svg",
         size: '437x437',
     },
+    'doctorpage_3': {
+        id: 3,
+        href: 'https://www.google.com',
+        alt: 'add-1',
+        photo: "/images/ads/add2.svg",
+        size: '90x728',
+    }
 }
 
 function DoctorPage({ props }) {
@@ -369,6 +376,11 @@ function DoctorPage({ props }) {
                         </div>
                     </div>
                 </div>
+                <a style={{marginRight: 0}} target="_blank" href={addsToDisplay['doctorpage_3']?.href}>
+                    <img className="add"
+                         style={{height: addsToDisplay['doctorpage_3']?.size.split("x")[0]+'px', width: addsToDisplay['doctorpage_3']?.size.split("x")[1]+'px'}}
+                         src={addsToDisplay['doctorpage_3']?.photo}/>
+                </a>
             </div>
         )
     }
@@ -437,9 +449,16 @@ function DoctorPage({ props }) {
                                         </React.Fragment>
                                     }
                                 </div>
-                                <img className="add" src={addsToDisplay['doctorpage_1']?.photo} />
-                                <img className="add" src={addsToDisplay['doctorpage_2']?.photo} />
-
+                                <a style={{marginRight: 0}} target="_blank" href={addsToDisplay['doctorpage_1']?.href}>
+                                    <img className="add"
+                                         style={{height: addsToDisplay['doctorpage_1']?.size.split("x")[0]+'px', width: addsToDisplay['doctorpage_1']?.size.split("x")[1]+'px'}}
+                                         src={addsToDisplay['doctorpage_1']?.photo}/>
+                                </a>
+                                <a target="_blank" href={addsToDisplay['doctorpage_2']?.href}>
+                                    <img className="add"
+                                         style={{ height: addsToDisplay['doctorpage_2']?.size.split("x")[0]+'px', width: addsToDisplay['doctorpage_2']?.size.split("x")[1]+'px'}}
+                                         src={addsToDisplay['doctorpage_2']?.photo}/>
+                                </a>
                             </div>
                             <div className="info-right-container">
                                 <img className="add mobile" src="/images/ads/add2.svg" />

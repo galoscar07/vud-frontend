@@ -16,28 +16,28 @@ const label_ads = [
 const default_adds = {
   'homepage_1': {
     id: 1,
-    href: 'www.google.com',
+    href: 'https://www.google.com',
     alt: 'add-1',
     photo: "/images/ads/add7.svg",
     size: '437x437',
   },
   'homepage_2': {
     id: 2,
-    href: 'www.google.com',
+    href: 'https://www.google.com',
     alt: 'add-2',
     photo: "/images/ads/add4.svg",
-    size: '211x882'
+    size: '882x224'
   },
   'homepage_3': {
     id: 3,
-    href: 'www.google.com',
+    href: 'https://www.google.com',
     alt: 'add-3',
     photo: "/images/ads/add5.svg",
     size: '154x224'
   },
   'homepage_4': {
     id: 4,
-    href: 'www.google.com',
+    href: 'https://www.google.com',
     alt: 'add-4',
     photo: "/images/ads/ad1.svg",
     size: '224x224'
@@ -318,23 +318,31 @@ function Homepage() {
             }
           </div>
           <div className="ads-container">
+            <a target="_blank" href={addsToDisplay['homepage_1']?.href}>
             <img className="add"
-              //  style={{height: addsToDisplay['homepage_1']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_1']?.size.split("x")[1]+'px'}}
+               style={{height: addsToDisplay['homepage_1']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_1']?.size.split("x")[1]+'px'}}
                  src={addsToDisplay['homepage_1']?.photo}/>
+            </a>
           </div>
         </div>
 
         <div className="side-content">
+          <a target="_blank" href={addsToDisplay['homepage_2']?.href}>
+            <img className="add"
+                 style={{height: addsToDisplay['homepage_2']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_2']?.size.split("x")[1]+'px'}}
+                 src={addsToDisplay['homepage_2']?.photo}/>
+          </a>
+          <a target="_blank" href={addsToDisplay['homepage_3']?.href}>
           <img className="add"
-            //  style={{height: addsToDisplay['homepage_2']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_2']?.size.split("x")[1]+'px'}}
-               src={addsToDisplay['homepage_2']?.photo}/>
-          <img className="add"
-            // style={{height: addsToDisplay['homepage_3']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_3']?.size.split("x")[1]+'px'}}
+            style={{height: addsToDisplay['homepage_3']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_3']?.size.split("x")[1]+'px'}}
                src={addsToDisplay['homepage_3']?.photo}/>
-          <Newsletter/>
+          </a>
+          <Newsletter />
+          <a target="_blank" href={addsToDisplay['homepage_4']?.href}>
           <img className="add"
-            // style={{height: addsToDisplay['homepage_4']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_4']?.size.split("x")[1]+'px'}}
+            style={{height: addsToDisplay['homepage_4']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_4']?.size.split("x")[1]+'px'}}
                src={addsToDisplay['homepage_4']?.photo}/>
+          </a>
         </div>
       </div>
 

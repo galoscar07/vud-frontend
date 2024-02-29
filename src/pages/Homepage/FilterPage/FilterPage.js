@@ -15,22 +15,29 @@ const initialPagination = {
   maxPage: null,
 }
 const label_ads = [
-  'searchpage_1', 'searchpage_2'
+  'searchpage_1', 'searchpage_2', 'searchpage_3'
 ]
 const default_adds = {
   'searchpage_1': {
     id: 1,
-    href: 'www.google.com',
+    href: 'https://www.google.com',
     alt: 'add-1',
     photo: "/images/ads/add2.svg",
-    size: '437x437',
+    size: '90x729',
   },
   'searchpage_2': {
     id: 2,
-    href: 'www.google.com',
+    href: 'https://www.google.com',
     alt: 'add-1',
     photo: "/images/ads/add8.svg",
-    size: '437x437',
+    size: '250x300'
+  },
+  'searchpage_3': {
+    id: 3,
+    href: 'https://www.google.com',
+    alt: 'add-1',
+    photo: "/images/ads/add8.svg",
+    size: '250x300',
   },
 }
 
@@ -415,7 +422,12 @@ const FilterPage = (props) => {
               <ClinicFilterContainer key={i} clinic={clinic}/>
               {i === 1 &&
                 <div>
-                  <img className="add" src={addsToDisplay['searchpage_1']?.photo}/>
+                  <a target="_blank" href={addsToDisplay['searchpage_1']?.href}>
+                    <img className="add"
+                         src={addsToDisplay['searchpage_1']?.photo}
+                           style={{height: addsToDisplay['searchpage_1']?.size.split("x")[0]+'px', width: addsToDisplay['searchpage_1']?.size.split("x")[1]+'px'}
+                    }/>
+                  </a>
                 </div>
               }
             </React.Fragment>
@@ -555,7 +567,15 @@ const FilterPage = (props) => {
                         options={doctorClinics} isMulti placeholder={"Selectează unitate"}/>
             </React.Fragment>
           }
-                          <button onClick={handleSubmit} className="button search">Cauta</button>
+          <button onClick={handleSubmit} className="button search">Cauta</button>
+          <div style={{marginTop: '10px'}}>
+            <a target="_blank" href={addsToDisplay['searchpage_3']?.href}>
+              <img className="add"
+                   src={addsToDisplay['searchpage_3']?.photo}
+                   style={{height: addsToDisplay['searchpage_3']?.size.split("x")[0]+'px', width: addsToDisplay['searchpage_3']?.size.split("x")[1]+'px'}
+                   }/>
+            </a>
+          </div>
 
         </div>
         <div className="center-side">
@@ -576,7 +596,12 @@ const FilterPage = (props) => {
                         return {address: cli.address, name: cli.name, description: cli.description}
                       })}
                   ></MapWrapper>
-                  <img className="add" src={addsToDisplay['searchpage_2']?.photo}/>
+                  <a target="_blank" href={addsToDisplay['searchpage_2']?.href}>
+                    <img className="add"
+                         src={addsToDisplay['searchpage_2']?.photo}
+                         style={{marginTop: '10px', height: addsToDisplay['searchpage_2']?.size.split("x")[0]+'px', width: addsToDisplay['searchpage_2']?.size.split("x")[1]+'px'}
+                         }/>
+                  </a>
                 </div>
             )
         }
