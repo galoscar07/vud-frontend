@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Carousel from '../../components/Carousel/Carousel';
 import Review from '../../components/Review/Review';
-import { API_MAP, getAPILink } from "../../utils/routes";
+import {API_MAP, getAPILink, REACT_RECAPTCHA_KEY} from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import "./DoctorPage.scss";
 import DoctorCard from '../../components/DoctorCard/DoctorCard';
 import ClinicCard from '../../components/ClinicCard/ClinicCard';
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { routes } from '../../utils/routes';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const label_ads = [
     'doctorpage_1', 'doctorpage_2', 'doctorpage_3'
@@ -37,15 +38,24 @@ const default_adds = {
     }
 }
 
-function DoctorPage({ props }) {
+function DoctorPage() {
     const [doctor, setDoctor] = React.useState({ testimonials: [], collaborator_doctors: [], collaborator_clinics: [] });
     const [loading, setLoading] = React.useState(true)
     const [isReviewFormDisplayed, setIsReviewFormDisplayed] = React.useState(false)
     const [id, setId] = React.useState(null)
-    const [error, setError] = React.useState('');
-    const [displayMoreCards, setDisplayMoreCards] = React.useState(true);
+    const displayMoreCards = true
     const [formValid, setFormValid] = React.useState(false)
     const [addsToDisplay, setAddsToDisplay] = useState({})
+
+    const [captchaValue, setCaptchaValue] = useState(null);
+
+    const handleCaptcha = (key) => {
+        setCaptchaValue({
+            captcha: true,
+            'g-recaptcha-response': key
+        })
+    };
+    const recaptchaRef = React.createRef()
 
     // Review
     const [review, setReview] = React.useState({
@@ -72,7 +82,7 @@ function DoctorPage({ props }) {
         }
     })
     const targetElement = useRef();
-    const scrollingTop = (event) => {
+    const scrollingTop = () => {
         targetElement.current.scrollIntoView({
             behavior: "smooth",
             block: "center",
@@ -92,6 +102,10 @@ function DoctorPage({ props }) {
     }
     const handleAddReview = (event) => {
         event.preventDefault();
+        if (!captchaValue) {
+            setReview({ ...review, server: {...review.server, error: "Captcha nu a fost completat"} })
+            return
+        }
         fetch(
             getAPILink(API_MAP.ADD_REVIEW_DOCTOR + id), {
             method: 'POST',
@@ -112,12 +126,11 @@ function DoctorPage({ props }) {
                 setReview({ ...review, isReviewSubmitted: true })
                 return response.json()
             })
-            .then((data) => {
+            .then(() => {
                 setLoading(false)
             })
-            .catch((err) => {
+            .catch(() => {
                 setLoading(false)
-                setError("Ceva nu a funcționat. Vă rugăm să încercați în câteva minute")
             })
     }
 
@@ -192,23 +205,6 @@ function DoctorPage({ props }) {
             })
         }
     }
-
-    const mapCollaboratorDoc = (res) => {
-
-    }
-
-    const collab = [{
-        academic_degree: [{ id: 4, label: "Medic Primar" }],
-        link: "/",
-        name: "Anamaria Dinca",
-        photo: "https://vud-2023.s3.amazonaws.com/media/images/collaborator_doctor/None/COPAESCU%20Catalin%20Andu/3022.jpeg",
-        medical_skill: [{
-            id: 352, label: "Chirurgie Generala"
-        }],
-        speciality: [{
-            id: 9, label: "Chirurgie Laparoscopica"
-        }]
-    }]
 
     useEffect(() => {
         const jsonArray = JSON.parse(localStorage.getItem('ads'));
@@ -302,7 +298,7 @@ function DoctorPage({ props }) {
                                     <span>{doctor.noOfReviews} recenzii</span>
                                     <div className="stars-container">
                                         {Array(5).fill(1).map((el, i) =>
-                                            <img key={i} src={i >= doctor.rating ? "/images/star_empty.svg" : "/images/star_full.svg"} />
+                                            <img alt={"rating"} key={i} src={i >= doctor.rating ? "/images/star_empty.svg" : "/images/star_full.svg"} />
                                         )}
                                     </div>
                                 </div>
@@ -325,7 +321,7 @@ function DoctorPage({ props }) {
                                         )
                                     })}
                                 </div>
-                                <img src="/images/arriw.svg" />
+                                <img src="/images/arriw.svg" alt={"moving arrow"} />
                                 <div className="spec-wrapper">
                                     {doctor?.specialities?.map((spec, i) => {
                                         return (
@@ -376,15 +372,15 @@ function DoctorPage({ props }) {
                         </div>
                     </div>
                 </div>
-                <a style={{marginRight: 0}} target="_blank" href={addsToDisplay['doctorpage_3']?.href}>
-                    <img className="add"
-                         style={{height: addsToDisplay['doctorpage_3']?.size.split("x")[0]+'px', width: addsToDisplay['doctorpage_3']?.size.split("x")[1]+'px'}}
+                <a  rel="noreferrer" style={{marginRight: 0}} target="_blank" href={addsToDisplay['doctorpage_3']?.href}>
+                    <img className="add" alt={"adds"}
+                         style={{marginTop: '10px', height: addsToDisplay['doctorpage_3']?.size.split("x")[0]+'px', width: addsToDisplay['doctorpage_3']?.size.split("x")[1]+'px'}}
                          src={addsToDisplay['doctorpage_3']?.photo}/>
                 </a>
             </div>
         )
     }
-//WIP
+
     const renderDoctorHeaderMobile=()=>{
         return (
             <div className="doctor-header-mobi">
@@ -405,7 +401,7 @@ function DoctorPage({ props }) {
                         <span>{doctor.noOfReviews} recenzii</span>
                         <div className="stars-container">
                             {Array(5).fill(1).map((el, i) =>
-                                <img key={i} src={i >= doctor.rating ? "/images/star_empty.svg" : "/images/star_full.svg"} />
+                                <img alt={"rating"} key={i} src={i >= doctor.rating ? "/images/star_empty.svg" : "/images/star_full.svg"} />
                             )}
                         </div>
                     </div>
@@ -449,19 +445,19 @@ function DoctorPage({ props }) {
                                         </React.Fragment>
                                     }
                                 </div>
-                                <a style={{marginRight: 0}} target="_blank" href={addsToDisplay['doctorpage_1']?.href}>
-                                    <img className="add"
-                                         style={{height: addsToDisplay['doctorpage_1']?.size.split("x")[0]+'px', width: addsToDisplay['doctorpage_1']?.size.split("x")[1]+'px'}}
+                                <a  rel="noreferrer" style={{marginRight: 0}} target="_blank" href={addsToDisplay['doctorpage_1']?.href}>
+                                    <img className="add" alt=""
+                                         style={{maxHeight: addsToDisplay['doctorpage_1']?.size.split("x")[0]+'px', maxWidth: addsToDisplay['doctorpage_1']?.size.split("x")[1]+'px'}}
                                          src={addsToDisplay['doctorpage_1']?.photo}/>
                                 </a>
-                                <a target="_blank" href={addsToDisplay['doctorpage_2']?.href}>
-                                    <img className="add"
-                                         style={{ height: addsToDisplay['doctorpage_2']?.size.split("x")[0]+'px', width: addsToDisplay['doctorpage_2']?.size.split("x")[1]+'px'}}
+                                <a  rel="noreferrer" target="_blank" href={addsToDisplay['doctorpage_2']?.href}>
+                                    <img className="add" alt=""
+                                         style={{ maxHeight: addsToDisplay['doctorpage_2']?.size.split("x")[0]+'px', maxWidth: addsToDisplay['doctorpage_2']?.size.split("x")[1]+'px'}}
                                          src={addsToDisplay['doctorpage_2']?.photo}/>
                                 </a>
                             </div>
                             <div className="info-right-container">
-                                <img className="add mobile" src="/images/ads/add2.svg" />
+                                <img alt="" className="add mobile" src="/images/ads/add2.svg" />
                                 {doctor?.collaborator_clinics?.length > 0 &&
                                     <React.Fragment>
                                         <div className="container-title">Clinici unde ofer consultații</div>
@@ -495,7 +491,7 @@ function DoctorPage({ props }) {
                                         </div>
                                     </React.Fragment>
                                 }
-                                <img className="add mobile" src="/images/ads/add2.svg" />
+                                <img alt="" className="add mobile" src="/images/ads/add2.svg" />
                             </div>
                         </div>
                         <div className="reviews-wrapper">
@@ -519,7 +515,7 @@ function DoctorPage({ props }) {
                                             <input className="full-width" type="email" name="email" value={review.email.value}
                                                 onChange={handleChange} onBlur={isFormEmpty} />
                                             <label>Recenzie</label>
-                                            <textarea rows='6' maxLength={review.maxLength} className="full-width" type="comment" name="comment" value={review.comment.value}
+                                            <textarea rows='6' maxLength={review.maxLength} className="full-width" name="comment" value={review.comment.value}
                                                 onChange={handleChange} onBlur={isFormEmpty} />
                                             <div className="counter"> {review.comment.value?.length} / {review.maxLength}</div>
                                             <label>Rating</label>
@@ -527,15 +523,22 @@ function DoctorPage({ props }) {
                                                 <div className="stars-container">
                                                     {Array(5).fill(1).map((el, i) =>
                                                         <span onClick={() => setReview({ ...review, rating: { value: i + 1 } })} key={i} >
-                                                            <img src={i >= review.rating.value ? "/images/star_empty.svg" : "/images/star_full.svg"} />
+                                                            <img alt="" src={i >= review.rating.value ? "/images/star_empty.svg" : "/images/star_full.svg"} />
                                                         </span>)}
                                                 </div>
+                                            </div>
+                                            <div style={{margin: "auto"}}>
+                                                <ReCAPTCHA
+                                                    onChange={handleCaptcha}
+                                                    ref={recaptchaRef}
+                                                    sitekey={REACT_RECAPTCHA_KEY}
+                                                />
                                             </div>
 
                                             <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Adaugă o recenzie</button>
                                             {
                                                 review.server.error &&
-                                                <div className={'error'}>Ceva a mers rău! Va rugăm încercați mai târziu</div>
+                                                <div className={'error'}>{review.server.error}</div>
                                             }
                                         </form>
                                     </React.Fragment>

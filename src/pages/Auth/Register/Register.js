@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect } from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import "./Register.scss"
 import _ from 'lodash';
-import { API_MAP, getAPILink, routes } from "../../../utils/routes";
-import ResendEmail from '../../EmailVerification/ResendEmail/ResendEmail';
+import {API_MAP, getAPILink, REACT_RECAPTCHA_KEY, routes} from "../../../utils/routes";
 import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -25,9 +25,18 @@ const Register = () => {
       error: null,
     }
   })
-  const [link, setLink] = React.useState("");
   const [areTermsChecked, setTermsChecked] = React.useState(false);
   const [formValid, setFormValid] = React.useState(false)
+
+  const [captchaValue, setCaptchaValue] = useState(null);
+
+  const handleCaptcha = (key) => {
+    setCaptchaValue({
+      captcha: true,
+      'g-recaptcha-response': key
+    })
+  };
+  const recaptchaRef = React.createRef()
 
   const [step, setStep] = React.useState(0)
 
@@ -67,6 +76,9 @@ const Register = () => {
       stateCopy.confirmPassword.error = 'Parola trebuie sa coincida'
       stateCopy.password.error = 'Parola trebuie sa coincida'
     }
+    if (!captchaValue) {
+      stateCopy.server.error = "Captcha nu a fost completat."
+    }
     if (!areTermsChecked) {
       stateCopy.server.error = 'Trebuie sa fi de acord cu termenii si conditiile'
     }
@@ -82,7 +94,7 @@ const Register = () => {
     setState({ ...state, [event.target.name]: { ...state[event.target.name], value: event.target.value } })
   }
 
-  const handleTermsChecked = (event) => {
+  const handleTermsChecked = () => {
     setTermsChecked(!areTermsChecked);
   };
 
@@ -100,7 +112,8 @@ const Register = () => {
       method: 'POST',
       body: JSON.stringify({
         email: state.email.value,
-        password: state.password.value
+        password: state.password.value,
+        'g-recaptcha-response': captchaValue["g-recaptcha-response"]
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -112,11 +125,10 @@ const Register = () => {
         }
         return response.json()
       })
-      .then((data) => {
-        setLink(data.link);
+      .then(() => {
         setStep(1)
       })
-      .catch((err) => {
+      .catch(() => {
         setState({ ...state, server: { error: "Ceva nu a funcționat. Vă rugăm să încercați în câteva minute" } })
       })
   });
@@ -138,10 +150,10 @@ const Register = () => {
         }
         return response.json()
       })
-      .then((data) => {
+      .then(() => {
         navigate(routes.RESEND_EMAIL)
       })
-      .catch((err) => { })
+      .catch(() => { })
   }
 
   return (
@@ -176,6 +188,14 @@ const Register = () => {
                     onChange={handleTermsChecked} />
                   <label>Sunt de acord cu <a className="terms-hyper" href={routes.TERMS_AND_CONDITION} target={'_blank'}>termenii si conditiile</a></label>
                 </div>
+              </div>
+              <div className={"captcha"}>
+                <ReCAPTCHA
+                    onChange={handleCaptcha}
+                    ref={recaptchaRef}
+                    //This ref can be used to call captcha related functions in case you need.
+                    sitekey={REACT_RECAPTCHA_KEY}
+                />
               </div>
               {state.server.error &&
                 <div className={'error'}>{state.server.error}</div>

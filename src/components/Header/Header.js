@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import './Header.scss'
 import { NavLink, useNavigate } from "react-router-dom";
-import { routes } from "../../utils/routes";
-import { getUserFromLocal } from "../../utils/localStorage";
+import {API_URL_MEDIA, routes} from "../../utils/routes";
+import {getUserProfileFromLocal} from "../../utils/localStorage";
 
 
 function Header() {
@@ -21,7 +21,8 @@ function Header() {
   }
 
   useEffect(() => {
-    const user = getUserFromLocal()
+    const user = getUserProfileFromLocal()
+    debugger
     if (Object.keys(user).length > 0) {
       setUser({
         firstName: user.first_name || "",
@@ -41,7 +42,7 @@ function Header() {
             to={routes.DASHBOARD}
           >Cont {user.firstName} {user.lastName}</NavLink>
           <img alt={'imagine profile user'} className={'profile_pic'}
-            src={user.profilePicture ? window.URL.createObjectURL(user.profilePicture) : '/images/user.svg'} />
+            src={user.profilePicture ? API_URL_MEDIA +  user.profilePicture : '/images/user.svg'} />
         </div>
       )
     } else {
@@ -58,7 +59,7 @@ function Header() {
   return (
     <div className={`header ${isMenuOpen ? 'fix' : ''}`}>
       <img onClick={() => navigate(routes.HOMEPAGE)} className={'logo'} alt={'imagine logo vreau un doctor'} src={'/logo.svg'} />
-      <div onClick={() => toggleMenu(!isMenuOpen)} className={'hamburger_icon'}><img src={isMenuOpen ? '/images/menu_open.svg' : '/images/menu_closed.svg'}></img></div>
+      <div onClick={() => toggleMenu(!isMenuOpen)} className={'hamburger_icon'}><img alt="" src={isMenuOpen ? '/images/menu_open.svg' : '/images/menu_closed.svg'}></img></div>
       <div className={`hamburger_menu ${isMenuOpen ? 'open' : 'closed'}`}>
         <div className={'menu_items'}>
           <div className="info-links">
@@ -72,7 +73,7 @@ function Header() {
             >Informații medicale</NavLink>
           </div>
         </div>
-        <span className={'close_btn'} onClick={() => toggleMenu(false)}><img src={'/images/close_btn.svg'} /></span>
+        <span className={'close_btn'} onClick={() => toggleMenu(false)}><img  alt="" src={'/images/close_btn.svg'} /></span>
         {renderUserProfile()}
       </div>
     </div>

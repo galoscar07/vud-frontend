@@ -1,0 +1,169 @@
+@import 'src/styles/base';
+
+.send-clinic-request {
+    padding: 0 5.5rem 2rem 5.5rem;
+
+    img {
+        margin: 2rem 0;
+    }
+
+    .white-container {
+        background-color: white;
+        font-size: 2rem;
+        display: grid;
+        grid-template-columns: 1.5fr 2fr;
+        .left-container {
+            background-color: #D1DFE2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding-bottom: 170px;
+            padding-top: 40px;
+            h3 {
+                font-size: 23px;
+                margin-bottom: 70px;
+            }
+
+            .clinic-logo {
+                height: 150px;
+                width: 130px;
+                object-fit: cover;
+                border-radius: 10% 10% 0 0;
+                border: 5px solid white;
+                background-color: white;
+            }
+            .info-text {
+                font-size: 18px;
+                margin-top: 10px;
+            }
+
+            .colored-text {
+                font-size: 14px;
+                color: #17616C;
+                margin-top: 20px;
+                font-weight: 600;
+            }
+        }
+
+        .right-container {
+            display: flex;
+            margin-bottom: $spacing-xbig;
+            padding: 0 5rem;
+            margin-top: 3.25rem;
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+
+                .error {
+                    width: unset;
+                    font-size: 14px;
+                }
+
+                textarea {
+                    width: 100%;
+                    height: 130px;
+                }
+
+                .checkbox-container {
+                    margin: $spacing-xsmall 0 $spacing-medium 0;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+
+                    div {
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    .checkbox {
+                        height: 1.25rem;
+                        width: 1.25rem;
+                        background: $color-grey-disabled;
+                        accent-color: $color-primary;
+                    }
+
+                    span {
+                        color: $color-blue;
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+                }
+
+                input {
+                    border: 1px solid $color-primary;
+                    border-radius: 2px;
+                    padding: 12px;
+                    box-shadow: 0 3px 6px 0 rgba(black, 0.2);
+
+                    &.full-width {
+                        width: 100%;
+                    }
+                }
+
+                .margin-top-20px {
+                    margin-top: 20px;
+                }
+
+                .info-text {
+                    font-size: 14px;
+                }
+
+                label {
+                    font-size: $font-normal;
+                    color: $color-dark-blue;
+                    margin: $spacing-xsmall 0;
+                }
+
+            }
+        }
+    }
+
+    .redirect-button {
+        margin: 10px 0;
+        background-color: transparent;
+        width: 30%;
+        border-radius: 0.37rem;
+    }
+}
+
+@media screen and (max-width: $mobile-big-width) {
+    .send-clinic-request {
+        padding: 0.75rem;
+
+        .redirect-button {
+            margin-top: $spacing-default;
+            width: 100% !important;
+        }
+
+        .white-container {
+            padding-bottom: 0.75rem;
+            display: flex;
+            flex-direction: column;
+
+            .searchbar {
+                padding: 0.75rem;
+            }
+
+            .left-container {
+                padding-top: 10px;
+                padding-bottom: 30px;
+                h3 {
+                    margin-bottom: 30px;
+                }
+            }
+
+            .right-container {
+                padding: 0 2rem;
+                .custom-width {
+                    margin-top: 20px;
+                }
+            }
+        }
+    }
+}

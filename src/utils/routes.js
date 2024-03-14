@@ -1,8 +1,10 @@
 const API_URL = 'http://127.0.0.1:8000/'
 // const API_URL = 'http://vud-api.eu-central-1.elasticbeanstalk.com/'
 // const API_URL = 'https://vud-be.active.ro/'
-// TODO;
-export const API_URL_MEDIA = ''
+
+export const API_URL_MEDIA = API_URL
+
+export const REACT_RECAPTCHA_KEY = '6Ld5XZgpAAAAAHrT-c9HIDL49skN28Tb4G-ysOrZ'
 
 export const API_MAP = {
   // Creates new account and send link to verify email
@@ -71,7 +73,7 @@ export const API_MAP = {
   POST_NEWSLETTER: 'options/newsletter/',
   POST_REDEEM_CLINIC: 'auth/revendica-clinica/',
   POST_REDEEM_DOCTOR: 'auth/revendica-doctor/',
-
+  SEND_MESSAGE_CLINIC: 'options/send-message-clinic/',
 }
 
 export const getAPILink = (url) => {
@@ -118,7 +120,8 @@ export const routes = {
   ARTICLES:'/articles',
   DOCTOR_DATA: '/doctor-data',
   DOCTOR_PAGE: '/doctor-page',
-  NOT_FOUND: '/not-found'
+  NOT_FOUND: '/not-found',
+  SEND_CLINIC_REQUEST: '/send-clinic-request'
 }
 
 export const AUTH_CLINIC_MAP_STEP = {

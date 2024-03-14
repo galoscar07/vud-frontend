@@ -5,7 +5,6 @@ import React, { useEffect } from 'react'
 
 // Footer
 import Header from "./components/Header/Header";
-//DEV BRANCH;
 // Pages
 import Homepage from "./pages/Homepage/Homepage";
 import Login from "./pages/Auth/Login/Login";
@@ -40,7 +39,9 @@ import DoctorData from './pages/DoctorData/DoctorData';
 import DoctorPage from './pages/DoctorPage/DoctorPage';
 import ResendEmail from './pages/EmailVerification/ResendEmail/ResendEmail';
 import DashboardWrapper from "./pages/Dashboard/DashboardWrapper";
-const domainGroupId = '4ca262e1-9e52-410b-81d0-dc997ad6f624';
+import SendClinicRequest from "./pages/SendClinicRequest/SendClinicRequest";
+
+const domainGroupId = 'e4e78694-d072-4208-8d80-2b7282c6a02b';
 
 function App() {
   useEffect(() => {
@@ -78,6 +79,7 @@ function App() {
           <Route path={routes.EMAIL_VERIFICATION}>
             <Route path=":token" element={<EmailVerification />}/>
           </Route>
+          <Route path={routes.SEND_CLINIC_REQUEST} element={<SendClinicRequest />} />
 
           <Route path={routes.DASHBOARD} element={<Dashboard />} />
 

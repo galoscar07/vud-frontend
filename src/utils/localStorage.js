@@ -11,6 +11,10 @@ export const getUserFromLocal = () => {
   return JSON.parse(localStorage.getItem('user_profile') || "{}")
 }
 
+export const getUserProfileFromLocal = () => {
+  return JSON.parse(localStorage.getItem('user') || "{}")
+}
+
 export const getAuthTokenFromLocal = () => {
   return localStorage.getItem('authToken')
 }

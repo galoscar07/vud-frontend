@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import Carousel from '../../components/Carousel/Carousel';
 import Dropdown from '../../components/Dropdown/Dropdown';
 import Review from '../../components/Review/Review';
 import "./ClinicPage.scss";
-import { routes } from "../../utils/routes";
+import {REACT_RECAPTCHA_KEY, routes} from "../../utils/routes";
 import { API_MAP, getAPILink } from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import MapWrapper from "../../components/Map/Map";
@@ -51,15 +51,15 @@ const default_adds = {
     }
 }
 
-function ClinicPage({ props }) {
+function ClinicPage() {
     const [clinic, setClinic] = React.useState({});
     const [loading, setLoading] = React.useState(true)
     const [isReviewFormDisplayed, setIsReviewFormDisplayed] = React.useState(false)
     const [id, setId] = React.useState(null)
-    const [error, setError] = React.useState('');
     const [displayMoreCards, setDisplayMoreCards] = React.useState(true);
     const [formValid, setFormValid] = React.useState(false)
     const [addsToDisplay, setAddsToDisplay] = useState({})
+    const navigate = useNavigate();
     const [review, setReview] = React.useState({
         email: {
             value: '',
@@ -171,6 +171,10 @@ function ClinicPage({ props }) {
 
     const handleAddReview = (event) => {
         event.preventDefault();
+        if (!captchaValue) {
+            setReview({ ...review, server: {...review.server, error: "Captcha nu a fost completat"} })
+            return
+        }
         fetch(
             getAPILink(API_MAP.ADD_REVIEW + id), {
             method: 'POST',
@@ -191,17 +195,17 @@ function ClinicPage({ props }) {
                 setReview({ ...review, isReviewSubmitted: true })
                 return response.json()
             })
-            .then((data) => {
+            .then(() => {
                 setLoading(false)
             })
-            .catch((err) => {
+            .catch(() => {
                 setLoading(false)
-                setError("Ceva nu a funcționat. Vă rugăm să încercați în câteva minute")
+                setReview({ ...review, server: {...review.server, error: "Ceva a mers rau! Va rugam incercati mai tarziu."} })
             })
     }
 
     const targetElement = useRef();
-    const scrollingTop = (event) => {
+    const scrollingTop = () => {
         targetElement.current.scrollIntoView({
             behavior: "smooth",
             block: "center",
@@ -324,7 +328,7 @@ function ClinicPage({ props }) {
                 })
                 setAcademicDegreesDropDown(mapped)
             })
-            .catch((err) => {
+            .catch(() => {
             })
         fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
             method: 'GET',
@@ -339,7 +343,7 @@ function ClinicPage({ props }) {
                 })
                 setSpecialities(mapped)
             })
-            .catch((err) => {
+            .catch(() => {
             })
         fetch(getAPILink(API_MAP.GET_COMPETENCES), {
             method: 'GET',
@@ -354,7 +358,7 @@ function ClinicPage({ props }) {
                 })
                 setCompetences(mapped)
             })
-            .catch((err) => {
+            .catch(() => {
             })
     }, [])
 
@@ -406,12 +410,17 @@ function ClinicPage({ props }) {
             switch (el.type) {
                 case "email":
                     return (
-                        <div className={`contact-card ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`}
-                            key={i}>
+                        <div className={`contact-card clickable ${!el?.value && 'hide'} ${isMobile && displayMoreCards && i > 1 && 'hide'}`}
+                            key={i}
+                             onClick={() => {
+                                 navigate(`/send-clinic-request?clinic=${encodeURIComponent(JSON.stringify({imgUrl: clinic.imgUrl, typeOfClinic: clinic.typeOfClinic,
+                                     address: clinic.address, id: clinic.id, name: clinic.name}))}`, { target: '_blank' });
+                             }}
+                        >
                             {el?.icon && <img alt={"contact-icon"} src={`/images/icons/email.svg`} />}
                             <div>
                                 <span className="type">{el?.type}</span>
-                                <a href={`mailto:${el.value}`}>{el.value}</a>
+                                <div>{el.value}</div>
                             </div>
                         </div>
                     )
@@ -468,7 +477,7 @@ function ClinicPage({ props }) {
     useEffect(() => {
         reorganiseDoctors()
     }, [selectedCompetences, selectedDegrees, selectedSpecialties])
-    const navigate = useNavigate();
+
     const goToRedeem = () =>
         navigate({
             pathname: routes.HOW_TO_REDEEM_CLINIC,
@@ -515,7 +524,7 @@ function ClinicPage({ props }) {
                                     <span>{clinic.noOfReviews} recenzii</span>
                                     <div className="stars-container">
                                         {Array(5).fill(1).map((el, i) =>
-                                            <img key={i} src={i >= clinic.rating ? "/images/star_empty.svg" : "/images/star_full.svg"} />
+                                            <img alt="" key={i} src={i >= clinic.rating ? "/images/star_empty.svg" : "/images/star_full.svg"} />
                                         )}
                                     </div>
                                 </div>
@@ -525,7 +534,7 @@ function ClinicPage({ props }) {
                                 <span>Facilitați clinică</span>
                                 <div>
                                     {clinic?.facilities?.map((facility, i) =>
-                                        <img key={i} title={facility.label} src={facility.icon} />
+                                        <img alt={"facilitati"} key={i} title={facility.label} src={facility.icon} />
                                     )}
                                 </div>
                             </div>}
@@ -560,8 +569,8 @@ function ClinicPage({ props }) {
                                 })}
                             </div>
                         </div>
-                        <a style={{marginRight: 0}} target="_blank" href={addsToDisplay['clinicpage_2']?.href}>
-                            <img className="add"
+                        <a  rel="noreferrer" style={{marginRight: 0}} target="_blank" href={addsToDisplay['clinicpage_2']?.href}>
+                            <img alt={""} className="add"
                                  style={{height: addsToDisplay['clinicpage_2']?.size.split("x")[0]+'px', width: addsToDisplay['clinicpage_2']?.size.split("x")[1]+'px'}}
                                  src={addsToDisplay['clinicpage_2']?.photo}/>
                         </a>
@@ -588,7 +597,7 @@ function ClinicPage({ props }) {
                 </div>
                 <div className="contact-container">
                     {clinic.contact && flattenedResponse(clinic.contact).map((el, i) =>
-                        <React.Fragment>
+                        <React.Fragment key={i}>
                             {handleContactType(el, i, true)}
                         </React.Fragment>
                     )}
@@ -629,7 +638,7 @@ function ClinicPage({ props }) {
                             <div>
                                 {clinic?.facilities?.map((facility, i) =>
                                     <div className="facilities-wrapper" key={i}>
-                                        <img title={facility.label} src={facility.icon} />
+                                        <img alt="facilitati" title={facility.label} src={facility.icon} />
                                         <span>{facility.label}</span>
                                     </div>
                                 )}
@@ -654,7 +663,7 @@ function ClinicPage({ props }) {
                         <span>{clinic.noOfReviews} recenzii</span>
                         <div className="stars-container">
                             {Array(5).fill(1).map((el, i) =>
-                                <img key={i} src={i >= clinic.rating ? "/images/star_empty.svg" : "/images/star_full.svg"} />
+                                <img alt="" key={i} src={i >= clinic.rating ? "/images/star_empty.svg" : "/images/star_full.svg"} />
                             )}
                         </div>
                     </div>
@@ -666,13 +675,20 @@ function ClinicPage({ props }) {
     }
 
     const renderMessage = () => {
-
         if (doctorState.doctors.length === 0 && (selectedDegrees.length > 0 || selectedCompetences.length > 0 || selectedSpecialties.length > 0)) {
             return <div className="no-results">Nu există înregistrări conform criteriilor selectate</div>
         }
     }
 
-    const [capVal,setCapVal] = useState(null)
+    const [captchaValue, setCaptchaValue] = useState(null);
+
+    const handleCaptcha = (key) => {
+        setCaptchaValue({
+            captcha: true,
+            'g-recaptcha-response': key
+        })
+    };
+    const recaptchaRef = React.createRef()
 
     return (
         <div className="clinic-page">
@@ -695,31 +711,62 @@ function ClinicPage({ props }) {
                                         location={[{ address: clinic.address, name: clinic.name, description: clinic.description }]}
                                     ></MapWrapper>
                                 </div>
-                                <a style={{marginRight: 0}} target="_blank" href={addsToDisplay['clinicpage_1']?.href}>
-                                    <img className="add"
+                                <a  rel="noreferrer" style={{marginRight: 0}} target="_blank" href={addsToDisplay['clinicpage_1']?.href}>
+                                    <img alt={""} className="add"
                                          style={{height: addsToDisplay['clinicpage_1']?.size.split("x")[0]+'px', width: addsToDisplay['clinicpage_1']?.size.split("x")[1]+'px'}}
                                          src={addsToDisplay['clinicpage_1']?.photo}/>
                                 </a>
-                                <a target="_blank" href={addsToDisplay['clinicpage_3']?.href}>
-                                    <img className="add"
+                                <a  rel="noreferrer" target="_blank" href={addsToDisplay['clinicpage_3']?.href}>
+                                    <img alt={""} className="add"
                                          style={{ height: addsToDisplay['clinicpage_3']?.size.split("x")[0]+'px', width: addsToDisplay['clinicpage_3']?.size.split("x")[1]+'px'}}
                                          src={addsToDisplay['clinicpage_3']?.photo}/>
                                 </a>
                             </div>
 
                             <div className="info-right-container">
-                                <img className="add mobile" src="/images/ads/add2.svg" />
-                                <div className="container-title">Cautare</div>
-                                <div className="col">
-                                    <Dropdown selected={selectedSpecialties} options={specialities} title={"Specialitati"} onSelect={handleSubmitSpecialties} isMulti/>
-                                </div>
-                                <div className="col-2">
-                                    <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"Grade medicale"} onSelect={handleSubmitDegrees} isMulti/>
-                                    <Dropdown selected={selectedCompetences} options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} isMulti/>
-                                </div>
+                                <img alt="" className="add mobile" src="/images/ads/add2.svg" />
+                                {
+                                    clinic?.doctors?.length > 0 &&
+                                        <React.Fragment>
+                                            <div className="container-title">Cautare</div>
+                                            <div className="col">
+                                                <Dropdown selected={selectedSpecialties} options={specialities} title={"Specialitati"} onSelect={handleSubmitSpecialties} isMulti/>
+                                            </div>
+                                            <div className="col-2">
+                                                <Dropdown selected={selectedDegrees} options={academicDegreesDropDown} title={"Grade medicale"} onSelect={handleSubmitDegrees} isMulti/>
+                                                <Dropdown selected={selectedCompetences} options={competences} title={"Competente medicale"} onSelect={handleSubmitCompetences} isMulti/>
+                                            </div>
+                                            {renderMessage()}
+                                            {doctorState.doctors.length > 0 &&
+                                                <React.Fragment>
+                                                    <div className="result-title">Rezultate filtrare:</div>
+                                                    <div style={{ marginBottom: '20px' }} className="col">
+                                                        {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
+                                                            .map((doc, i) => {
+                                                                return <DoctorCard type={1} doctor={doc} key={i} />
+                                                            })
+                                                        }
+                                                        <div className="page-btn">
+                                                            {
+                                                                doctorState.currentPage !== 1 &&
+                                                                <div onClick={previousPage} className={'button prev'}>Anterior</div>
+                                                            }
+                                                            {
+                                                                doctorState.currentPage < doctorState.maxPage &&
+                                                                <div onClick={nextPage} className={'button next'}>Urmator</div>
+                                                            }
+                                                        </div>
+                                                        <div style={{ marginTop: '10px' }}>
+                                                            Pagina {doctorState.currentPage} din {doctorState.maxPage}
+                                                        </div>
+                                                    </div>
+                                                </React.Fragment>
+                                            }
+                                        </React.Fragment>
+                                }
                                 {clinic.collab_clinics.length > 0 &&
                                     <React.Fragment>
-                                        <div className="result-title">Clinici colaboratoare:</div>
+                                        <div className="container-title">Clinici colaboratoare:</div>
                                         <div style={{ marginBottom: '20px' }} className="col">
                                             {clinic.collab_clinics.map((clinic,i) => {
                                                 return <ClinicCard key={i} clinic={clinic} />
@@ -728,39 +775,13 @@ function ClinicPage({ props }) {
                                         </div>
                                     </React.Fragment>
                                 }
-                                {doctorState.doctors.length > 0 &&
-                                    <React.Fragment>
-                                        <div className="result-title">Rezultate filtrare:</div>
-                                        <div style={{ marginBottom: '20px' }} className="col">
-                                            {doctorState.doctors.length && doctorState.doctors[doctorState.currentPage - 1]
-                                                .map((doc, i) => {
-                                                    return <DoctorCard type={1} doctor={doc} key={i} />
-                                                })
-                                            }
-                                            <div className="page-btn">
-                                                {
-                                                    doctorState.currentPage !== 1 &&
-                                                    <div onClick={previousPage} className={'button prev'}>Anterior</div>
-                                                }
-                                                {
-                                                    doctorState.currentPage < doctorState.maxPage &&
-                                                    <div onClick={nextPage} className={'button next'}>Urmator</div>
-                                                }
-                                            </div>
-                                            <div style={{ marginTop: '10px' }}>
-                                                Pagina {doctorState.currentPage} din {doctorState.maxPage}
-                                            </div>
-                                        </div>
-                                    </React.Fragment>
-                                }
-                                {renderMessage()}
                                 {clinic.description && <div className="description-container">
                                     <p>
                                         {clinic.description}
                                     </p>
 
                                 </div>}
-                                <img className="add mobile" src="/images/ads/add2.svg" />
+                                <img alt="adds" className="add mobile" src="/images/ads/add2.svg" />
                             </div>
 
                         </div>
@@ -786,7 +807,7 @@ function ClinicPage({ props }) {
                                         <input className="full-width" type="email" name="email" value={review.email.value}
                                             onChange={handleChange} onBlur={isFormEmpty} />
                                         <label>Recenzie</label>
-                                        <textarea maxLength={review.maxLength} rows="6" className="full-width" type="comment" name="comment" value={review.comment.value}
+                                        <textarea maxLength={review.maxLength} rows="6" className="full-width" name="comment" value={review.comment.value}
                                             onChange={handleChange} onBlur={isFormEmpty} />
                                         <div className="counter"> {review.comment.value.length} / {review.maxLength}</div>
                                         <label>Rating</label>
@@ -794,22 +815,22 @@ function ClinicPage({ props }) {
                                             <div className="stars-container">
                                                 {Array(5).fill(1).map((el, i) =>
                                                     <span onClick={() => setReview({ ...review, rating: { value: i + 1 } })} key={i} >
-                                                        <img src={i >= review.rating.value ? "/images/star_empty.svg" : "/images/star_full.svg"} />
+                                                        <img alt="" src={i >= review.rating.value ? "/images/star_empty.svg" : "/images/star_full.svg"} />
                                                     </span>)}
                                             </div>
                                         </div>
                                         <div style={{margin: "auto"}}>
-                                            {/*<ReCAPTCHA*/}
-                                            {/*    sitekey={"6LfnAXopAAAAAEp9S_pQ9dDVw_PZlpdXVFPlQqTA"}*/}
-                                            {/*    ref={captchaRef}*/}
-                                            {/*    onChange={handleCaptcha}*/}
-                                            {/*/>*/}
+                                            <ReCAPTCHA
+                                                onChange={handleCaptcha}
+                                                ref={recaptchaRef}
+                                                sitekey={REACT_RECAPTCHA_KEY}
+                                            />
                                         </div>
                                         <button className={`button border-button round ${!formValid ? 'disabled' : ''}`}>Adauga recenzie
                                         </button>
                                         {
                                             review.server.error &&
-                                            <div className={'error'}>Ceva a mers rau! Va rugam incercati mai tarziu.</div>
+                                            <div className={'error'}>{review.server.error}</div>
                                         }
                                     </form>
                                 </React.Fragment>

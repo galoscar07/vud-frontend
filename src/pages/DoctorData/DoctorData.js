@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from 'react'
 import _ from "lodash";
 import Dropdown from '../../components/Dropdown/Dropdown';
-import { API_MAP, getAPILink, makeRequestLogged, routes } from "../../utils/routes";
+import {API_MAP, API_URL_MEDIA, getAPILink, makeRequestLogged, routes} from "../../utils/routes";
 import "./DoctorData.scss";
 import InviteCard from "./InviteCard/InviteCard";
 import { getAuthTokenFromLocal } from "../../utils/localStorage";
@@ -39,7 +39,7 @@ const DoctorData = (props) => {
         files: props?.selected?.files || [],
         error: '',
         profile_picture: props?.selected?.profile_picture || null,
-        profile_picture_preview: props?.selected?.profile_picture_preview || null,
+        profile_picture_preview: props?.selected?.profile_picture || null,
         uploadWarning: '',
         areTermsChecked: false,
     })
@@ -205,7 +205,7 @@ const DoctorData = (props) => {
             .then((response) => {
                 setClinics(mapResponseFromServerClinic(response))
             })
-            .catch((err) => { })
+            .catch(() => { })
     }
     const handleInputDoctor = (event) => {
         event.preventDefault();
@@ -225,7 +225,7 @@ const DoctorData = (props) => {
             .then((response) => {
                 setDoctors(mapResponseFromServerDoctor(response))
             })
-            .catch((err) => { })
+            .catch(() => { })
     }
     const handleClickUnit = (selectedElem) => {
         let copyElem = { ...selectedElem, status: "added" }
@@ -321,7 +321,7 @@ const DoctorData = (props) => {
                     })
                 }
             })
-            .catch((err) => {
+            .catch(() => {
                 setInviteError({
                     name: false,
                     email: false,
@@ -391,7 +391,7 @@ const DoctorData = (props) => {
                     })
                 }
             })
-            .catch((err) => {
+            .catch(() => {
                 setInviteError({
                     name: false,
                     email: false,
@@ -468,7 +468,7 @@ const DoctorData = (props) => {
                 }
                 setAcademicDegreesDropDown(mapped)
             })
-            .catch((err) => { })
+            .catch(() => { })
         fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
             method: 'GET',
             headers: {
@@ -483,7 +483,7 @@ const DoctorData = (props) => {
                 }
                 setSpecialities(mapped)
             })
-            .catch((err) => { })
+            .catch(() => { })
         fetch(getAPILink(API_MAP.GET_COMPETENCES), {
             method: 'GET',
             headers: {
@@ -498,7 +498,7 @@ const DoctorData = (props) => {
                 }
                 setCompetences(mapped)
             })
-            .catch((err) => { })
+            .catch(() => { })
     }, [props.isDashboard, props?.selected?.academic_degree, props?.selected?.medical_skill, props?.selected?.speciality])
 
     const handleDropdownSubmit = (selected, name) => {
@@ -681,7 +681,7 @@ const DoctorData = (props) => {
                         setValues({ ...values, error: "A apărut o eraore. Va rugăm încercați din nou" })
                     }
                 })
-                .catch((err) => {
+                .catch(() => {
                     setValues({ ...values, error: "A apărut o eraore. Va rugăm încercați din nou" })
                 })
         }
@@ -709,7 +709,7 @@ const DoctorData = (props) => {
                             <div className="col desktop pp">
                                 <span onClick={handleProfilePictureUser} className={'add-photo'}>Adaugă poză de profil</span>
                                 <input type="file" accept="image/*" onChange={handleFileChangeProfilePicUser} ref={profileImgRef} style={{ display: 'none' }} />
-                                <img alt='profile uploaded user' src={values.profile_picture_preview ? values.profile_picture_preview : '/images/user.svg'} />
+                                <img alt='profile uploaded user' src={values.profile_picture_preview ? API_URL_MEDIA + values.profile_picture_preview : '/images/user.svg'} />
                             </div>
                         </div>
                         <div className="fields-wrapper">
@@ -794,7 +794,7 @@ const DoctorData = (props) => {
                     <div className="description-data">
                         <div className="container-title">Descriere personală</div>
                         <div className="fields-wrapper">
-                            <textarea maxLength='500' rows="15" className="full-width" type="comment" name="description" value={values.description}
+                            <textarea maxLength='500' rows="15" className="full-width" name="description" value={values.description}
                                 onChange={(e) => {
                                     handleFieldChange(e.target.value, e.target.name);
                                 }} />
@@ -828,7 +828,7 @@ const DoctorData = (props) => {
                                     <p>Unități medicale adăugate</p>
                                     {selectedInvitedUnits.map((invited, i) => {
                                         return (
-                                            <InviteCard type="unit" unit={invited} onClick={handleClickUnit} />
+                                            <InviteCard key={i} type="unit" unit={invited} onClick={handleClickUnit} />
                                         )
                                     })}
                                 </React.Fragment>
@@ -839,7 +839,7 @@ const DoctorData = (props) => {
                                     <p>Unități medicale adăugate</p>
                                     {invitedUnits.map((invited, i) => {
                                         return (
-                                            <InviteCard type="unit" unit={invited} />
+                                            <InviteCard key={i} type="unit" unit={invited} />
                                         )
                                     })}
                                 </React.Fragment>
@@ -878,7 +878,7 @@ const DoctorData = (props) => {
                                     <p>Doctori colaboratori invitati</p>
                                     {invitedDoctors.map((invited, i) => {
                                         return (
-                                            <InviteCard type="doctor" doctor={invited} />
+                                            <InviteCard key={i} type="doctor" doctor={invited} />
                                         )
                                     })}
                                 </React.Fragment>

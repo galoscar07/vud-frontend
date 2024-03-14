@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import "./Homepage.scss"
 import ClinicFilterContainer from '../../components/ClinicFilterContainer/ClinicFilterContainer';
-import Newsletter from '../../components/Newsletter/Newsletter';
+// import Newsletter from '../../components/Newsletter/Newsletter';
 import {API_MAP, API_URL_MEDIA, getAPILink, routes} from "../../utils/routes";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import {useNavigate} from "react-router-dom";
-import {Adsense} from '@ctrl/react-adsense';
-import DoctorCard from "../../components/DoctorCard/DoctorCard";
+// import {Adsense} from '@ctrl/react-adsense';
 import DoctorFilterContainer from "../../components/DoctorFilterContainer/DoctorFilterContainer";
 
 const label_ads = [
@@ -44,12 +43,6 @@ const default_adds = {
   },
 
 }
-
-const options = [
-  {value: 'clinica', label: 'Clinica'},
-  {value: 'doctor', label: 'Doctor'},
-  // { value: 'specializare', label: 'Specializare' }
-];
 
 
 function Homepage() {
@@ -318,8 +311,8 @@ function Homepage() {
             }
           </div>
           <div className="ads-container">
-            <a target="_blank" href={addsToDisplay['homepage_1']?.href}>
-            <img className="add"
+            <a rel="noreferrer" target="_blank" href={addsToDisplay['homepage_1']?.href}>
+            <img className="add" alt={'add'}
                style={{height: addsToDisplay['homepage_1']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_1']?.size.split("x")[1]+'px'}}
                  src={addsToDisplay['homepage_1']?.photo}/>
             </a>
@@ -327,35 +320,31 @@ function Homepage() {
         </div>
 
         <div className="side-content">
-          <a target="_blank" href={addsToDisplay['homepage_2']?.href}>
-            <img className="add"
+          <a rel="noreferrer" target="_blank" href={addsToDisplay['homepage_2']?.href}>
+            <img className="add" alt={'adds'}
                  style={{height: addsToDisplay['homepage_2']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_2']?.size.split("x")[1]+'px'}}
                  src={addsToDisplay['homepage_2']?.photo}/>
           </a>
-          <a target="_blank" href={addsToDisplay['homepage_3']?.href}>
-          <img className="add"
+          <a rel="noreferrer" target="_blank" href={addsToDisplay['homepage_3']?.href}>
+          <img className="add" alt={'adds'}
             style={{height: addsToDisplay['homepage_3']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_3']?.size.split("x")[1]+'px'}}
                src={addsToDisplay['homepage_3']?.photo}/>
           </a>
-          <Newsletter />
-          <a target="_blank" href={addsToDisplay['homepage_4']?.href}>
-          <img className="add"
+          {/*<Newsletter />*/}
+          <a rel="noreferrer" target="_blank" href={addsToDisplay['homepage_4']?.href}>
+          <img className="add" alt={'adds'}
             style={{height: addsToDisplay['homepage_4']?.size.split("x")[0]+'px', width: addsToDisplay['homepage_4']?.size.split("x")[1]+'px'}}
                src={addsToDisplay['homepage_4']?.photo}/>
           </a>
         </div>
       </div>
 
-      {/* <AdSense.Google
-        client='ca-pub-1837999521110876'
-        slot='f08c47fec0942fa0'
-      /> */}
-      <Adsense
-        client="ca-pub-7640562161899788"
-        slot="7259870550"
-        style={{width: 500, height: 300}}
-        format=""
-      />
+      {/*<Adsense*/}
+      {/*  client="ca-pub-7640562161899788"*/}
+      {/*  slot="7259870550"*/}
+      {/*  style={{width: 500, height: 300}}*/}
+      {/*  format=""*/}
+      {/*/>*/}
 
     </div>
   );

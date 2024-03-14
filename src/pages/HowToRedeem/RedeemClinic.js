@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import "./HowToRedeem.scss"
-import {API_MAP, getAPILink, routes} from "../../utils/routes";
+import {API_MAP, getAPILink, REACT_RECAPTCHA_KEY, routes} from "../../utils/routes";
 import _ from "lodash";
 import {useNavigate} from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const RedeemClinicPage = () => {
 
@@ -30,7 +31,18 @@ const RedeemClinicPage = () => {
         job: false,
         fileList: false,
         clinic_id: false,
+        server: false
     });
+
+    const [captchaValue, setCaptchaValue] = useState(null);
+
+    const handleCaptcha = (key) => {
+        setCaptchaValue({
+            captcha: true,
+            'g-recaptcha-response': key
+        })
+    };
+    const recaptchaRef = React.createRef()
 
     const isFormValid = () => {
         let errorCopy = _.cloneDeep(error)
@@ -45,6 +57,12 @@ const RedeemClinicPage = () => {
                 ok = false
             }
         })
+        if (!captchaValue) {
+            errorCopy.server = "Captcha nu a fost completat."
+            ok = false
+        } else {
+            errorCopy.server = false
+        }
         setError(errorCopy)
         if (!ok) setValues({...values, error: "Va rugăm să completați câmpurile obligatorii"})
         return ok
@@ -52,7 +70,7 @@ const RedeemClinicPage = () => {
 
     useEffect(() => {
         setValues({...values, clinic_id: new URLSearchParams(window.location.search).get('id')})
-    }, [])
+    })
     
     const handleFieldChange = (value, title) => {
         setValues((prevState) => ({ ...prevState, [title]: value }));
@@ -99,6 +117,7 @@ const RedeemClinicPage = () => {
         let files = document.getElementById('file').files;
         formData.append('file1', files[0])
         formData.append('file2', files[1])
+        formData.append('g-recaptcha-response', captchaValue["g-recaptcha-response"])
         fetch(getAPILink(API_MAP.POST_REDEEM_CLINIC), {
             method: "POST",
             body: formData,
@@ -110,7 +129,7 @@ const RedeemClinicPage = () => {
                   setValues({ ...values, error: "A apărut o eraore. Va rugăm încercați din nou" })
               }
           })
-          .catch((err) => {
+          .catch(() => {
               setValues({ ...values, error: "A apărut o eraore. Va rugăm încercați din nou" })
           })
     }
@@ -227,6 +246,14 @@ const RedeemClinicPage = () => {
                             onChange={(e) => handleFieldChange(e.target.value, e.target.name)} />
                     </div>
                     <label><a href={routes.TERMS_AND_CONDITION} rel="noreferrer" target={'_blank'}>Termeni și condiții</a></label>
+                </div>
+                <div className={"captcha"}>
+                    <ReCAPTCHA
+                        onChange={handleCaptcha}
+                        ref={recaptchaRef}
+                        //This ref can be used to call captcha related functions in case you need.
+                        sitekey={REACT_RECAPTCHA_KEY}
+                    />
                 </div>
                 {
                     values.error && <div style={{marginBottom: '15px'}} className={'error'}>{values.error}</div>
