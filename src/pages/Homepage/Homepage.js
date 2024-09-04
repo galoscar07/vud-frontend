@@ -278,7 +278,7 @@ function Homepage() {
                     Top medici
                   </div>
                   <div className="subtitle" onClick={showAllDoctors}>
-                    Toati medicii
+                    Toți medicii
                   </div>
                 </div>
                 <div className="results-container">

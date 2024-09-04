@@ -22,7 +22,6 @@ function Header() {
 
   useEffect(() => {
     const user = getUserProfileFromLocal()
-    debugger
     if (Object.keys(user).length > 0) {
       setUser({
         firstName: user.first_name || "",

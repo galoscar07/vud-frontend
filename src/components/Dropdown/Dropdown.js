@@ -13,7 +13,15 @@ const styles = {
         padding: "0.5rem 1rem"
     }),
     multiValueLabel: ({
-        color: "white",
+        color: "black",
+    }),
+    option: (base, { isSelected }) => ({
+        ...base,
+        backgroundColor: isSelected ? "#17616C" : null, // Background color of the option when selected
+        color: isSelected ? "#666666" : base.color,        // Text color when option is selected
+        ':active': {
+            backgroundColor: isSelected ? "#17616C" : "#f2f2f2", // Background color when option is active
+        }
     }),
 };
 

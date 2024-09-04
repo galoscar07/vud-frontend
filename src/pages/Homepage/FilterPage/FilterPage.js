@@ -542,9 +542,9 @@ const FilterPage = (props) => {
               <Dropdown title={"Oraș"} selected={selectedValuesDropdown.clinicTown} placeholder={"Selectează oraș"}
                         onSelect={(values) => handleChangeDropdowns('clinicTown', values)}
                         options={clinicTowns} isLess3Condition isMulti callbackLess3Condition={changeDropdownValue}/>
-              <Dropdown title={"Specilități Clinică"} selected={selectedValuesDropdown.clinicSpecialities}
+              <Dropdown title={"Specialități Clinică"} selected={selectedValuesDropdown.clinicSpecialities}
                         onSelect={(values) => handleChangeDropdowns('clinicSpecialities', values)}
-                        options={clinicSpecialities} isMulti placeholder={"Selectează specilităte"} />
+                        options={clinicSpecialities} isMulti placeholder={"Selectează specialitate"} />
               <Dropdown title={"Facilitați Clinică"} selected={selectedValuesDropdown.clinicFacilities}
                         onSelect={(values) => handleChangeDropdowns('clinicFacilities', values)}
                         options={clinicFacilities} isMulti placeholder={"Selectează facilitați"} />

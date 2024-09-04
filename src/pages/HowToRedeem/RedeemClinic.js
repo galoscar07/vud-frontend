@@ -148,7 +148,7 @@ const RedeemClinicPage = () => {
                     </ol>
 
                     <span className="bold">În concluzie, revendicarea contului paginii de profil a unității medicale pe vreauundoctor.ro este un proces simplu și rapid, care îți poate aduce multiple beneficii, cum ar fi creșterea vizibilității și a numărului de pacienți.
-                        Așadar, nu ezită să urmezi aceșți pași pentru a-ți revendică contul și pentru a-ti promova cu succes unitatea medicală!</span>
+                        Așadar, nu ezită să urmezi acești pași pentru a-ți revendică contul și pentru a-ti promova cu succes unitatea medicală!</span>
                 </div>
             </div>
             <form>

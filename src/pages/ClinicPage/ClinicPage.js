@@ -182,7 +182,8 @@ function ClinicPage() {
                 rating: review.rating.value === 0 ? 1 : review.rating.value,
                 comment: review.comment.value,
                 name: review.name.value,
-                email: review.email.value
+                email: review.email.value,
+                'g-recaptcha-response': captchaValue['g-recaptcha-response']
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
