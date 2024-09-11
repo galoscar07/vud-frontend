@@ -222,7 +222,7 @@ function ClinicPage() {
             score: serverClinic?.average_rating * 2 || 0,
             noOfReviews: serverClinic?.review_count || 0,
             rating: serverClinic?.average_rating || 0,
-            address: `${serverClinic?.clinic_street} ${serverClinic?.clinic_number ? serverClinic?.clinic_number : ''}${serverClinic.clinic_town !== null ? ', ' + serverClinic.clinic_town : ''}`,
+            address: `${serverClinic?.clinic_street} ${serverClinic?.clinic_number ? serverClinic?.clinic_number : ''}${serverClinic.clinic_town !== null ? ', ' + serverClinic.clinic_town : ''}${serverClinic.clinic_county !== null ? ', ' + serverClinic.clinic_county : ''}`,
             typeOfClinic: serverClinic?.medical_unit_types?.map((mut) => { return mut.label }).join(", "),
             facilities: serverClinic?.unity_facilities,
             links: [

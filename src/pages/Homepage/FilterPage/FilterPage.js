@@ -286,7 +286,7 @@ const FilterPage = (props) => {
         score: clinic?.average_rating * 2 || 0,
         noOfReviews: clinic?.review_count || 0,
         rating: clinic?.average_rating || 0,
-        address: `Str. ${clinic?.clinic_street} ${clinic?.clinic_number ? 'nr.' + clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}`,
+        address: `Str. ${clinic?.clinic_street} ${clinic?.clinic_number ? 'nr.' + clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}${clinic.clinic_county  !== null ? ', ' + clinic.clinic_county : ''}`,
         description: clinic?.description,
         specialty: clinic.clinic_specialities.map((cs) => {
           return cs.label
@@ -298,7 +298,7 @@ const FilterPage = (props) => {
           {type: 'phoneNo', value: JSON.parse(clinic.primary_phone || "{}")?.value},
           {
             type: "location",
-            value: `${clinic?.clinic_street} ${clinic?.clinic_number ? clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}`,
+            value: `${clinic?.clinic_street} ${clinic?.clinic_number ? clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}${clinic.clinic_county  !== null ? ', ' + clinic.clinic_county : ''}`,
           },
           {type: "email", value: clinic.primary_email}
         ],
