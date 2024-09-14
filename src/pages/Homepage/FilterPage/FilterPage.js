@@ -3,7 +3,7 @@ import "./FilterPage.scss"
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import ClinicFilterContainer from '../../../components/ClinicFilterContainer/ClinicFilterContainer';
 import {API_MAP, getAPILink, routes} from "../../../utils/routes";
-import {useNavigate} from "react-router-dom"
+import {useLocation, useNavigate} from "react-router-dom"
 import MapWrapper from "../../../components/Map/Map";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import DoctorCard from "../../../components/DoctorCard/DoctorCard";
@@ -70,12 +70,52 @@ function getAllCities(e = null, just10 = false) {
   return citiesList.filter(el => el.value.toLowerCase().includes(lowerVal));
 }
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 const FilterPage = (props) => {
   const navigate = useNavigate()
+  const query = useQuery()
+
   const [loading, setLoading] = useState(true)
+  const [clinics, setClinics] = useState([])
+  const [doctors, setDoctors] = useState([])
+  const [filtersReady, setFiltersReady] = useState(false);
+  const [addsToDisplay, setAddsToDisplay] = useState({})
+  const [pagination, setPagination] = React.useState(initialPagination)
+
+  // Dropdowns values
+  const [clinicSpecialities, setClinicSpecialities] = useState([])
+  const [clinicFacilities, setClinicFacilities] = useState([])
+  const [clinicTypes, setClinicTypes] = useState([])
+  const [clinicTowns, setClinicTowns] = useState(getAllCities('', true))
+  const [doctorSpecialities, setDoctorSpecialities] = useState([])
+  const [doctorCompetences, setDoctorCompetences] = useState([])
+  const [doctorClinics, setDoctorClinics] = useState([])
+  const [selectedValuesDropdown, setSelectedValuesDropdown] = useState({
+    clinicSpecialities: [],
+    clinicFacilities: [],
+    clinicTypes: [],
+    clinicTown: [],
+    doctorSpecialities: [],
+    doctorCompetences: [],
+    doctorClinics: [],
+  })
+
+  const [state, setState] = useState({
+    search_term: query.get('search_term') || '',
+    search_type: query.get('search_type') || '',
+    clinic_specialities: query.get('clinic_specialities') || '',
+    clinic_facilities: query.get('clinic_facilities') || '',
+    clinic_types: query.get('clinic_types') || '',
+    clinic_town: query.get('clinic_town') || '',
+    doctor_specialities: query.get('doctor_specialities') || '',
+    doctor_competences: query.get('doctor_competences') || '',
+    doctor_clinics: query.get('doctor_clinics') || '',
+  })
 
   // Adds
-  const [addsToDisplay, setAddsToDisplay] = useState({})
   useEffect(() => {
     window.scrollTo(0, 0)
     const jsonArray = JSON.parse(localStorage.getItem('ads') || '[]');
@@ -92,255 +132,75 @@ const FilterPage = (props) => {
     setAddsToDisplay(dictAdds)
   }, [])
 
-  // Objects from BE
-  const [clinics, setClinics] = useState([])
-  const [doctors, setDoctors] = useState([])
-  const [state, setState] = useState({
-    search_term: new URLSearchParams(window.location.search).get('search_term') || '',
-    search_type: new URLSearchParams(window.location.search).get('search_type') || '',
-    clinic_specialities: new URLSearchParams(window.location.search).get('clinic_specialities') || '',
-    clinic_facilities: new URLSearchParams(window.location.search).get('clinic_facilities') || '',
-    clinic_types: new URLSearchParams(window.location.search).get('clinic_types') || '',
-    clinic_town: new URLSearchParams(window.location.search).get('clinic_town') || '',
-    doctor_specialities: new URLSearchParams(window.location.search).get('doctor_specialities') || '',
-    doctor_competences: new URLSearchParams(window.location.search).get('doctor_competences') || '',
-    doctor_clinics: new URLSearchParams(window.location.search).get('doctor_clinics') || '',
-  })
-  const [pagination, setPagination] = React.useState(initialPagination)
 
-  // Input
+  // Inputs
   const handleInput = (ev) => {
     setState({...state, [ev.target.name]: ev.target.value})
   }
-
-  // Dropdowns values
-  const [clinicSpecialities, setClinicSpecialities] = useState([])
-  const [clinicFacilities, setClinicFacilities] = useState([])
-  const [clinicTypes, setClinicTypes] = useState([])
-  const [clinicTowns, setClinicTowns] = useState(getAllCities('', true))
-  const [doctorSpecialities, setDoctorSpecialities] = useState([])
-  const [doctorCompetences, setDoctorCompetences] = useState([])
-  const [doctorClinics, setDoctorClinics] = useState([])
-  useEffect(() => {
-    fetch(getAPILink(API_MAP.GET_CLINIC_SPECIALITIES), {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    })
-      .then((resp) => resp.json())
-      .then((response) => {
-        const mapped = response.map((el) => {
-          return {value: el.id, label: el.label}
-        })
-        setClinicSpecialities(mapped)
-        if (state.clinic_specialities) {
-          const ids = state.clinic_specialities.split('|')
-          const ad = ids.map((el) => {
-            const filtered = mapped.filter((f) => f.value.toString() === el)
-            return filtered[0] || null
-          })
-          handleChangeDropdowns('clinicSpecialities', ad)
-        }
-      })
-      .catch((err) => {
-      })
-    fetch(getAPILink(API_MAP.GET_MEDICAL_UNITY_TYPE), {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    })
-      .then((resp) => resp.json())
-      .then((response) => {
-        const mapped = response.map((el) => {
-          return {value: el.id, label: el.label}
-        })
-        setClinicTypes(mapped)
-        if (state.clinic_types) {
-          const ids = state.clinic_types.split('|')
-          const ad = ids.map((el) => {
-            const filtered = mapped.filter((f) => f.value.toString() === el)
-            return filtered[0] || null
-          })
-          handleChangeDropdowns('clinicTypes', ad)
-        }
-      })
-      .catch((err) => {
-      })
-    fetch(getAPILink(API_MAP.GET_MEDICAL_FACILITIES), {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    })
-      .then((resp) => resp.json())
-      .then((response) => {
-        const mapped = response.map((el) => {
-          return {value: el.id, label: el.label}
-        })
-        setClinicFacilities(mapped)
-        if (state.clinic_facilities) {
-          const ids = state.clinic_facilities.split('|')
-          const ad = ids.map((el) => {
-            const filtered = mapped.filter((f) => f.value.toString() === el)
-            return filtered[0] || null
-          })
-          handleChangeDropdowns('clinicFacilities', ad)
-        }
-      })
-      .catch((err) => {
-      })
-    fetch(getAPILink(API_MAP.GET_SPECIALITIES), {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    })
-      .then((resp) => resp.json())
-      .then((response) => {
-        const mapped = response.map((el) => {
-          return {value: el.id, label: el.label}
-        })
-        setDoctorSpecialities(mapped)
-        if (state.doctor_specialities) {
-          const ids = state.doctor_specialities.split('|')
-          const ad = ids.map((el) => {
-            const filtered = mapped.filter((f) => f.value.toString() === el)
-            return filtered[0] || null
-          })
-          handleChangeDropdowns('doctorSpecialities', ad)
-        }
-      })
-      .catch((err) => {
-      })
-    fetch(getAPILink(API_MAP.GET_COMPETENCES), {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    })
-      .then((resp) => resp.json())
-      .then((response) => {
-        const mapped = response.map((el) => {
-          return {value: el.id, label: el.label}
-        })
-        setDoctorCompetences(mapped)
-        if (state.doctor_competences) {
-          const ids = state.doctor_competences.split('|')
-          const ad = ids.map((el) => {
-            const filtered = mapped.filter((f) => f.value.toString() === el)
-            return filtered[0] || null
-          })
-          handleChangeDropdowns('doctorCompetences', ad)
-        }
-      })
-      .catch((err) => {
-      })
-    fetch(getAPILink(API_MAP.GET_CLINICS_NAMES), {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
-    })
-      .then((resp) => resp.json())
-      .then((response) => {
-        const mapped = response.map((el) => {
-          return {value: el.id, label: el.clinic_name}
-        })
-        setDoctorClinics(mapped)
-        if (state.doctor_clinics) {
-          const ids = state.doctor_clinics.split('|')
-          const ad = ids.map((el) => {
-            const filtered = mapped.filter((f) => f.value.toString() === el)
-            return filtered[0] || null
-          })
-          handleChangeDropdowns('doctorClinics', ad)
-        }
-      })
-      .catch((err) => {
-      })
-  }, [])
-
-  // Dropdowns on change
-  const [selectedValuesDropdown, setSelectedValuesDropdown] = useState({
-    clinicSpecialities: [],
-    clinicFacilities: [],
-    clinicTypes: [],
-    clinicTown: [],
-    doctorSpecialities: [],
-    doctorCompetences: [],
-    doctorClinics: [],
-  })
   const handleChangeDropdowns = (label, value) => {
     setSelectedValuesDropdown({...selectedValuesDropdown, [label]: value})
   }
 
-  // Map Server responses to FE
-  const mapServerRespToFront = (listOfClinics) => {
-    return listOfClinics.map((clinic) => {
-      return {
-        id: clinic.id,
-        name: clinic.clinic_name,
-        image: clinic.profile_picture,
-        score: clinic?.average_rating * 2 || 0,
-        noOfReviews: clinic?.review_count || 0,
-        rating: clinic?.average_rating || 0,
-        address: `Str. ${clinic?.clinic_street} ${clinic?.clinic_number ? 'nr.' + clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}${clinic.clinic_county  !== null ? ', ' + clinic.clinic_county : ''}`,
-        description: clinic?.description,
-        specialty: clinic.clinic_specialities.map((cs) => {
-          return cs.label
-        }).join(", "),
-        type: clinic.medical_unit_types.map((mut) => {
-          return mut.label
-        }).join(", "),
-        contact: [
-          {type: 'phoneNo', value: JSON.parse(clinic.primary_phone || "{}")?.value},
-          {
-            type: "location",
-            value: `${clinic?.clinic_street} ${clinic?.clinic_number ? clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}${clinic.clinic_county  !== null ? ', ' + clinic.clinic_county : ''}`,
-          },
-          {type: "email", value: clinic.primary_email}
-        ],
-        reviews: clinic.recent_reviews?.map((rev) => {
-          return {
-            name: rev.name,
-            rating: rev.rating,
-            text: rev.comment
-          }
-        }) || [],
-      }
-    })
-  }
-  const mapServerRespToFrontDoctor = (listOfDoctors) => {return listOfDoctors}
+  // Dropdowns values
+  const fetchDropdownData = async () => {
+    const clinicSpecialitiesResp = await fetch(getAPILink(API_MAP.GET_CLINIC_SPECIALITIES)).then((resp) => resp.json());
+    const clinicFacilitiesResp = await fetch(getAPILink(API_MAP.GET_MEDICAL_FACILITIES)).then((resp) => resp.json());
+    const clinicTypesResp = await fetch(getAPILink(API_MAP.GET_MEDICAL_UNITY_TYPE)).then((resp) => resp.json());
+    const doctorSpecialitiesResp = await fetch(getAPILink(API_MAP.GET_SPECIALITIES)).then((resp) => resp.json());
+    const doctorCompetencesResp = await fetch(getAPILink(API_MAP.GET_COMPETENCES)).then((resp) => resp.json());
+    const doctorClinicsResp = await fetch(getAPILink(API_MAP.GET_CLINICS_NAMES)).then((resp) => resp.json());
+
+    // Map response data to dropdown options
+    const clinicSpecialities = clinicSpecialitiesResp.map((el) => ({ value: el.id, label: el.label }));
+    const clinicFacilities = clinicFacilitiesResp.map((el) => ({ value: el.id, label: el.label }));
+    const clinicTypes = clinicTypesResp.map((el) => ({ value: el.id, label: el.label }));
+    const doctorSpecialities = doctorSpecialitiesResp.map((el) => ({ value: el.id, label: el.label }));
+    const doctorCompetences = doctorCompetencesResp.map((el) => ({ value: el.id, label: el.label }));
+    const doctorClinics = doctorClinicsResp.map((el) => ({ value: el.id, label: el.clinic_name }));
+
+    setClinicSpecialities(clinicSpecialities)
+    setClinicFacilities(clinicFacilities)
+    setClinicTypes(clinicTypes)
+    setDoctorSpecialities(doctorSpecialities)
+    setDoctorCompetences(doctorCompetences)
+    setDoctorClinics(doctorClinics)
+
+    // Set dropdown values based on query parameters
+    setSelectedValuesDropdown({
+      clinicSpecialities: clinicSpecialities.filter(el => state.clinic_specialities.split('|').includes(String(el.value))),
+      clinicFacilities: clinicFacilities.filter(el => state.clinic_facilities.split('|').includes(String(el.value))),
+      clinicTypes: clinicTypes.filter(el => state.clinic_types.split('|').includes(String(el.value))),
+      clinicTown: state.clinic_town ? [{ value: state.clinic_town, label: state.clinic_town }] : [],
+      doctorSpecialities: doctorSpecialities.filter(el => state.doctor_specialities.split('|').includes(String(el.value))),
+      doctorCompetences: doctorCompetences.filter(el => state.doctor_competences.split('|').includes(String(el.value))),
+      doctorClinics: doctorClinics.filter(el => state.doctor_clinics.split('|').includes(String(el.value))),
+    });
+
+    setFiltersReady(true);
+  };
+
+  useEffect(() => {
+    fetchDropdownData();
+  }, []);
+
+  useEffect(() => {
+    if (filtersReady) {
+      getData();
+    }
+  }, [filtersReady]);
 
   // Calls
   const getClinics = (link) => {
     fetch(getAPILink(API_MAP.GET_CLINICS_FILTER + link), {
       method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      }
+      headers: { 'Content-type': 'application/json; charset=UTF-8' }
     })
-      .then((resp) => resp.json())
-      .then((response) => {
-        if (response.detail === 'Invalid page.') {
-          setClinics([])
-          setPagination(initialPagination)
-          setLoading(false)
-          return
-        }
-        setClinics(mapServerRespToFront(response.results))
-        setPagination((prev) => ({
-          ...prev,
-          maxPage: Math.ceil(response.count / 4)
-        }))
-        setLoading(false)
-      })
-      .catch((err) => {
-        setClinics([])
-        setPagination(initialPagination)
-      })
+        .then((resp) => resp.json())
+        .then((response) => {
+          setClinics(mapServerRespToFront(response.results) || []);
+          setPagination((prev) => ({ ...prev, maxPage: Math.ceil(response.count / pagination.perPage) }));
+          setLoading(false);
+        });
   }
   const getDoctors = (link) => {
     fetch(getAPILink(API_MAP.GET_DOCTOR_FILTERED + link), {
@@ -386,7 +246,7 @@ const FilterPage = (props) => {
     }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, type="default") => {
     if (e) e.preventDefault()
     let query = '?'
     query += 'search_term=' + state.search_term + '&'
@@ -398,22 +258,18 @@ const FilterPage = (props) => {
     query += 'doctor_specialities=' + selectedValuesDropdown.doctorSpecialities.map(el => {return el.value}).join("|")  + '&'
     query += 'doctor_competences=' + selectedValuesDropdown.doctorCompetences.map(el => {return el.value}).join("|")  + '&'
     query += 'doctor_clinics=' + selectedValuesDropdown.doctorClinics.map(el => {return el.value}).join("|")
+    if (type === 'button') setPagination(initialPagination)
     navigate(routes.FILTER_PAGE + query)
     getData()
   }
 
   useEffect(() => {
-    handleSubmit()
-  }, [state])
-
-  useEffect(() => {
-    handleSubmit()
-  }, [])
-
+    getData();
+  }, [pagination.currentPage, state]);
 
   const renderClinic = () => {
     if (clinics.length === 0) {
-      return <p>Ne pare rau, dar nu am gasit rezultate pentru cautarea curenta.</p>
+      return <p>Ne pare rău, dar nu am găsit rezultate pentru căutarea curentă.</p>
     } else {
       return <React.Fragment>
         <div className="results-container">
@@ -469,7 +325,6 @@ const FilterPage = (props) => {
                   onClick={() => {
                     window.scrollTo(0,0)
                     setPagination((prev) => ({...prev, currentPage: page}))
-                    getData()
                   }}
                   className={pagination.currentPage === page? 'active' : ''}>
               {page}
@@ -490,7 +345,6 @@ const FilterPage = (props) => {
       setClinicTowns(getAllCities(e, true))
     }
   }
-
 
   const renderDoctor = () => {
     if (doctors.length === 0) {
@@ -517,6 +371,44 @@ const FilterPage = (props) => {
       </React.Fragment>
     }
   }
+
+  // Map Server responses to FE
+  const mapServerRespToFront = (listOfClinics) => {
+    return listOfClinics.map((clinic) => {
+      return {
+        id: clinic.id,
+        name: clinic.clinic_name,
+        image: clinic.profile_picture,
+        score: clinic?.average_rating * 2 || 0,
+        noOfReviews: clinic?.review_count || 0,
+        rating: clinic?.average_rating || 0,
+        address: `Str. ${clinic?.clinic_street} ${clinic?.clinic_number ? 'nr.' + clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}${clinic.clinic_county  !== null ? ', ' + clinic.clinic_county : ''}`,
+        description: clinic?.description,
+        specialty: clinic.clinic_specialities.map((cs) => {
+          return cs.label
+        }).join(", "),
+        type: clinic.medical_unit_types.map((mut) => {
+          return mut.label
+        }).join(", "),
+        contact: [
+          {type: 'phoneNo', value: JSON.parse(clinic.primary_phone || "{}")?.value},
+          {
+            type: "location",
+            value: `${clinic?.clinic_street} ${clinic?.clinic_number ? clinic?.clinic_number : ''}${clinic.clinic_town !== null ? ', ' + clinic.clinic_town : ''}${clinic.clinic_county  !== null ? ', ' + clinic.clinic_county : ''}`,
+          },
+          {type: "email", value: clinic.primary_email}
+        ],
+        reviews: clinic.recent_reviews?.map((rev) => {
+          return {
+            name: rev.name,
+            rating: rev.rating,
+            text: rev.comment
+          }
+        }) || [],
+      }
+    })
+  }
+  const mapServerRespToFrontDoctor = (listOfDoctors) => {return listOfDoctors}
 
   return (
     <div className="filter-page">
@@ -567,7 +459,7 @@ const FilterPage = (props) => {
                         options={doctorClinics} isMulti placeholder={"Selectează unitate"}/>
             </React.Fragment>
           }
-          <button onClick={handleSubmit} className="button search">Cauta</button>
+          <button onClick={(e) => handleSubmit(e, "button")} className="button search">Cauta</button>
           <div style={{marginTop: '10px'}}>
             <a target="_blank" href={addsToDisplay['searchpage_3']?.href}>
               <img className="add"
@@ -592,7 +484,7 @@ const FilterPage = (props) => {
                 <div className="right-side">
                   <MapWrapper
                       classes={'map-filter-page'}
-                      locations={clinics.map((cli) => {
+                      locations={clinics.slice(0, 4).map((cli) => {
                         return {address: cli.address, name: cli.name, description: cli.description}
                       })}
                   ></MapWrapper>

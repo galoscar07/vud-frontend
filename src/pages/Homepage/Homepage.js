@@ -295,10 +295,10 @@ function Homepage() {
           <div className="container-title desktop">
             <div className="title">
               <img src="/images/star_full.svg" alt={"stea"}/>
-              Top unitati medicale
+              Top unități medicale
             </div>
             <div className="subtitle" onClick={showAll}>
-              Toate unitatile
+              Toate unitățile
             </div>
           </div>
           <div className="results-container">
